@@ -102,7 +102,7 @@ sudo unzip -d /opt/gradle /tmp/gradle-8.5-bin.zip
 ```
 
 ###### 3. Configure Environment Variables
-Add to `~/.bashrc`:
+- Add to `~/.bashrc`:
 ```bash
 export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
 export ANDROID_HOME=$HOME/android
