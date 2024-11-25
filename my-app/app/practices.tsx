@@ -8,7 +8,7 @@ export default function BestPracticesScreen() {
   return (
     <ScrollView style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.title}>Best Practices</Text>
+        <Text style={styles.title}>Mobile Accessibility Best Practices</Text>
         <Text style={styles.description}>
           Essential guidelines for creating accessible React Native applications
         </Text>
