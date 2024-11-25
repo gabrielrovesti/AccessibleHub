@@ -10,8 +10,7 @@ export default function HomeScreen() {
       {/* Hero Section */}
       <View style={styles.hero}>
         <View style={styles.heroContent}>
-          <Text style={styles.smallTitle}>React Native</Text>
-          <Text style={styles.title}>Accessibility Manual</Text>
+          <Text style={styles.title}>An accessibility testing manual for developers</Text>
           <Text style={styles.subtitle}>
             A developer's guide to creating inclusive applications
           </Text>
@@ -52,7 +51,7 @@ export default function HomeScreen() {
 
       {/* Main Navigation Cards */}
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Explore Topics</Text>
+        <Text style={styles.sectionTitle}>Explore topics</Text>
 
         <TouchableOpacity
           style={styles.card}
