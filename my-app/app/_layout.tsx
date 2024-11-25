@@ -1,44 +1,64 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-import { useFonts } from 'expo-font';
-import { SplashScreen, Stack } from 'expo-router';
-import { useEffect } from 'react';
-import { useColorScheme } from 'react-native';
+import { Stack } from 'expo-router';
+import React from 'react';
+import { StyleSheet } from 'react-native';
+import { Drawer } from 'expo-router/drawer';
+import { Ionicons } from '@expo/vector-icons';
 
-export {
-  // Catch any errors thrown by the Layout component.
-  ErrorBoundary,
-} from 'expo-router';
-
-export const unstable_settings = {
-  // Ensure that reloading on `/modal` keeps a back button present.
-  initialRouteName: '(drawer)',
-};
-
-// Prevent the splash screen from auto-hiding before asset loading is complete.
-SplashScreen.preventAutoHideAsync();
-
-export default function RootLayout() {
-  const [loaded] = useFonts({
-    // Load any fonts you need here
-  });
-
-  const colorScheme = useColorScheme();
-
-  useEffect(() => {
-    if (loaded) {
-      SplashScreen.hideAsync();
-    }
-  }, [loaded]);
-
-  if (!loaded) {
-    return null;
-  }
-
+export default function AppLayout() {
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="index" options={{ headerShown: false }} />
-      </Stack>
-    </ThemeProvider>
+    <Drawer>
+      <Drawer.Screen
+        name="index"
+        options={{
+          drawerLabel: "Home",
+          title: "An accessibility testing manual for developers",
+          drawerIcon: ({ size, color }) => (
+            <Ionicons name="home-outline" size={size} color={color} />
+          ),
+        }}
+      />
+      <Drawer.Screen
+        name="components"
+        options={{
+          drawerLabel: "Component Examples",
+          title: "Component Examples",
+          drawerIcon: ({ size, color }) => (
+            <Ionicons name="code-outline" size={size} color={color} />
+          ),
+        }}
+      />
+      <Drawer.Screen
+        name="practices"
+        options={{
+          drawerLabel: "Best Practices",
+          title: "Best Practices",
+          drawerIcon: ({ size, color }) => (
+            <Ionicons name="book-outline" size={size} color={color} />
+          ),
+        }}
+      />
+      <Drawer.Screen
+        name="tools"
+        options={{
+          drawerLabel: "Testing Tools",
+          title: "Testing Tools",
+          drawerIcon: ({ size, color }) => (
+            <Ionicons name="build-outline" size={size} color={color} />
+          ),
+        }}
+      />
+      <Drawer.Screen
+        name="settings"
+        options={{
+          drawerLabel: "Settings",
+          title: "Settings",
+          drawerIcon: ({ size, color }) => (
+            <Ionicons name="settings-outline" size={size} color={color} />
+          ),
+        }}
+      />
+    </Drawer>
   );
 }
+
+const styles = StyleSheet.create({});
