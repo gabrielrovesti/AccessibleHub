@@ -1,7 +1,11 @@
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { useRouter } from 'expo-router';
 
 export default function ComponentsScreen() {
+
+  const router = useRouter();
+
   return (
     <ScrollView style={styles.container}>
       <View style={styles.header}>
@@ -12,7 +16,7 @@ export default function ComponentsScreen() {
       </View>
 
       <View style={styles.section}>
-        <TouchableOpacity style={styles.componentCard} accessibilityRole="button">
+        <TouchableOpacity style={styles.componentCard} accessibilityRole="button" onPress={() => router.push('/accessible-components/buttons/basic-button')}>
           <View style={styles.cardHeader}>
             <View style={[styles.iconContainer, { backgroundColor: '#E8F1FF' }]}>
               <Ionicons name="radio-button-on-outline" size={24} color="#0055CC" />
