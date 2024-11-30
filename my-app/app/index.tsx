@@ -37,7 +37,7 @@ export default function HomeScreen() {
       <View style={styles.section}>
         <TouchableOpacity
           style={styles.quickStartCard}
-          onPress={() => router.push('/accessible-components')}
+          onPress={() => router.push('/components')}
           accessible={true}
           accessibilityRole="button"
           accessibilityLabel="Quick start with component examples">
