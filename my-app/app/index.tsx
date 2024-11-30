@@ -37,7 +37,7 @@ export default function HomeScreen() {
       <View style={styles.section}>
         <TouchableOpacity
           style={styles.quickStartCard}
-          onPress={() => router.push('/components')}
+          onPress={() => router.push('/accessible-components')}
           accessible={true}
           accessibilityRole="button"
           accessibilityLabel="Quick start with component examples">
@@ -53,10 +53,9 @@ export default function HomeScreen() {
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Explore topics</Text>
 
-
         <TouchableOpacity
           style={styles.card}
-          onPress={() => router.push('/practices')}
+          onPress={() => router.push('/best-practices')}
           accessible={true}
           accessibilityRole="button"
           accessibilityHint="Learn about WCAG guidelines implementation">

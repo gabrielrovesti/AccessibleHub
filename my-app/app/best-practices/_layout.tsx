@@ -1,6 +1,6 @@
 import { Stack } from 'expo-router';
 
-export default function ComponentsLayout() {
+export default function PracticesLayout() {
   return (
     <Stack
       screenOptions={{
@@ -11,33 +11,41 @@ export default function ComponentsLayout() {
       }}
     >
       <Stack.Screen
-        name="basic-button"
+        name="practices"
         options={{
-          title: "Basic Button",
+          title: 'Best Practices',
+          headerShown: true,
+          headerTitle: '',
+        }}
+      />
+      <Stack.Screen
+        name="guidelines"
+        options={{
+          title: "WCAG 2.2 Guidelines",
           headerShown: true,
           headerBackVisible: false,
         }}
       />
       <Stack.Screen
-        name="accessible-form"
+        name="semantics"
         options={{
-          title: "Form Controls",
+          title: "Semantic Structure",
+           headerShown: true,
+           headerBackVisible: false,
+        }}
+      />
+      <Stack.Screen
+        name="screen-reader"
+        options={{
+          title: "Screen Reader Support",
           headerShown: true,
           headerBackVisible: false,
         }}
       />
       <Stack.Screen
-        name="media-content"
+        name="navigation"
         options={{
-          title: "Media Content",
-          headerShown: true,
-          headerBackVisible: false,
-        }}
-      />
-      <Stack.Screen
-        name="navigation-pattern"
-        options={{
-          title: "Navigation Pattern",
+          title: "Navigation & Focus",
           headerShown: true,
           headerBackVisible: false,
         }}

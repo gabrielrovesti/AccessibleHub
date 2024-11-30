@@ -16,7 +16,7 @@ export default function ComponentsScreen() {
       </View>
 
       <View style={styles.section}>
-        <TouchableOpacity style={styles.componentCard} accessibilityRole="button" onPress={() => router.push('/accessible-components/buttons/basic-button')}>
+        <TouchableOpacity style={styles.componentCard} accessibilityRole="button" onPress={() => router.push('/accessible-components/basic-button')}>
           <View style={styles.cardHeader}>
             <View style={[styles.iconContainer, { backgroundColor: '#E8F1FF' }]}>
               <Ionicons name="radio-button-on-outline" size={24} color="#0055CC" />
@@ -44,7 +44,7 @@ export default function ComponentsScreen() {
           </View>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.componentCard} accessibilityRole="button" onPress={() => router.push('/accessible-components/form/accessible-form')}>
+        <TouchableOpacity style={styles.componentCard} accessibilityRole="button" onPress={() => router.push('/accessible-components/accessible-form')}>
           <View style={styles.cardHeader}>
             <View style={[styles.iconContainer, { backgroundColor: '#F0F8FF' }]}>
               <Ionicons name="create-outline" size={24} color="#0070F3" />
@@ -72,7 +72,7 @@ export default function ComponentsScreen() {
           </View>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.componentCard} accessibilityRole="button">
+        <TouchableOpacity style={styles.componentCard} accessibilityRole="button" onPress={() => router.push('/accessible-components/media-content')}>
           <View style={styles.cardHeader}>
             <View style={[styles.iconContainer, { backgroundColor: '#FFF4E6' }]}>
               <Ionicons name="image-outline" size={24} color="#FF8C00" />
@@ -100,7 +100,7 @@ export default function ComponentsScreen() {
           </View>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.componentCard} accessibilityRole="button">
+        <TouchableOpacity style={styles.componentCard} accessibilityRole="button" onPress={() => router.push('/accessible-components/navigation-pattern')}>
           <View style={styles.cardHeader}>
             <View style={[styles.iconContainer, { backgroundColor: '#E6F4FF' }]}>
               <Ionicons name="menu-outline" size={24} color="#0066CC" />

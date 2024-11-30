@@ -3,14 +3,13 @@ import { View, Text, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
 function CustomDrawerContent(props) {
-  // Avoid including not_found screens by default and sitemap here
-  const excludedRoutes = ['_sitemap', '+not-found', 'accessible-components', 'components'];
+  const mainRoutes = ['index', 'tools', 'settings', 'practices'];
 
   return (
     <View style={styles.container}>
       <View style={styles.drawerContent}>
         {props.state.routes
-          .filter((route) => !excludedRoutes.includes(route.name)) // Exclude unwanted routes
+          .filter(route => mainRoutes.includes(route.name))
           .map((route, index) => {
             const isActive = props.state.index === index;
             const { drawerLabel, drawerIcon } = props.descriptors[route.key].options;
@@ -33,7 +32,6 @@ function CustomDrawerContent(props) {
           })}
       </View>
 
-      {/* Footer section */}
       <View style={styles.footer}>
         <View style={styles.footerContent}>
           <Text style={styles.appName}>AccessibleHub</Text>
@@ -44,14 +42,12 @@ function CustomDrawerContent(props) {
   );
 }
 
-
 export default function AppLayout() {
   return (
     <Drawer
       drawerContent={(props) => <CustomDrawerContent {...props} />}
       screenOptions={{
         headerShown: true,
-        headerTitle: '',
         drawerStyle: {
           backgroundColor: '#fff',
         },
@@ -64,19 +60,20 @@ export default function AppLayout() {
           drawerIcon: ({ size, color }) => (
             <Ionicons name="home-outline" size={size} color={color} />
           ),
-          headerTitle: "AccessibleHub",
+          headerTitle: "",
         }}
       />
-      <Drawer.Screen
-        name="practices"
-        options={{
-          drawerLabel: "Best Practices",
-          drawerIcon: ({ size, color }) => (
-            <Ionicons name="book-outline" size={size} color={color} />
-          ),
-          headerTitle: "Best Practices",
-        }}
-      />
+        <Drawer.Screen
+          name="practices"
+          options={{
+            drawerLabel: "Best Practices",
+            drawerIcon: ({ size, color }) => (
+              <Ionicons name="book-outline" size={size} color={color} />
+            ),
+            headerTitle: "Best Practices",
+          }}
+        />
+
       <Drawer.Screen
         name="tools"
         options={{
@@ -95,6 +92,14 @@ export default function AppLayout() {
             <Ionicons name="settings-outline" size={size} color={color} />
           ),
           headerTitle: "Settings",
+        }}
+      />
+      <Drawer.Screen
+        name="accessible-components"
+        options={{
+          drawerItemStyle: { height: 0 },
+          headerShown: true,
+          headerTitle: "Accessible components",
         }}
       />
     </Drawer>

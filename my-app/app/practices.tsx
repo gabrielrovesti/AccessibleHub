@@ -1,9 +1,11 @@
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Modal } from 'react-native';
 import { useState } from 'react';
 import { Ionicons } from '@expo/vector-icons';
+import { useRouter } from 'expo-router';
 
 export default function BestPracticesScreen() {
   const [selectedGuide, setSelectedGuide] = useState(null);
+  const router = useRouter();
 
   return (
     <ScrollView style={styles.container}>
@@ -17,7 +19,7 @@ export default function BestPracticesScreen() {
       <View style={styles.section}>
         <TouchableOpacity
           style={styles.guideCard}
-          onPress={() => setSelectedGuide('wcag')}
+          onPress={() => router.push('/best-practices/guidelines')}
           accessibilityRole="button">
           <View style={[styles.iconContainer, { backgroundColor: '#E8F1FF' }]}>
             <Ionicons name="document-text-outline" size={24} color="#0055CC" />
@@ -52,7 +54,7 @@ export default function BestPracticesScreen() {
 
         <TouchableOpacity
           style={styles.guideCard}
-          onPress={() => setSelectedGuide('semantic')}
+          onPress={() => router.push('/best-practices/semantics')}
           accessibilityRole="button">
           <View style={[styles.iconContainer, { backgroundColor: '#F0F8FF' }]}>
             <Ionicons name="git-merge-outline" size={24} color="#0070F3" />
@@ -82,7 +84,7 @@ export default function BestPracticesScreen() {
 
         <TouchableOpacity
           style={styles.guideCard}
-          onPress={() => setSelectedGuide('screenReader')}
+          onPress={() => router.push('/best-practices/screen-reader')}
           accessibilityRole="button">
           <View style={[styles.iconContainer, { backgroundColor: '#E6F4FF' }]}>
             <Ionicons name="eye-outline" size={24} color="#0066CC" />
@@ -112,7 +114,7 @@ export default function BestPracticesScreen() {
 
         <TouchableOpacity
           style={styles.guideCard}
-          onPress={() => setSelectedGuide('navigation')}
+          onPress={() => router.push('/best-practices/navigation')}
           accessibilityRole="button">
           <View style={[styles.iconContainer, { backgroundColor: '#FFF4E6' }]}>
             <Ionicons name="navigate-outline" size={24} color="#FF8C00" />

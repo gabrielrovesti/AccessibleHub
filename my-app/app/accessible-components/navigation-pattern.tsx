@@ -1,38 +1,40 @@
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
-import { useRouter } from "expo-router";
 
-const AccessibleButtonExample = () => {
-  const router = useRouter();
-
-  const DemoButton = () => (
-    <TouchableOpacity
-      style={styles.demoButton}
-      accessibilityRole="button"
-      accessibilityLabel="Submit form"
-      accessibilityHint="Activates form submission"
-      onPress={() => {}}
-    >
-      <Text style={styles.buttonText}>Submit</Text>
-    </TouchableOpacity>
-  );
-
+const AccessibleNavigationExample = () => {
   return (
     <ScrollView style={styles.container}>
-      <View style={styles.header}>
-        <TouchableOpacity onPress={() => router.back()} accessibilityLabel="Go back">
-          <Ionicons name="chevron-back" size={24} color="#007AFF" />
-        </TouchableOpacity>
-        <Text style={styles.title}>Accessible Button</Text>
-      </View>
-
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Interactive Example</Text>
         <View style={styles.demoContainer}>
-          <DemoButton />
+          <View style={styles.demoNav}>
+            <TouchableOpacity
+              style={styles.navItem}
+              accessibilityRole="tab"
+              accessibilityLabel="Home tab"
+              accessibilityState={{ selected: true }}
+            >
+              <Text style={[styles.navText, styles.navTextActive]}>Home</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.navItem}
+              accessibilityRole="tab"
+              accessibilityLabel="Profile tab"
+              accessibilityState={{ selected: false }}
+            >
+              <Text style={styles.navText}>Profile</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.navItem}
+              accessibilityRole="tab"
+              accessibilityLabel="Settings tab"
+              accessibilityState={{ selected: false }}
+            >
+              <Text style={styles.navText}>Settings</Text>
+            </TouchableOpacity>
+          </View>
           <Text style={styles.demoText}>
-            Try this button with VoiceOver/TalkBack enabled
+            Try this navigation with VoiceOver/TalkBack enabled
           </Text>
         </View>
       </View>
@@ -41,21 +43,15 @@ const AccessibleButtonExample = () => {
         <Text style={styles.sectionTitle}>Implementation</Text>
         <View style={styles.codeCard}>
           <Text style={styles.codeText}>{`<TouchableOpacity
-  accessibilityRole="button"
-  accessibilityLabel="Submit form"
-  accessibilityHint="Activates form submission"
+  accessibilityRole="tab"
+  accessibilityLabel="Home tab"
+  accessibilityState={{ selected: true }}
   style={{
-    minHeight: 44,
-    paddingHorizontal: 16,
-    backgroundColor: '#007AFF',
+    padding: 12,
     borderRadius: 8,
-    justifyContent: 'center',
-    alignItems: 'center',
   }}
 >
-  <Text style={{ color: '#fff' }}>
-    Submit
-  </Text>
+  <Text>Home</Text>
 </TouchableOpacity>`}</Text>
         </View>
       </View>
@@ -64,31 +60,28 @@ const AccessibleButtonExample = () => {
         <Text style={styles.sectionTitle}>Accessibility Features</Text>
         <View style={styles.featuresContainer}>
           <View style={styles.featureItem}>
-            <Ionicons name="resize" size={24} color="#007AFF" />
             <View style={styles.featureContent}>
-              <Text style={styles.featureTitle}>Minimum Touch Target</Text>
+              <Text style={styles.featureTitle}>Semantic Role</Text>
               <Text style={styles.featureDescription}>
-                44x44 points minimum size ensures the button is easy to tap
+                Using proper roles helps users understand the navigation structure
               </Text>
             </View>
           </View>
 
           <View style={styles.featureItem}>
-            <Ionicons name="text" size={24} color="#007AFF" />
             <View style={styles.featureContent}>
-              <Text style={styles.featureTitle}>Screen Reader Label</Text>
+              <Text style={styles.featureTitle}>State Management</Text>
               <Text style={styles.featureDescription}>
-                Clear description announces the button's purpose
+                Selected state is properly announced to screen readers
               </Text>
             </View>
           </View>
 
           <View style={styles.featureItem}>
-            <Ionicons name="information-circle" size={24} color="#007AFF" />
             <View style={styles.featureContent}>
-              <Text style={styles.featureTitle}>Action Hint</Text>
+              <Text style={styles.featureTitle}>Focus Order</Text>
               <Text style={styles.featureDescription}>
-                Additional context about what happens on activation
+                Logical tab order follows visual layout
               </Text>
             </View>
           </View>
@@ -102,19 +95,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#f8f9fa',
-  },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingVertical: 12,
-    paddingHorizontal: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: '#ddd',
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginLeft: 12,
   },
   section: {
     padding: 16,
@@ -132,18 +112,24 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     alignItems: 'center',
   },
-  demoButton: {
-    minHeight: 44,
-    paddingHorizontal: 16,
-    backgroundColor: '#007AFF',
+  demoNav: {
+    flexDirection: 'row',
+    backgroundColor: '#f0f0f0',
     borderRadius: 8,
-    justifyContent: 'center',
-    alignItems: 'center',
+    padding: 4,
     marginBottom: 12,
   },
-  buttonText: {
-    color: '#fff',
-    fontSize: 16,
+  navItem: {
+    flex: 1,
+    padding: 12,
+    borderRadius: 6,
+  },
+  navText: {
+    textAlign: 'center',
+    color: '#666',
+  },
+  navTextActive: {
+    color: '#007AFF',
     fontWeight: '600',
   },
   demoText: {
@@ -189,4 +175,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AccessibleButtonExample;
+export default AccessibleNavigationExample;
