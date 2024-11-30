@@ -53,36 +53,6 @@ export default function HomeScreen() {
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Explore topics</Text>
 
-        <TouchableOpacity
-          style={styles.card}
-          onPress={() => router.push('/components')}
-          accessible={true}
-          accessibilityRole="button"
-          accessibilityHint="View accessible component implementations">
-          <View style={styles.cardIconContainer}>
-            <Ionicons name="code-slash-outline" size={24} color="#007AFF" />
-          </View>
-          <View style={styles.cardContent}>
-            <View style={styles.cardHeader}>
-              <Text style={styles.cardTitle}>Component Examples</Text>
-              <Ionicons name="chevron-forward" size={20} color="#666" />
-            </View>
-            <Text style={styles.cardDescription}>
-              Explore accessible component implementations with code samples
-            </Text>
-            <View style={styles.tagContainer}>
-              <View style={styles.tag}>
-                <Text style={styles.tagText}>Forms</Text>
-              </View>
-              <View style={styles.tag}>
-                <Text style={styles.tagText}>Navigation</Text>
-              </View>
-              <View style={styles.tag}>
-                <Text style={styles.tagText}>Media</Text>
-              </View>
-            </View>
-          </View>
-        </TouchableOpacity>
 
         <TouchableOpacity
           style={styles.card}

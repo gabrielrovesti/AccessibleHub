@@ -4,7 +4,7 @@ import { Ionicons } from '@expo/vector-icons';
 
 function CustomDrawerContent(props) {
   // Avoid including not_found screens by default and sitemap here
-  const excludedRoutes = ['_sitemap', '+not-found'];
+  const excludedRoutes = ['_sitemap', '+not-found', 'accessible-components', 'components'];
 
   return (
     <View style={styles.container}>
@@ -65,16 +65,6 @@ export default function AppLayout() {
             <Ionicons name="home-outline" size={size} color={color} />
           ),
           headerTitle: "AccessibleHub",
-        }}
-      />
-      <Drawer.Screen
-        name="components"
-        options={{
-          drawerLabel: "Component Code Examples",
-          drawerIcon: ({ size, color }) => (
-            <Ionicons name="code-outline" size={size} color={color} />
-          ),
-          headerTitle: "Component Code Examples",
         }}
       />
       <Drawer.Screen

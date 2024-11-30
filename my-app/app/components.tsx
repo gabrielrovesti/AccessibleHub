@@ -44,7 +44,7 @@ export default function ComponentsScreen() {
           </View>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.componentCard} accessibilityRole="button">
+        <TouchableOpacity style={styles.componentCard} accessibilityRole="button" onPress={() => router.push('/accessible-components/form/accessible-form')}>
           <View style={styles.cardHeader}>
             <View style={[styles.iconContainer, { backgroundColor: '#F0F8FF' }]}>
               <Ionicons name="create-outline" size={24} color="#0070F3" />

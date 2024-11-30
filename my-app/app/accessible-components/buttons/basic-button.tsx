@@ -1,11 +1,11 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from "expo-router";
 
 const AccessibleButtonExample = () => {
+  const router = useRouter();
 
-  // Example implementation you can interact with
   const DemoButton = () => (
     <TouchableOpacity
       style={styles.demoButton}
@@ -20,7 +20,13 @@ const AccessibleButtonExample = () => {
 
   return (
     <ScrollView style={styles.container}>
-      {/* Example Implementation */}
+      <View style={styles.header}>
+        <TouchableOpacity onPress={() => router.back()} accessibilityLabel="Go back">
+          <Ionicons name="chevron-back" size={24} color="#007AFF" />
+        </TouchableOpacity>
+        <Text style={styles.title}>Accessible Button</Text>
+      </View>
+
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Interactive Example</Text>
         <View style={styles.demoContainer}>
@@ -31,7 +37,6 @@ const AccessibleButtonExample = () => {
         </View>
       </View>
 
-      {/* Implementation Code */}
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Implementation</Text>
         <View style={styles.codeCard}>
@@ -55,7 +60,6 @@ const AccessibleButtonExample = () => {
         </View>
       </View>
 
-      {/* Accessibility Properties */}
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Accessibility Features</Text>
         <View style={styles.featuresContainer}>
@@ -98,6 +102,19 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#f8f9fa',
+  },
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    borderBottomWidth: 1,
+    borderBottomColor: '#ddd',
+  },
+  title: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginLeft: 12,
   },
   section: {
     padding: 16,
