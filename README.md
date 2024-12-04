@@ -21,8 +21,25 @@ AccessibleHub is a React Native application built using the Expo framework, focu
 2. Install dependencies:
 
    ```bash
-   npm install
+   cd my-app
+   npx expo install
    ```
+
+WARNING: DO NOT UPDATE Expo SDK; most recent version is (12/2024) the 52.0.14, while this was built SPECIFICALLY with 52.0.11 version (can be seen inside of `package.json` file).
+
+To check the specific version of the Expo SDK, run the following command:
+
+```bash
+npm show expo version
+```
+
+In case, repair the installation using:
+```bash
+npm remove expo
+npm install expo@52.0.11 --save
+npm install
+npx expo start -c
+```
 
 3. Start the Expo development server:
 
