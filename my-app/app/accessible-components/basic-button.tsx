@@ -1,40 +1,13 @@
-import React from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Clipboard } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from "expo-router";
 
 const AccessibleButtonExample = () => {
+  const [copied, setCopied] = useState(false);
   const router = useRouter();
 
-  const DemoButton = () => (
-    <TouchableOpacity
-      style={styles.demoButton}
-      accessibilityRole="button"
-      accessibilityLabel="Submit form"
-      accessibilityHint="Activates form submission"
-      onPress={() => {}}
-    >
-      <Text style={styles.buttonText}>Submit</Text>
-    </TouchableOpacity>
-  );
-
-  return (
-    <ScrollView style={styles.container}>
-
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Interactive Example</Text>
-        <View style={styles.demoContainer}>
-          <DemoButton />
-          <Text style={styles.demoText}>
-            Try this button with VoiceOver/TalkBack enabled
-          </Text>
-        </View>
-      </View>
-
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Implementation</Text>
-        <View style={styles.codeCard}>
-          <Text style={styles.codeText}>{`<TouchableOpacity
+  const codeExample = `<TouchableOpacity
   accessibilityRole="button"
   accessibilityLabel="Submit form"
   accessibilityHint="Activates form submission"
@@ -50,7 +23,66 @@ const AccessibleButtonExample = () => {
   <Text style={{ color: '#fff' }}>
     Submit
   </Text>
-</TouchableOpacity>`}</Text>
+</TouchableOpacity>`;
+
+    const handleCopy = async () => {
+      try {
+        await Clipboard.setString(codeExample);
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+      } catch (err) {
+        console.error('Failed to copy:', err);
+      }
+    };
+
+  const DemoButton = () => (
+    <TouchableOpacity
+      style={styles.demoButton}
+      accessibilityRole="button"
+      accessibilityLabel="Submit form"
+      accessibilityHint="Activates form submission"
+      onPress={() => {}}
+    >
+      <Text style={styles.buttonText}>Submit</Text>
+    </TouchableOpacity>
+  );
+
+  return (
+    <ScrollView style={styles.container}>
+      <View style={styles.section}>
+        <Text style={styles.sectionTitle}>Interactive Example</Text>
+        <View style={styles.demoContainer}>
+          <DemoButton />
+          <Text style={styles.demoText}>
+            Try this button with VoiceOver/TalkBack enabled
+          </Text>
+        </View>
+      </View>
+
+      <View style={styles.section}>
+        <Text style={styles.sectionTitle}>Implementation</Text>
+        <View style={styles.codeContainer}>
+          <View style={styles.codeHeader}>
+            <Text style={styles.codeHeaderText}>JSX</Text>
+            <TouchableOpacity
+              style={styles.copyButton}
+              onPress={handleCopy}
+              accessibilityRole="button"
+              accessibilityLabel={copied ? "Code copied" : "Copy code"}
+            >
+              <Ionicons
+                name={copied ? "checkmark" : "copy-outline"}
+                size={20}
+                color={copied ? "#28A745" : "#666"}
+              />
+              <Text style={[styles.copyText, copied && styles.copiedText]}>
+                {copied ? "Copied!" : "Copy"}
+              </Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.codeCard}>
+            <Text style={styles.codeText}>{codeExample}</Text>
+          </View>
         </View>
       </View>
 
@@ -181,6 +213,37 @@ const styles = StyleSheet.create({
     color: '#666',
     lineHeight: 20,
   },
+    codeContainer: {
+      backgroundColor: '#1c1c1e',
+      borderRadius: 8,
+      overflow: 'hidden',
+    },
+    codeHeader: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      padding: 8,
+      borderBottomWidth: 1,
+      borderBottomColor: '#333',
+    },
+    codeHeaderText: {
+      color: '#999',
+      fontSize: 14,
+      fontFamily: 'monospace',
+    },
+    copyButton: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: 4,
+      padding: 4,
+    },
+    copyText: {
+      color: '#666',
+      fontSize: 14,
+    },
+    copiedText: {
+      color: '#28A745',
+    },
 });
 
 export default AccessibleButtonExample;

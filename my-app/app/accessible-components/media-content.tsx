@@ -1,28 +1,73 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Image } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Image, Clipboard } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
 const AccessibleMediaExample = () => {
   const [showAltText, setShowAltText] = useState(false);
   const [currentImage, setCurrentImage] = useState(1);
+  const [copied, setCopied] = useState(false);
+
+  // For assets/images approach:
+  // Import images at the top of the file like:
+  // import image1 from '../../assets/images/placeholder1.png';
+  // import image2 from '../../assets/images/placeholder2.png';
+  // import image3 from '../../assets/images/placeholder3.png';
 
   const images = [
     {
-      uri: "https://placekitten.com/300/200",
-      alt: "A playful orange kitten chasing a red yarn ball",
-      role: "Decorative image"
+      // Option 1: Using require for local assets
+      uri: require('../../assets/images/placeholder1.png'),
+      // Option 2: Using imported images
+      // uri: image1,
+      alt: "A placeholder image (first example)",
+      role: "Interface example"
     },
     {
-      uri: "https://placekitten.com/301/200",
-      alt: "A sleeping grey kitten curled up on a blue blanket",
-      role: "Informative image"
+      uri: require('../../assets/images/placeholder2.png'),
+      alt: "A placeholder image (second example)",
+      role: "Navigation example"
     },
     {
-      uri: "https://placekitten.com/302/200",
-      alt: "Two kittens playing with each other, showcasing interactive behavior",
-      role: "Complex image"
+      uri: require('../../assets/images/placeholder3.png'),
+      alt: "A placeholder image (third example)",
+      role: "Controls example"
     }
   ];
+
+  const codeExample = `<Image
+  source={require('./path/to/image.png')}
+  accessibilityLabel="Detailed description of the image content"
+  accessible={true}
+  accessibilityRole="image"
+  style={{
+    width: 300,
+    height: 200,
+    borderRadius: 8,
+  }}
+/>
+
+{/* For network images */}
+<Image
+  source={{ uri: 'https://your-domain.com/image.jpg' }}
+  accessibilityLabel="Detailed description of the image content"
+  accessible={true}
+  accessibilityRole="image"
+  style={{
+    width: 300,
+    height: 200,
+    borderRadius: 8,
+  }}
+/>`;
+
+  const handleCopy = async () => {
+    try {
+      await Clipboard.setString(codeExample);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch (err) {
+      console.error('Failed to copy:', err);
+    }
+  };
 
   return (
     <ScrollView style={styles.container}>
@@ -30,7 +75,7 @@ const AccessibleMediaExample = () => {
         <Text style={styles.sectionTitle}>Interactive Example</Text>
         <View style={styles.demoContainer}>
           <Image
-            source={{ uri: images[currentImage - 1].uri }}
+            source={images[currentImage - 1].uri}
             style={styles.demoImage}
             accessibilityLabel={images[currentImage - 1].alt}
             accessible={true}
@@ -40,12 +85,21 @@ const AccessibleMediaExample = () => {
               style={styles.controlButton}
               onPress={() => setCurrentImage(prev => Math.max(1, prev - 1))}
               disabled={currentImage === 1}
+              accessibilityLabel="Previous image"
+              accessibilityRole="button"
+              accessibilityState={{ disabled: currentImage === 1 }}
             >
-              <Ionicons name="chevron-back" size={24} color={currentImage === 1 ? "#ccc" : "#007AFF"} />
+              <Ionicons
+                name="chevron-back"
+                size={24}
+                color={currentImage === 1 ? "#ccc" : "#007AFF"}
+              />
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.altTextButton}
               onPress={() => setShowAltText(!showAltText)}
+              accessibilityLabel={showAltText ? "Hide alt text" : "Show alt text"}
+              accessibilityRole="button"
             >
               <Text style={styles.altTextButtonText}>
                 {showAltText ? "Hide Alt Text" : "Show Alt Text"}
@@ -55,8 +109,15 @@ const AccessibleMediaExample = () => {
               style={styles.controlButton}
               onPress={() => setCurrentImage(prev => Math.min(3, prev + 1))}
               disabled={currentImage === 3}
+              accessibilityLabel="Next image"
+              accessibilityRole="button"
+              accessibilityState={{ disabled: currentImage === 3 }}
             >
-              <Ionicons name="chevron-forward" size={24} color={currentImage === 3 ? "#ccc" : "#007AFF"} />
+              <Ionicons
+                name="chevron-forward"
+                size={24}
+                color={currentImage === 3 ? "#ccc" : "#007AFF"}
+              />
             </TouchableOpacity>
           </View>
           {showAltText && (
@@ -74,18 +135,28 @@ const AccessibleMediaExample = () => {
 
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Implementation</Text>
-        <View style={styles.codeCard}>
-          <Text style={styles.codeText}>{`<Image
-  source={{ uri: imageUrl }}
-  accessibilityLabel="Detailed description of the image"
-  accessible={true}
-  accessibilityRole="image"
-  style={{
-    width: 300,
-    height: 200,
-    borderRadius: 8,
-  }}
-/>`}</Text>
+        <View style={styles.codeContainer}>
+          <View style={styles.codeHeader}>
+            <Text style={styles.codeHeaderText}>JSX</Text>
+            <TouchableOpacity
+              style={styles.copyButton}
+              onPress={handleCopy}
+              accessibilityRole="button"
+              accessibilityLabel={copied ? "Code copied" : "Copy code"}
+            >
+              <Ionicons
+                name={copied ? "checkmark" : "copy-outline"}
+                size={20}
+                color={copied ? "#28A745" : "#666"}
+              />
+              <Text style={[styles.copyText, copied && styles.copiedText]}>
+                {copied ? "Copied!" : "Copy"}
+              </Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.codeCard}>
+            <Text style={styles.codeText}>{codeExample}</Text>
+          </View>
         </View>
       </View>
 
@@ -160,15 +231,85 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     marginBottom: 12,
   },
+  controls: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    width: '100%',
+    marginTop: 12,
+    marginBottom: 8,
+  },
+  controlButton: {
+    padding: 8,
+  },
+  altTextButton: {
+    backgroundColor: '#007AFF',
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    borderRadius: 8,
+  },
+  altTextButtonText: {
+    color: '#fff',
+    fontWeight: '600',
+  },
   demoText: {
     fontSize: 14,
     color: '#666',
     textAlign: 'center',
+    marginTop: 8,
+  },
+  altTextContainer: {
+    backgroundColor: '#f8f9fa',
+    padding: 12,
+    borderRadius: 8,
+    marginTop: 8,
+    width: '100%',
+  },
+  altTextTitle: {
+    fontWeight: '600',
+    marginBottom: 4,
+  },
+  altTextContent: {
+    color: '#666',
+    marginBottom: 4,
+  },
+  altTextRole: {
+    color: '#666',
+    fontStyle: 'italic',
+  },
+  codeContainer: {
+    backgroundColor: '#1c1c1e',
+    borderRadius: 8,
+    overflow: 'hidden',
+  },
+  codeHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: 8,
+    borderBottomWidth: 1,
+    borderBottomColor: '#333',
+  },
+  codeHeaderText: {
+    color: '#999',
+    fontSize: 14,
+    fontFamily: 'monospace',
+  },
+  copyButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+    padding: 4,
+  },
+  copyText: {
+    color: '#666',
+    fontSize: 14,
+  },
+  copiedText: {
+    color: '#28A745',
   },
   codeCard: {
-    backgroundColor: '#1c1c1e',
     padding: 16,
-    borderRadius: 8,
   },
   codeText: {
     color: '#fff',
@@ -201,53 +342,13 @@ const styles = StyleSheet.create({
     color: '#666',
     lineHeight: 20,
   },
-    controls: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'space-between',
-      width: '100%',
-      marginTop: 12,
-      marginBottom: 8,
-    },
-    controlButton: {
-      padding: 8,
-    },
-    altTextButton: {
-      backgroundColor: '#007AFF',
-      paddingVertical: 8,
-      paddingHorizontal: 16,
-      borderRadius: 8,
-    },
-    altTextButtonText: {
-      color: '#fff',
-      fontWeight: '600',
-    },
-    altTextContainer: {
-      backgroundColor: '#f8f9fa',
-      padding: 12,
-      borderRadius: 8,
-      marginTop: 8,
-      width: '100%',
-    },
-    altTextTitle: {
-      fontWeight: '600',
-      marginBottom: 4,
-    },
-    altTextContent: {
-      color: '#666',
-      marginBottom: 4,
-    },
-    altTextRole: {
-      color: '#666',
-      fontStyle: 'italic',
-    },
-    iconContainer: {
-      width: 40,
-      height: 40,
-      borderRadius: 12,
-      alignItems: 'center',
-      justifyContent: 'center',
-    },
+  iconContainer: {
+    width: 40,
+    height: 40,
+    borderRadius: 12,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
 });
 
 export default AccessibleMediaExample;

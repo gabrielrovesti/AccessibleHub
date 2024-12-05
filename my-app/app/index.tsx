@@ -55,7 +55,7 @@ export default function HomeScreen() {
 
         <TouchableOpacity
           style={styles.card}
-          onPress={() => router.push('/best-practices')}
+          onPress={() => router.push('/practices')}
           accessible={true}
           accessibilityRole="button"
           accessibilityHint="Learn about WCAG guidelines implementation">

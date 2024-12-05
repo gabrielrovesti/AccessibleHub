@@ -100,30 +100,34 @@ export default function ComponentsScreen() {
           </View>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.componentCard} accessibilityRole="button" onPress={() => router.push('/accessible-components/navigation-pattern')}>
+        <TouchableOpacity
+          style={styles.componentCard}
+          accessibilityRole="button"
+          onPress={() => router.push('/accessible-components/interactive-dialog')}
+        >
           <View style={styles.cardHeader}>
             <View style={[styles.iconContainer, { backgroundColor: '#E6F4FF' }]}>
-              <Ionicons name="menu-outline" size={24} color="#0066CC" />
+              <Ionicons name="browsers-outline" size={24} color="#0066CC" />
             </View>
             <View style={styles.labelContainer}>
-              <Text style={styles.componentName}>Navigation Patterns</Text>
+              <Text style={styles.componentName}>Modal Dialogs</Text>
               <View style={styles.badge}>
-                <Text style={styles.badgeText}>Structure</Text>
+                <Text style={styles.badgeText}>Advanced</Text>
               </View>
             </View>
             <Ionicons name="chevron-forward" size={20} color="#666" />
           </View>
           <Text style={styles.componentDesc}>
-            Build accessible navigation flows
+            Implement accessible modal dialogs with proper focus management and screen reader support
           </Text>
           <View style={styles.features}>
             <View style={styles.featureItem}>
-              <Ionicons name="layers-outline" size={16} color="#666" />
-              <Text style={styles.featureText}>Focus management</Text>
+              <Ionicons name="scan-outline" size={16} color="#666" />
+              <Text style={styles.featureText}>Focus trapping</Text>
             </View>
             <View style={styles.featureItem}>
-              <Ionicons name="git-branch-outline" size={16} color="#666" />
-              <Text style={styles.featureText}>Navigation order</Text>
+              <Ionicons name="megaphone-outline" size={16} color="#666" />
+              <Text style={styles.featureText}>Screen reader alerts</Text>
             </View>
           </View>
         </TouchableOpacity>
