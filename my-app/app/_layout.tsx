@@ -3,8 +3,7 @@ import { View, Text, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
 function CustomDrawerContent(props) {
-const mainRoutes = ['index', 'tools', 'settings', 'practices'];
-
+const mainRoutes = ['index', 'practices', 'components', 'tools', 'settings'];
   return (
     <View style={styles.container}>
       <View style={styles.drawerContent}>
@@ -64,6 +63,16 @@ export default function AppLayout() {
         }}
       />
       <Drawer.Screen
+        name="practices"
+        options={{
+          drawerLabel: "Best Practices",
+          drawerIcon: ({ size, color }) => (
+            <Ionicons name="book-outline" size={size} color={color} />
+          ),
+          headerTitle: "Accessible Practices",
+        }}
+      />
+      <Drawer.Screen
         name="components"
         options={{
           drawerLabel: "Accessibility Components",
@@ -73,16 +82,6 @@ export default function AppLayout() {
           headerTitle: "Components Accessible Code",
         }}
       />
-        <Drawer.Screen
-          name="practices"
-          options={{
-            drawerLabel: "Best Practices",
-            drawerIcon: ({ size, color }) => (
-              <Ionicons name="book-outline" size={size} color={color} />
-            ),
-            headerTitle: "Accessible Practices",
-          }}
-        />
       <Drawer.Screen
         name="tools"
         options={{

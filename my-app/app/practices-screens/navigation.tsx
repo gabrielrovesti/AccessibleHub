@@ -6,6 +6,7 @@ export default function NavigationFocus() {
   return (
     <ScrollView style={styles.container}>
       <View style={styles.header}>
+        <Text style={styles.title}>Navigation & Focus</Text>
         <Text style={styles.description}>
           Guidelines for implementing effective keyboard and focus navigation
         </Text>
@@ -71,6 +72,12 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     borderBottomWidth: 1,
     borderBottomColor: '#eee',
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#1c1c1e',
+    marginBottom: 8,
   },
   description: {
     fontSize: 16,
