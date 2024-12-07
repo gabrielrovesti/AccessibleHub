@@ -35,9 +35,9 @@ export default function ComponentsLayout() {
         }}
       />
       <Stack.Screen
-        name="navigation-pattern"
+        name="interactive-dialog"
         options={{
-          title: "Navigation Pattern",
+          title: "Interactive Dialog",
           headerShown: true,
           headerBackVisible: false,
         }}

@@ -11,14 +11,6 @@ export default function PracticesLayout() {
       }}
     >
       <Stack.Screen
-        name="practices"
-        options={{
-          title: 'Best Practices',
-          headerShown: true,
-          headerTitle: '',
-        }}
-      />
-      <Stack.Screen
         name="guidelines"
         options={{
           title: "WCAG 2.2 Guidelines",
@@ -30,8 +22,8 @@ export default function PracticesLayout() {
         name="semantics"
         options={{
           title: "Semantic Structure",
-           headerShown: true,
-           headerBackVisible: false,
+          headerShown: true,
+          headerBackVisible: false,
         }}
       />
       <Stack.Screen
