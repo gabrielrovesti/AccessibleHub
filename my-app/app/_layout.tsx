@@ -3,7 +3,7 @@ import { View, Text, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
 function CustomDrawerContent(props) {
-  const mainRoutes = ['index', 'tools', 'settings', 'best-practices'];
+const mainRoutes = ['index', 'tools', 'settings', 'practices'];
 
   return (
     <View style={styles.container}>
@@ -73,16 +73,16 @@ export default function AppLayout() {
           headerTitle: "Components Accessible Code",
         }}
       />
-      <Drawer.Screen
-        name="best-practices"
-        options={{
-          drawerLabel: "Best Practices",
-          drawerIcon: ({ size, color }) => (
-            <Ionicons name="book-outline" size={size} color={color} />
-          ),
-          headerTitle: "Mobile Accessibility Best Practices",
-        }}
-      />
+        <Drawer.Screen
+          name="practices"
+          options={{
+            drawerLabel: "Best Practices",
+            drawerIcon: ({ size, color }) => (
+              <Ionicons name="book-outline" size={size} color={color} />
+            ),
+            headerTitle: "Accessible Practices",
+          }}
+        />
       <Drawer.Screen
         name="tools"
         options={{
@@ -104,13 +104,21 @@ export default function AppLayout() {
         }}
       />
       <Drawer.Screen
-        name="practices"
+        name="practices-screens"
         options={{
-          drawerItemStyle: { height: 0 },
+          drawerItemStyle: { height: 0, margin: 0 },  // This hides it from the drawer
           headerShown: true,
-          headerTitle: "Best Practices",
+          headerTitle: "Mobile Accessibility Best Practices",
         }}
       />
+      <Drawer.Screen
+          name="accessible-components"
+          options={{
+            drawerItemStyle: { height: 0, margin: 0 },  // This hides it from the drawer
+            headerShown: true,
+            headerTitle: "Components Accessible Code",
+          }}
+        />
     </Drawer>
   );
 }

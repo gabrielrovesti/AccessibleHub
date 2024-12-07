@@ -19,7 +19,7 @@ export default function BestPracticesScreen() {
       <View style={styles.section}>
         <TouchableOpacity
           style={styles.guideCard}
-          onPress={() => router.push('/best-practices/guidelines')}
+          onPress={() => router.push('/practices-screens/guidelines')}
           accessibilityRole="button">
           <View style={[styles.iconContainer, { backgroundColor: '#E8F1FF' }]}>
             <Ionicons name="document-text-outline" size={24} color="#0055CC" />
@@ -54,7 +54,7 @@ export default function BestPracticesScreen() {
 
         <TouchableOpacity
           style={styles.guideCard}
-          onPress={() => router.push('/best-practices/semantics')}
+          onPress={() => router.push('/practices-screens/semantics')}
           accessibilityRole="button">
           <View style={[styles.iconContainer, { backgroundColor: '#F0F8FF' }]}>
             <Ionicons name="git-merge-outline" size={24} color="#0070F3" />
@@ -84,7 +84,37 @@ export default function BestPracticesScreen() {
 
         <TouchableOpacity
           style={styles.guideCard}
-          onPress={() => router.push('/best-practices/screen-reader')}
+          onPress={() => router.push('/practices-screens/gestures')}
+          accessibilityRole="button">
+          <View style={[styles.iconContainer, { backgroundColor: '#E6F4FF' }]}>
+            <Ionicons name="hand-left-outline" size={24} color="#0066CC" />
+          </View>
+          <View style={styles.guideContent}>
+            <View style={styles.guideHeader}>
+              <Text style={styles.guideTitle}>Gesture Tutorial</Text>
+              <View style={[styles.badge, { backgroundColor: '#FFE6E6' }]}>
+                <Text style={[styles.badgeText, { color: '#DC3545' }]}>Interactive Guide</Text>
+              </View>
+            </View>
+            <Text style={styles.guideDescription}>
+              Learn and test common accessibility gestures
+            </Text>
+            <View style={styles.guideFooter}>
+              <View style={styles.footerItem}>
+                <Ionicons name="finger-print-outline" size={16} color="#666" />
+                <Text style={styles.footerText}>Gesture Patterns</Text>
+              </View>
+              <View style={styles.footerItem}>
+                <Ionicons name="hand-right-outline" size={16} color="#666" />
+                <Text style={styles.footerText}>Interactive Demo</Text>
+              </View>
+            </View>
+          </View>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={styles.guideCard}
+          onPress={() => router.push('/practices-screens/screen-reader')}
           accessibilityRole="button">
           <View style={[styles.iconContainer, { backgroundColor: '#E6F4FF' }]}>
             <Ionicons name="eye-outline" size={24} color="#0066CC" />
@@ -114,7 +144,7 @@ export default function BestPracticesScreen() {
 
         <TouchableOpacity
           style={styles.guideCard}
-          onPress={() => router.push('/best-practices/navigation')}
+          onPress={() => router.push('/practices-screens/navigation')}
           accessibilityRole="button">
           <View style={[styles.iconContainer, { backgroundColor: '#FFF4E6' }]}>
             <Ionicons name="navigate-outline" size={24} color="#FF8C00" />

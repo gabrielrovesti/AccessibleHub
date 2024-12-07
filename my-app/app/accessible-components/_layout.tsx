@@ -14,7 +14,7 @@ export default function ComponentsLayout() {
         name="basic-button"
         options={{
           title: "Basic Button",
-          headerShown: true,
+          headerShown: false,
           headerBackVisible: false,
         }}
       />
@@ -22,7 +22,7 @@ export default function ComponentsLayout() {
         name="accessible-form"
         options={{
           title: "Form Controls",
-          headerShown: true,
+          headerShown: false,
           headerBackVisible: false,
         }}
       />
@@ -30,7 +30,7 @@ export default function ComponentsLayout() {
         name="media-content"
         options={{
           title: "Media Content",
-          headerShown: true,
+          headerShown: false,
           headerBackVisible: false,
         }}
       />
@@ -38,7 +38,7 @@ export default function ComponentsLayout() {
         name="interactive-dialog"
         options={{
           title: "Interactive Dialog",
-          headerShown: true,
+          headerShown: false,
           headerBackVisible: false,
         }}
       />
