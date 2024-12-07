@@ -1,285 +1,229 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, ScrollView, Switch, TouchableOpacity, Animated } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Switch, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const SettingsScreen = () => {
-  const [fadeAnim] = useState(new Animated.Value(1));
-  const [settings, setSettings] = useState({
+export default function SettingsScreen() {
+  const [visualSettings, setVisualSettings] = useState({
     darkMode: false,
     highContrast: false,
-    screenReaderOptimization: false,
-    hapticFeedback: true
+    largeText: false
   });
 
-  const toggleDarkMode = (value) => {
-    Animated.sequence([
-      Animated.timing(fadeAnim, {
-        toValue: 0.5,
-        duration: 200,
-        useNativeDriver: true,
-      }),
-      Animated.timing(fadeAnim, {
-        toValue: 1,
-        duration: 200,
-        useNativeDriver: true,
-      })
-    ]).start();
+  const [accessibilitySettings, setAccessibilitySettings] = useState({
+    announceElements: false,
+    reduceMotion: false,
+    enhancedFocus: false
+  });
 
-    setSettings(prev => ({ ...prev, darkMode: value }));
+  useEffect(() => {
+    loadSettings();
+  }, []);
+
+  const loadSettings = async () => {
+    try {
+      const savedVisualSettings = await AsyncStorage.getItem('visualSettings');
+      const savedAccessibilitySettings = await AsyncStorage.getItem('accessibilitySettings');
+
+      if (savedVisualSettings) {
+        setVisualSettings(JSON.parse(savedVisualSettings));
+      }
+      if (savedAccessibilitySettings) {
+        setAccessibilitySettings(JSON.parse(savedAccessibilitySettings));
+      }
+    } catch (error) {
+      console.log('Error loading settings:', error);
+    }
   };
 
-  const isDark = settings.darkMode;
+  const updateVisualSetting = async (key, value) => {
+    try {
+      const newSettings = { ...visualSettings, [key]: value };
+      setVisualSettings(newSettings);
+      await AsyncStorage.setItem('visualSettings', JSON.stringify(newSettings));
+    } catch (error) {
+      console.log('Error saving visual setting:', error);
+    }
+  };
+
+  const updateAccessibilitySetting = async (key, value) => {
+    try {
+      const newSettings = { ...accessibilitySettings, [key]: value };
+      setAccessibilitySettings(newSettings);
+      await AsyncStorage.setItem('accessibilitySettings', JSON.stringify(newSettings));
+    } catch (error) {
+      console.log('Error saving accessibility setting:', error);
+    }
+  };
+
+  const SettingRow = ({ icon, title, description, value, onToggle }) => (
+    <View style={styles.settingRow}>
+      <View style={styles.settingIcon}>
+        <Ionicons name={icon} size={24} color="#007AFF" />
+      </View>
+      <View style={styles.settingContent}>
+        <Text style={styles.settingTitle}>{title}</Text>
+        <Text style={styles.settingDescription}>{description}</Text>
+      </View>
+      <Switch
+        value={value}
+        onValueChange={onToggle}
+        trackColor={{ false: '#767577', true: '#007AFF' }}
+        thumbColor={value ? '#fff' : '#f4f3f4'}
+        ios_backgroundColor="#3e3e3e"
+      />
+    </View>
+  );
 
   return (
-    <Animated.View style={[
-      styles.container,
-      isDark && styles.containerDark,
-      { opacity: fadeAnim }
-    ]}>
-      <ScrollView>
-        <View style={styles.section}>
-          <Text style={[styles.sectionHeader, isDark && styles.textDark]}>Display</Text>
-
-          <View style={[styles.card, isDark && styles.cardDark]}>
-            <View style={styles.settingItem}>
-              <View style={styles.settingContent}>
-                <View style={styles.settingTitleContainer}>
-                  <Ionicons
-                    name={isDark ? "moon" : "sunny"}
-                    size={22}
-                    color={isDark ? '#fff' : '#000'}
-                  />
-                  <Text style={[styles.settingTitle, isDark && styles.textDark]}>
-                    Dark Mode
-                  </Text>
-                </View>
-                <Text style={[styles.settingDescription, isDark && styles.textSecondaryDark]}>
-                  Enable dark theme for reduced eye strain
-                </Text>
-              </View>
-              <Switch
-                value={settings.darkMode}
-                onValueChange={toggleDarkMode}
-                trackColor={{ false: '#767577', true: '#81b0ff' }}
-                thumbColor={settings.darkMode ? '#007AFF' : '#f4f3f4'}
-                ios_backgroundColor="#3e3e3e"
-              />
-            </View>
-
-            <View style={styles.settingItem}>
-              <View style={styles.settingContent}>
-                <View style={styles.settingTitleContainer}>
-                  <Ionicons
-                    name="contrast"
-                    size={22}
-                    color={isDark ? '#fff' : '#000'}
-                  />
-                  <Text style={[styles.settingTitle, isDark && styles.textDark]}>
-                    High Contrast
-                  </Text>
-                </View>
-                <Text style={[styles.settingDescription, isDark && styles.textSecondaryDark]}>
-                  Increase contrast for better visibility
-                </Text>
-              </View>
-              <Switch
-                value={settings.highContrast}
-                onValueChange={(value) =>
-                  setSettings(prev => ({ ...prev, highContrast: value }))
-                }
-                trackColor={{ false: '#767577', true: '#81b0ff' }}
-                thumbColor={settings.highContrast ? '#007AFF' : '#f4f3f4'}
-                ios_backgroundColor="#3e3e3e"
-              />
-            </View>
-          </View>
+    <ScrollView style={styles.container}>
+      <View style={styles.section}>
+        <Text style={styles.sectionHeader}>Visual Settings</Text>
+        <View style={styles.card}>
+          <SettingRow
+            icon="moon-outline"
+            title="Dark Mode"
+            description="Enable dark theme for better viewing in low light"
+            value={visualSettings.darkMode}
+            onToggle={(value) => updateVisualSetting('darkMode', value)}
+          />
+          <View style={styles.divider} />
+          <SettingRow
+            icon="contrast-outline"
+            title="High Contrast"
+            description="Increase contrast for better readability"
+            value={visualSettings.highContrast}
+            onToggle={(value) => updateVisualSetting('highContrast', value)}
+          />
+          <View style={styles.divider} />
+          <SettingRow
+            icon="text-outline"
+            title="Large Text"
+            description="Increase text size throughout the app"
+            value={visualSettings.largeText}
+            onToggle={(value) => updateVisualSetting('largeText', value)}
+          />
         </View>
+      </View>
 
-        <View style={styles.section}>
-          <Text style={[styles.sectionHeader, isDark && styles.textDark]}>
-            Accessibility
-          </Text>
-
-          <View style={[styles.card, isDark && styles.cardDark]}>
-            <View style={styles.settingItem}>
-              <View style={styles.settingContent}>
-                <View style={styles.settingTitleContainer}>
-                  <Ionicons
-                    name="eye-outline"
-                    size={22}
-                    color={isDark ? '#fff' : '#000'}
-                  />
-                  <Text style={[styles.settingTitle, isDark && styles.textDark]}>
-                    Screen Reader Support
-                  </Text>
-                </View>
-                <Text style={[styles.settingDescription, isDark && styles.textSecondaryDark]}>
-                  Enhanced content descriptions
-                </Text>
-              </View>
-              <Switch
-                value={settings.screenReaderOptimization}
-                onValueChange={(value) =>
-                  setSettings(prev => ({ ...prev, screenReaderOptimization: value }))
-                }
-                trackColor={{ false: '#767577', true: '#81b0ff' }}
-                thumbColor={settings.screenReaderOptimization ? '#007AFF' : '#f4f3f4'}
-                ios_backgroundColor="#3e3e3e"
-              />
-            </View>
-
-            <View style={styles.settingItem}>
-              <View style={styles.settingContent}>
-                <View style={styles.settingTitleContainer}>
-                  <Ionicons
-                    name="hand-left-outline"
-                    size={22}
-                    color={isDark ? '#fff' : '#000'}
-                  />
-                  <Text style={[styles.settingTitle, isDark && styles.textDark]}>
-                    Haptic Feedback
-                  </Text>
-                </View>
-                <Text style={[styles.settingDescription, isDark && styles.textSecondaryDark]}>
-                  Vibration feedback on interactions
-                </Text>
-              </View>
-              <Switch
-                value={settings.hapticFeedback}
-                onValueChange={(value) =>
-                  setSettings(prev => ({ ...prev, hapticFeedback: value }))
-                }
-                trackColor={{ false: '#767577', true: '#81b0ff' }}
-                thumbColor={settings.hapticFeedback ? '#007AFF' : '#f4f3f4'}
-                ios_backgroundColor="#3e3e3e"
-              />
-            </View>
-          </View>
+      <View style={styles.section}>
+        <Text style={styles.sectionHeader}>Accessibility Settings</Text>
+        <View style={styles.card}>
+          <SettingRow
+            icon="megaphone-outline"
+            title="Screen Reader Mode"
+            description="Optimize content for screen readers"
+            value={accessibilitySettings.announceElements}
+            onToggle={(value) => updateAccessibilitySetting('announceElements', value)}
+          />
+          <View style={styles.divider} />
+          <SettingRow
+            icon="pulse-outline"
+            title="Reduce Motion"
+            description="Minimize animations throughout the app"
+            value={accessibilitySettings.reduceMotion}
+            onToggle={(value) => updateAccessibilitySetting('reduceMotion', value)}
+          />
+          <View style={styles.divider} />
+          <SettingRow
+            icon="scan-outline"
+            title="Focus Indicators"
+            description="Show clear focus outlines for navigation"
+            value={accessibilitySettings.enhancedFocus}
+            onToggle={(value) => updateAccessibilitySetting('enhancedFocus', value)}
+          />
         </View>
+      </View>
 
-        <View style={styles.section}>
-          <Text style={[styles.sectionHeader, isDark && styles.textDark]}>About</Text>
-
-          <View style={[styles.card, isDark && styles.cardDark]}>
-            <TouchableOpacity
-              style={styles.linkItem}
-              accessibilityRole="button"
-            >
-              <View style={styles.settingTitleContainer}>
-                <Ionicons
-                  name="information-circle-outline"
-                  size={22}
-                  color={isDark ? '#fff' : '#000'}
-                />
-                <Text style={[styles.settingTitle, isDark && styles.textDark]}>
-                  Version 1.0.0
-                </Text>
-              </View>
-              <Ionicons
-                name="chevron-forward"
-                size={20}
-                color={isDark ? '#666' : '#999'}
-              />
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              style={[styles.linkItem, styles.lastItem]}
-              accessibilityRole="button"
-            >
-              <View style={styles.settingTitleContainer}>
-                <Ionicons
-                  name="shield-checkmark-outline"
-                  size={22}
-                  color={isDark ? '#fff' : '#000'}
-                />
-                <Text style={[styles.settingTitle, isDark && styles.textDark]}>
-                  Privacy Policy
-                </Text>
-              </View>
-              <Ionicons
-                name="chevron-forward"
-                size={20}
-                color={isDark ? '#666' : '#999'}
-              />
-            </TouchableOpacity>
-          </View>
+      <View style={styles.section}>
+        <Text style={styles.sectionHeader}>About</Text>
+        <View style={styles.card}>
+          <TouchableOpacity style={styles.aboutRow}>
+            <View style={styles.aboutContent}>
+              <Ionicons name="information-circle-outline" size={24} color="#007AFF" />
+              <Text style={styles.aboutText}>Version 1.0.0</Text>
+            </View>
+            <Ionicons name="chevron-forward" size={20} color="#666" />
+          </TouchableOpacity>
+          <View style={styles.divider} />
+          <TouchableOpacity style={styles.aboutRow}>
+            <View style={styles.aboutContent}>
+              <Ionicons name="shield-checkmark-outline" size={24} color="#007AFF" />
+              <Text style={styles.aboutText}>Accessibility Statement</Text>
+            </View>
+            <Ionicons name="chevron-forward" size={20} color="#666" />
+          </TouchableOpacity>
         </View>
-      </ScrollView>
-    </Animated.View>
+      </View>
+    </ScrollView>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F2F2F7',
-  },
-  containerDark: {
-    backgroundColor: '#000',
+    backgroundColor: '#f8f9fa',
   },
   section: {
-    marginTop: 35,
+    padding: 16,
+    gap: 8,
   },
   sectionHeader: {
     fontSize: 13,
     fontWeight: '600',
     color: '#666',
-    marginBottom: 8,
-    paddingHorizontal: 16,
     textTransform: 'uppercase',
+    marginBottom: 8,
   },
   card: {
     backgroundColor: '#fff',
-    paddingLeft: 16,
+    borderRadius: 12,
+    overflow: 'hidden',
   },
-  cardDark: {
-    backgroundColor: '#1C1C1E',
-  },
-  settingItem: {
+  settingRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingRight: 16,
-    paddingVertical: 12,
-    borderBottomWidth: 1,
-    borderBottomColor: '#E5E5EA',
+    padding: 16,
+    backgroundColor: '#fff',
+  },
+  settingIcon: {
+    width: 40,
+    alignItems: 'center',
   },
   settingContent: {
     flex: 1,
-    marginRight: 16,
-  },
-  settingTitleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 12,
+    marginLeft: 12,
+    marginRight: 12,
   },
   settingTitle: {
-    fontSize: 17,
-    color: '#000',
-  },
-  textDark: {
-    color: '#fff',
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#1c1c1e',
+    marginBottom: 4,
   },
   settingDescription: {
     fontSize: 13,
     color: '#666',
-    marginTop: 4,
-    marginLeft: 34,
+    lineHeight: 18,
   },
-  textSecondaryDark: {
-    color: '#999',
+  divider: {
+    height: 1,
+    backgroundColor: '#f0f0f0',
+    marginLeft: 68,
   },
-  linkItem: {
+  aboutRow: {
     flexDirection: 'row',
     alignItems: 'center',
+    padding: 16,
     justifyContent: 'space-between',
-    paddingRight: 16,
-    paddingVertical: 12,
-    borderBottomWidth: 1,
-    borderBottomColor: '#E5E5EA',
   },
-  lastItem: {
-    borderBottomWidth: 0,
+  aboutContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+  },
+  aboutText: {
+    fontSize: 16,
+    color: '#1c1c1e',
   },
 });
-
-export default SettingsScreen;
