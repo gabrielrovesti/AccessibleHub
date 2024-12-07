@@ -118,6 +118,14 @@ export default function AppLayout() {
             headerShown: true,
             headerTitle: "Components Accessible Code",
           }}
+       />
+        <Drawer.Screen
+          name="frameworks-comparison"
+          options={{
+            drawerItemStyle: { height: 0, margin: 0 },  // This hides it from the drawer
+            headerShown: true,
+            headerTitle: "",
+          }}
         />
     </Drawer>
   );

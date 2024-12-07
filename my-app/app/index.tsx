@@ -108,6 +108,35 @@ export default function HomeScreen() {
             </View>
           </View>
         </TouchableOpacity>
+
+        <TouchableOpacity
+          style={styles.card}
+          onPress={() => router.push('/frameworks-comparison')}
+          accessible={true}
+          accessibilityRole="button"
+          accessibilityHint="Compare different mobile development frameworks">
+          <View style={[styles.cardIconContainer, { backgroundColor: '#F0F0F0' }]}>
+            <Ionicons name="git-compare" size={24} color="#333" />
+          </View>
+          <View style={styles.cardContent}>
+            <View style={styles.cardHeader}>
+              <Text style={styles.cardTitle}>Framework Comparison</Text>
+              <Ionicons name="chevron-forward" size={20} color="#666" />
+            </View>
+            <Text style={styles.cardDescription}>
+              Compare accessibility features across different mobile frameworks
+            </Text>
+            <View style={styles.tagContainer}>
+              <View style={[styles.tag, { backgroundColor: '#F0F0F0' }]}>
+                <Text style={[styles.tagText, { color: '#333' }]}>React Native</Text>
+              </View>
+              <View style={[styles.tag, { backgroundColor: '#F0F0F0' }]}>
+                <Text style={[styles.tagText, { color: '#333' }]}>Flutter</Text>
+              </View>
+            </View>
+          </View>
+        </TouchableOpacity>
+
       </View>
     </ScrollView>
   );
