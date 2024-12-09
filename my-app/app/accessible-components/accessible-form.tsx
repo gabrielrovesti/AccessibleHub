@@ -1,98 +1,60 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, Modal, Clipboard } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet,ScrollView, Modal, Platform, KeyboardAvoidingView, Dimensions, AccessibilityInfo } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { useRouter } from 'expo-router';
 
 const AccessibleFormExample = () => {
-  const [copied, setCopied] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
-    password: '',
+    phone: '',
     gender: '',
+    contactTime: '',
+    preferences: {
+      email: false,
+      phone: false,
+      sms: false
+    },
     birthDate: new Date(),
     agreed: false
   });
 
   const [showDateModal, setShowDateModal] = useState(false);
-  const [selectedDate, setSelectedDate] = useState({
-    year: new Date().getFullYear(),
-    month: new Date().getMonth(),
-    day: new Date().getDate()
-  });
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [copied, setCopied] = useState(false);
 
-  const years = Array.from({ length: 100 }, (_, i) => new Date().getFullYear() - i);
-  const months = ['January', 'February', 'March', 'April', 'May', 'June',
-                 'July', 'August', 'September', 'October', 'November', 'December'];
-  const days = Array.from({ length: 31 }, (_, i) => i + 1);
-
-  const handleDateSelection = () => {
-    const newDate = new Date(selectedDate.year, selectedDate.month, selectedDate.day);
-    setFormData(prev => ({ ...prev, birthDate: newDate }));
-    setShowDateModal(false);
+  const handleSubmit = () => {
+    setShowSuccessModal(true);
+    setTimeout(() => {
+      setShowSuccessModal(false);
+      setFormData({
+        name: '',
+        email: '',
+        phone: '',
+        gender: '',
+        contactTime: '',
+        preferences: {
+          email: false,
+          phone: false,
+          sms: false
+        },
+        birthDate: new Date(),
+        agreed: false
+      });
+    }, 2000);
   };
 
-  const codeExample = `// Accessible Form Implementation
-<View accessibilityRole="form">
-  {/* Text Input with Accessible Label */}
-  <Text style={styles.label}>Name</Text>
-  <TextInput
-    style={styles.input}
-    accessibilityLabel="Enter your name"
-    value={formData.name}
-    onChangeText={(text) => setFormData(prev => ({ ...prev, name: text }))}
-  />
+  const handleCopy = async () => {
+    try {
+      await Clipboard.setString(codeExample);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch (err) {
+      console.error('Failed to copy:', err);
+    }
+  };
 
-  {/* Radio Group for Gender Selection */}
-  <Text style={styles.label}>Gender</Text>
-  <View style={styles.radioGroup}>
-    <TouchableOpacity
-      style={styles.radioItem}
-      accessibilityRole="radio"
-      accessibilityLabel="Select male"
-      accessibilityState={{ checked: formData.gender === 'male' }}
-      onPress={() => setFormData(prev => ({ ...prev, gender: 'male' }))}
-    >
-      <View style={[styles.radioButton, formData.gender === 'male' && styles.radioButtonSelected]} />
-      <Text style={styles.radioLabel}>Male</Text>
-    </TouchableOpacity>
-  </View>
-
-  {/* Date Picker Button */}
-  <TouchableOpacity
-    style={styles.datePickerButton}
-    accessibilityRole="button"
-    accessibilityLabel="Select date of birth"
-    onPress={() => setShowDateModal(true)}
-  >
-    <Text style={styles.datePickerText}>
-      {formData.birthDate.toLocaleDateString()}
-    </Text>
-  </TouchableOpacity>
-
-  {/* Checkbox for Terms Agreement */}
-  <TouchableOpacity
-    style={styles.checkboxContainer}
-    accessibilityRole="checkbox"
-    accessibilityLabel="Agree to terms and conditions"
-    accessibilityState={{ checked: formData.agreed }}
-    onPress={() => setFormData(prev => ({ ...prev, agreed: !prev.agreed }))}
-  >
-    <View style={[styles.checkbox, formData.agreed && styles.checkboxChecked]} />
-    <Text style={styles.checkboxLabel}>I agree to the terms and conditions</Text>
-  </TouchableOpacity>
-</View>`;
-
-    const handleCopy = async () => {
-      try {
-        await Clipboard.setString(codeExample);
-        setCopied(true);
-        setTimeout(() => setCopied(false), 2000);
-      } catch (err) {
-        console.error('Failed to copy:', err);
-      }
-    };
-
-  return (
+return (
     <ScrollView style={styles.container}>
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Interactive Example</Text>
@@ -101,92 +63,133 @@ const AccessibleFormExample = () => {
             <Text style={styles.label}>Name</Text>
             <TextInput
               style={styles.input}
-              accessibilityLabel="Enter your name"
               value={formData.name}
               onChangeText={(text) => setFormData(prev => ({ ...prev, name: text }))}
+              accessibilityLabel="Enter your name"
+              accessibilityHint="Type your full name here"
             />
 
             <Text style={styles.label}>Email</Text>
             <TextInput
               style={styles.input}
-              accessibilityLabel="Enter your email"
-              keyboardType="email-address"
               value={formData.email}
               onChangeText={(text) => setFormData(prev => ({ ...prev, email: text }))}
+              keyboardType="email-address"
+              textContentType="emailAddress"
+              autoCapitalize="none"
+              accessibilityLabel="Enter your email"
+              accessibilityHint="Type your email address using the @ keyboard"
             />
 
             <Text style={styles.label}>Gender</Text>
             <View style={styles.radioGroup}>
+              {['Male', 'Female'].map((option) => (
+                <TouchableOpacity
+                  key={option}
+                  style={styles.radioItem}
+                  onPress={() => setFormData(prev => ({ ...prev, gender: option }))}
+                  accessibilityRole="radio"
+                  accessibilityState={{ checked: formData.gender === option }}
+                  accessibilityLabel={`Select ${option}`}
+                  accessibilityHint={`Choose ${option} as your gender`}
+                >
+                  <View style={[
+                    styles.radioButton,
+                    formData.gender === option && styles.radioButtonSelected
+                  ]} />
+                  <Text style={styles.radioLabel}>{option}</Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+
+            <Text style={styles.label}>Preferred Contact Time</Text>
+            <View style={styles.radioGroup}>
+              {['Morning', 'Afternoon', 'Evening'].map((time) => (
+                <TouchableOpacity
+                  key={time}
+                  style={styles.radioItem}
+                  onPress={() => setFormData(prev => ({ ...prev, contactTime: time }))}
+                  accessibilityRole="radio"
+                  accessibilityState={{ checked: formData.contactTime === time }}
+                  accessibilityLabel={`Select ${time}`}
+                  accessibilityHint={`Choose ${time} as your preferred contact time`}
+                >
+                  <View style={[
+                    styles.radioButton,
+                    formData.contactTime === time && styles.radioButtonSelected
+                  ]} />
+                  <Text style={styles.radioLabel}>{time}</Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+
+            <Text style={styles.label}>Communication Preferences</Text>
+            <View style={styles.checkboxGroup}>
+              {[
+                { key: 'email', label: 'Email' },
+                { key: 'phone', label: 'Phone' },
+                { key: 'sms', label: 'SMS' }
+              ].map((option) => (
+                <TouchableOpacity
+                  key={option.key}
+                  style={styles.checkboxItem}
+                  onPress={() => setFormData(prev => ({
+                    ...prev,
+                    preferences: {
+                      ...prev.preferences,
+                      [option.key]: !prev.preferences[option.key]
+                    }
+                  }))}
+                  accessibilityRole="checkbox"
+                  accessibilityState={{ checked: formData.preferences[option.key] }}
+                  accessibilityLabel={`Select ${option.label} as contact method`}
+                  accessibilityHint={`Toggle ${option.label} communication preference`}
+                >
+                  <View style={[
+                    styles.checkbox,
+                    formData.preferences[option.key] && styles.checkboxChecked
+                  ]} />
+                  <Text style={styles.checkboxLabel}>{option.label}</Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+
+            <View style={styles.agreementContainer}>
               <TouchableOpacity
-                style={styles.radioItem}
-                accessibilityLabel="Select male"
-                onPress={() => setFormData(prev => ({ ...prev, gender: 'male' }))}
-                accessibilityRole="radio"
-                accessibilityState={{ checked: formData.gender === 'male' }}
+                style={styles.agreementTouchable}
+                onPress={() => setFormData(prev => ({ ...prev, agreed: !prev.agreed }))}
+                accessibilityRole="checkbox"
+                accessibilityState={{ checked: formData.agreed }}
+                accessibilityLabel="Agree to terms and conditions"
+                accessibilityHint="Toggle agreement to terms and conditions"
               >
-                <View style={[
-                  styles.radioButton,
-                  formData.gender === 'male' && styles.radioButtonSelected
-                ]} />
-                <Text style={styles.radioLabel}>Male</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.radioItem}
-                accessibilityLabel="Select female"
-                onPress={() => setFormData(prev => ({ ...prev, gender: 'female' }))}
-                accessibilityRole="radio"
-                accessibilityState={{ checked: formData.gender === 'female' }}
-              >
-                <View style={[
-                  styles.radioButton,
-                  formData.gender === 'female' && styles.radioButtonSelected
-                ]} />
-                <Text style={styles.radioLabel}>Female</Text>
+                <View style={[styles.checkbox, formData.agreed && styles.checkboxChecked]} />
+                <Text style={styles.agreementText} numberOfLines={1}>
+                  Agree to terms and conditions
+                </Text>
               </TouchableOpacity>
             </View>
 
-            <Text style={styles.label}>Date of Birth</Text>
-            <TouchableOpacity
-              style={styles.datePickerButton}
-              onPress={() => setShowDateModal(true)}
-              accessibilityLabel="Select date of birth"
-              accessibilityRole="button"
-            >
-              <Text style={styles.datePickerText}>
-                {formData.birthDate.toLocaleDateString()}
-              </Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              style={styles.checkboxContainer}
-              accessibilityLabel="Agree to terms and conditions"
-              onPress={() => setFormData(prev => ({ ...prev, agreed: !prev.agreed }))}
-              accessibilityRole="checkbox"
-              accessibilityState={{ checked: formData.agreed }}
-            >
-              <View style={[
-                styles.checkbox,
-                formData.agreed && styles.checkboxChecked
-              ]} />
-              <Text style={styles.checkboxLabel}>I agree to the terms and conditions</Text>
-            </TouchableOpacity>
-
             <TouchableOpacity
               style={[styles.submitButton, !formData.agreed && styles.submitButtonDisabled]}
+              onPress={handleSubmit}
               disabled={!formData.agreed}
               accessibilityRole="button"
               accessibilityState={{ disabled: !formData.agreed }}
-              onPress={() => {}}
+              accessibilityLabel="Submit form"
+              accessibilityHint="Double tap to submit the form if all fields are completed"
             >
               <Text style={styles.submitButtonText}>Submit</Text>
             </TouchableOpacity>
+
+            <Text style={styles.accessibilityTip}>
+              Try this form with VoiceOver/TalkBack enabled
+            </Text>
           </View>
-          <Text style={styles.demoText}>
-            Try this form with VoiceOver/TalkBack enabled
-          </Text>
         </View>
       </View>
 
+      {/* Implementation Section with Code Example */}
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Implementation</Text>
         <View style={styles.codeContainer}>
@@ -208,119 +211,170 @@ const AccessibleFormExample = () => {
               </Text>
             </TouchableOpacity>
           </View>
-          <ScrollView style={styles.codeCard}>
+          <View style={styles.codeCard}>
             <Text style={styles.codeText}>{codeExample}</Text>
-          </ScrollView>
-        </View>
-      </View>
-
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Accessibility Features</Text>
-        <View style={styles.featuresContainer}>
-          <View style={styles.featureItem}>
-            <Ionicons name="document-text" size={24} color="#007AFF" />
-            <View style={styles.featureContent}>
-              <Text style={styles.featureTitle}>Semantic Labels</Text>
-              <Text style={styles.featureDescription}>
-                Clear labels and roles for each form control
-              </Text>
-            </View>
-          </View>
-
-          <View style={styles.featureItem}>
-            <Ionicons name="radio" size={24} color="#007AFF" />
-            <View style={styles.featureContent}>
-              <Text style={styles.featureTitle}>State Management</Text>
-              <Text style={styles.featureDescription}>
-                Proper state handling for selection controls
-              </Text>
-            </View>
-          </View>
-
-          <View style={styles.featureItem}>
-            <Ionicons name="alert-circle" size={24} color="#007AFF" />
-            <View style={styles.featureContent}>
-              <Text style={styles.featureTitle}>Error Feedback</Text>
-              <Text style={styles.featureDescription}>
-                Accessible error messages and validation
-              </Text>
-            </View>
           </View>
         </View>
       </View>
 
+      {/* Success Modal */}
       <Modal
-        visible={showDateModal}
+        visible={showSuccessModal}
         transparent
-        animationType="slide"
+        animationType="fade"
+        accessibilityViewIsModal={true}
       >
         <View style={styles.modalOverlay}>
-          <View style={styles.dateModalContent}>
-            <Text style={styles.modalTitle}>Select Date</Text>
-            <View style={styles.datePickerContainer}>
-              <ScrollView style={styles.datePickerScroll}>
-                {years.map(year => (
-                  <TouchableOpacity
-                    key={year}
-                    style={[
-                      styles.dateOption,
-                      selectedDate.year === year && styles.dateOptionSelected
-                    ]}
-                    onPress={() => setSelectedDate(prev => ({ ...prev, year }))}
-                  >
-                    <Text style={styles.dateOptionText}>{year}</Text>
-                  </TouchableOpacity>
-                ))}
-              </ScrollView>
-              <ScrollView style={styles.datePickerScroll}>
-                {months.map((month, index) => (
-                  <TouchableOpacity
-                    key={month}
-                    style={[
-                      styles.dateOption,
-                      selectedDate.month === index && styles.dateOptionSelected
-                    ]}
-                    onPress={() => setSelectedDate(prev => ({ ...prev, month: index }))}
-                  >
-                    <Text style={styles.dateOptionText}>{month}</Text>
-                  </TouchableOpacity>
-                ))}
-              </ScrollView>
-              <ScrollView style={styles.datePickerScroll}>
-                {days.map(day => (
-                  <TouchableOpacity
-                    key={day}
-                    style={[
-                      styles.dateOption,
-                      selectedDate.day === day && styles.dateOptionSelected
-                    ]}
-                    onPress={() => setSelectedDate(prev => ({ ...prev, day }))}
-                  >
-                    <Text style={styles.dateOptionText}>{day}</Text>
-                  </TouchableOpacity>
-                ))}
-              </ScrollView>
-            </View>
-            <View style={styles.modalButtons}>
-              <TouchableOpacity
-                style={[styles.modalButton, styles.cancelButton]}
-                onPress={() => setShowDateModal(false)}
-              >
-                <Text style={styles.cancelButtonText}>Cancel</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.modalButton}
-                onPress={handleDateSelection}
-              >
-                <Text style={styles.modalButtonText}>Confirm</Text>
-              </TouchableOpacity>
-            </View>
+          <View style={styles.successModal}>
+            <Ionicons name="checkmark-circle" size={48} color="#28A745" />
+            <Text style={styles.successTitle}>Success!</Text>
+            <Text style={styles.successMessage}>Your form has been submitted successfully.</Text>
           </View>
         </View>
       </Modal>
+
+     <View style={styles.section}>
+         <Text style={styles.sectionTitle}>Accessibility Features</Text>
+
+         <View style={styles.featureCard}>
+           <View style={styles.featureIcon}>
+             <Ionicons name="text-outline" size={24} color="#0066CC" />
+           </View>
+           <View style={styles.featureContent}>
+             <Text style={styles.featureTitle}>Input Labels</Text>
+             <Text style={styles.featureDescription}>
+               Clear, descriptive labels that properly associate with form controls
+             </Text>
+           </View>
+         </View>
+
+         <View style={styles.featureCard}>
+           <View style={styles.featureIcon}>
+             <Ionicons name="information-circle-outline" size={24} color="#0066CC" />
+           </View>
+           <View style={styles.featureContent}>
+             <Text style={styles.featureTitle}>Semantic Roles</Text>
+             <Text style={styles.featureDescription}>
+               Proper role assignments for form controls (radio, checkbox, button)
+             </Text>
+           </View>
+         </View>
+
+         <View style={styles.featureCard}>
+           <View style={styles.featureIcon}>
+             <Ionicons name="alert-circle-outline" size={24} color="#0066CC" />
+           </View>
+           <View style={styles.featureContent}>
+             <Text style={styles.featureTitle}>Error States</Text>
+             <Text style={styles.featureDescription}>
+               Clear error messages and validation feedback for screen readers
+             </Text>
+           </View>
+         </View>
+
+         <View style={styles.featureCard}>
+           <View style={styles.featureIcon}>
+             <Ionicons name="hand-left-outline" size={24} color="#0066CC" />
+           </View>
+           <View style={styles.featureContent}>
+             <Text style={styles.featureTitle}>Touch Targets</Text>
+             <Text style={styles.featureDescription}>
+               Adequate sizing for interactive elements (minimum 44x44 points)
+             </Text>
+           </View>
+         </View>
+
+         <View style={styles.featureCard}>
+           <View style={styles.featureIcon}>
+             <Ionicons name="sync-outline" size={24} color="#0066CC" />
+           </View>
+           <View style={styles.featureContent}>
+             <Text style={styles.featureTitle}>State Management</Text>
+             <Text style={styles.featureDescription}>
+               Proper state announcements for selection controls and submit button
+             </Text>
+           </View>
+         </View>
+       </View>
+
     </ScrollView>
+
+
   );
 };
+
+
+const codeExample = `// Accessible Form Implementation
+<View accessibilityRole="form">
+  <Text style={styles.label}>Name</Text>
+  <TextInput
+    style={styles.input}
+    accessibilityLabel="Enter your name"
+    value={formData.name}
+    onChangeText={(text) => setFormData(prev => ({ ...prev, name: text }))}
+  />
+
+  <Text style={styles.label}>Email</Text>
+  <TextInput
+    style={styles.input}
+    accessibilityLabel="Enter your email"
+    value={formData.email}
+    onChangeText={(text) => setFormData(prev => ({ ...prev, email: text }))}
+    keyboardType="email-address"
+    textContentType="emailAddress"
+    autoCapitalize="none"
+  />
+
+  <Text style={styles.label}>Gender</Text>
+  <View style={styles.radioGroup}>
+    {['Male', 'Female'].map((option) => (
+      <TouchableOpacity
+        key={option}
+        style={styles.radioItem}
+        onPress={() => setFormData(prev => ({ ...prev, gender: option }))}
+        accessibilityRole="radio"
+        accessibilityState={{ checked: formData.gender === option }}
+      >
+        <View style={[
+          styles.radioButton,
+          formData.gender === option && styles.radioButtonSelected
+        ]} />
+        <Text style={styles.radioLabel}>{option}</Text>
+      </TouchableOpacity>
+    ))}
+  </View>
+
+  <Text style={styles.label}>Date of Birth</Text>
+  <TouchableOpacity
+    style={styles.datePickerButton}
+    onPress={() => setShowDateModal(true)}
+    accessibilityRole="button"
+  >
+    <Text style={styles.datePickerText}>
+      {formData.birthDate.toLocaleDateString()}
+    </Text>
+  </TouchableOpacity>
+
+  <TouchableOpacity
+    style={styles.agreementContainer}
+    onPress={() => setFormData(prev => ({ ...prev, agreed: !prev.agreed }))}
+    accessibilityRole="checkbox"
+    accessibilityState={{ checked: formData.agreed }}
+  >
+    <View style={[styles.checkbox, formData.agreed && styles.checkboxChecked]} />
+    <Text style={styles.checkboxLabel}>I agree to the terms and conditions</Text>
+  </TouchableOpacity>
+
+  <TouchableOpacity
+    style={[styles.submitButton, !formData.agreed && styles.submitButtonDisabled]}
+    onPress={handleSubmit}
+    disabled={!formData.agreed}
+    accessibilityRole="button"
+    accessibilityState={{ disabled: !formData.agreed }}
+  >
+    <Text style={styles.submitButtonText}>Submit</Text>
+  </TouchableOpacity>
+</View>`;
 
 const styles = StyleSheet.create({
   container: {
@@ -564,6 +618,173 @@ codeHeader: {
     fontSize: 16,
     fontWeight: '600',
   },
+  successModal: {
+      backgroundColor: '#fff',
+      borderRadius: 16,
+      padding: 24,
+      alignItems: 'center',
+      width: '80%',
+      maxWidth: 400,
+      shadowColor: '#000',
+      shadowOffset: {
+        width: 0,
+        height: 2,
+      },
+      shadowOpacity: 0.25,
+      shadowRadius: 3.84,
+      elevation: 5,
+    },
+    successTitle: {
+      fontSize: 24,
+      fontWeight: 'bold',
+      color: '#28A745',
+      marginTop: 16,
+      marginBottom: 8,
+    },
+    successMessage: {
+      fontSize: 16,
+      color: '#666',
+      textAlign: 'center',
+      marginBottom: 16,
+      lineHeight: 24,
+    },
+    checkboxGroup: {
+      gap: 12,
+      marginTop: 8,
+    },
+    checkboxItem: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: 8,
+    },
+    radioGroup: {
+      gap: 12,
+      marginTop: 8,
+    },
+    fieldContainer: {
+      gap: 8,
+      marginBottom: 16,
+    },
+    input: {
+      borderWidth: 1,
+      borderColor: '#ddd',
+      borderRadius: 8,
+      padding: 12,
+      fontSize: 16,
+      backgroundColor: '#fff',
+      minHeight: 44, // Ensuring minimum touch target size
+    },
+    modalContent: {
+      backgroundColor: '#fff',
+      borderRadius: 16,
+      padding: 24,
+      width: '90%',
+      maxWidth: 400,
+      alignItems: 'center',
+    },
+    datePickerContainer: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      marginTop: 16,
+      marginBottom: 24,
+    },
+    datePicker: {
+      flex: 1,
+      marginHorizontal: 4,
+    },
+    buttonGroup: {
+      flexDirection: 'row',
+      justifyContent: 'flex-end',
+      gap: 12,
+      marginTop: 16,
+    },
+    secondaryButton: {
+      backgroundColor: '#f2f2f2',
+      paddingVertical: 10,
+      paddingHorizontal: 16,
+      borderRadius: 8,
+      minWidth: 80,
+      alignItems: 'center',
+    },
+    secondaryButtonText: {
+      color: '#1c1c1e',
+      fontSize: 16,
+      fontWeight: '600',
+    },
+    errorContainer: {
+      backgroundColor: '#fff',
+      borderRadius: 8,
+      padding: 16,
+      marginTop: 8,
+      borderWidth: 1,
+      borderColor: '#dc3545',
+    },
+    errorTitle: {
+      fontSize: 16,
+      fontWeight: '600',
+      color: '#dc3545',
+      marginBottom: 8,
+    },
+    errorList: {
+      gap: 4,
+    },
+    errorItem: {
+      fontSize: 14,
+      color: '#dc3545',
+      lineHeight: 20,
+    },
+    agreementContainer: {
+        marginVertical: 16,
+      },
+      agreementTouchable: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        flexWrap: 'nowrap',
+      },
+      agreementText: {
+        fontSize: 16,
+        color: '#1c1c1e',
+        marginLeft: 8,
+        flex: 1, // Ensures text stays on one line
+      },
+      accessibilityTip: {
+        fontSize: 14,
+        color: '#666',
+        textAlign: 'center',
+        marginTop: 16,
+        fontStyle: 'italic',
+      },
+  featureCard: {
+      flexDirection: 'row',
+      backgroundColor: '#fff',
+      borderRadius: 12,
+      padding: 16,
+      marginBottom: 12,
+      alignItems: 'flex-start',
+    },
+    featureIcon: {
+      width: 40,
+      height: 40,
+      borderRadius: 20,
+      backgroundColor: '#E8F1FF',
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginRight: 12,
+    },
+    featureContent: {
+      flex: 1,
+    },
+    featureTitle: {
+      fontSize: 16,
+      fontWeight: '600',
+      color: '#1c1c1e',
+      marginBottom: 4,
+    },
+    featureDescription: {
+      fontSize: 14,
+      color: '#666',
+      lineHeight: 20,
+    },
 });
 
 export default AccessibleFormExample;

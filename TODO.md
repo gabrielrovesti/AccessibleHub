@@ -1,2 +1,1 @@
-- Fix the form screen to have a proper modal to confirm sending form and possibly add other inputs
 - Dark mode settings and some real settings which are working
