@@ -1,132 +1,189 @@
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { useTheme } from '../context/ThemeContext';
 
 export default function TestingToolsScreen() {
+  const { colors, textSizes, isDarkMode } = useTheme();
+
+  const themedStyles = {
+    container: {
+      backgroundColor: colors.background,
+    },
+    header: {
+      backgroundColor: colors.surface,
+      borderBottomColor: colors.border,
+    },
+    title: {
+      color: colors.text,
+      fontSize: textSizes.xlarge,
+    },
+    description: {
+      color: colors.textSecondary,
+      fontSize: textSizes.medium,
+    },
+    sectionTitle: {
+      color: colors.text,
+      fontSize: textSizes.large,
+    },
+    toolCard: {
+      backgroundColor: colors.surface,
+      shadowColor: isDarkMode ? '#000' : '#000',
+      shadowOpacity: isDarkMode ? 0.3 : 0.05,
+    },
+    toolTitle: {
+      color: colors.text,
+      fontSize: textSizes.large,
+    },
+    badgeText: {
+      color: isDarkMode ? colors.primary : '#0055CC',
+    },
+    toolDescription: {
+      color: colors.textSecondary,
+      fontSize: textSizes.small,
+    },
+    gestureText: {
+      color: colors.textSecondary,
+    },
+    featureItem: {
+      color: colors.textSecondary,
+    },
+    checklistCard: {
+      backgroundColor: colors.surface,
+    },
+    checklistTitle: {
+      color: colors.text,
+      fontSize: textSizes.large,
+    },
+    checklistItem: {
+      color: colors.textSecondary,
+    },
+  };
+
   return (
-    <ScrollView style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.title}>Testing Tools</Text>
-        <Text style={styles.description}>
+    <ScrollView style={[styles.container, themedStyles.container]}>
+      <View style={[styles.header, themedStyles.header]}>
+        <Text style={[styles.title, themedStyles.title]}>Testing Tools</Text>
+        <Text style={[styles.description, themedStyles.description]}>
           Discover tools and methods for testing accessibility in your apps.
         </Text>
       </View>
 
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Screen Readers</Text>
+        <Text style={[styles.sectionTitle, themedStyles.sectionTitle]}>Screen Readers</Text>
 
-        <View style={styles.toolCard}>
+        <View style={[styles.toolCard, themedStyles.toolCard]}>
           <View style={styles.toolHeader}>
             <View style={[styles.iconContainer, { backgroundColor: '#E8F1FF' }]}>
               <Ionicons name="phone-portrait-outline" size={24} color="#0055CC" />
             </View>
             <View style={styles.toolTitleContainer}>
-              <Text style={styles.toolTitle}>TalkBack (Android)</Text>
+              <Text style={[styles.toolTitle, themedStyles.toolTitle]}>TalkBack (Android)</Text>
               <View style={styles.badge}>
-                <Text style={styles.badgeText}>Built-in</Text>
+                <Text style={[styles.badgeText, themedStyles.badgeText]}>Built-in</Text>
               </View>
             </View>
           </View>
-          <Text style={styles.toolDescription}>
+          <Text style={[styles.toolDescription, themedStyles.toolDescription]}>
             Android's built-in screen reader. Essential gestures:
           </Text>
           <View style={styles.gestureList}>
             <View style={styles.gestureItem}>
-              <Ionicons name="finger-print-outline" size={20} color="#666" />
-              <Text style={styles.gestureText}>Single tap: Select item</Text>
+              <Ionicons name="finger-print-outline" size={20} color={colors.textSecondary} />
+              <Text style={[styles.gestureText, themedStyles.gestureText]}>Single tap: Select item</Text>
             </View>
             <View style={styles.gestureItem}>
-              <Ionicons name="finger-print-outline" size={20} color="#666" />
-              <Text style={styles.gestureText}>Double tap: Activate selected item</Text>
+              <Ionicons name="finger-print-outline" size={20} color={colors.textSecondary} />
+              <Text style={[styles.gestureText, themedStyles.gestureText]}>Double tap: Activate selected item</Text>
             </View>
             <View style={styles.gestureItem}>
-              <Ionicons name="finger-print-outline" size={20} color="#666" />
-              <Text style={styles.gestureText}>Swipe right/left: Next/previous item</Text>
+              <Ionicons name="finger-print-outline" size={20} color={colors.textSecondary} />
+              <Text style={[styles.gestureText, themedStyles.gestureText]}>Swipe right/left: Next/previous item</Text>
             </View>
           </View>
         </View>
 
-        <View style={styles.toolCard}>
+        <View style={[styles.toolCard, themedStyles.toolCard]}>
           <View style={styles.toolHeader}>
             <View style={[styles.iconContainer, { backgroundColor: '#F0F0F0' }]}>
               <Ionicons name="logo-apple" size={24} color="#333" />
             </View>
             <View style={styles.toolTitleContainer}>
-              <Text style={styles.toolTitle}>VoiceOver (iOS)</Text>
+              <Text style={[styles.toolTitle, themedStyles.toolTitle]}>VoiceOver (iOS)</Text>
               <View style={styles.badge}>
-                <Text style={styles.badgeText}>Built-in</Text>
+                <Text style={[styles.badgeText, themedStyles.badgeText]}>Built-in</Text>
               </View>
             </View>
           </View>
-          <Text style={styles.toolDescription}>
+          <Text style={[styles.toolDescription, themedStyles.toolDescription]}>
             iOS's integrated screen reader. Key gestures:
           </Text>
           <View style={styles.gestureList}>
             <View style={styles.gestureItem}>
-              <Ionicons name="finger-print-outline" size={20} color="#666" />
-              <Text style={styles.gestureText}>Single tap: Select and speak</Text>
+              <Ionicons name="finger-print-outline" size={20} color={colors.textSecondary} />
+              <Text style={[styles.gestureText, themedStyles.gestureText]}>Single tap: Select and speak</Text>
             </View>
             <View style={styles.gestureItem}>
-              <Ionicons name="finger-print-outline" size={20} color="#666" />
-              <Text style={styles.gestureText}>Double tap: Activate item</Text>
+              <Ionicons name="finger-print-outline" size={20} color={colors.textSecondary} />
+              <Text style={[styles.gestureText, themedStyles.gestureText]}>Double tap: Activate item</Text>
             </View>
             <View style={styles.gestureItem}>
-              <Ionicons name="finger-print-outline" size={20} color="#666" />
-              <Text style={styles.gestureText}>Three finger swipe: Scroll</Text>
+              <Ionicons name="finger-print-outline" size={20} color={colors.textSecondary} />
+              <Text style={[styles.gestureText, themedStyles.gestureText]}>Three finger swipe: Scroll</Text>
             </View>
           </View>
         </View>
       </View>
 
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Development Tools</Text>
+        <Text style={[styles.sectionTitle, themedStyles.sectionTitle]}>Development Tools</Text>
 
-        <TouchableOpacity style={styles.toolCard} accessibilityRole="button">
+        <TouchableOpacity style={[styles.toolCard, themedStyles.toolCard]} accessibilityRole="button">
           <View style={styles.toolHeader}>
             <View style={[styles.iconContainer, { backgroundColor: '#FFF4E6' }]}>
               <Ionicons name="code-working-outline" size={24} color="#FF8C00" />
             </View>
-            <Text style={styles.toolTitle}>Accessibility Inspector</Text>
+            <Text style={[styles.toolTitle, themedStyles.toolTitle]}>Accessibility Inspector</Text>
           </View>
-          <Text style={styles.toolDescription}>
+          <Text style={[styles.toolDescription, themedStyles.toolDescription]}>
             Built-in tool to inspect accessibility properties:
           </Text>
           <View style={styles.featureList}>
-            <Text style={styles.featureItem}>• Verify accessibility labels and hints</Text>
-            <Text style={styles.featureItem}>• Check navigation order</Text>
-            <Text style={styles.featureItem}>• Test screen reader announcements</Text>
+            <Text style={[styles.featureItem, themedStyles.featureItem]}>• Verify accessibility labels and hints</Text>
+            <Text style={[styles.featureItem, themedStyles.featureItem]}>• Check navigation order</Text>
+            <Text style={[styles.featureItem, themedStyles.featureItem]}>• Test screen reader announcements</Text>
           </View>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.toolCard} accessibilityRole="button">
+        <TouchableOpacity style={[styles.toolCard, themedStyles.toolCard]} accessibilityRole="button">
           <View style={styles.toolHeader}>
             <View style={[styles.iconContainer, { backgroundColor: '#E6F4FF' }]}>
               <Ionicons name="color-palette-outline" size={24} color="#0066CC" />
             </View>
-            <Text style={styles.toolTitle}>Contrast Analyzer</Text>
+            <Text style={[styles.toolTitle, themedStyles.toolTitle]}>Contrast Analyzer</Text>
           </View>
-          <Text style={styles.toolDescription}>
+          <Text style={[styles.toolDescription, themedStyles.toolDescription]}>
             Verify color contrast ratios meet WCAG guidelines:
           </Text>
           <View style={styles.featureList}>
-            <Text style={styles.featureItem}>• Check text contrast ratios</Text>
-            <Text style={styles.featureItem}>• Verify UI component contrast</Text>
-            <Text style={styles.featureItem}>• Support for WCAG 2.2 standards</Text>
+            <Text style={[styles.featureItem, themedStyles.featureItem]}>• Check text contrast ratios</Text>
+            <Text style={[styles.featureItem, themedStyles.featureItem]}>• Verify UI component contrast</Text>
+            <Text style={[styles.featureItem, themedStyles.featureItem]}>• Support for WCAG 2.2 standards</Text>
           </View>
         </TouchableOpacity>
       </View>
 
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Testing Checklist</Text>
-        <View style={styles.checklistCard}>
+        <Text style={[styles.sectionTitle, themedStyles.sectionTitle]}>Testing Checklist</Text>
+        <View style={[styles.checklistCard, themedStyles.checklistCard]}>
           <View style={styles.checklistHeader}>
             <Ionicons name="checkbox-outline" size={24} color="#28A745" />
-            <Text style={styles.checklistTitle}>Automated Testing</Text>
+            <Text style={[styles.checklistTitle, themedStyles.checklistTitle]}>Automated Testing</Text>
           </View>
           <View style={styles.checklist}>
-            <Text style={styles.checklistItem}>✓ Run accessibility linter</Text>
-            <Text style={styles.checklistItem}>✓ Verify accessibility props</Text>
-            <Text style={styles.checklistItem}>✓ Check navigation order</Text>
-            <Text style={styles.checklistItem}>✓ Test color contrast</Text>
+            <Text style={[styles.checklistItem, themedStyles.checklistItem]}>✓ Run accessibility linter</Text>
+            <Text style={[styles.checklistItem, themedStyles.checklistItem]}>✓ Verify accessibility props</Text>
+            <Text style={[styles.checklistItem, themedStyles.checklistItem]}>✓ Check navigation order</Text>
+            <Text style={[styles.checklistItem, themedStyles.checklistItem]}>✓ Test color contrast</Text>
           </View>
         </View>
       </View>

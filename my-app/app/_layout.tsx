@@ -1,11 +1,32 @@
 import { Drawer } from 'expo-router/drawer';
 import { View, Text, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { ThemeProvider } from '../context/ThemeContext';
+import { useTheme } from '../context/ThemeContext';
 
 function CustomDrawerContent(props) {
-const mainRoutes = ['index', 'practices', 'components', 'tools', 'settings'];
+  const { colors, textSizes, isDarkMode } = useTheme();
+  const mainRoutes = ['index', 'practices', 'tools', 'components', 'settings'];
+
+  const dynamicStyles = {
+    container: {
+      flex: 1,
+      backgroundColor: colors.background,
+    },
+    drawerItem: {
+      backgroundColor: colors.surface,
+    },
+    drawerLabel: {
+      color: colors.textSecondary,
+      fontSize: textSizes.medium,
+    },
+    drawerLabelActive: {
+      color: colors.primary,
+    },
+  };
+
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, dynamicStyles.container]}>
       <View style={styles.drawerContent}>
         {props.state.routes
           .filter(route => mainRoutes.includes(route.name))
@@ -18,12 +39,20 @@ const mainRoutes = ['index', 'practices', 'components', 'tools', 'settings'];
                 key={route.key}
                 style={[
                   styles.drawerItem,
+                  dynamicStyles.drawerItem,
                   isActive && styles.drawerItemActive,
                 ]}
                 onTouchEnd={() => props.navigation.navigate(route.name)}
               >
-                {drawerIcon && drawerIcon({ size: 24, color: isActive ? '#6200ee' : '#666' })}
-                <Text style={[styles.drawerLabel, isActive && styles.drawerLabelActive]}>
+                {drawerIcon && drawerIcon({
+                  size: 24,
+                  color: isActive ? colors.primary : colors.textSecondary
+                })}
+                <Text style={[
+                  styles.drawerLabel,
+                  dynamicStyles.drawerLabel,
+                  isActive && dynamicStyles.drawerLabelActive
+                ]}>
                   {drawerLabel || route.name}
                 </Text>
               </View>
@@ -31,25 +60,35 @@ const mainRoutes = ['index', 'practices', 'components', 'tools', 'settings'];
           })}
       </View>
 
-      <View style={styles.footer}>
+      <View style={[styles.footer, { borderTopColor: colors.border }]}>
         <View style={styles.footerContent}>
-          <Text style={styles.appName}>AccessibleHub</Text>
-          <Text style={styles.version}>Version 1.0.0</Text>
+          <Text style={[styles.appName, { color: colors.textSecondary }]}>
+            AccessibleHub
+          </Text>
+          <Text style={[styles.version, { color: colors.textSecondary }]}>
+            Version 1.0.0
+          </Text>
         </View>
       </View>
     </View>
   );
 }
 
-export default function AppLayout() {
+function DrawerNavigator() {
+  const { colors, isDarkMode } = useTheme();
+
   return (
     <Drawer
       drawerContent={(props) => <CustomDrawerContent {...props} />}
       screenOptions={{
         headerShown: true,
         drawerStyle: {
-          backgroundColor: '#fff',
+          backgroundColor: colors.background,
         },
+        headerStyle: {
+          backgroundColor: colors.surface,
+        },
+        headerTintColor: colors.text,
       }}
     >
       <Drawer.Screen
@@ -75,6 +114,7 @@ export default function AppLayout() {
       <Drawer.Screen
         name="components"
         options={{
+          drawerItemStyle: { height: 0, margin: 0 },  // Hiding from drawer as requested
           drawerLabel: "Accessibility Components",
           drawerIcon: ({ size, color }) => (
             <Ionicons name="cube-outline" size={size} color={color} />
@@ -105,28 +145,36 @@ export default function AppLayout() {
       <Drawer.Screen
         name="practices-screens"
         options={{
-          drawerItemStyle: { height: 0, margin: 0 },  // This hides it from the drawer
+          drawerItemStyle: { height: 0, margin: 0 },
           headerShown: true,
           headerTitle: "Mobile Accessibility Best Practices",
         }}
       />
       <Drawer.Screen
-          name="accessible-components"
-          options={{
-            drawerItemStyle: { height: 0, margin: 0 },  // This hides it from the drawer
-            headerShown: true,
-            headerTitle: "Components Accessible Code",
-          }}
-       />
-        <Drawer.Screen
-          name="frameworks-comparison"
-          options={{
-            drawerItemStyle: { height: 0, margin: 0 },  // This hides it from the drawer
-            headerShown: true,
-            headerTitle: "",
-          }}
-        />
+        name="accessible-components"
+        options={{
+          drawerItemStyle: { height: 0, margin: 0 },
+          headerShown: true,
+          headerTitle: "Components Accessible Code",
+        }}
+      />
+      <Drawer.Screen
+        name="frameworks-comparison"
+        options={{
+          drawerItemStyle: { height: 0, margin: 0 },
+          headerShown: true,
+          headerTitle: "",
+        }}
+      />
     </Drawer>
+  );
+}
+
+export default function AppLayout() {
+  return (
+    <ThemeProvider>
+      <DrawerNavigator />
+    </ThemeProvider>
   );
 }
 

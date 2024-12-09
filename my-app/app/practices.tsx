@@ -2,23 +2,62 @@ import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Modal } from 'rea
 import { useState } from 'react';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
+import { useTheme } from '../context/ThemeContext';
 
 export default function BestPracticesScreen() {
   const [selectedGuide, setSelectedGuide] = useState(null);
   const router = useRouter();
+  const { colors, textSizes, isDarkMode } = useTheme();
+
+  const themedStyles = {
+    container: {
+      backgroundColor: colors.background,
+    },
+    header: {
+      backgroundColor: colors.surface,
+      borderBottomColor: colors.border,
+    },
+    title: {
+      color: colors.text,
+      fontSize: textSizes.xlarge,
+    },
+    description: {
+      color: colors.textSecondary,
+      fontSize: textSizes.medium,
+    },
+    guideCard: {
+      backgroundColor: colors.surface,
+      shadowColor: isDarkMode ? '#000' : '#000',
+      shadowOpacity: isDarkMode ? 0.3 : 0.05,
+    },
+    guideTitle: {
+      color: colors.text,
+      fontSize: textSizes.large,
+    },
+    badgeText: {
+      color: isDarkMode ? colors.primary : '#0055CC',
+    },
+    guideDescription: {
+      color: colors.textSecondary,
+      fontSize: textSizes.small,
+    },
+    footerText: {
+      color: colors.textSecondary,
+    },
+  };
 
   return (
-    <ScrollView style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.title}>Mobile Accessibility Best Practices</Text>
-        <Text style={styles.description}>
+    <ScrollView style={[styles.container, themedStyles.container]}>
+      <View style={[styles.header, themedStyles.header]}>
+        <Text style={[styles.title, themedStyles.title]}>Mobile Accessibility Best Practices</Text>
+        <Text style={[styles.description, themedStyles.description]}>
           Essential guidelines for creating accessible React Native applications
         </Text>
       </View>
 
       <View style={styles.section}>
         <TouchableOpacity
-          style={styles.guideCard}
+          style={[styles.guideCard, themedStyles.guideCard]}
           onPress={() => router.push('/practices-screens/guidelines')}
           accessibilityRole="button">
           <View style={[styles.iconContainer, { backgroundColor: '#E8F1FF' }]}>
@@ -26,34 +65,34 @@ export default function BestPracticesScreen() {
           </View>
           <View style={styles.guideContent}>
             <View style={styles.guideHeader}>
-              <Text style={styles.guideTitle}>WCAG Guidelines</Text>
+              <Text style={[styles.guideTitle, themedStyles.guideTitle]}>WCAG Guidelines</Text>
               <View style={styles.badgeContainer}>
                 <View style={styles.badge}>
-                  <Text style={styles.badgeText}>2.2</Text>
+                  <Text style={[styles.badgeText, themedStyles.badgeText]}>2.2</Text>
                 </View>
                 <View style={[styles.badge, { backgroundColor: '#E6F4FF' }]}>
-                  <Text style={[styles.badgeText, { color: '#0066CC' }]}>Documentation</Text>
+                  <Text style={[styles.badgeText, themedStyles.badgeText]}>Documentation</Text>
                 </View>
               </View>
             </View>
-            <Text style={styles.guideDescription}>
+            <Text style={[styles.guideDescription, themedStyles.guideDescription]}>
               Understanding and implementing WCAG 2.2 guidelines in mobile apps
             </Text>
             <View style={styles.guideFooter}>
               <View style={styles.footerItem}>
                 <Ionicons name="checkmark-circle" size={16} color="#28A745" />
-                <Text style={styles.footerText}>Success Criteria</Text>
+                <Text style={[styles.footerText, themedStyles.footerText]}>Success Criteria</Text>
               </View>
               <View style={styles.footerItem}>
                 <Ionicons name="code-slash" size={16} color="#666" />
-                <Text style={styles.footerText}>Examples</Text>
+                <Text style={[styles.footerText, themedStyles.footerText]}>Examples</Text>
               </View>
             </View>
           </View>
         </TouchableOpacity>
 
         <TouchableOpacity
-          style={styles.guideCard}
+          style={[styles.guideCard, themedStyles.guideCard]}
           onPress={() => router.push('/practices-screens/semantics')}
           accessibilityRole="button">
           <View style={[styles.iconContainer, { backgroundColor: '#F0F8FF' }]}>
@@ -61,29 +100,29 @@ export default function BestPracticesScreen() {
           </View>
           <View style={styles.guideContent}>
             <View style={styles.guideHeader}>
-              <Text style={styles.guideTitle}>Semantic Structure</Text>
+              <Text style={[styles.guideTitle, themedStyles.guideTitle]}>Semantic Structure</Text>
               <View style={[styles.badge, { backgroundColor: '#FFF4E6' }]}>
-                <Text style={[styles.badgeText, { color: '#FF8C00' }]}>Code Examples</Text>
+                <Text style={[styles.badgeText, themedStyles.badgeText]}>Code Examples</Text>
               </View>
             </View>
-            <Text style={styles.guideDescription}>
+            <Text style={[styles.guideDescription, themedStyles.guideDescription]}>
               Creating meaningful and well-organized content hierarchies
             </Text>
             <View style={styles.guideFooter}>
               <View style={styles.footerItem}>
                 <Ionicons name="layers-outline" size={16} color="#666" />
-                <Text style={styles.footerText}>Hierarchy</Text>
+                <Text style={[styles.footerText, themedStyles.footerText]}>Hierarchy</Text>
               </View>
               <View style={styles.footerItem}>
                 <Ionicons name="code-slash" size={16} color="#666" />
-                <Text style={styles.footerText}>Implementation</Text>
+                <Text style={[styles.footerText, themedStyles.footerText]}>Implementation</Text>
               </View>
             </View>
           </View>
         </TouchableOpacity>
 
         <TouchableOpacity
-          style={styles.guideCard}
+          style={[styles.guideCard, themedStyles.guideCard]}
           onPress={() => router.push('/practices-screens/gestures')}
           accessibilityRole="button">
           <View style={[styles.iconContainer, { backgroundColor: '#E6F4FF' }]}>
@@ -91,29 +130,29 @@ export default function BestPracticesScreen() {
           </View>
           <View style={styles.guideContent}>
             <View style={styles.guideHeader}>
-              <Text style={styles.guideTitle}>Gesture Tutorial</Text>
+              <Text style={[styles.guideTitle, themedStyles.guideTitle]}>Gesture Tutorial</Text>
               <View style={[styles.badge, { backgroundColor: '#FFE6E6' }]}>
-                <Text style={[styles.badgeText, { color: '#DC3545' }]}>Interactive Guide</Text>
+                <Text style={[styles.badgeText, themedStyles.badgeText]}>Interactive Guide</Text>
               </View>
             </View>
-            <Text style={styles.guideDescription}>
+            <Text style={[styles.guideDescription, themedStyles.guideDescription]}>
               Learn and test common accessibility gestures
             </Text>
             <View style={styles.guideFooter}>
               <View style={styles.footerItem}>
                 <Ionicons name="finger-print-outline" size={16} color="#666" />
-                <Text style={styles.footerText}>Gesture Patterns</Text>
+                <Text style={[styles.footerText, themedStyles.footerText]}>Gesture Patterns</Text>
               </View>
               <View style={styles.footerItem}>
                 <Ionicons name="hand-right-outline" size={16} color="#666" />
-                <Text style={styles.footerText}>Interactive Demo</Text>
+                <Text style={[styles.footerText, themedStyles.footerText]}>Interactive Demo</Text>
               </View>
             </View>
           </View>
         </TouchableOpacity>
 
         <TouchableOpacity
-          style={styles.guideCard}
+          style={[styles.guideCard, themedStyles.guideCard]}
           onPress={() => router.push('/practices-screens/screen-reader')}
           accessibilityRole="button">
           <View style={[styles.iconContainer, { backgroundColor: '#E6F4FF' }]}>
@@ -121,29 +160,29 @@ export default function BestPracticesScreen() {
           </View>
           <View style={styles.guideContent}>
             <View style={styles.guideHeader}>
-              <Text style={styles.guideTitle}>Screen Reader Support</Text>
+              <Text style={[styles.guideTitle, themedStyles.guideTitle]}>Screen Reader Support</Text>
               <View style={[styles.badge, { backgroundColor: '#E6FFE6' }]}>
-                <Text style={[styles.badgeText, { color: '#28A745' }]}>Guidelines</Text>
+                <Text style={[styles.badgeText, themedStyles.badgeText]}>Guidelines</Text>
               </View>
             </View>
-            <Text style={styles.guideDescription}>
+            <Text style={[styles.guideDescription, themedStyles.guideDescription]}>
               Optimizing your app for VoiceOver and TalkBack
             </Text>
             <View style={styles.guideFooter}>
               <View style={styles.footerItem}>
                 <Ionicons name="phone-portrait-outline" size={16} color="#666" />
-                <Text style={styles.footerText}>Platform-specific</Text>
+                <Text style={[styles.footerText, themedStyles.footerText]}>Platform-specific</Text>
               </View>
               <View style={styles.footerItem}>
                 <Ionicons name="hand-left-outline" size={16} color="#666" />
-                <Text style={styles.footerText}>Gestures</Text>
+                <Text style={[styles.footerText, themedStyles.footerText]}>Gestures</Text>
               </View>
             </View>
           </View>
         </TouchableOpacity>
 
         <TouchableOpacity
-          style={styles.guideCard}
+          style={[styles.guideCard, themedStyles.guideCard]}
           onPress={() => router.push('/practices-screens/navigation')}
           accessibilityRole="button">
           <View style={[styles.iconContainer, { backgroundColor: '#FFF4E6' }]}>
@@ -151,22 +190,22 @@ export default function BestPracticesScreen() {
           </View>
           <View style={styles.guideContent}>
             <View style={styles.guideHeader}>
-              <Text style={styles.guideTitle}>Navigation & Focus</Text>
+              <Text style={[styles.guideTitle, themedStyles.guideTitle]}>Navigation & Focus</Text>
               <View style={[styles.badge, { backgroundColor: '#FFE6E6' }]}>
-                <Text style={[styles.badgeText, { color: '#DC3545' }]}>Interactive Guide</Text>
+                <Text style={[styles.badgeText, themedStyles.badgeText]}>Interactive Guide</Text>
               </View>
             </View>
-            <Text style={styles.guideDescription}>
+            <Text style={[styles.guideDescription, themedStyles.guideDescription]}>
               Managing focus and keyboard navigation effectively
             </Text>
             <View style={styles.guideFooter}>
               <View style={styles.footerItem}>
                 <Ionicons name="arrow-forward-circle-outline" size={16} color="#666" />
-                <Text style={styles.footerText}>Focus Flow</Text>
+                <Text style={[styles.footerText, themedStyles.footerText]}>Focus Flow</Text>
               </View>
               <View style={styles.footerItem}>
                 <Ionicons name="hand-right-outline" size={16} color="#666" />
-                <Text style={styles.footerText}>Interactive Demo</Text>
+                <Text style={[styles.footerText, themedStyles.footerText]}>Interactive Demo</Text>
               </View>
             </View>
           </View>
