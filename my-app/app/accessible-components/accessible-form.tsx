@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet,ScrollView, Modal, Platform, KeyboardAvoidingView, Dimensions, AccessibilityInfo } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, Modal, Platform, KeyboardAvoidingView, Dimensions, AccessibilityInfo } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
+import { useTheme } from '../../context/ThemeContext';
 
 const AccessibleFormExample = () => {
   const [formData, setFormData] = useState({
@@ -18,10 +19,10 @@ const AccessibleFormExample = () => {
     birthDate: new Date(),
     agreed: false
   });
-
   const [showDateModal, setShowDateModal] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [copied, setCopied] = useState(false);
+  const { colors, textSizes, isDarkMode } = useTheme();
 
   const handleSubmit = () => {
     setShowSuccessModal(true);
@@ -54,24 +55,125 @@ const AccessibleFormExample = () => {
     }
   };
 
-return (
-    <ScrollView style={styles.container}>
+const themedStyles = {
+  container: {
+    backgroundColor: colors.background,
+  },
+  sectionTitle: {
+    color: colors.text,
+    fontSize: textSizes.xlarge,
+  },
+  overlay: {
+    backgroundColor: isDarkMode ? 'rgba(0, 0, 0, 0.7)' : 'rgba(0, 0, 0, 0.5)',
+  },
+  demoContainer: {
+    backgroundColor: colors.surface,
+  },
+  demoButton: {
+    backgroundColor: colors.primary,
+  },
+  buttonText: {
+    color: colors.background,
+  },
+  demoText: {
+    color: colors.textSecondary,
+  },
+  dialog: {
+    backgroundColor: colors.surface,
+  },
+  dialogTitle: {
+    color: colors.text,
+  },
+  dialogContent: {
+    color: colors.textPrimary,
+  },
+  dialogButtonText: {
+    color: colors.background,
+  },
+  secondaryButtonText: {
+    color: colors.text,
+  },
+  featuresContainer: {
+    backgroundColor: colors.surface,
+  },
+  featureTitle: {
+    color: colors.text,
+  },
+  featureDescription: {
+    color: colors.textSecondary,
+  },
+  codeContainer: {
+    backgroundColor: colors.codeBackground,
+  },
+  codeHeader: {
+    borderBottomColor: colors.border,
+  },
+  codeHeaderText: {
+    color: colors.textSecondary,
+  },
+  copyText: {
+    color: colors.textSecondary,
+  },
+  copiedText: {
+    color: '#28A745',
+  },
+  // Properties exclusive to the first snippet:
+  label: {
+    color: colors.text,
+  },
+  input: {
+    borderColor: colors.border,
+    color: colors.text,
+    backgroundColor: colors.surface,
+  },
+  radioLabel: {
+    color: colors.text,
+  },
+  checkboxLabel: {
+    color: colors.text,
+  },
+  submitButton: {
+    backgroundColor: colors.primary,
+  },
+  submitButtonDisabled: {
+    backgroundColor: colors.disabled,
+  },
+  submitButtonText: {
+    color: colors.background,
+  },
+  accessibilityTip: {
+    color: colors.textSecondary,
+  },
+  codeText: {
+    color: colors.background,
+  },
+  featureIcon: {
+    backgroundColor: isDarkMode ? colors.surface : '#E8F1FF',
+  },
+  agreementText: {
+    color: colors.text,
+  },
+};
+
+
+  return (
+    <ScrollView style={[styles.container, themedStyles.container]}>
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Interactive Example</Text>
-        <View style={styles.demoContainer}>
+        <Text style={[styles.sectionTitle, themedStyles.sectionTitle]}>Interactive Example</Text>
+        <View style={[styles.demoContainer, themedStyles.demoContainer]}>
           <View style={styles.form}>
-            <Text style={styles.label}>Name</Text>
+            <Text style={[styles.label, themedStyles.label]}>Name</Text>
             <TextInput
-              style={styles.input}
+              style={[styles.input, themedStyles.input]}
               value={formData.name}
               onChangeText={(text) => setFormData(prev => ({ ...prev, name: text }))}
               accessibilityLabel="Enter your name"
               accessibilityHint="Type your full name here"
             />
 
-            <Text style={styles.label}>Email</Text>
+            <Text style={[styles.label, themedStyles.label]}>Email</Text>
             <TextInput
-              style={styles.input}
+              style={[styles.input, themedStyles.input]}
               value={formData.email}
               onChangeText={(text) => setFormData(prev => ({ ...prev, email: text }))}
               keyboardType="email-address"
@@ -81,7 +183,7 @@ return (
               accessibilityHint="Type your email address using the @ keyboard"
             />
 
-            <Text style={styles.label}>Gender</Text>
+            <Text style={[styles.label, themedStyles.label]}>Gender</Text>
             <View style={styles.radioGroup}>
               {['Male', 'Female'].map((option) => (
                 <TouchableOpacity
@@ -95,14 +197,15 @@ return (
                 >
                   <View style={[
                     styles.radioButton,
-                    formData.gender === option && styles.radioButtonSelected
+                    formData.gender === option && styles.radioButtonSelected,
+                    { borderColor: colors.primary }
                   ]} />
-                  <Text style={styles.radioLabel}>{option}</Text>
+                  <Text style={[styles.radioLabel, themedStyles.radioLabel]}>{option}</Text>
                 </TouchableOpacity>
               ))}
             </View>
 
-            <Text style={styles.label}>Preferred Contact Time</Text>
+            <Text style={[styles.label, themedStyles.label]}>Preferred Contact Time</Text>
             <View style={styles.radioGroup}>
               {['Morning', 'Afternoon', 'Evening'].map((time) => (
                 <TouchableOpacity
@@ -116,19 +219,20 @@ return (
                 >
                   <View style={[
                     styles.radioButton,
-                    formData.contactTime === time && styles.radioButtonSelected
+                    formData.contactTime === time && styles.radioButtonSelected,
+                    { borderColor: colors.primary }
                   ]} />
-                  <Text style={styles.radioLabel}>{time}</Text>
+                  <Text style={[styles.radioLabel, themedStyles.radioLabel]}>{time}</Text>
                 </TouchableOpacity>
               ))}
             </View>
 
-            <Text style={styles.label}>Communication Preferences</Text>
+            <Text style={[styles.label, themedStyles.label]}>Communication Preferences</Text>
             <View style={styles.checkboxGroup}>
               {[
                 { key: 'email', label: 'Email' },
                 { key: 'phone', label: 'Phone' },
-                { key: 'sms', label: 'SMS' }
+                { key: 'sms',   label: 'SMS'   }
               ].map((option) => (
                 <TouchableOpacity
                   key={option.key}
@@ -147,9 +251,10 @@ return (
                 >
                   <View style={[
                     styles.checkbox,
-                    formData.preferences[option.key] && styles.checkboxChecked
+                    formData.preferences[option.key] && styles.checkboxChecked,
+                    { borderColor: colors.primary, backgroundColor: formData.preferences[option.key] ? colors.primary : 'transparent' }
                   ]} />
-                  <Text style={styles.checkboxLabel}>{option.label}</Text>
+                  <Text style={[styles.checkboxLabel, themedStyles.checkboxLabel]}>{option.label}</Text>
                 </TouchableOpacity>
               ))}
             </View>
@@ -163,15 +268,15 @@ return (
                 accessibilityLabel="Agree to terms and conditions"
                 accessibilityHint="Toggle agreement to terms and conditions"
               >
-                <View style={[styles.checkbox, formData.agreed && styles.checkboxChecked]} />
-                <Text style={styles.agreementText} numberOfLines={1}>
+                <View style={[styles.checkbox, formData.agreed && styles.checkboxChecked, { borderColor: colors.primary, backgroundColor: formData.agreed ? colors.primary : 'transparent' }]} />
+                <Text style={[styles.agreementText, themedStyles.agreementText]} numberOfLines={1}>
                   Agree to terms and conditions
                 </Text>
               </TouchableOpacity>
             </View>
 
             <TouchableOpacity
-              style={[styles.submitButton, !formData.agreed && styles.submitButtonDisabled]}
+              style={[styles.submitButton, !formData.agreed && styles.submitButtonDisabled, themedStyles.submitButton, !formData.agreed && themedStyles.submitButtonDisabled]}
               onPress={handleSubmit}
               disabled={!formData.agreed}
               accessibilityRole="button"
@@ -179,10 +284,10 @@ return (
               accessibilityLabel="Submit form"
               accessibilityHint="Double tap to submit the form if all fields are completed"
             >
-              <Text style={styles.submitButtonText}>Submit</Text>
+              <Text style={[styles.submitButtonText, themedStyles.submitButtonText]}>Submit</Text>
             </TouchableOpacity>
 
-            <Text style={styles.accessibilityTip}>
+            <Text style={[styles.accessibilityTip, themedStyles.accessibilityTip]}>
               Try this form with VoiceOver/TalkBack enabled
             </Text>
           </View>
@@ -191,10 +296,10 @@ return (
 
       {/* Implementation Section with Code Example */}
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Implementation</Text>
-        <View style={styles.codeContainer}>
-          <View style={styles.codeHeader}>
-            <Text style={styles.codeHeaderText}>JSX</Text>
+        <Text style={[styles.sectionTitle, themedStyles.sectionTitle]}>Implementation</Text>
+        <View style={[styles.codeContainer, themedStyles.codeContainer]}>
+          <View style={[styles.codeHeader, themedStyles.codeHeader]}>
+            <Text style={[styles.codeHeaderText, themedStyles.codeHeaderText]}>JSX</Text>
             <TouchableOpacity
               style={styles.copyButton}
               onPress={handleCopy}
@@ -204,15 +309,81 @@ return (
               <Ionicons
                 name={copied ? "checkmark" : "copy-outline"}
                 size={20}
-                color={copied ? "#28A745" : "#666"}
+                color={copied ? "#28A745" : colors.textSecondary}
               />
-              <Text style={[styles.copyText, copied && styles.copiedText]}>
+              <Text style={[styles.copyText, copied && styles.copiedText, themedStyles.copyText]}>
                 {copied ? "Copied!" : "Copy"}
               </Text>
             </TouchableOpacity>
           </View>
           <View style={styles.codeCard}>
-            <Text style={styles.codeText}>{codeExample}</Text>
+            <Text style={[styles.codeText, themedStyles.codeText]}>{codeExample}</Text>
+          </View>
+        </View>
+      </View>
+
+      <View style={styles.section}>
+        <Text style={[styles.sectionTitle, themedStyles.sectionTitle]}>Accessibility Features</Text>
+
+        <View style={[styles.featuresContainer, themedStyles.featuresContainer]}>
+          <View style={styles.featureCard}>
+            <View style={[styles.featureIcon, themedStyles.featureIcon]}>
+              <Ionicons name="text-outline" size={24} color={colors.primary} />
+            </View>
+            <View style={styles.featureContent}>
+              <Text style={[styles.featureTitle, themedStyles.featureTitle]}>Input Labels</Text>
+              <Text style={[styles.featureDescription, themedStyles.featureDescription]}>
+                Clear, descriptive labels that properly associate with form controls
+              </Text>
+            </View>
+          </View>
+
+          <View style={styles.featureCard}>
+            <View style={[styles.featureIcon, themedStyles.featureIcon]}>
+              <Ionicons name="information-circle-outline" size={24} color={colors.primary} />
+            </View>
+            <View style={styles.featureContent}>
+              <Text style={[styles.featureTitle, themedStyles.featureTitle]}>Semantic Roles</Text>
+              <Text style={[styles.featureDescription, themedStyles.featureDescription]}>
+                Proper role assignments for form controls (radio, checkbox, button)
+              </Text>
+            </View>
+          </View>
+
+          <View style={styles.featureCard}>
+            <View style={[styles.featureIcon, themedStyles.featureIcon]}>
+              <Ionicons name="alert-circle-outline" size={24} color={colors.primary} />
+            </View>
+            <View style={styles.featureContent}>
+              <Text style={[styles.featureTitle, themedStyles.featureTitle]}>Error States</Text>
+              <Text style={[styles.featureDescription, themedStyles.featureDescription]}>
+                Clear error messages and validation feedback for screen readers
+              </Text>
+            </View>
+          </View>
+
+          <View style={styles.featureCard}>
+            <View style={[styles.featureIcon, themedStyles.featureIcon]}>
+              <Ionicons name="hand-left-outline" size={24} color={colors.primary} />
+            </View>
+            <View style={styles.featureContent}>
+              <Text style={[styles.featureTitle, themedStyles.featureTitle]}>Touch Targets</Text>
+              <Text style={[styles.featureDescription, themedStyles.featureDescription]}>
+                Adequate sizing for interactive elements (minimum 44x44 points)
+              </Text>
+            </View>
+          </View>
+
+          <View style={styles.featureCard}>
+            <View style={[styles.featureIcon, themedStyles.featureIcon]}>
+              <Ionicons name="sync-outline" size={24} color={colors.primary} />
+            </View>
+            <View style={styles.featureContent}>
+              <Text style={[styles.featureTitle, themedStyles.featureTitle]}>State Management</Text>
+              <Text style={[styles.featureDescription, themedStyles.featureDescription]}>
+                Proper state announcements for selection controls and submit button
+              </Text>
+            </View>
           </View>
         </View>
       </View>
@@ -224,79 +395,16 @@ return (
         animationType="fade"
         accessibilityViewIsModal={true}
       >
-        <View style={styles.modalOverlay}>
-          <View style={styles.successModal}>
+        <View style={[styles.modalOverlay, { backgroundColor: isDarkMode ? 'rgba(0, 0, 0, 0.7)' : 'rgba(0, 0, 0, 0.5)' }]}>
+          <View style={[styles.successModal, { backgroundColor: colors.surface }]}>
             <Ionicons name="checkmark-circle" size={48} color="#28A745" />
-            <Text style={styles.successTitle}>Success!</Text>
-            <Text style={styles.successMessage}>Your form has been submitted successfully.</Text>
+            <Text style={[styles.successTitle, { color: colors.text }]}>Success!</Text>
+            <Text style={[styles.successMessage, { color: colors.textSecondary }]}>
+              Your form has been submitted successfully.
+            </Text>
           </View>
         </View>
       </Modal>
-
-     <View style={styles.section}>
-         <Text style={styles.sectionTitle}>Accessibility Features</Text>
-
-         <View style={styles.featureCard}>
-           <View style={styles.featureIcon}>
-             <Ionicons name="text-outline" size={24} color="#0066CC" />
-           </View>
-           <View style={styles.featureContent}>
-             <Text style={styles.featureTitle}>Input Labels</Text>
-             <Text style={styles.featureDescription}>
-               Clear, descriptive labels that properly associate with form controls
-             </Text>
-           </View>
-         </View>
-
-         <View style={styles.featureCard}>
-           <View style={styles.featureIcon}>
-             <Ionicons name="information-circle-outline" size={24} color="#0066CC" />
-           </View>
-           <View style={styles.featureContent}>
-             <Text style={styles.featureTitle}>Semantic Roles</Text>
-             <Text style={styles.featureDescription}>
-               Proper role assignments for form controls (radio, checkbox, button)
-             </Text>
-           </View>
-         </View>
-
-         <View style={styles.featureCard}>
-           <View style={styles.featureIcon}>
-             <Ionicons name="alert-circle-outline" size={24} color="#0066CC" />
-           </View>
-           <View style={styles.featureContent}>
-             <Text style={styles.featureTitle}>Error States</Text>
-             <Text style={styles.featureDescription}>
-               Clear error messages and validation feedback for screen readers
-             </Text>
-           </View>
-         </View>
-
-         <View style={styles.featureCard}>
-           <View style={styles.featureIcon}>
-             <Ionicons name="hand-left-outline" size={24} color="#0066CC" />
-           </View>
-           <View style={styles.featureContent}>
-             <Text style={styles.featureTitle}>Touch Targets</Text>
-             <Text style={styles.featureDescription}>
-               Adequate sizing for interactive elements (minimum 44x44 points)
-             </Text>
-           </View>
-         </View>
-
-         <View style={styles.featureCard}>
-           <View style={styles.featureIcon}>
-             <Ionicons name="sync-outline" size={24} color="#0066CC" />
-           </View>
-           <View style={styles.featureContent}>
-             <Text style={styles.featureTitle}>State Management</Text>
-             <Text style={styles.featureDescription}>
-               Proper state announcements for selection controls and submit button
-             </Text>
-           </View>
-         </View>
-       </View>
-
     </ScrollView>
 
 

@@ -1,10 +1,12 @@
 import React, { useState, useRef } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Modal, Clipboard } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { useTheme } from '../../context/ThemeContext';
 
 const AccessibleDialogExample = () => {
   const [showDialog, setShowDialog] = useState(false);
   const [copied, setCopied] = useState(false);
+  const { colors, textSizes, isDarkMode } = useTheme();
 
   const codeExample = `// Accessible Dialog Implementation
 const AccessibleDialog = ({ visible, onClose, title, children }) => {
@@ -78,20 +80,84 @@ const AccessibleDialog = ({ visible, onClose, title, children }) => {
     }
   };
 
+  const themedStyles = {
+    container: {
+      backgroundColor: colors.background,
+    },
+    sectionTitle: {
+      color: colors.text,
+      fontSize: textSizes.xlarge,
+    },
+    demoContainer: {
+      backgroundColor: colors.surface,
+    },
+    demoButton: {
+      backgroundColor: colors.primary,
+    },
+    buttonText: {
+      color: colors.background,
+    },
+    demoText: {
+      color: colors.textSecondary,
+    },
+    overlay: {
+      backgroundColor: isDarkMode ? 'rgba(0, 0, 0, 0.7)' : 'rgba(0, 0, 0, 0.5)',
+    },
+    dialog: {
+      backgroundColor: colors.surface,
+    },
+    dialogTitle: {
+      color: colors.text,
+    },
+    dialogContent: {
+      color: colors.textPrimary,
+    },
+    dialogButtonText: {
+      color: colors.background,
+    },
+    secondaryButtonText: {
+      color: colors.text,
+    },
+    featuresContainer: {
+      backgroundColor: colors.surface,
+    },
+    featureTitle: {
+      color: colors.text,
+    },
+    featureDescription: {
+      color: colors.textSecondary,
+    },
+    codeContainer: {
+      backgroundColor: colors.codeBackground,
+    },
+    codeHeader: {
+      borderBottomColor: colors.border,
+    },
+    codeHeaderText: {
+      color: colors.textSecondary,
+    },
+    copyText: {
+      color: colors.textSecondary,
+    },
+    copiedText: {
+      color: '#28A745',
+    },
+  };
+
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView style={[styles.container, themedStyles.container]}>
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Interactive Example</Text>
-        <View style={styles.demoContainer}>
+        <Text style={[styles.sectionTitle, themedStyles.sectionTitle]}>Interactive Example</Text>
+        <View style={[styles.demoContainer, themedStyles.demoContainer]}>
           <TouchableOpacity
-            style={styles.demoButton}
+            style={[styles.demoButton, themedStyles.demoButton]}
             onPress={() => setShowDialog(true)}
             accessibilityRole="button"
             accessibilityLabel="Open example dialog"
           >
-            <Text style={styles.buttonText}>Open Dialog</Text>
+            <Text style={[styles.buttonText, themedStyles.buttonText]}>Open Dialog</Text>
           </TouchableOpacity>
-          <Text style={styles.demoText}>
+          <Text style={[styles.demoText, themedStyles.demoText]}>
             Try this dialog with VoiceOver/TalkBack enabled
           </Text>
         </View>
@@ -103,43 +169,43 @@ const AccessibleDialog = ({ visible, onClose, title, children }) => {
           onRequestClose={() => setShowDialog(false)}
           accessibilityViewIsModal={true}
         >
-          <View style={styles.overlay}>
+          <View style={[styles.overlay, themedStyles.overlay]}>
             <View
-              style={styles.dialog}
-              accessibilityRole="alert"  // Changed from "dialog" to "alert"
+              style={[styles.dialog, themedStyles.dialog]}
+              accessibilityRole="alert"
               accessibilityLabel="Example Dialog"
             >
               <View style={styles.dialogHeader}>
-                <Text style={styles.dialogTitle}>Example Dialog</Text>
+                <Text style={[styles.dialogTitle, themedStyles.dialogTitle]}>Example Dialog</Text>
                 <TouchableOpacity
                   onPress={() => setShowDialog(false)}
                   accessibilityLabel="Close dialog"
                   accessibilityRole="button"
                   style={styles.closeButton}
                 >
-                  <Ionicons name="close" size={24} color="#1c1c1e" />
+                  <Ionicons name="close" size={24} color={colors.text} />
                 </TouchableOpacity>
               </View>
 
-              <Text style={styles.dialogContent}>
+              <Text style={[styles.dialogContent, themedStyles.dialogContent]}>
                 This is an example of an accessible dialog with proper focus management,
                 keyboard interactions, and screen reader announcements.
               </Text>
 
               <View style={styles.dialogActions}>
                 <TouchableOpacity
-                  style={[styles.dialogButton, styles.secondaryButton]}
+                  style={[styles.dialogButton, styles.secondaryButton, { backgroundColor: colors.secondaryButton }]}
                   onPress={() => setShowDialog(false)}
                   accessibilityRole="button"
                 >
-                  <Text style={styles.secondaryButtonText}>Cancel</Text>
+                  <Text style={[styles.secondaryButtonText, themedStyles.secondaryButtonText]}>Cancel</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
-                  style={styles.dialogButton}
+                  style={[styles.dialogButton, { backgroundColor: colors.primary }]}
                   onPress={() => setShowDialog(false)}
                   accessibilityRole="button"
                 >
-                  <Text style={styles.dialogButtonText}>Confirm</Text>
+                  <Text style={[styles.dialogButtonText, themedStyles.dialogButtonText]}>Confirm</Text>
                 </TouchableOpacity>
               </View>
             </View>
@@ -148,10 +214,10 @@ const AccessibleDialog = ({ visible, onClose, title, children }) => {
       </View>
 
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Implementation</Text>
-        <View style={styles.codeContainer}>
-          <View style={styles.codeHeader}>
-            <Text style={styles.codeHeaderText}>JSX</Text>
+        <Text style={[styles.sectionTitle, themedStyles.sectionTitle]}>Implementation</Text>
+        <View style={[styles.codeContainer, themedStyles.codeContainer]}>
+          <View style={[styles.codeHeader, themedStyles.codeHeader]}>
+            <Text style={[styles.codeHeaderText, themedStyles.codeHeaderText]}>JSX</Text>
             <TouchableOpacity
               style={styles.copyButton}
               onPress={handleCopy}
@@ -161,53 +227,53 @@ const AccessibleDialog = ({ visible, onClose, title, children }) => {
               <Ionicons
                 name={copied ? "checkmark" : "copy-outline"}
                 size={20}
-                color={copied ? "#28A745" : "#666"}
+                color={copied ? "#28A745" : colors.textSecondary}
               />
-              <Text style={[styles.copyText, copied && styles.copiedText]}>
+              <Text style={[styles.copyText, copied && styles.copiedText, themedStyles.copyText]}>
                 {copied ? "Copied!" : "Copy"}
               </Text>
             </TouchableOpacity>
           </View>
           <ScrollView style={styles.codeCard}>
-            <Text style={styles.codeText}>{codeExample}</Text>
+            <Text style={[styles.codeText, themedStyles.codeText]}>{codeExample}</Text>
           </ScrollView>
         </View>
       </View>
 
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Accessibility Features</Text>
-        <View style={styles.featuresContainer}>
+        <Text style={[styles.sectionTitle, themedStyles.sectionTitle]}>Accessibility Features</Text>
+        <View style={[styles.featuresContainer, themedStyles.featuresContainer]}>
           <View style={styles.featureItem}>
-            <View style={[styles.iconContainer, { backgroundColor: '#E8F1FF' }]}>
-              <Ionicons name="scan-outline" size={24} color="#0055CC" />
+            <View style={[styles.iconContainer, { backgroundColor: isDarkMode ? colors.surface : '#E8F1FF' }]}>
+              <Ionicons name="scan-outline" size={24} color={colors.primary} />
             </View>
             <View style={styles.featureContent}>
-              <Text style={styles.featureTitle}>Focus Management</Text>
-              <Text style={styles.featureDescription}>
+              <Text style={[styles.featureTitle, themedStyles.featureTitle]}>Focus Management</Text>
+              <Text style={[styles.featureDescription, themedStyles.featureDescription]}>
                 Proper focus trapping and restoration when dialog opens/closes
               </Text>
             </View>
           </View>
 
           <View style={styles.featureItem}>
-            <View style={[styles.iconContainer, { backgroundColor: '#E8F1FF' }]}>
-              <Ionicons name="keypad-outline" size={24} color="#0055CC" />
+            <View style={[styles.iconContainer, { backgroundColor: isDarkMode ? colors.surface : '#E8F1FF' }]}>
+              <Ionicons name="keypad-outline" size={24} color={colors.primary} />
             </View>
             <View style={styles.featureContent}>
-              <Text style={styles.featureTitle}>Keyboard Navigation</Text>
-              <Text style={styles.featureDescription}>
+              <Text style={[styles.featureTitle, themedStyles.featureTitle]}>Keyboard Navigation</Text>
+              <Text style={[styles.featureDescription, themedStyles.featureDescription]}>
                 Full keyboard support including escape key to close
               </Text>
             </View>
           </View>
 
           <View style={styles.featureItem}>
-            <View style={[styles.iconContainer, { backgroundColor: '#E8F1FF' }]}>
-              <Ionicons name="megaphone-outline" size={24} color="#0055CC" />
+            <View style={[styles.iconContainer, { backgroundColor: isDarkMode ? colors.surface : '#E8F1FF' }]}>
+              <Ionicons name="megaphone-outline" size={24} color={colors.primary} />
             </View>
             <View style={styles.featureContent}>
-              <Text style={styles.featureTitle}>Screen Reader Support</Text>
-              <Text style={styles.featureDescription}>
+              <Text style={[styles.featureTitle, themedStyles.featureTitle]}>Screen Reader Support</Text>
+              <Text style={[styles.featureDescription, themedStyles.featureDescription]}>
                 Proper ARIA roles and live region announcements
               </Text>
             </View>

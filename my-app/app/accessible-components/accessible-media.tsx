@@ -1,24 +1,17 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Image, Clipboard } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { useTheme } from '../../context/ThemeContext';
 
 const AccessibleMediaExample = () => {
   const [showAltText, setShowAltText] = useState(false);
   const [currentImage, setCurrentImage] = useState(1);
   const [copied, setCopied] = useState(false);
-
-  // For assets/images approach:
-  // Import images at the top of the file like:
-  // import image1 from '../../assets/images/placeholder1.png';
-  // import image2 from '../../assets/images/placeholder2.png';
-  // import image3 from '../../assets/images/placeholder3.png';
+  const { colors, textSizes, isDarkMode } = useTheme();
 
   const images = [
     {
-      // Option 1: Using require for local assets
       uri: require('../../assets/images/placeholder1.png'),
-      // Option 2: Using imported images
-      // uri: image1,
       alt: "A placeholder image (first example)",
       role: "Interface example"
     },
@@ -69,11 +62,75 @@ const AccessibleMediaExample = () => {
     }
   };
 
+  const themedStyles = {
+    container: {
+      backgroundColor: colors.background,
+    },
+    sectionTitle: {
+      color: colors.text,
+      fontSize: textSizes.xlarge,
+    },
+    demoContainer: {
+      backgroundColor: colors.surface,
+    },
+    demoButton: {
+      backgroundColor: colors.primary,
+    },
+    buttonText: {
+      color: colors.background,
+    },
+    demoText: {
+      color: colors.textSecondary,
+    },
+    overlay: {
+      backgroundColor: isDarkMode ? 'rgba(0, 0, 0, 0.7)' : 'rgba(0, 0, 0, 0.5)',
+    },
+    dialog: {
+      backgroundColor: colors.surface,
+    },
+    dialogTitle: {
+      color: colors.text,
+    },
+    dialogContent: {
+      color: colors.textPrimary,
+    },
+    dialogButtonText: {
+      color: colors.background,
+    },
+    secondaryButtonText: {
+      color: colors.text,
+    },
+    featuresContainer: {
+      backgroundColor: colors.surface,
+    },
+    featureTitle: {
+      color: colors.text,
+    },
+    featureDescription: {
+      color: colors.textSecondary,
+    },
+    codeContainer: {
+      backgroundColor: colors.codeBackground,
+    },
+    codeHeader: {
+      borderBottomColor: colors.border,
+    },
+    codeHeaderText: {
+      color: colors.textSecondary,
+    },
+    copyText: {
+      color: colors.textSecondary,
+    },
+    copiedText: {
+      color: '#28A745',
+    },
+  };
+
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView style={[styles.container, themedStyles.container]}>
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Interactive Example</Text>
-        <View style={styles.demoContainer}>
+        <Text style={[styles.sectionTitle, themedStyles.sectionTitle]}>Interactive Example</Text>
+        <View style={[styles.demoContainer, themedStyles.demoContainer]}>
           <Image
             source={images[currentImage - 1].uri}
             style={styles.demoImage}
@@ -92,16 +149,16 @@ const AccessibleMediaExample = () => {
               <Ionicons
                 name="chevron-back"
                 size={24}
-                color={currentImage === 1 ? "#ccc" : "#007AFF"}
+                color={currentImage === 1 ? colors.textSecondary : colors.primary}
               />
             </TouchableOpacity>
             <TouchableOpacity
-              style={styles.altTextButton}
+              style={[styles.altTextButton, { backgroundColor: colors.primary }]}
               onPress={() => setShowAltText(!showAltText)}
               accessibilityLabel={showAltText ? "Hide alt text" : "Show alt text"}
               accessibilityRole="button"
             >
-              <Text style={styles.altTextButtonText}>
+              <Text style={[styles.altTextButtonText, { color: colors.background }]}>
                 {showAltText ? "Hide Alt Text" : "Show Alt Text"}
               </Text>
             </TouchableOpacity>
@@ -116,28 +173,28 @@ const AccessibleMediaExample = () => {
               <Ionicons
                 name="chevron-forward"
                 size={24}
-                color={currentImage === 3 ? "#ccc" : "#007AFF"}
+                color={currentImage === 3 ? colors.textSecondary : colors.primary}
               />
             </TouchableOpacity>
           </View>
           {showAltText && (
-            <View style={styles.altTextContainer}>
+            <View style={[styles.altTextContainer, themedStyles.altTextContainer]}>
               <Text style={styles.altTextTitle}>Alt Text:</Text>
-              <Text style={styles.altTextContent}>{images[currentImage - 1].alt}</Text>
-              <Text style={styles.altTextRole}>Role: {images[currentImage - 1].role}</Text>
+              <Text style={[styles.altTextContent, themedStyles.altTextContent]}>{images[currentImage - 1].alt}</Text>
+              <Text style={[styles.altTextRole, themedStyles.altTextRole]}>Role: {images[currentImage - 1].role}</Text>
             </View>
           )}
-          <Text style={styles.demoText}>
+          <Text style={[styles.demoText, themedStyles.demoText]}>
             Try this image with VoiceOver/TalkBack enabled
           </Text>
         </View>
       </View>
 
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Implementation</Text>
-        <View style={styles.codeContainer}>
-          <View style={styles.codeHeader}>
-            <Text style={styles.codeHeaderText}>JSX</Text>
+        <Text style={[styles.sectionTitle, themedStyles.sectionTitle]}>Implementation</Text>
+        <View style={[styles.codeContainer, themedStyles.codeContainer]}>
+          <View style={[styles.codeHeader, themedStyles.codeHeader]}>
+            <Text style={[styles.codeHeaderText, themedStyles.codeHeaderText]}>JSX</Text>
             <TouchableOpacity
               style={styles.copyButton}
               onPress={handleCopy}
@@ -147,53 +204,53 @@ const AccessibleMediaExample = () => {
               <Ionicons
                 name={copied ? "checkmark" : "copy-outline"}
                 size={20}
-                color={copied ? "#28A745" : "#666"}
+                color={copied ? "#28A745" : colors.textSecondary}
               />
-              <Text style={[styles.copyText, copied && styles.copiedText]}>
+              <Text style={[styles.copyText, copied && styles.copiedText, themedStyles.copyText]}>
                 {copied ? "Copied!" : "Copy"}
               </Text>
             </TouchableOpacity>
           </View>
           <View style={styles.codeCard}>
-            <Text style={styles.codeText}>{codeExample}</Text>
+            <Text style={[styles.codeText, themedStyles.codeText]}>{codeExample}</Text>
           </View>
         </View>
       </View>
 
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Accessibility Features</Text>
-        <View style={styles.featuresContainer}>
+        <Text style={[styles.sectionTitle, themedStyles.sectionTitle]}>Accessibility Features</Text>
+        <View style={[styles.featuresContainer, themedStyles.featuresContainer]}>
           <View style={styles.featureItem}>
-            <View style={[styles.iconContainer, { backgroundColor: '#E8F1FF' }]}>
-              <Ionicons name="text-outline" size={24} color="#0055CC" />
+            <View style={[styles.iconContainer, { backgroundColor: isDarkMode ? colors.surface : '#E8F1FF' }]}>
+              <Ionicons name="text-outline" size={24} color={colors.primary} />
             </View>
             <View style={styles.featureContent}>
-              <Text style={styles.featureTitle}>Alt Text</Text>
-              <Text style={styles.featureDescription}>
+              <Text style={[styles.featureTitle, themedStyles.featureTitle]}>Alt Text</Text>
+              <Text style={[styles.featureDescription, themedStyles.featureDescription]}>
                 Descriptive text that conveys the content and function of the image
               </Text>
             </View>
           </View>
 
           <View style={styles.featureItem}>
-            <View style={[styles.iconContainer, { backgroundColor: '#E8F1FF' }]}>
-              <Ionicons name="megaphone-outline" size={24} color="#0055CC" />
+            <View style={[styles.iconContainer, { backgroundColor: isDarkMode ? colors.surface : '#E8F1FF' }]}>
+              <Ionicons name="megaphone-outline" size={24} color={colors.primary} />
             </View>
             <View style={styles.featureContent}>
-              <Text style={styles.featureTitle}>Role Announcement</Text>
-              <Text style={styles.featureDescription}>
+              <Text style={[styles.featureTitle, themedStyles.featureTitle]}>Role Announcement</Text>
+              <Text style={[styles.featureDescription, themedStyles.featureDescription]}>
                 Screen readers announce the element as an image
               </Text>
             </View>
           </View>
 
           <View style={styles.featureItem}>
-            <View style={[styles.iconContainer, { backgroundColor: '#E8F1FF' }]}>
-              <Ionicons name="hand-left-outline" size={24} color="#0055CC" />
+            <View style={[styles.iconContainer, { backgroundColor: isDarkMode ? colors.surface : '#E8F1FF' }]}>
+              <Ionicons name="hand-left-outline" size={24} color={colors.primary} />
             </View>
             <View style={styles.featureContent}>
-              <Text style={styles.featureTitle}>Touch Target</Text>
-              <Text style={styles.featureDescription}>
+              <Text style={[styles.featureTitle, themedStyles.featureTitle]}>Touch Target</Text>
+              <Text style={[styles.featureDescription, themedStyles.featureDescription]}>
                 Interactive images should have adequate touch targets
               </Text>
             </View>

@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Platform, Dimensions } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { useTheme } from '../context/ThemeContext';
 
 const FrameworkComparisonScreen = () => {
   const [selectedCategory, setSelectedCategory] = useState('overview');
   const [selectedFramework, setSelectedFramework] = useState('react-native');
+  const { colors, textSizes, isDarkMode } = useTheme();
 
   const frameworkData = {
     'react-native': {
@@ -192,11 +194,120 @@ const FrameworkComparisonScreen = () => {
     return (
       <View style={styles.ratingContainer}>
         <View style={styles.ratingBar}>
-          <View style={[styles.ratingFilled, { width: `${filledWidth}%` }]} />
+          <View style={[styles.ratingFilled, { width: `${filledWidth}%`, backgroundColor: colors.primary }]} />
         </View>
-        <Text style={styles.ratingText}>{rating.toFixed(1)}</Text>
+        <Text style={[styles.ratingText, { color: colors.primary }]}>{rating.toFixed(1)}</Text>
       </View>
     );
+  };
+
+  const themedStyles = {
+    container: {
+      backgroundColor: colors.background,
+    },
+    header: {
+      backgroundColor: colors.surface,
+      borderBottomColor: colors.border,
+    },
+    headerTitle: {
+      color: colors.text,
+      fontSize: textSizes.xlarge,
+    },
+    headerDescription: {
+      color: colors.textSecondary,
+      fontSize: textSizes.medium,
+    },
+    frameworkButton: {
+      backgroundColor: colors.surface,
+      borderColor: colors.border,
+    },
+    frameworkButtonActive: {
+      backgroundColor: colors.primary,
+      borderColor: colors.primary,
+    },
+    frameworkButtonText: {
+      color: colors.text,
+    },
+    frameworkButtonTextActive: {
+      color: colors.background,
+    },
+    categoryTab: {
+      backgroundColor: colors.surface,
+      borderColor: colors.border,
+    },
+    categoryTabActive: {
+      backgroundColor: colors.primaryLight,
+      borderColor: colors.primary,
+    },
+    categoryTabText: {
+      color: colors.textSecondary,
+    },
+    categoryTabTextActive: {
+      color: colors.primary,
+    },
+    infoCard: {
+      backgroundColor: colors.surface,
+    },
+    frameworkName: {
+      color: colors.text,
+    },
+    companyName: {
+      color: colors.textSecondary,
+    },
+    version: {
+      color: colors.primary,
+    },
+    description: {
+      color: colors.textSecondary,
+    },
+    statItem: {
+      backgroundColor: colors.surface,
+    },
+    statLabel: {
+      color: colors.textSecondary,
+    },
+    statValue: {
+      color: colors.text,
+    },
+    accessibilityCard: {
+      backgroundColor: colors.surface,
+    },
+    cardTitle: {
+      color: colors.text,
+    },
+    platformText: {
+      color: colors.textSecondary,
+    },
+    supportText: {
+      color: colors.textSecondary,
+    },
+    featureText: {
+      color: colors.textSecondary,
+    },
+    performanceCard: {
+      backgroundColor: colors.surface,
+    },
+    performanceLabel: {
+      color: colors.textSecondary,
+    },
+    performanceValue: {
+      color: colors.text,
+    },
+    performanceRating: {
+      backgroundColor: colors.surface,
+    },
+    ratingLabel: {
+      color: colors.text,
+    },
+    developmentCard: {
+      backgroundColor: colors.surface,
+    },
+    toolLabel: {
+      color: colors.textSecondary,
+    },
+    toolValue: {
+      color: colors.text,
+    },
   };
 
   const renderFrameworkSelection = () => (
@@ -206,14 +317,20 @@ const FrameworkComparisonScreen = () => {
           key={fw}
           style={[
             styles.frameworkButton,
-            selectedFramework === fw && styles.frameworkButtonActive
+            selectedFramework === fw && styles.frameworkButtonActive,
+            themedStyles.frameworkButton,
+            selectedFramework === fw && themedStyles.frameworkButtonActive,
           ]}
           onPress={() => setSelectedFramework(fw)}
         >
-          <Text style={[
-            styles.frameworkButtonText,
-            selectedFramework === fw && styles.frameworkButtonTextActive
-          ]}>
+          <Text
+            style={[
+              styles.frameworkButtonText,
+              selectedFramework === fw && styles.frameworkButtonTextActive,
+              themedStyles.frameworkButtonText,
+              selectedFramework === fw && themedStyles.frameworkButtonTextActive,
+            ]}
+          >
             {frameworkData[fw].name}
           </Text>
         </TouchableOpacity>
@@ -222,29 +339,31 @@ const FrameworkComparisonScreen = () => {
   );
 
   const renderCategoryTabs = () => (
-    <ScrollView
-      horizontal
-      showsHorizontalScrollIndicator={false}
-      style={styles.categoryTabs}
-    >
+    <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.categoryTabs}>
       {categories.map((category) => (
         <TouchableOpacity
           key={category.id}
           style={[
             styles.categoryTab,
-            selectedCategory === category.id && styles.categoryTabActive
+            selectedCategory === category.id && styles.categoryTabActive,
+            themedStyles.categoryTab,
+            selectedCategory === category.id && themedStyles.categoryTabActive,
           ]}
           onPress={() => setSelectedCategory(category.id)}
         >
           <Ionicons
             name={category.icon}
             size={20}
-            color={selectedCategory === category.id ? '#007AFF' : '#666'}
+            color={selectedCategory === category.id ? colors.primary : colors.textSecondary}
           />
-          <Text style={[
-            styles.categoryTabText,
-            selectedCategory === category.id && styles.categoryTabTextActive
-          ]}>
+          <Text
+            style={[
+              styles.categoryTabText,
+              selectedCategory === category.id && styles.categoryTabTextActive,
+              themedStyles.categoryTabText,
+              selectedCategory === category.id && themedStyles.categoryTabTextActive,
+            ]}
+          >
             {category.label}
           </Text>
         </TouchableOpacity>
@@ -256,28 +375,28 @@ const FrameworkComparisonScreen = () => {
     const framework = frameworkData[selectedFramework];
     return (
       <View style={styles.section}>
-        <View style={styles.infoCard}>
-          <Text style={styles.frameworkName}>{framework.name}</Text>
-          <Text style={styles.companyName}>by {framework.company}</Text>
-          <Text style={styles.version}>Version {framework.version}</Text>
-          <Text style={styles.description}>{framework.description}</Text>
+        <View style={[styles.infoCard, themedStyles.infoCard]}>
+          <Text style={[styles.frameworkName, themedStyles.frameworkName]}>{framework.name}</Text>
+          <Text style={[styles.companyName, themedStyles.companyName]}>by {framework.company}</Text>
+          <Text style={[styles.version, themedStyles.version]}>Version {framework.version}</Text>
+          <Text style={[styles.description, themedStyles.description]}>{framework.description}</Text>
         </View>
 
         <View style={styles.quickStats}>
-          <View style={styles.statItem}>
-            <Ionicons name="code-slash" size={24} color="#007AFF" />
-            <Text style={styles.statLabel}>Language</Text>
-            <Text style={styles.statValue}>{framework.development.language}</Text>
+          <View style={[styles.statItem, themedStyles.statItem]}>
+            <Ionicons name="code-slash" size={24} color={colors.primary} />
+            <Text style={[styles.statLabel, themedStyles.statLabel]}>Language</Text>
+            <Text style={[styles.statValue, themedStyles.statValue]}>{framework.development.language}</Text>
           </View>
-          <View style={styles.statItem}>
-            <Ionicons name="trending-up" size={24} color="#007AFF" />
-            <Text style={styles.statLabel}>Learning Curve</Text>
-            <Text style={styles.statValue}>{framework.development.learning}</Text>
+          <View style={[styles.statItem, themedStyles.statItem]}>
+            <Ionicons name="trending-up" size={24} color={colors.primary} />
+            <Text style={[styles.statLabel, themedStyles.statLabel]}>Learning Curve</Text>
+            <Text style={[styles.statValue, themedStyles.statValue]}>{framework.development.learning}</Text>
           </View>
-          <View style={styles.statItem}>
-            <Ionicons name="flash" size={24} color="#007AFF" />
-            <Text style={styles.statLabel}>Hot Reload</Text>
-            <Text style={styles.statValue}>{framework.development.hot ? 'Yes' : 'No'}</Text>
+          <View style={[styles.statItem, themedStyles.statItem]}>
+            <Ionicons name="flash" size={24} color={colors.primary} />
+            <Text style={[styles.statLabel, themedStyles.statLabel]}>Hot Reload</Text>
+            <Text style={[styles.statValue, themedStyles.statValue]}>{framework.development.hot ? 'Yes' : 'No'}</Text>
           </View>
         </View>
       </View>
@@ -288,143 +407,143 @@ const FrameworkComparisonScreen = () => {
     const framework = frameworkData[selectedFramework];
     return (
       <View style={styles.section}>
-        <View style={styles.accessibilityCard}>
-          <Text style={styles.cardTitle}>Screen Reader Support</Text>
+        <View style={[styles.accessibilityCard, themedStyles.accessibilityCard]}>
+          <Text style={[styles.cardTitle, themedStyles.cardTitle]}>Screen Reader Support</Text>
           <View style={styles.platformSupport}>
             <View style={styles.platformItem}>
-              <Ionicons name="logo-apple" size={24} color="#000" />
-              <Text style={styles.platformText}>{framework.accessibility.screenReaders.ios}</Text>
+              <Ionicons name="logo-apple" size={24} color={isDarkMode ? colors.text : '#000'} />
+              <Text style={[styles.platformText, themedStyles.platformText]}>{framework.accessibility.screenReaders.ios}</Text>
             </View>
             <View style={styles.platformItem}>
-              <Ionicons name="logo-android" size={24} color="#3DDC84" />
-              <Text style={styles.platformText}>{framework.accessibility.screenReaders.android}</Text>
+              <Ionicons name="logo-android" size={24} color={isDarkMode ? colors.text : '#3DDC84'} />
+              <Text style={[styles.platformText, themedStyles.platformText]}>{framework.accessibility.screenReaders.android}</Text>
             </View>
           </View>
           {renderRatingBar(framework.accessibility.screenReaders.rating)}
         </View>
 
-        <View style={styles.accessibilityCard}>
-          <Text style={styles.cardTitle}>Semantic Support</Text>
-          <Text style={styles.supportText}>{framework.accessibility.semantics.support}</Text>
+        <View style={[styles.accessibilityCard, themedStyles.accessibilityCard]}>
+          <Text style={[styles.cardTitle, themedStyles.cardTitle]}>Semantic Support</Text>
+          <Text style={[styles.supportText, themedStyles.supportText]}>{framework.accessibility.semantics.support}</Text>
           <View style={styles.featureList}>
             {framework.accessibility.semantics.features.map((feature, index) => (
               <View key={index} style={styles.featureItem}>
                 <Ionicons name="checkmark-circle" size={20} color="#28A745" />
-                <Text style={styles.featureText}>{feature}</Text>
+                <Text style={[styles.featureText, themedStyles.featureText]}>{feature}</Text>
               </View>
             ))}
           </View>
           {renderRatingBar(framework.accessibility.semantics.rating)}
         </View>
 
-        <View style={styles.accessibilityCard}>
-          <Text style={styles.cardTitle}>Focus Management</Text>
-          <Text style={styles.supportText}>{framework.accessibility.focusManagement.support}</Text>
+        <View style={[styles.accessibilityCard, themedStyles.accessibilityCard]}>
+          <Text style={[styles.cardTitle, themedStyles.cardTitle]}>Focus Management</Text>
+          <Text style={[styles.supportText, themedStyles.supportText]}>{framework.accessibility.focusManagement.support}</Text>
           <View style={styles.featureList}>
-            {framework.accessibility.focusManagement.features.map((feature, index) => (
-              <View key={index} style={styles.featureItem}>
-                <Ionicons name="checkmark-circle" size={20} color="#28A745" />
-                <Text style={styles.featureText}>{feature}</Text>
-              </View>
-            ))}
-          </View>
-          {renderRatingBar(framework.accessibility.focusManagement.rating)}
-        </View>
-      </View>
-    );
-  };
+{framework.accessibility.focusManagement.features.map((feature, index) => (
+    <View key={index} style={styles.featureItem}>
+      <Ionicons name="checkmark-circle" size={20} color="#28A745" />
+      <Text style={[styles.featureText, themedStyles.featureText]}>{feature}</Text>
+    </View>
+  ))}
+</View>
+{renderRatingBar(framework.accessibility.focusManagement.rating)}
+</View>
+</View>
+);
+};
 
-  const renderPerformanceSection = () => {
-    const framework = frameworkData[selectedFramework];
-    return (
-      <View style={styles.section}>
-        <View style={styles.performanceCard}>
-          <View style={styles.performanceItem}>
-            <Ionicons name="timer-outline" size={24} color="#007AFF" />
-            <View style={styles.performanceInfo}>
-              <Text style={styles.performanceLabel}>Startup Time</Text>
-              <Text style={styles.performanceValue}>{framework.performance.startupTime}</Text>
-            </View>
-          </View>
-          <View style={styles.performanceItem}>
-            <Ionicons name="hardware-chip-outline" size={24} color="#007AFF" />
-            <View style={styles.performanceInfo}>
-              <Text style={styles.performanceLabel}>Memory Usage</Text>
-              <Text style={styles.performanceValue}>{framework.performance.memoryUsage}</Text>
-            </View>
-          </View>
-          <View style={styles.performanceItem}>
-            <Ionicons name="archive-outline" size={24} color="#007AFF" />
-            <View style={styles.performanceInfo}>
-              <Text style={styles.performanceLabel}>Bundle Size</Text>
-              <Text style={styles.performanceValue}>{framework.performance.bundleSize}</Text>
-            </View>
-          </View>
-        </View>
-        <View style={styles.performanceRating}>
-          <Text style={styles.ratingLabel}>Overall Performance Rating</Text>
-          {renderRatingBar(framework.performance.rating)}
-        </View>
-      </View>
-    );
-  };
-
-  const renderDevelopmentSection = () => {
-    const framework = frameworkData[selectedFramework];
-    return (
-      <View style={styles.section}>
-        <View style={styles.developmentCard}>
-          <Text style={styles.cardTitle}>Development Tools</Text>
-          <View style={styles.toolList}>
-            <View style={styles.toolItem}>
-              <Ionicons name="construct-outline" size={24} color="#007AFF" />
-              <View style={styles.toolInfo}>
-                <Text style={styles.toolLabel}>Testing Framework</Text>
-                <Text style={styles.toolValue}>{framework.development.testing}</Text>
-              </View>
-            </View>
-            <View style={styles.toolItem}>
-              <Ionicons name="bug-outline" size={24} color="#007AFF" />
-              <View style={styles.toolInfo}>
-                <Text style={styles.toolLabel}>Debugging Tools</Text>
-                <Text style={styles.toolValue}>{framework.development.debugging}</Text>
-              </View>
-            </View>
-          </View>
-        </View>
-      </View>
-    );
-  };
-
-  const renderContent = () => {
-    switch (selectedCategory) {
-      case 'overview':
-        return renderOverviewSection();
-      case 'accessibility':
-        return renderAccessibilitySection();
-      case 'performance':
-        return renderPerformanceSection();
-      case 'development':
-        return renderDevelopmentSection();
-      default:
-        return renderOverviewSection();
-    }
-  };
-
+const renderPerformanceSection = () => {
+  const framework = frameworkData[selectedFramework];
   return (
-    <ScrollView style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.headerTitle}>Framework Comparison</Text>
-        <Text style={styles.headerDescription}>
-          Compare key features and capabilities of popular mobile development frameworks
-        </Text>
+    <View style={styles.section}>
+      <View style={[styles.performanceCard, themedStyles.performanceCard]}>
+        <View style={styles.performanceItem}>
+          <Ionicons name="timer-outline" size={24} color={colors.primary} />
+          <View style={styles.performanceInfo}>
+            <Text style={[styles.performanceLabel, themedStyles.performanceLabel]}>Startup Time</Text>
+            <Text style={[styles.performanceValue, themedStyles.performanceValue]}>{framework.performance.startupTime}</Text>
+          </View>
+        </View>
+        <View style={styles.performanceItem}>
+          <Ionicons name="hardware-chip-outline" size={24} color={colors.primary} />
+          <View style={styles.performanceInfo}>
+            <Text style={[styles.performanceLabel, themedStyles.performanceLabel]}>Memory Usage</Text>
+            <Text style={[styles.performanceValue, themedStyles.performanceValue]}>{framework.performance.memoryUsage}</Text>
+          </View>
+        </View>
+        <View style={styles.performanceItem}>
+          <Ionicons name="archive-outline" size={24} color={colors.primary} />
+          <View style={styles.performanceInfo}>
+            <Text style={[styles.performanceLabel, themedStyles.performanceLabel]}>Bundle Size</Text>
+            <Text style={[styles.performanceValue, themedStyles.performanceValue]}>{framework.performance.bundleSize}</Text>
+          </View>
+        </View>
       </View>
-
-      {renderFrameworkSelection()}
-      {renderCategoryTabs()}
-      {renderContent()}
-    </ScrollView>
+      <View style={[styles.performanceRating, themedStyles.performanceRating]}>
+        <Text style={[styles.ratingLabel, themedStyles.ratingLabel]}>Overall Performance Rating</Text>
+        {renderRatingBar(framework.performance.rating)}
+      </View>
+    </View>
   );
+};
+
+const renderDevelopmentSection = () => {
+  const framework = frameworkData[selectedFramework];
+  return (
+    <View style={styles.section}>
+      <View style={[styles.developmentCard, themedStyles.developmentCard]}>
+        <Text style={[styles.cardTitle, themedStyles.cardTitle]}>Development Tools</Text>
+        <View style={styles.toolList}>
+          <View style={styles.toolItem}>
+            <Ionicons name="construct-outline" size={24} color={colors.primary} />
+            <View style={styles.toolInfo}>
+              <Text style={[styles.toolLabel, themedStyles.toolLabel]}>Testing Framework</Text>
+              <Text style={[styles.toolValue, themedStyles.toolValue]}>{framework.development.testing}</Text>
+            </View>
+          </View>
+          <View style={styles.toolItem}>
+            <Ionicons name="bug-outline" size={24} color={colors.primary} />
+            <View style={styles.toolInfo}>
+              <Text style={[styles.toolLabel, themedStyles.toolLabel]}>Debugging Tools</Text>
+              <Text style={[styles.toolValue, themedStyles.toolValue]}>{framework.development.debugging}</Text>
+            </View>
+          </View>
+        </View>
+      </View>
+    </View>
+  );
+};
+
+const renderContent = () => {
+  switch (selectedCategory) {
+    case 'overview':
+      return renderOverviewSection();
+    case 'accessibility':
+      return renderAccessibilitySection();
+    case 'performance':
+      return renderPerformanceSection();
+    case 'development':
+      return renderDevelopmentSection();
+    default:
+      return renderOverviewSection();
+  }
+};
+
+return (
+  <ScrollView style={[styles.container, themedStyles.container]}>
+    <View style={[styles.header, themedStyles.header]}>
+      <Text style={[styles.headerTitle, themedStyles.headerTitle]}>Framework Comparison</Text>
+      <Text style={[styles.headerDescription, themedStyles.headerDescription]}>
+        Compare key features and capabilities of popular mobile development frameworks
+      </Text>
+    </View>
+
+    {renderFrameworkSelection()}
+    {renderCategoryTabs()}
+    {renderContent()}
+  </ScrollView>
+);
 };
 
 const styles = StyleSheet.create({
