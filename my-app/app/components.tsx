@@ -16,7 +16,7 @@ export default function ComponentsScreen() {
       </View>
 
       <View style={styles.section}>
-        <TouchableOpacity style={styles.componentCard} accessibilityRole="button" onPress={() => router.push('/accessible-components/basic-button')}>
+        <TouchableOpacity style={styles.componentCard} accessibilityRole="button" onPress={() => router.push('/accessible-components/accessible-button')}>
           <View style={styles.cardHeader}>
             <View style={[styles.iconContainer, { backgroundColor: '#E8F1FF' }]}>
               <Ionicons name="radio-button-on-outline" size={24} color="#0055CC" />
@@ -72,7 +72,7 @@ export default function ComponentsScreen() {
           </View>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.componentCard} accessibilityRole="button" onPress={() => router.push('/accessible-components/media-content')}>
+        <TouchableOpacity style={styles.componentCard} accessibilityRole="button" onPress={() => router.push('/accessible-components/accessible-media')}>
           <View style={styles.cardHeader}>
             <View style={[styles.iconContainer, { backgroundColor: '#FFF4E6' }]}>
               <Ionicons name="image-outline" size={24} color="#FF8C00" />
@@ -103,7 +103,7 @@ export default function ComponentsScreen() {
         <TouchableOpacity
           style={styles.componentCard}
           accessibilityRole="button"
-          onPress={() => router.push('/accessible-components/interactive-dialog')}
+          onPress={() => router.push('/accessible-components/accessible-dialog')}
         >
           <View style={styles.cardHeader}>
             <View style={[styles.iconContainer, { backgroundColor: '#E6F4FF' }]}>

@@ -11,7 +11,7 @@ export default function ComponentsLayout() {
       }}
     >
       <Stack.Screen
-        name="basic-button"
+        name="accessible-button"
         options={{
           title: "Basic Button",
           headerShown: false,
@@ -27,7 +27,7 @@ export default function ComponentsLayout() {
         }}
       />
       <Stack.Screen
-        name="media-content"
+        name="accessible-media"
         options={{
           title: "Media Content",
           headerShown: false,
@@ -35,7 +35,7 @@ export default function ComponentsLayout() {
         }}
       />
       <Stack.Screen
-        name="interactive-dialog"
+        name="accessible-dialog"
         options={{
           title: "Interactive Dialog",
           headerShown: false,
