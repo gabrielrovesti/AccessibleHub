@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Clipboard } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Clipboard, Modal } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from "expo-router";
 import { useTheme } from '../../context/ThemeContext';
@@ -7,6 +7,7 @@ import { useTheme } from '../../context/ThemeContext';
 const AccessibleButtonExample = () => {
   const [copied, setCopied] = useState(false);
   const router = useRouter();
+  const [showSuccess, setShowSuccess] = useState(false);
   const { colors, textSizes, isDarkMode } = useTheme();
 
   const codeExample = `<TouchableOpacity
@@ -43,7 +44,10 @@ const AccessibleButtonExample = () => {
       accessibilityRole="button"
       accessibilityLabel="Submit form"
       accessibilityHint="Activates form submission"
-      onPress={() => {}}
+      onPress={() => {
+        setShowSuccess(true);
+        setTimeout(() => setShowSuccess(false), 2000);
+      }}
     >
       <Text style={[styles.buttonText, { color: colors.background }]}>Submit</Text>
     </TouchableOpacity>
@@ -111,6 +115,15 @@ const AccessibleButtonExample = () => {
     copiedText: {
       color: '#28A745',
     },
+   successModal: {
+      backgroundColor: isDarkMode ? 'rgba(0, 0, 0, 0.8)' : 'rgba(0, 0, 0, 0.5)',
+    },
+    successContent: {
+      backgroundColor: colors.surface,
+    },
+    successText: {
+      color: colors.text,
+    }
   };
   return (
     <ScrollView style={[styles.container, themedStyles.container]}>
@@ -185,6 +198,27 @@ const AccessibleButtonExample = () => {
           </View>
         </View>
       </View>
+
+       <Modal
+          visible={showSuccess}
+          transparent
+          animationType="fade"
+          onRequestClose={() => setShowSuccess(false)}
+          accessibilityViewIsModal={true}
+          accessibilityLiveRegion="polite"
+        >
+          <View style={[styles.modalOverlay, themedStyles.successModal]}>
+            <View style={[styles.successContent, themedStyles.successContent]}>
+              <View style={styles.successIconContainer}>
+                <Ionicons name="checkmark-circle" size={48} color={colors.primary} />
+              </View>
+              <Text style={[styles.successText, themedStyles.successText]}>
+                Button pressed successfully
+              </Text>
+            </View>
+          </View>
+        </Modal>
+
     </ScrollView>
   );
 };
@@ -309,6 +343,30 @@ const styles = StyleSheet.create({
   copiedText: {
     color: '#28A745',
   },
+  modalOverlay: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+  },
+    successContent: {
+      padding: 24,
+      borderRadius: 16,
+      alignItems: 'center',
+      minWidth: 200,
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.25,
+      shadowRadius: 4,
+      elevation: 5,
+    },
+    successIconContainer: {
+      marginBottom: 16,
+    },
+    successText: {
+      fontSize: 16,
+      fontWeight: '600',
+      textAlign: 'center',
+    },
 });
 
 export default AccessibleButtonExample;

@@ -1,30 +1,68 @@
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { useTheme } from '../../context/ThemeContext';
 
 const SemanticStructureScreen = () => {
+  const { colors, textSizes, isDarkMode } = useTheme();
+
+  const themedStyles = {
+    container: {
+      backgroundColor: colors.background,
+    },
+    header: {
+      backgroundColor: colors.surface,
+      borderBottomColor: colors.border,
+    },
+    headerTitle: {
+      color: colors.text,
+    },
+    headerSubtitle: {
+      color: colors.textSecondary,
+    },
+    card: {
+      backgroundColor: colors.surface,
+      shadowColor: isDarkMode ? '#000' : colors.border,
+    },
+    cardTitle: {
+      color: colors.text,
+    },
+    cardDescription: {
+      color: colors.textSecondary,
+    },
+    codeExample: {
+      backgroundColor: '#1c1c1e', // Keep consistent dark background for code
+    },
+    codeText: {
+      color: '#fff', // Keep consistent light text for code
+    },
+    keyPoint: {
+      color: colors.textSecondary,
+    }
+  };
+
   return (
-    <ScrollView style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.headerTitle}>Semantic Structure</Text>
-        <Text style={styles.headerSubtitle}>
+    <ScrollView style={[styles.container, themedStyles.container]}>
+      <View style={[styles.header, themedStyles.header]}>
+        <Text style={[styles.headerTitle, themedStyles.headerTitle]}>Semantic Structure</Text>
+        <Text style={[styles.headerSubtitle, themedStyles.headerSubtitle]}>
           Building meaningful and well-organized content hierarchies
         </Text>
       </View>
 
       <View style={styles.section}>
-        <View style={styles.card}>
+        <View style={[styles.card, themedStyles.card]}>
           <View style={styles.cardHeader}>
-            <View style={[styles.iconContainer, { backgroundColor: '#FFF4E6' }]}>
-              <Ionicons name="layers-outline" size={24} color="#FF8C00" />
+            <View style={[styles.iconContainer, { backgroundColor: isDarkMode ? colors.surface : '#FFF4E6' }]}>
+              <Ionicons name="layers-outline" size={24} color={colors.primary} />
             </View>
-            <Text style={styles.cardTitle}>Content Hierarchy</Text>
+            <Text style={[styles.cardTitle, themedStyles.cardTitle]}>Content Hierarchy</Text>
           </View>
-          <Text style={styles.cardDescription}>
+          <Text style={[styles.cardDescription, themedStyles.cardDescription]}>
             Proper headings and landmarks help users understand content organization.
           </Text>
-          <View style={styles.codeExample}>
-            <Text style={styles.codeText}>{`// Good Example
+          <View style={[styles.codeExample, themedStyles.codeExample]}>
+            <Text style={[styles.codeText, themedStyles.codeText]}>{`// Good Example
 <View accessibilityRole="header">
   <Text accessibilityRole="heading">
     Main Title
@@ -39,37 +77,37 @@ const SemanticStructureScreen = () => {
           </View>
         </View>
 
-        <View style={styles.card}>
+        <View style={[styles.card, themedStyles.card]}>
           <View style={styles.cardHeader}>
-            <View style={[styles.iconContainer, { backgroundColor: '#FFF4E6' }]}>
-              <Ionicons name="list-outline" size={24} color="#FF8C00" />
+            <View style={[styles.iconContainer, { backgroundColor: isDarkMode ? colors.surface : '#FFF4E6' }]}>
+              <Ionicons name="list-outline" size={24} color={colors.primary} />
             </View>
-            <Text style={styles.cardTitle}>Navigation Order</Text>
+            <Text style={[styles.cardTitle, themedStyles.cardTitle]}>Navigation Order</Text>
           </View>
-          <Text style={styles.cardDescription}>
+          <Text style={[styles.cardDescription, themedStyles.cardDescription]}>
             Logical tab order that matches visual layout improves navigation.
           </Text>
           <View style={styles.keyPoints}>
-            <Text style={styles.keyPoint}>• Use natural reading order</Text>
-            <Text style={styles.keyPoint}>• Group related elements</Text>
-            <Text style={styles.keyPoint}>• Maintain consistent structure</Text>
+            <Text style={[styles.keyPoint, themedStyles.keyPoint]}>• Use natural reading order</Text>
+            <Text style={[styles.keyPoint, themedStyles.keyPoint]}>• Group related elements</Text>
+            <Text style={[styles.keyPoint, themedStyles.keyPoint]}>• Maintain consistent structure</Text>
           </View>
         </View>
 
-        <View style={styles.card}>
+        <View style={[styles.card, themedStyles.card]}>
           <View style={styles.cardHeader}>
-            <View style={[styles.iconContainer, { backgroundColor: '#FFF4E6' }]}>
-              <Ionicons name="apps-outline" size={24} color="#FF8C00" />
+            <View style={[styles.iconContainer, { backgroundColor: isDarkMode ? colors.surface : '#FFF4E6' }]}>
+              <Ionicons name="apps-outline" size={24} color={colors.primary} />
             </View>
-            <Text style={styles.cardTitle}>Landmarks & Regions</Text>
+            <Text style={[styles.cardTitle, themedStyles.cardTitle]}>Landmarks & Regions</Text>
           </View>
-          <Text style={styles.cardDescription}>
+          <Text style={[styles.cardDescription, themedStyles.cardDescription]}>
             Define distinct areas of content to aid navigation and comprehension.
           </Text>
           <View style={styles.keyPoints}>
-            <Text style={styles.keyPoint}>• Mark main content areas</Text>
-            <Text style={styles.keyPoint}>• Identify navigation sections</Text>
-            <Text style={styles.keyPoint}>• Label complementary content</Text>
+            <Text style={[styles.keyPoint, themedStyles.keyPoint]}>• Mark main content areas</Text>
+            <Text style={[styles.keyPoint, themedStyles.keyPoint]}>• Identify navigation sections</Text>
+            <Text style={[styles.keyPoint, themedStyles.keyPoint]}>• Label complementary content</Text>
           </View>
         </View>
       </View>

@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Platform } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { useTheme } from '../../context/ThemeContext';
 
 const ScreenReaderSupportScreen = () => {
   const [activeSection, setActiveSection] = useState(null);
+  const { colors, textSizes, isDarkMode } = useTheme();
 
   const platformSpecificGuides = {
     ios: [
@@ -26,26 +28,103 @@ const ScreenReaderSupportScreen = () => {
     ]
   };
 
+  const themedStyles = {
+    container: {
+      backgroundColor: colors.background,
+    },
+    header: {
+      backgroundColor: colors.surface,
+      borderBottomColor: colors.border,
+    },
+    headerTitle: {
+      color: colors.text,
+    },
+    headerDescription: {
+      color: colors.textSecondary,
+    },
+    platformButton: {
+      backgroundColor: colors.surface,
+      borderColor: colors.border,
+      borderWidth: 1,
+    },
+    platformButtonActive: {
+      backgroundColor: colors.primary,
+    },
+    platformButtonText: {
+      color: colors.text,
+    },
+    platformButtonTextActive: {
+      color: colors.background,
+    },
+    platformIcon: {
+      color: colors.text,
+    },
+    platformIconActive: {
+      color: colors.background,
+    },
+    sectionTitle: {
+      color: colors.text,
+    },
+    gestureItem: {
+      backgroundColor: colors.surface,
+    },
+    gestureName: {
+      color: colors.text,
+    },
+    gestureDescription: {
+      color: colors.textSecondary,
+    },
+    card: {
+      backgroundColor: colors.surface,
+    },
+    cardTitle: {
+      color: colors.text,
+    },
+    practiceItem: {
+      color: colors.textSecondary,
+    },
+    learnMoreText: {
+      color: colors.primary,
+    },
+    checklistCard: {
+      backgroundColor: colors.surface,
+    },
+    checklistText: {
+      color: colors.textSecondary,
+    }
+  };
+
   return (
-    <ScrollView style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.headerTitle}>Screen Reader Guide</Text>
-        <Text style={styles.headerDescription}>
+    <ScrollView style={[styles.container, themedStyles.container]}>
+      <View style={[styles.header, themedStyles.header]}>
+        <Text style={[styles.headerTitle, themedStyles.headerTitle]}>Screen Reader Guide</Text>
+        <Text style={[styles.headerDescription, themedStyles.headerDescription]}>
           Comprehensive guide for optimizing your app for VoiceOver and TalkBack
         </Text>
       </View>
 
-      {/* Platform Selection */}
       <View style={styles.platformSection}>
         <TouchableOpacity
           style={[
             styles.platformButton,
-            activeSection === 'ios' && styles.platformButtonActive
+            themedStyles.platformButton,
+            activeSection === 'ios' && themedStyles.platformButtonActive
           ]}
           onPress={() => setActiveSection('ios')}
+          accessibilityRole="button"
+          accessibilityState={{ selected: activeSection === 'ios' }}
+          accessibilityLabel="VoiceOver iOS guide"
         >
-          <Ionicons name="logo-apple" size={24} color={activeSection === 'ios' ? "#fff" : "#000"} />
-          <Text style={[styles.platformButtonText, activeSection === 'ios' && styles.platformButtonTextActive]}>
+          <Ionicons
+            name="logo-apple"
+            size={24}
+            color={activeSection === 'ios' ? themedStyles.platformIconActive.color : themedStyles.platformIcon.color}
+          />
+          <Text style={[
+            styles.platformButtonText,
+            themedStyles.platformButtonText,
+            activeSection === 'ios' && themedStyles.platformButtonTextActive
+          ]}>
             VoiceOver (iOS)
           </Text>
         </TouchableOpacity>
@@ -53,105 +132,139 @@ const ScreenReaderSupportScreen = () => {
         <TouchableOpacity
           style={[
             styles.platformButton,
-            activeSection === 'android' && styles.platformButtonActive
+            themedStyles.platformButton,
+            activeSection === 'android' && themedStyles.platformButtonActive
           ]}
           onPress={() => setActiveSection('android')}
+          accessibilityRole="button"
+          accessibilityState={{ selected: activeSection === 'android' }}
+          accessibilityLabel="TalkBack Android guide"
         >
-          <Ionicons name="logo-android" size={24} color={activeSection === 'android' ? "#fff" : "#000"} />
-          <Text style={[styles.platformButtonText, activeSection === 'android' && styles.platformButtonTextActive]}>
+          <Ionicons
+            name="logo-android"
+            size={24}
+            color={activeSection === 'android' ? themedStyles.platformIconActive.color : themedStyles.platformIcon.color}
+          />
+          <Text style={[
+            styles.platformButtonText,
+            themedStyles.platformButtonText,
+            activeSection === 'android' && themedStyles.platformButtonTextActive
+          ]}>
             TalkBack (Android)
           </Text>
         </TouchableOpacity>
       </View>
 
-      {/* Gesture Guide */}
       {activeSection && (
         <View style={styles.gestureGuide}>
-          <Text style={styles.sectionTitle}>Essential Gestures</Text>
+          <Text style={[styles.sectionTitle, themedStyles.sectionTitle]}>Essential Gestures</Text>
           {platformSpecificGuides[activeSection].map((item, index) => (
-            <View key={index} style={styles.gestureItem}>
+            <View
+              key={index}
+              style={[styles.gestureItem, themedStyles.gestureItem]}
+              accessibilityRole="text"
+              accessibilityLabel={`${item.gesture}: ${item.action}`}
+            >
               <View style={styles.gestureHeader}>
-                <Ionicons name="hand-left-outline" size={24} color="#007AFF" />
-                <Text style={styles.gestureName}>{item.gesture}</Text>
+                <Ionicons name="hand-left-outline" size={24} color={colors.primary} />
+                <Text style={[styles.gestureName, themedStyles.gestureName]}>{item.gesture}</Text>
               </View>
-              <Text style={styles.gestureDescription}>{item.action}</Text>
+              <Text style={[styles.gestureDescription, themedStyles.gestureDescription]}>{item.action}</Text>
             </View>
           ))}
         </View>
       )}
 
-      {/* Best Practices */}
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Implementation Guide</Text>
+        <Text style={[styles.sectionTitle, themedStyles.sectionTitle]}>Implementation Guide</Text>
 
-        <View style={styles.card}>
+        <View style={[styles.card, themedStyles.card]}>
           <View style={styles.cardHeader}>
-            <Ionicons name="code-working-outline" size={24} color="#007AFF" />
-            <Text style={styles.cardTitle}>Semantic Structure</Text>
+            <Ionicons name="code-working-outline" size={24} color={colors.primary} />
+            <Text style={[styles.cardTitle, themedStyles.cardTitle]}>Semantic Structure</Text>
           </View>
           <View style={styles.cardContent}>
-            <Text style={styles.practiceItem}>• Use proper heading hierarchy</Text>
-            <Text style={styles.practiceItem}>• Implement meaningful landmarks</Text>
-            <Text style={styles.practiceItem}>• Group related elements logically</Text>
-            <TouchableOpacity style={styles.learnMoreButton}>
-              <Text style={styles.learnMoreText}>View Code Examples</Text>
-              <Ionicons name="arrow-forward" size={16} color="#007AFF" />
+            <Text style={[styles.practiceItem, themedStyles.practiceItem]}>• Use proper heading hierarchy</Text>
+            <Text style={[styles.practiceItem, themedStyles.practiceItem]}>• Implement meaningful landmarks</Text>
+            <Text style={[styles.practiceItem, themedStyles.practiceItem]}>• Group related elements logically</Text>
+            <TouchableOpacity
+              style={styles.learnMoreButton}
+              accessibilityRole="button"
+              accessibilityLabel="View semantic structure code examples"
+            >
+              <Text style={[styles.learnMoreText, themedStyles.learnMoreText]}>View Code Examples</Text>
+              <Ionicons name="arrow-forward" size={16} color={colors.primary} />
             </TouchableOpacity>
           </View>
         </View>
 
-        <View style={styles.card}>
+        <View style={[styles.card, themedStyles.card]}>
           <View style={styles.cardHeader}>
-            <Ionicons name="text-outline" size={24} color="#007AFF" />
-            <Text style={styles.cardTitle}>Content Descriptions</Text>
+            <Ionicons name="text-outline" size={24} color={colors.primary} />
+            <Text style={[styles.cardTitle, themedStyles.cardTitle]}>Content Descriptions</Text>
           </View>
           <View style={styles.cardContent}>
-            <Text style={styles.practiceItem}>• Provide clear accessibilityLabels</Text>
-            <Text style={styles.practiceItem}>• Include meaningful hints</Text>
-            <Text style={styles.practiceItem}>• Describe state changes</Text>
-            <TouchableOpacity style={styles.learnMoreButton}>
-              <Text style={styles.learnMoreText}>View Guidelines</Text>
-              <Ionicons name="arrow-forward" size={16} color="#007AFF" />
+            <Text style={[styles.practiceItem, themedStyles.practiceItem]}>• Provide clear accessibilityLabels</Text>
+            <Text style={[styles.practiceItem, themedStyles.practiceItem]}>• Include meaningful hints</Text>
+            <Text style={[styles.practiceItem, themedStyles.practiceItem]}>• Describe state changes</Text>
+            <TouchableOpacity
+              style={styles.learnMoreButton}
+              accessibilityRole="button"
+              accessibilityLabel="View content description guidelines"
+            >
+              <Text style={[styles.learnMoreText, themedStyles.learnMoreText]}>View Guidelines</Text>
+              <Ionicons name="arrow-forward" size={16} color={colors.primary} />
             </TouchableOpacity>
           </View>
         </View>
 
-        <View style={styles.card}>
+        <View style={[styles.card, themedStyles.card]}>
           <View style={styles.cardHeader}>
-            <Ionicons name="options-outline" size={24} color="#007AFF" />
-            <Text style={styles.cardTitle}>Interactive Elements</Text>
+            <Ionicons name="options-outline" size={24} color={colors.primary} />
+            <Text style={[styles.cardTitle, themedStyles.cardTitle]}>Interactive Elements</Text>
           </View>
           <View style={styles.cardContent}>
-            <Text style={styles.practiceItem}>• Define proper roles</Text>
-            <Text style={styles.practiceItem}>• Manage focus appropriately</Text>
-            <Text style={styles.practiceItem}>• Handle custom actions</Text>
-            <TouchableOpacity style={styles.learnMoreButton}>
-              <Text style={styles.learnMoreText}>View Examples</Text>
-              <Ionicons name="arrow-forward" size={16} color="#007AFF" />
+            <Text style={[styles.practiceItem, themedStyles.practiceItem]}>• Define proper roles</Text>
+            <Text style={[styles.practiceItem, themedStyles.practiceItem]}>• Manage focus appropriately</Text>
+            <Text style={[styles.practiceItem, themedStyles.practiceItem]}>• Handle custom actions</Text>
+            <TouchableOpacity
+              style={styles.learnMoreButton}
+              accessibilityRole="button"
+              accessibilityLabel="View interactive elements examples"
+            >
+              <Text style={[styles.learnMoreText, themedStyles.learnMoreText]}>View Examples</Text>
+              <Ionicons name="arrow-forward" size={16} color={colors.primary} />
             </TouchableOpacity>
           </View>
         </View>
       </View>
 
-      {/* Testing Section */}
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Testing Checklist</Text>
-        <View style={styles.checklistCard}>
+        <Text style={[styles.sectionTitle, themedStyles.sectionTitle]}>Testing Checklist</Text>
+        <View style={[styles.checklistCard, themedStyles.checklistCard]}>
           <View style={styles.checklistItem}>
             <Ionicons name="checkmark-circle" size={24} color="#28A745" />
-            <Text style={styles.checklistText}>Verify all elements have proper labels</Text>
+            <Text style={[styles.checklistText, themedStyles.checklistText]}>
+              Verify all elements have proper labels
+            </Text>
           </View>
           <View style={styles.checklistItem}>
             <Ionicons name="checkmark-circle" size={24} color="#28A745" />
-            <Text style={styles.checklistText}>Test navigation flow with screen reader</Text>
+            <Text style={[styles.checklistText, themedStyles.checklistText]}>
+              Test navigation flow with screen reader
+            </Text>
           </View>
           <View style={styles.checklistItem}>
             <Ionicons name="checkmark-circle" size={24} color="#28A745" />
-            <Text style={styles.checklistText}>Confirm state changes are announced</Text>
+            <Text style={[styles.checklistText, themedStyles.checklistText]}>
+              Confirm state changes are announced
+            </Text>
           </View>
           <View style={styles.checklistItem}>
             <Ionicons name="checkmark-circle" size={24} color="#28A745" />
-            <Text style={styles.checklistText}>Validate custom actions work correctly</Text>
+            <Text style={[styles.checklistText, themedStyles.checklistText]}>
+              Validate custom actions work correctly
+            </Text>
           </View>
         </View>
       </View>

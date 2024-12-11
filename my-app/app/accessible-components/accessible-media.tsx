@@ -73,32 +73,8 @@ const AccessibleMediaExample = () => {
     demoContainer: {
       backgroundColor: colors.surface,
     },
-    demoButton: {
-      backgroundColor: colors.primary,
-    },
-    buttonText: {
-      color: colors.background,
-    },
     demoText: {
       color: colors.textSecondary,
-    },
-    overlay: {
-      backgroundColor: isDarkMode ? 'rgba(0, 0, 0, 0.7)' : 'rgba(0, 0, 0, 0.5)',
-    },
-    dialog: {
-      backgroundColor: colors.surface,
-    },
-    dialogTitle: {
-      color: colors.text,
-    },
-    dialogContent: {
-      color: colors.textPrimary,
-    },
-    dialogButtonText: {
-      color: colors.background,
-    },
-    secondaryButtonText: {
-      color: colors.text,
     },
     featuresContainer: {
       backgroundColor: colors.surface,
@@ -110,24 +86,37 @@ const AccessibleMediaExample = () => {
       color: colors.textSecondary,
     },
     codeContainer: {
-      backgroundColor: colors.codeBackground,
+      backgroundColor: '#1c1c1e', // Fixed dark background for code
+    },
+    codeText: {
+      color: '#fff', // Fixed light text for code
     },
     codeHeader: {
-      borderBottomColor: colors.border,
+      borderBottomColor: '#333', // Fixed border color for code header
     },
     codeHeaderText: {
-      color: colors.textSecondary,
+      color: '#999', // Fixed color for code header text
     },
     copyText: {
-      color: colors.textSecondary,
+      color: '#666', // Fixed color for copy button text
     },
     copiedText: {
       color: '#28A745',
+    },
+    altTextContainer: {
+      backgroundColor: colors.surface,
+    },
+    altTextContent: {
+      color: colors.textSecondary,
+    },
+    altTextRole: {
+      color: colors.textSecondary,
     },
   };
 
   return (
     <ScrollView style={[styles.container, themedStyles.container]}>
+      {/* Interactive Example Section */}
       <View style={styles.section}>
         <Text style={[styles.sectionTitle, themedStyles.sectionTitle]}>Interactive Example</Text>
         <View style={[styles.demoContainer, themedStyles.demoContainer]}>
@@ -158,7 +147,7 @@ const AccessibleMediaExample = () => {
               accessibilityLabel={showAltText ? "Hide alt text" : "Show alt text"}
               accessibilityRole="button"
             >
-              <Text style={[styles.altTextButtonText, { color: colors.background }]}>
+              <Text style={{ color: colors.background, fontWeight: '600' }}>
                 {showAltText ? "Hide Alt Text" : "Show Alt Text"}
               </Text>
             </TouchableOpacity>
@@ -180,8 +169,12 @@ const AccessibleMediaExample = () => {
           {showAltText && (
             <View style={[styles.altTextContainer, themedStyles.altTextContainer]}>
               <Text style={styles.altTextTitle}>Alt Text:</Text>
-              <Text style={[styles.altTextContent, themedStyles.altTextContent]}>{images[currentImage - 1].alt}</Text>
-              <Text style={[styles.altTextRole, themedStyles.altTextRole]}>Role: {images[currentImage - 1].role}</Text>
+              <Text style={[styles.altTextContent, themedStyles.altTextContent]}>
+                {images[currentImage - 1].alt}
+              </Text>
+              <Text style={[styles.altTextRole, themedStyles.altTextRole]}>
+                Role: {images[currentImage - 1].role}
+              </Text>
             </View>
           )}
           <Text style={[styles.demoText, themedStyles.demoText]}>
@@ -190,6 +183,7 @@ const AccessibleMediaExample = () => {
         </View>
       </View>
 
+      {/* Implementation Section */}
       <View style={styles.section}>
         <Text style={[styles.sectionTitle, themedStyles.sectionTitle]}>Implementation</Text>
         <View style={[styles.codeContainer, themedStyles.codeContainer]}>
@@ -204,7 +198,7 @@ const AccessibleMediaExample = () => {
               <Ionicons
                 name={copied ? "checkmark" : "copy-outline"}
                 size={20}
-                color={copied ? "#28A745" : colors.textSecondary}
+                color={copied ? "#28A745" : "#999"}
               />
               <Text style={[styles.copyText, copied && styles.copiedText, themedStyles.copyText]}>
                 {copied ? "Copied!" : "Copy"}
@@ -217,6 +211,7 @@ const AccessibleMediaExample = () => {
         </View>
       </View>
 
+      {/* Accessibility Features Section */}
       <View style={styles.section}>
         <Text style={[styles.sectionTitle, themedStyles.sectionTitle]}>Accessibility Features</Text>
         <View style={[styles.featuresContainer, themedStyles.featuresContainer]}>
@@ -305,10 +300,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     borderRadius: 8,
   },
-  altTextButtonText: {
-    color: '#fff',
-    fontWeight: '600',
-  },
   demoText: {
     fontSize: 14,
     color: '#666',
@@ -326,14 +317,7 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     marginBottom: 4,
   },
-  altTextContent: {
-    color: '#666',
-    marginBottom: 4,
-  },
-  altTextRole: {
-    color: '#666',
-    fontStyle: 'italic',
-  },
+  // Code section styles
   codeContainer: {
     backgroundColor: '#1c1c1e',
     borderRadius: 8,
@@ -374,6 +358,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     lineHeight: 20,
   },
+  // Features section styles
   featuresContainer: {
     backgroundColor: '#fff',
     borderRadius: 12,

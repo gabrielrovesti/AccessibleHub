@@ -37,10 +37,7 @@ const AccessibleDialog = ({ visible, onClose, title, children }) => {
           ref={contentRef}
         >
           <View style={styles.header}>
-            <Text
-              style={styles.title}
-              accessibilityRole="header"
-            >
+            <Text style={styles.title} accessibilityRole="header">
               {title}
             </Text>
             <TouchableOpacity
@@ -52,9 +49,7 @@ const AccessibleDialog = ({ visible, onClose, title, children }) => {
               <Ionicons name="close" size={24} />
             </TouchableOpacity>
           </View>
-
           {children}
-
           <View style={styles.actions}>
             <TouchableOpacity
               onPress={onClose}
@@ -84,6 +79,9 @@ const AccessibleDialog = ({ visible, onClose, title, children }) => {
     container: {
       backgroundColor: colors.background,
     },
+    section: {
+      backgroundColor: colors.background,
+    },
     sectionTitle: {
       color: colors.text,
       fontSize: textSizes.xlarge,
@@ -106,17 +104,26 @@ const AccessibleDialog = ({ visible, onClose, title, children }) => {
     dialog: {
       backgroundColor: colors.surface,
     },
+    dialogHeader: {
+      borderBottomColor: colors.border,
+    },
     dialogTitle: {
       color: colors.text,
     },
     dialogContent: {
-      color: colors.textPrimary,
+      color: colors.text,
     },
     dialogButtonText: {
       color: colors.background,
     },
-    secondaryButtonText: {
+    dialogSecondaryButton: {
+      backgroundColor: isDarkMode ? colors.surface : '#f2f2f2',
+    },
+    dialogSecondaryButtonText: {
       color: colors.text,
+    },
+    dialogPrimaryButton: {
+      backgroundColor: colors.primary,
     },
     featuresContainer: {
       backgroundColor: colors.surface,
@@ -128,26 +135,31 @@ const AccessibleDialog = ({ visible, onClose, title, children }) => {
       color: colors.textSecondary,
     },
     codeContainer: {
-      backgroundColor: colors.codeBackground,
+      backgroundColor: isDarkMode ? '#1c1c1e' : '#2d2d2d',
     },
     codeHeader: {
-      borderBottomColor: colors.border,
+      borderBottomColor: isDarkMode ? '#333' : '#444',
     },
     codeHeaderText: {
-      color: colors.textSecondary,
+      color: isDarkMode ? '#999' : '#bbb',
     },
     copyText: {
-      color: colors.textSecondary,
+      color: isDarkMode ? '#666' : '#999',
     },
     copiedText: {
       color: '#28A745',
+    },
+    codeText: {
+      color: '#fff',
     },
   };
 
   return (
     <ScrollView style={[styles.container, themedStyles.container]}>
-      <View style={styles.section}>
-        <Text style={[styles.sectionTitle, themedStyles.sectionTitle]}>Interactive Example</Text>
+      <View style={[styles.section, themedStyles.section]}>
+        <Text style={[styles.sectionTitle, themedStyles.sectionTitle]}>
+          Interactive Example
+        </Text>
         <View style={[styles.demoContainer, themedStyles.demoContainer]}>
           <TouchableOpacity
             style={[styles.demoButton, themedStyles.demoButton]}
@@ -170,13 +182,11 @@ const AccessibleDialog = ({ visible, onClose, title, children }) => {
           accessibilityViewIsModal={true}
         >
           <View style={[styles.overlay, themedStyles.overlay]}>
-            <View
-              style={[styles.dialog, themedStyles.dialog]}
-              accessibilityRole="alert"
-              accessibilityLabel="Example Dialog"
-            >
-              <View style={styles.dialogHeader}>
-                <Text style={[styles.dialogTitle, themedStyles.dialogTitle]}>Example Dialog</Text>
+            <View style={[styles.dialog, themedStyles.dialog]}>
+              <View style={[styles.dialogHeader, themedStyles.dialogHeader]}>
+                <Text style={[styles.dialogTitle, themedStyles.dialogTitle]}>
+                  Example Dialog
+                </Text>
                 <TouchableOpacity
                   onPress={() => setShowDialog(false)}
                   accessibilityLabel="Close dialog"
@@ -194,18 +204,26 @@ const AccessibleDialog = ({ visible, onClose, title, children }) => {
 
               <View style={styles.dialogActions}>
                 <TouchableOpacity
-                  style={[styles.dialogButton, styles.secondaryButton, { backgroundColor: colors.secondaryButton }]}
+                  style={[
+                    styles.dialogButton,
+                    styles.secondaryButton,
+                    themedStyles.dialogSecondaryButton,
+                  ]}
                   onPress={() => setShowDialog(false)}
                   accessibilityRole="button"
                 >
-                  <Text style={[styles.secondaryButtonText, themedStyles.secondaryButtonText]}>Cancel</Text>
+                  <Text style={[styles.secondaryButtonText, themedStyles.dialogSecondaryButtonText]}>
+                    Cancel
+                  </Text>
                 </TouchableOpacity>
                 <TouchableOpacity
-                  style={[styles.dialogButton, { backgroundColor: colors.primary }]}
+                  style={[styles.dialogButton, themedStyles.dialogPrimaryButton]}
                   onPress={() => setShowDialog(false)}
                   accessibilityRole="button"
                 >
-                  <Text style={[styles.dialogButtonText, themedStyles.dialogButtonText]}>Confirm</Text>
+                  <Text style={[styles.dialogButtonText, themedStyles.dialogButtonText]}>
+                    Confirm
+                  </Text>
                 </TouchableOpacity>
               </View>
             </View>
@@ -213,6 +231,7 @@ const AccessibleDialog = ({ visible, onClose, title, children }) => {
         </Modal>
       </View>
 
+      {/* Implementation Section */}
       <View style={styles.section}>
         <Text style={[styles.sectionTitle, themedStyles.sectionTitle]}>Implementation</Text>
         <View style={[styles.codeContainer, themedStyles.codeContainer]}>
@@ -240,8 +259,11 @@ const AccessibleDialog = ({ visible, onClose, title, children }) => {
         </View>
       </View>
 
+      {/* Accessibility Features Section */}
       <View style={styles.section}>
-        <Text style={[styles.sectionTitle, themedStyles.sectionTitle]}>Accessibility Features</Text>
+        <Text style={[styles.sectionTitle, themedStyles.sectionTitle]}>
+          Accessibility Features
+        </Text>
         <View style={[styles.featuresContainer, themedStyles.featuresContainer]}>
           <View style={styles.featureItem}>
             <View style={[styles.iconContainer, { backgroundColor: isDarkMode ? colors.surface : '#E8F1FF' }]}>
@@ -287,7 +309,6 @@ const AccessibleDialog = ({ visible, onClose, title, children }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f8f9fa',
   },
   section: {
     padding: 16,
@@ -296,41 +317,34 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 20,
     fontWeight: '600',
-    color: '#1c1c1e',
     marginBottom: 12,
   },
   demoContainer: {
-    backgroundColor: '#fff',
     padding: 20,
     borderRadius: 12,
     alignItems: 'center',
   },
   demoButton: {
-    backgroundColor: '#007AFF',
     paddingVertical: 12,
     paddingHorizontal: 24,
     borderRadius: 8,
     minHeight: 44,
   },
   buttonText: {
-    color: '#fff',
     fontSize: 16,
     fontWeight: '600',
   },
   demoText: {
     fontSize: 14,
-    color: '#666',
     textAlign: 'center',
     marginTop: 12,
   },
   overlay: {
     flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
     justifyContent: 'center',
     alignItems: 'center',
   },
   dialog: {
-    backgroundColor: '#fff',
     borderRadius: 16,
     padding: 24,
     width: '90%',
@@ -350,14 +364,12 @@ const styles = StyleSheet.create({
   dialogTitle: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: '#1c1c1e',
   },
   closeButton: {
     padding: 4,
   },
   dialogContent: {
     fontSize: 16,
-    color: '#333',
     lineHeight: 24,
     marginBottom: 24,
   },
@@ -370,7 +382,6 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 16,
     borderRadius: 8,
-    backgroundColor: '#007AFF',
     minWidth: 80,
     alignItems: 'center',
   },
@@ -378,18 +389,14 @@ const styles = StyleSheet.create({
     backgroundColor: '#f2f2f2',
   },
   dialogButtonText: {
-    color: '#fff',
     fontSize: 16,
     fontWeight: '600',
   },
   secondaryButtonText: {
-    color: '#1c1c1e',
     fontSize: 16,
     fontWeight: '600',
   },
-  // Code section styles
   codeContainer: {
-    backgroundColor: '#1c1c1e',
     borderRadius: 8,
     overflow: 'hidden',
   },
@@ -399,10 +406,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 8,
     borderBottomWidth: 1,
-    borderBottomColor: '#333',
   },
   codeHeaderText: {
-    color: '#999',
     fontSize: 14,
     fontFamily: 'monospace',
   },
@@ -413,7 +418,6 @@ const styles = StyleSheet.create({
     padding: 4,
   },
   copyText: {
-    color: '#666',
     fontSize: 14,
   },
   copiedText: {
@@ -424,14 +428,11 @@ const styles = StyleSheet.create({
     maxHeight: 400,
   },
   codeText: {
-    color: '#fff',
     fontFamily: 'monospace',
     fontSize: 14,
     lineHeight: 20,
   },
-  // Features section styles
   featuresContainer: {
-    backgroundColor: '#fff',
     borderRadius: 12,
     padding: 16,
     gap: 16,
@@ -454,12 +455,10 @@ const styles = StyleSheet.create({
   featureTitle: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#1c1c1e',
     marginBottom: 4,
   },
   featureDescription: {
     fontSize: 14,
-    color: '#666',
     lineHeight: 20,
   },
 });

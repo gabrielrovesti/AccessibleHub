@@ -9,42 +9,54 @@ export default function BestPracticesScreen() {
   const router = useRouter();
   const { colors, textSizes, isDarkMode } = useTheme();
 
-  const themedStyles = {
-    container: {
-      backgroundColor: colors.background,
-    },
-    header: {
-      backgroundColor: colors.surface,
-      borderBottomColor: colors.border,
-    },
-    title: {
-      color: colors.text,
-      fontSize: textSizes.xlarge,
-    },
-    description: {
-      color: colors.textSecondary,
-      fontSize: textSizes.medium,
-    },
-    guideCard: {
-      backgroundColor: colors.surface,
-      shadowColor: isDarkMode ? '#000' : '#000',
-      shadowOpacity: isDarkMode ? 0.3 : 0.05,
-    },
-    guideTitle: {
-      color: colors.text,
-      fontSize: textSizes.large,
-    },
-    badgeText: {
-      color: isDarkMode ? colors.primary : '#0055CC',
-    },
-    guideDescription: {
-      color: colors.textSecondary,
-      fontSize: textSizes.small,
-    },
-    footerText: {
-      color: colors.textSecondary,
-    },
-  };
+    const themedStyles = {
+      container: {
+        backgroundColor: colors.background,
+      },
+      header: {
+        backgroundColor: colors.surface,
+        borderBottomColor: colors.border,
+      },
+      title: {
+        color: colors.text,
+        fontSize: textSizes.xlarge,
+      },
+      description: {
+        color: isDarkMode ? colors.text : colors.textSecondary,
+        fontSize: textSizes.medium,
+      },
+      guideCard: {
+        backgroundColor: isDarkMode ? '#1A1A1A' : colors.surface,
+        shadowColor: '#000',
+        shadowOpacity: isDarkMode ? 0.3 : 0.05,
+      },
+      guideTitle: {
+        color: colors.text,
+        fontSize: textSizes.large,
+      },
+      badge: {
+        backgroundColor: isDarkMode ? 'rgba(255, 255, 255, 0.15)' : '#E8F1FF', // More visible background in dark mode
+      },
+      badgeText: {
+        color: isDarkMode ? '#0320fc' : '#0055CC',  // Increased contrast in dark mode
+      },
+      guideDescription: {
+        color: isDarkMode ? colors.text : colors.textSecondary,
+        fontSize: textSizes.small,
+      },
+      footerText: {
+        color: isDarkMode ? '#E0E0E0' : colors.textSecondary,
+      },
+      footerIcon: {
+        color: isDarkMode ? '#E0E0E0' : '#666',
+      },
+      iconContainer: {
+        backgroundColor: isDarkMode ? '#333333' : '#E8F1FF',
+      },
+      iconColor: {
+        color: isDarkMode ? '#82B1FF' : '#0055CC',
+      }
+    };
 
   return (
     <ScrollView style={[styles.container, themedStyles.container]}>

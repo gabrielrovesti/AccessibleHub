@@ -1,60 +1,104 @@
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { useTheme } from '../../context/ThemeContext';
 
 export default function NavigationFocus() {
+  const { colors, textSizes } = useTheme();
+
+  const themedStyles = {
+    container: {
+      backgroundColor: colors.background,
+    },
+    header: {
+      backgroundColor: colors.surface,
+      borderBottomColor: colors.border,
+    },
+    title: {
+      color: colors.text,
+      fontSize: textSizes.xlarge,
+    },
+    description: {
+      color: colors.textSecondary,
+      fontSize: textSizes.medium,
+    },
+    section: {
+      gap: textSizes.medium,
+    },
+    card: {
+      backgroundColor: colors.surface,
+      shadowColor: colors.shadow,
+      shadowOpacity: 0.05,
+    },
+    cardHeader: {
+      gap: textSizes.medium,
+    },
+    cardTitle: {
+      color: colors.text,
+      fontSize: textSizes.medium,
+    },
+    cardDescription: {
+      color: colors.textSecondary,
+      fontSize: textSizes.small,
+    },
+    bulletItem: {
+      color: colors.textSecondary,
+      fontSize: textSizes.small,
+    },
+  };
+
   return (
-    <ScrollView style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.title}>Navigation & Focus</Text>
-        <Text style={styles.description}>
+    <ScrollView style={[styles.container, themedStyles.container]}>
+      <View style={[styles.header, themedStyles.header]}>
+        <Text style={[styles.title, themedStyles.title]}>Navigation & Focus</Text>
+        <Text style={[styles.description, themedStyles.description]}>
           Guidelines for implementing effective keyboard and focus navigation
         </Text>
       </View>
 
-      <View style={styles.section}>
-        <View style={styles.card}>
-          <View style={styles.cardHeader}>
-            <Ionicons name="git-branch-outline" size={24} color="#0055CC" />
-            <Text style={styles.cardTitle}>Focus Flow</Text>
+      <View style={[styles.section, themedStyles.section]}>
+        <View style={[styles.card, themedStyles.card]}>
+          <View style={[styles.cardHeader, themedStyles.cardHeader]}>
+            <Ionicons name="git-branch-outline" size={24} color={colors.primary} />
+            <Text style={[styles.cardTitle, themedStyles.cardTitle]}>Focus Flow</Text>
           </View>
-          <Text style={styles.cardDescription}>
+          <Text style={[styles.cardDescription, themedStyles.cardDescription]}>
             Managing the order and flow of focus navigation
           </Text>
           <View style={styles.bulletList}>
-            <Text style={styles.bulletItem}>• Logical tab order</Text>
-            <Text style={styles.bulletItem}>• Clear focus indicators</Text>
-            <Text style={styles.bulletItem}>• Skip navigation patterns</Text>
+            <Text style={[styles.bulletItem, themedStyles.bulletItem]}>• Logical tab order</Text>
+            <Text style={[styles.bulletItem, themedStyles.bulletItem]}>• Clear focus indicators</Text>
+            <Text style={[styles.bulletItem, themedStyles.bulletItem]}>• Skip navigation patterns</Text>
           </View>
         </View>
 
-        <View style={styles.card}>
-          <View style={styles.cardHeader}>
-            <Ionicons name="scan-outline" size={24} color="#0055CC" />
-            <Text style={styles.cardTitle}>Focus Management</Text>
+        <View style={[styles.card, themedStyles.card]}>
+          <View style={[styles.cardHeader, themedStyles.cardHeader]}>
+            <Ionicons name="scan-outline" size={24} color={colors.primary} />
+            <Text style={[styles.cardTitle, themedStyles.cardTitle]}>Focus Management</Text>
           </View>
-          <Text style={styles.cardDescription}>
+          <Text style={[styles.cardDescription, themedStyles.cardDescription]}>
             Handling focus during interface changes
           </Text>
           <View style={styles.bulletList}>
-            <Text style={styles.bulletItem}>• Modal and dialog focus</Text>
-            <Text style={styles.bulletItem}>• Focus restoration</Text>
-            <Text style={styles.bulletItem}>• Dynamic content updates</Text>
+            <Text style={[styles.bulletItem, themedStyles.bulletItem]}>• Modal and dialog focus</Text>
+            <Text style={[styles.bulletItem, themedStyles.bulletItem]}>• Focus restoration</Text>
+            <Text style={[styles.bulletItem, themedStyles.bulletItem]}>• Dynamic content updates</Text>
           </View>
         </View>
 
-        <View style={styles.card}>
-          <View style={styles.cardHeader}>
-            <Ionicons name="keypad-outline" size={24} color="#0055CC" />
-            <Text style={styles.cardTitle}>Keyboard Navigation</Text>
+        <View style={[styles.card, themedStyles.card]}>
+          <View style={[styles.cardHeader, themedStyles.cardHeader]}>
+            <Ionicons name="keypad-outline" size={24} color={colors.primary} />
+            <Text style={[styles.cardTitle, themedStyles.cardTitle]}>Keyboard Navigation</Text>
           </View>
-          <Text style={styles.cardDescription}>
+          <Text style={[styles.cardDescription, themedStyles.cardDescription]}>
             Supporting keyboard-only navigation
           </Text>
           <View style={styles.bulletList}>
-            <Text style={styles.bulletItem}>• Keyboard shortcuts</Text>
-            <Text style={styles.bulletItem}>• Focus trapping</Text>
-            <Text style={styles.bulletItem}>• Custom key handlers</Text>
+            <Text style={[styles.bulletItem, themedStyles.bulletItem]}>• Keyboard shortcuts</Text>
+            <Text style={[styles.bulletItem, themedStyles.bulletItem]}>• Focus trapping</Text>
+            <Text style={[styles.bulletItem, themedStyles.bulletItem]}>• Custom key handlers</Text>
           </View>
         </View>
       </View>
@@ -69,24 +113,19 @@ const styles = StyleSheet.create({
   },
   header: {
     padding: 16,
-    backgroundColor: '#fff',
     borderBottomWidth: 1,
-    borderBottomColor: '#eee',
   },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
-    color: '#1c1c1e',
     marginBottom: 8,
   },
   description: {
     fontSize: 16,
-    color: '#666',
     lineHeight: 24,
   },
   section: {
     padding: 16,
-    gap: 16,
   },
   card: {
     backgroundColor: '#fff',
@@ -107,11 +146,9 @@ const styles = StyleSheet.create({
   cardTitle: {
     fontSize: 18,
     fontWeight: '600',
-    color: '#1c1c1e',
   },
   cardDescription: {
     fontSize: 14,
-    color: '#666',
     marginBottom: 12,
   },
   bulletList: {
@@ -119,7 +156,6 @@ const styles = StyleSheet.create({
   },
   bulletItem: {
     fontSize: 14,
-    color: '#444',
     paddingLeft: 8,
   },
 });

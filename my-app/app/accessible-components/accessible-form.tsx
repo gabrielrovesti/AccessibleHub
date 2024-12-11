@@ -63,68 +63,16 @@ const themedStyles = {
     color: colors.text,
     fontSize: textSizes.xlarge,
   },
-  overlay: {
-    backgroundColor: isDarkMode ? 'rgba(0, 0, 0, 0.7)' : 'rgba(0, 0, 0, 0.5)',
-  },
   demoContainer: {
-    backgroundColor: colors.surface,
+    backgroundColor: isDarkMode ? '#1c1c1e' : colors.surface,
   },
-  demoButton: {
-    backgroundColor: colors.primary,
-  },
-  buttonText: {
-    color: colors.background,
-  },
-  demoText: {
-    color: colors.textSecondary,
-  },
-  dialog: {
-    backgroundColor: colors.surface,
-  },
-  dialogTitle: {
-    color: colors.text,
-  },
-  dialogContent: {
-    color: colors.textPrimary,
-  },
-  dialogButtonText: {
-    color: colors.background,
-  },
-  secondaryButtonText: {
-    color: colors.text,
-  },
-  featuresContainer: {
-    backgroundColor: colors.surface,
-  },
-  featureTitle: {
-    color: colors.text,
-  },
-  featureDescription: {
-    color: colors.textSecondary,
-  },
-  codeContainer: {
-    backgroundColor: colors.codeBackground,
-  },
-  codeHeader: {
-    borderBottomColor: colors.border,
-  },
-  codeHeaderText: {
-    color: colors.textSecondary,
-  },
-  copyText: {
-    color: colors.textSecondary,
-  },
-  copiedText: {
-    color: '#28A745',
-  },
-  // Properties exclusive to the first snippet:
   label: {
     color: colors.text,
   },
   input: {
-    borderColor: colors.border,
+    borderColor: isDarkMode ? '#333' : colors.border,
     color: colors.text,
-    backgroundColor: colors.surface,
+    backgroundColor: isDarkMode ? '#2c2c2e' : colors.surface,
   },
   radioLabel: {
     color: colors.text,
@@ -132,11 +80,23 @@ const themedStyles = {
   checkboxLabel: {
     color: colors.text,
   },
+  radioButton: {
+    borderColor: colors.primary,
+  },
+  radioButtonSelected: {
+    backgroundColor: colors.primary,
+  },
+  checkbox: {
+    borderColor: colors.primary,
+  },
+  checkboxChecked: {
+    backgroundColor: colors.primary,
+  },
   submitButton: {
     backgroundColor: colors.primary,
   },
   submitButtonDisabled: {
-    backgroundColor: colors.disabled,
+    backgroundColor: isDarkMode ? '#333' : colors.disabled,
   },
   submitButtonText: {
     color: colors.background,
@@ -144,11 +104,59 @@ const themedStyles = {
   accessibilityTip: {
     color: colors.textSecondary,
   },
+  // Code section styling
+  codeContainer: {
+    backgroundColor: isDarkMode ? '#000' : '#1c1c1e',
+  },
+  codeHeader: {
+    borderBottomColor: isDarkMode ? '#333' : colors.border,
+    backgroundColor: isDarkMode ? '#1c1c1e' : '#2d2d2d',
+  },
+  codeHeaderText: {
+    color: isDarkMode ? '#bbb' : '#999',
+  },
   codeText: {
-    color: colors.background,
+    color: '#fff',
+  },
+  copyText: {
+    color: isDarkMode ? '#999' : colors.textSecondary,
+  },
+  copiedText: {
+    color: '#28A745',
+  },
+  // Features section styling
+   featuresContainer: {
+    backgroundColor: isDarkMode ? '#1c1c1e' : colors.surface,
+  },
+  featureCard: {
+    backgroundColor: isDarkMode ? '#2c2c2e' : colors.surface,
+    borderColor: isDarkMode ? '#333' : colors.border,
+    borderWidth: 1,
   },
   featureIcon: {
-    backgroundColor: isDarkMode ? colors.surface : '#E8F1FF',
+    backgroundColor: isDarkMode ? '#333' : '#E8F1FF',
+  },
+  featureTitle: {
+    color: colors.text,
+    fontSize: textSizes.medium,
+    fontWeight: '600',
+  },
+  featureDescription: {
+    color: isDarkMode ? colors.text : colors.textSecondary,
+    fontSize: textSizes.small,
+  },
+  // Modal styling
+  successModal: {
+    backgroundColor: isDarkMode ? '#1c1c1e' : colors.surface,
+  },
+  successTitle: {
+    color: '#28A745',
+  },
+  successMessage: {
+    color: colors.textSecondary,
+  },
+  modalOverlay: {
+    backgroundColor: isDarkMode ? 'rgba(0, 0, 0, 0.8)' : 'rgba(0, 0, 0, 0.5)',
   },
   agreementText: {
     color: colors.text,
@@ -598,7 +606,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     overflow: 'hidden',
   },
-codeHeader: {
+  codeHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
