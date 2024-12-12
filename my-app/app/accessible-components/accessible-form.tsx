@@ -124,28 +124,39 @@ const themedStyles = {
   copiedText: {
     color: '#28A745',
   },
-  // Features section styling
-   featuresContainer: {
-    backgroundColor: isDarkMode ? '#1c1c1e' : colors.surface,
-  },
+    featuresContainer: {
+      backgroundColor: isDarkMode ? '#1c1c1e' : colors.surface,
+      borderRadius: 12,
+      padding: 16,
+      gap: 16,
+    },
   featureCard: {
     backgroundColor: isDarkMode ? '#2c2c2e' : colors.surface,
     borderColor: isDarkMode ? '#333' : colors.border,
     borderWidth: 1,
   },
-  featureIcon: {
-    backgroundColor: isDarkMode ? '#333' : '#E8F1FF',
-  },
-  featureTitle: {
-    color: colors.text,
-    fontSize: textSizes.medium,
-    fontWeight: '600',
-  },
-  featureDescription: {
-    color: isDarkMode ? colors.text : colors.textSecondary,
-    fontSize: textSizes.small,
-  },
-  // Modal styling
+    featureIcon: {
+      width: 40,
+      height: 40,
+      borderRadius: 20,
+      backgroundColor: isDarkMode ? '#333' : '#E8F1FF',
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginRight: 12,
+    },
+   featureContent: {
+      flex: 1,
+    },
+    featureTitle: {
+      fontSize: 16,
+      fontWeight: '600',
+      color: colors.text,
+    },
+    featureDescription: {
+      fontSize: 14,
+      color: colors.textSecondary,
+      lineHeight: 20,
+    },
   successModal: {
     backgroundColor: isDarkMode ? '#1c1c1e' : colors.surface,
   },
@@ -332,13 +343,13 @@ const themedStyles = {
 
       <View style={styles.section}>
         <Text style={[styles.sectionTitle, themedStyles.sectionTitle]}>Accessibility Features</Text>
-
         <View style={[styles.featuresContainer, themedStyles.featuresContainer]}>
-          <View style={styles.featureCard}>
+          {/* Feature Cards */}
+          <View style={[styles.featureCard, themedStyles.featureCard]}>
             <View style={[styles.featureIcon, themedStyles.featureIcon]}>
               <Ionicons name="text-outline" size={24} color={colors.primary} />
             </View>
-            <View style={styles.featureContent}>
+            <View style={[styles.featureContent, themedStyles.featureContent]}>
               <Text style={[styles.featureTitle, themedStyles.featureTitle]}>Input Labels</Text>
               <Text style={[styles.featureDescription, themedStyles.featureDescription]}>
                 Clear, descriptive labels that properly associate with form controls
@@ -346,11 +357,11 @@ const themedStyles = {
             </View>
           </View>
 
-          <View style={styles.featureCard}>
+          <View style={[styles.featureCard, themedStyles.featureCard]}>
             <View style={[styles.featureIcon, themedStyles.featureIcon]}>
               <Ionicons name="information-circle-outline" size={24} color={colors.primary} />
             </View>
-            <View style={styles.featureContent}>
+            <View style={[styles.featureContent, themedStyles.featureContent]}>
               <Text style={[styles.featureTitle, themedStyles.featureTitle]}>Semantic Roles</Text>
               <Text style={[styles.featureDescription, themedStyles.featureDescription]}>
                 Proper role assignments for form controls (radio, checkbox, button)
@@ -358,11 +369,11 @@ const themedStyles = {
             </View>
           </View>
 
-          <View style={styles.featureCard}>
+          <View style={[styles.featureCard, themedStyles.featureCard]}>
             <View style={[styles.featureIcon, themedStyles.featureIcon]}>
               <Ionicons name="alert-circle-outline" size={24} color={colors.primary} />
             </View>
-            <View style={styles.featureContent}>
+            <View style={[styles.featureContent, themedStyles.featureContent]}>
               <Text style={[styles.featureTitle, themedStyles.featureTitle]}>Error States</Text>
               <Text style={[styles.featureDescription, themedStyles.featureDescription]}>
                 Clear error messages and validation feedback for screen readers
@@ -370,11 +381,11 @@ const themedStyles = {
             </View>
           </View>
 
-          <View style={styles.featureCard}>
+          <View style={[styles.featureCard, themedStyles.featureCard]}>
             <View style={[styles.featureIcon, themedStyles.featureIcon]}>
               <Ionicons name="hand-left-outline" size={24} color={colors.primary} />
             </View>
-            <View style={styles.featureContent}>
+            <View style={[styles.featureContent, themedStyles.featureContent]}>
               <Text style={[styles.featureTitle, themedStyles.featureTitle]}>Touch Targets</Text>
               <Text style={[styles.featureDescription, themedStyles.featureDescription]}>
                 Adequate sizing for interactive elements (minimum 44x44 points)
@@ -382,11 +393,11 @@ const themedStyles = {
             </View>
           </View>
 
-          <View style={styles.featureCard}>
+          <View style={[styles.featureCard, themedStyles.featureCard]}>
             <View style={[styles.featureIcon, themedStyles.featureIcon]}>
               <Ionicons name="sync-outline" size={24} color={colors.primary} />
             </View>
-            <View style={styles.featureContent}>
+            <View style={[styles.featureContent, themedStyles.featureContent]}>
               <Text style={[styles.featureTitle, themedStyles.featureTitle]}>State Management</Text>
               <Text style={[styles.featureDescription, themedStyles.featureDescription]}>
                 Proper state announcements for selection controls and submit button
@@ -420,8 +431,7 @@ const themedStyles = {
 };
 
 
-const codeExample = `// Accessible Form Implementation
-<View accessibilityRole="form">
+const codeExample = `<View accessibilityRole="form">
   <Text style={styles.label}>Name</Text>
   <TextInput
     style={styles.input}

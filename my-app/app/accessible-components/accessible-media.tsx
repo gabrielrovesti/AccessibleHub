@@ -80,37 +80,41 @@ const AccessibleMediaExample = () => {
       backgroundColor: colors.surface,
     },
     featureTitle: {
-      color: colors.text,
+      color: colors.textSecondary,
     },
     featureDescription: {
       color: colors.textSecondary,
     },
     codeContainer: {
-      backgroundColor: '#1c1c1e', // Fixed dark background for code
+      backgroundColor: '#1c1c1e',
     },
     codeText: {
-      color: '#fff', // Fixed light text for code
+      color: '#fff',
     },
     codeHeader: {
-      borderBottomColor: '#333', // Fixed border color for code header
+      borderBottomColor: '#333',
     },
     codeHeaderText: {
-      color: '#999', // Fixed color for code header text
+      color: '#999',
     },
     copyText: {
-      color: '#666', // Fixed color for copy button text
+      color: '#666',
     },
     copiedText: {
       color: '#28A745',
     },
     altTextContainer: {
-      backgroundColor: colors.surface,
+      backgroundColor: isDarkMode ? colors.surface : '#f8f9fa',
     },
     altTextContent: {
       color: colors.textSecondary,
     },
     altTextRole: {
       color: colors.textSecondary,
+    },
+    altTextTitle: {
+          color: colors.text,
+          fontWeight: '600',
     },
   };
 
@@ -168,7 +172,7 @@ const AccessibleMediaExample = () => {
           </View>
           {showAltText && (
             <View style={[styles.altTextContainer, themedStyles.altTextContainer]}>
-              <Text style={styles.altTextTitle}>Alt Text:</Text>
+              <Text style={[styles.altTextTitle, themedStyles.altTextTitle]}>Alt Text:</Text>
               <Text style={[styles.altTextContent, themedStyles.altTextContent]}>
                 {images[currentImage - 1].alt}
               </Text>
