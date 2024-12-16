@@ -1,1 +1,0 @@
-- Dark mode settings and some real settings which are working
