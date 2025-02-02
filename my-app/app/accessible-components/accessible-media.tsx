@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Image, Clipboard } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useTheme } from '../../context/ThemeContext';
+import { AccessibilityInfo } from 'react-native';
 
 const AccessibleMediaExample = () => {
   const [showAltText, setShowAltText] = useState(false);
@@ -52,15 +53,19 @@ const AccessibleMediaExample = () => {
   }}
 />`;
 
-  const handleCopy = async () => {
-    try {
-      await Clipboard.setString(codeExample);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    } catch (err) {
-      console.error('Failed to copy:', err);
-    }
-  };
+const handleCopy = async () => {
+  try {
+    await Clipboard.setString(codeExample);
+    setCopied(true);
+    AccessibilityInfo.announceForAccessibility('Code copied to clipboard');
+    setTimeout(() => {
+      setCopied(false);
+    }, 2000);
+  } catch (err) {
+    console.error('Failed to copy:', err);
+    AccessibilityInfo.announceForAccessibility('Failed to copy code');
+  }
+};
 
   const themedStyles = {
     container: {
@@ -198,11 +203,13 @@ const AccessibleMediaExample = () => {
               onPress={handleCopy}
               accessibilityRole="button"
               accessibilityLabel={copied ? "Code copied" : "Copy code"}
+              accessibilityHint="Copies the code example to your clipboard"
             >
               <Ionicons
                 name={copied ? "checkmark" : "copy-outline"}
                 size={20}
-                color={copied ? "#28A745" : "#999"}
+                color={copied ? "#28A745" : colors.textSecondary}
+                accessibilityElementsHidden={true}
               />
               <Text style={[styles.copyText, copied && styles.copiedText, themedStyles.copyText]}>
                 {copied ? "Copied!" : "Copy"}

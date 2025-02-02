@@ -42,6 +42,10 @@ export default function ComponentsScreen() {
     featureText: {
       color: colors.textSecondary,
     },
+    badgeContainer: {
+      flexDirection: 'row',
+      gap: 8,
+    },
   };
 
   return (
@@ -65,8 +69,18 @@ export default function ComponentsScreen() {
             </View>
             <View style={styles.labelContainer}>
               <Text style={[styles.componentName, themedStyles.componentName]}>Buttons & Touchables</Text>
-              <View style={styles.badge}>
-                <Text style={[styles.badgeText, themedStyles.badgeText]}>Essential</Text>
+              <View style={styles.badgeContainer}
+                    accessibilityElementsHidden={true}
+                    importantForAccessibility="no">
+                <View style={styles.badge}>
+                  <Text
+                    style={[styles.badgeText, themedStyles.badgeText]}
+                    accessibilityRole="text"
+                    accessibilityLabel="Essential component type"
+                  >
+                    Essential
+                  </Text>
+                </View>
               </View>
             </View>
             <Ionicons name="chevron-forward" size={20} color={colors.textSecondary} />
@@ -97,8 +111,18 @@ export default function ComponentsScreen() {
             </View>
             <View style={styles.labelContainer}>
               <Text style={[styles.componentName, themedStyles.componentName]}>Form Controls</Text>
-              <View style={styles.badge}>
-                <Text style={[styles.badgeText, themedStyles.badgeText]}>Complex</Text>
+              <View style={styles.badgeContainer}
+                    accessibilityElementsHidden={true}
+                    importantForAccessibility="no">
+                <View style={styles.badge}>
+                  <Text
+                    style={[styles.badgeText, themedStyles.badgeText]}
+                    accessibilityRole="text"
+                    accessibilityLabel="Complex component type"
+                  >
+                    Complex
+                  </Text>
+                </View>
               </View>
             </View>
             <Ionicons name="chevron-forward" size={20} color={colors.textSecondary} />
@@ -129,8 +153,18 @@ export default function ComponentsScreen() {
             </View>
             <View style={styles.labelContainer}>
               <Text style={[styles.componentName, themedStyles.componentName]}>Media Content</Text>
-              <View style={styles.badge}>
-                <Text style={[styles.badgeText, themedStyles.badgeText]}>Advanced</Text>
+              <View style={styles.badgeContainer}
+                    accessibilityElementsHidden={true}
+                    importantForAccessibility="no">
+                <View style={styles.badge}>
+                  <Text
+                    style={[styles.badgeText, themedStyles.badgeText]}
+                    accessibilityRole="text"
+                    accessibilityLabel="Advanced component type"
+                  >
+                    Advanced
+                  </Text>
+                </View>
               </View>
             </View>
             <Ionicons name="chevron-forward" size={20} color={colors.textSecondary} />
@@ -161,8 +195,18 @@ export default function ComponentsScreen() {
             </View>
             <View style={styles.labelContainer}>
               <Text style={[styles.componentName, themedStyles.componentName]}>Modal Dialogs</Text>
-              <View style={styles.badge}>
-                <Text style={[styles.badgeText, themedStyles.badgeText]}>Advanced</Text>
+              <View style={styles.badgeContainer}
+                    accessibilityElementsHidden={true}
+                    importantForAccessibility="no">
+                <View style={styles.badge}>
+                  <Text
+                    style={[styles.badgeText, themedStyles.badgeText]}
+                    accessibilityRole="text"
+                    accessibilityLabel="Advanced component type"
+                  >
+                    Advanced
+                  </Text>
+                </View>
               </View>
             </View>
             <Ionicons name="chevron-forward" size={20} color={colors.textSecondary} />

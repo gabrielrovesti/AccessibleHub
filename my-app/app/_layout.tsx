@@ -1,5 +1,7 @@
 import { Drawer } from 'expo-router/drawer';
 import { View, Text, StyleSheet } from 'react-native';
+import { useEffect } from 'react';
+import { Platform, AccessibilityInfo } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { ThemeProvider } from '../context/ThemeContext';
 import { useTheme } from '../context/ThemeContext';
@@ -26,7 +28,10 @@ function CustomDrawerContent(props) {
   };
 
   return (
-    <View style={[styles.container, dynamicStyles.container]}>
+    <View
+      style={[styles.container, dynamicStyles.container]}
+      accessibilityLanguage="en"
+    >
       <View style={styles.drawerContent}>
         {props.state.routes
           .filter(route => mainRoutes.includes(route.name))
@@ -170,10 +175,31 @@ function DrawerNavigator() {
   );
 }
 
+function AppWrapper({ children }) {
+  useEffect(() => {
+    // Set app-wide language for accessibility
+    if (Platform.OS === 'ios') {
+      AccessibilityInfo.setAccessibilityLanguage('en');
+    }
+    // Android automatically uses system language or app configuration
+  }, []);
+
+  return (
+    <View
+      style={{ flex: 1 }}
+      accessibilityLanguage="en"
+    >
+      {children}
+    </View>
+  );
+}
+
 export default function AppLayout() {
   return (
     <ThemeProvider>
-      <DrawerNavigator />
+      <AppWrapper>
+        <DrawerNavigator />
+      </AppWrapper>
     </ThemeProvider>
   );
 }

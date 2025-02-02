@@ -78,14 +78,28 @@ export default function BestPracticesScreen() {
           <View style={styles.guideContent}>
             <View style={styles.guideHeader}>
               <Text style={[styles.guideTitle, themedStyles.guideTitle]}>WCAG Guidelines</Text>
-              <View style={styles.badgeContainer}>
-                <View style={styles.badge}>
-                  <Text style={[styles.badgeText, themedStyles.badgeText]}>2.2</Text>
+                <View style={styles.badgeContainer}
+                      accessibilityElementsHidden={true}
+                      importantForAccessibility="no">
+                  <View style={styles.badge}>
+                    <Text
+                      style={[styles.badgeText, themedStyles.badgeText]}
+                      accessibilityRole="text"
+                      accessibilityLabel="WCAG version 2.2"
+                    >
+                      2.2
+                    </Text>
+                  </View>
+                  <View style={[styles.badge, { backgroundColor: '#E6F4FF' }]}>
+                    <Text
+                      style={[styles.badgeText, themedStyles.badgeText]}
+                      accessibilityRole="text"
+                      accessibilityLabel="Documentation type"
+                    >
+                      Documentation
+                    </Text>
+                  </View>
                 </View>
-                <View style={[styles.badge, { backgroundColor: '#E6F4FF' }]}>
-                  <Text style={[styles.badgeText, themedStyles.badgeText]}>Documentation</Text>
-                </View>
-              </View>
             </View>
             <Text style={[styles.guideDescription, themedStyles.guideDescription]}>
               Understanding and implementing WCAG 2.2 guidelines in mobile apps
@@ -113,9 +127,19 @@ export default function BestPracticesScreen() {
           <View style={styles.guideContent}>
             <View style={styles.guideHeader}>
               <Text style={[styles.guideTitle, themedStyles.guideTitle]}>Semantic Structure</Text>
-              <View style={[styles.badge, { backgroundColor: '#FFF4E6' }]}>
-                <Text style={[styles.badgeText, themedStyles.badgeText]}>Code Examples</Text>
-              </View>
+                <View style={styles.badgeContainer}
+                      accessibilityElementsHidden={true}
+                      importantForAccessibility="no">
+                  <View style={[styles.badge, { backgroundColor: '#FFF4E6' }]}>
+                    <Text
+                      style={[styles.badgeText, themedStyles.badgeText]}
+                      accessibilityRole="text"
+                      accessibilityLabel="Contains code examples"
+                    >
+                      Code Examples
+                    </Text>
+                  </View>
+                </View>
             </View>
             <Text style={[styles.guideDescription, themedStyles.guideDescription]}>
               Creating meaningful and well-organized content hierarchies
@@ -143,9 +167,19 @@ export default function BestPracticesScreen() {
           <View style={styles.guideContent}>
             <View style={styles.guideHeader}>
               <Text style={[styles.guideTitle, themedStyles.guideTitle]}>Gesture Tutorial</Text>
-              <View style={[styles.badge, { backgroundColor: '#FFE6E6' }]}>
-                <Text style={[styles.badgeText, themedStyles.badgeText]}>Interactive Guide</Text>
-              </View>
+                <View style={styles.badgeContainer}
+                      accessibilityElementsHidden={true}
+                      importantForAccessibility="no">
+                  <View style={[styles.badge, { backgroundColor: '#FFE6E6' }]}>
+                    <Text
+                      style={[styles.badgeText, themedStyles.badgeText]}
+                      accessibilityRole="text"
+                      accessibilityLabel="Interactive guide for learning gestures"
+                    >
+                      Interactive Guide
+                    </Text>
+                  </View>
+                </View>
             </View>
             <Text style={[styles.guideDescription, themedStyles.guideDescription]}>
               Learn and test common accessibility gestures
@@ -173,9 +207,19 @@ export default function BestPracticesScreen() {
           <View style={styles.guideContent}>
             <View style={styles.guideHeader}>
               <Text style={[styles.guideTitle, themedStyles.guideTitle]}>Screen Reader Support</Text>
-              <View style={[styles.badge, { backgroundColor: '#E6FFE6' }]}>
-                <Text style={[styles.badgeText, themedStyles.badgeText]}>Guidelines</Text>
-              </View>
+                <View style={styles.badgeContainer}
+                      accessibilityElementsHidden={true}
+                      importantForAccessibility="no">
+                  <View style={[styles.badge, { backgroundColor: '#E6FFE6' }]}>
+                    <Text
+                      style={[styles.badgeText, themedStyles.badgeText]}
+                      accessibilityRole="text"
+                      accessibilityLabel="Contains accessibility guidelines"
+                    >
+                      Guidelines
+                    </Text>
+                  </View>
+                </View>
             </View>
             <Text style={[styles.guideDescription, themedStyles.guideDescription]}>
               Optimizing your app for VoiceOver and TalkBack
@@ -203,9 +247,19 @@ export default function BestPracticesScreen() {
           <View style={styles.guideContent}>
             <View style={styles.guideHeader}>
               <Text style={[styles.guideTitle, themedStyles.guideTitle]}>Navigation & Focus</Text>
-              <View style={[styles.badge, { backgroundColor: '#FFE6E6' }]}>
-                <Text style={[styles.badgeText, themedStyles.badgeText]}>Interactive Guide</Text>
-              </View>
+                <View style={styles.badgeContainer}
+                      accessibilityElementsHidden={true}
+                      importantForAccessibility="no">
+                  <View style={[styles.badge, { backgroundColor: '#FFE6E6' }]}>
+                    <Text
+                      style={[styles.badgeText, themedStyles.badgeText]}
+                      accessibilityRole="text"
+                      accessibilityLabel="Interactive guide for navigation"
+                    >
+                      Interactive Guide
+                    </Text>
+                  </View>
+                </View>
             </View>
             <Text style={[styles.guideDescription, themedStyles.guideDescription]}>
               Managing focus and keyboard navigation effectively

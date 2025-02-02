@@ -9,14 +9,22 @@
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "infoPlist": {
+        "CFBundleDevelopmentRegion": "en",
+        "CFBundleLocalizations": ["en"],
+        "CFBundlePrimaryLanguage": "en"
+      }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.grovesti.accessiblehub"
+      "package": "com.grovesti.accessiblehub",
+      "config": {
+        "locale": "en"
+      }
     },
     "web": {
       "bundler": "metro",
