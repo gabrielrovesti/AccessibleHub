@@ -1,201 +1,318 @@
-# AccessibleHub
+# AccessibleHub: A Comprehensive Mobile Accessibility Learning Platform for Developers
 
-AccessibleHub is a React Native application built using the Expo framework, focused on providing accessible components and best practices for mobile app development.
+## 🎯 Project Overview
 
-## Prerequisites
+AccessibleHub is an innovative React Native mobile application designed to serve as an educational resource and practical guide for developers seeking to create truly accessible mobile applications. Born from a research-driven approach, this application bridges the gap between theoretical accessibility guidelines and practical implementation.
 
-- Node.js (LTS version recommended)
+### 📘 Core Mission
+
+The primary goal of AccessibleHub is to transform the way developers understand and implement accessibility in mobile applications. By providing interactive, hands-on learning experiences, the platform aims to:
+
+- Demystify complex accessibility concepts
+- Provide practical, implementable accessibility solutions
+- Raise awareness about the importance of inclusive design
+- Offer comparative insights across different mobile development frameworks
+
+## 🌐 Application Structure and Screens
+
+### 1. Home Screen (`index.tsx`)
+- Entry point of the application
+- Provides an overview of the accessibility learning journey
+- Quick access to key sections
+- Highlights key statistics and application purpose
+
+### 2. Accessibility Components (`components.tsx`)
+A curated collection of accessible React Native components:
+- Accessible Buttons
+- Form Controls
+- Media Content Handling
+- Modal Dialogs
+
+Each component demonstrates:
+- Proper accessibility implementation
+- Code samples
+- Best practice guidelines
+- Interactive examples
+
+### 3. Best Practices Screen (`practices.tsx`)
+Comprehensive guide to mobile accessibility, covering:
+- WCAG 2.2 Guidelines
+- Semantic Structure
+- Gesture Tutorials
+- Screen Reader Support
+- Navigation and Focus Management
+
+### 4. Framework Comparison (`frameworks-comparison.tsx`)
+An in-depth comparative analysis of mobile development frameworks:
+- React Native
+- Flutter
+- Ionic
+- Accessibility feature comparisons
+- Performance metrics
+- Development experience evaluation
+
+### 5. Accessibility Tools (`tools.tsx`)
+A comprehensive resource for accessibility testing and development:
+- Screen Reader Tools (TalkBack, VoiceOver)
+- Development Accessibility Inspectors
+- Contrast Analysis Tools
+- Testing Checklists
+
+### 6. Settings (`settings.tsx`)
+Customization options for accessibility:
+- Dark/Light Mode
+- High Contrast Mode
+- Text Size Adjustment
+- Motion Reduction
+- Enhanced Focus Settings
+
+## 🛠 Technical Architecture
+
+### Framework and Technologies
+- **Base Framework**: React Native
+- **Development Platform**: Expo
+- **Styling**: Custom Theme Context with dynamic theming
+- **Accessibility**: Native Accessibility API integration
+- **Navigation**: Expo Router
+- **State Management**: React Hooks and Context API
+
+### Key Technical Implementations
+- Dynamic theming with light/dark mode
+- Accessibility-first component design
+- Comprehensive semantic markup
+- Cross-platform compatibility
+- Performance-optimized rendering
+
+## 📋 Development Requirements
+
+### Minimum System Requirements
+- Node.js 18.x LTS
+- npm 9.x or Yarn 1.22.x
 - Expo CLI
+- Git
 - Android Studio (for Android development)
-- Xcode (for iOS development on macOS)
+- Xcode (for iOS development, macOS only)
 
-## Getting Started
+### Recommended Development Environment
+- Visual Studio Code
+- React Native Developer Tools
+- Expo Go App (Mobile Testing)
+- Chrome DevTools
+- React Native Debugger
 
-1. Clone the repository:
+## 🚀 Setup and Installation
 
-   ```bash
-   git clone https://github.com/your-username/AccessibleHub.git
-   cd AccessibleHub
-   ```
-
-2. Install dependencies:
-
-   ```bash
-   cd my-app
-   npx expo install
-   ```
-
-WARNING: DO NOT UPDATE Expo SDK; most recent version is (12/2024) the 52.0.14, while this was built SPECIFICALLY with 52.0.11 version (can be seen inside of `package.json` file).
-
-To check the specific version of the Expo SDK, run the following command:
-
+### 1. Clone the Repository
 ```bash
-npm show expo version
+git clone https://github.com/your-username/AccessibleHub.git
+cd AccessibleHub/my-app
 ```
 
-In case, repair the installation using:
+### 2. Install Dependencies
 ```bash
-npm remove expo
-npm install expo@52.0.11 --save
+# Using npm
 npm install
+
+# Using Yarn
+yarn install
+```
+
+### 3. Configure Development Environment
+```bash
+# Install Expo CLI globally
+npm install -g expo-cli
+
+# Login to Expo (if not already logged in)
+npx expo login
+```
+
+### 4. Start Development Server
+```bash
+# Start development server
+npx expo start
+
+# Clear cache if needed
 npx expo start -c
 ```
 
-3. Start the Expo development server:
+## 🔨 Build Configurations
 
-   ```bash
-   npx expo start
-   ```
+### Android Build Options
 
-   This will open the Expo Developer Tools in your default web browser.
+#### Remote Build
+```bash
+npx expo build:android
+```
 
-4. Run the app on your preferred platform:
-
-   - For Android:
-     - Press `a` in the terminal to run the app on an Android emulator or connected device.
-   - For iOS (macOS only):
-     - Press `i` in the terminal to run the app on an iOS simulator.
-   - For web:
-     - Press `w` in the terminal to open the app in your web browser.
-
-## Build and Deployment
-
-### Android
-
-#### Remote build
-
-1. Configure your Expo account:
-
-   ```bash
-   npx expo login
-   ```
-
-2. Build the Android app:
-
-   ```bash
-   npx expo build:android
-   ```
-
-   This will generate an Android App Bundle (AAB) that can be uploaded to the Google Play Store.
-
-3. (Optional) Generate an APK:
-
-   If you need to generate an APK file instead of an AAB, you can use the following command:
-
-   ```bash
-   npx expo build:android -t apk
-   ```
-
-   Note that APKs are not recommended for publishing on the Google Play Store and should only be used for testing or sideloading.
-
-#### Local build
-
-This was made using Windows; this requires a Linux System and it's the ONLY WORKING WAY to have an .aab or .apk file. Refer to this one.
+#### Local Build (Recommended for Advanced Users)
 
 ##### Prerequisites
 - Windows 10/11
 - Basic command line knowledge
 - Existing Expo/React Native project
 
-##### Step-by-Step Guide
+##### Detailed Step-by-Step Local Build Guide
 
-###### 1. Install WSL
+###### 1. Install Windows Subsystem for Linux (WSL)
 ```bash
+# Enable WSL
 wsl --install
+
+# Update WSL
+wsl --update
 ```
 
 ###### 2. Set Up Development Environment in WSL Ubuntu
-
-- Install essential tools: Gradle, NodeJS
 ```bash
-sudo apt install curl
-sudo apt install openjdk-17-jdk-headless
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash
+# Install essential tools
+sudo apt update
+sudo apt upgrade -y
+sudo apt install -y curl git unzip
+
+# Install Java Development Kit
+sudo apt install -y openjdk-17-jdk-headless
+
+# Install Node.js via NVM
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
 source ~/.bashrc
 nvm install --lts
+npm install -g yarn
+
+# Install Gradle
 wget https://services.gradle.org/distributions/gradle-8.5-bin.zip -P /tmp
-sudo mkdir /opt/gradle
+sudo mkdir -p /opt/gradle
 sudo unzip -d /opt/gradle /tmp/gradle-8.5-bin.zip
 ```
 
 ###### 3. Configure Environment Variables
-- Add to `~/.bashrc`:
+Add the following to `~/.bashrc`:
 ```bash
+# Java Home
 export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
+
+# Android SDK Configuration
 export ANDROID_HOME=$HOME/android
 export ANDROID_SDK_ROOT=${ANDROID_HOME}
 export PATH=$PATH:/opt/gradle/gradle-8.5/bin:${ANDROID_HOME}/cmdline-tools/latest/bin:${ANDROID_HOME}/platform-tools:${ANDROID_HOME}/tools:${ANDROID_HOME}/tools/bin
+
+# Source the updated profile
 source ~/.bashrc
 ```
 
-###### 4. Build Setup
-Install EAS CLI and configure build navigating to your project:
-
+###### 4. Android SDK and Build Tools Setup
 ```bash
+# Create Android SDK directory
+mkdir -p $HOME/android
+
+# Install Android SDK command-line tools
+wget https://dl.google.com/android/commandlinetools/commandlinetools-linux-10406996_latest.zip -O /tmp/cmdline-tools.zip
+unzip /tmp/cmdline-tools.zip -d $HOME/android/cmdline-tools
+```
+
+###### 5. Build Setup for Expo
+```bash
+# Install EAS CLI
 npm install -g eas-cli
+
+# Navigate to your project in WSL
 cd /mnt/c/YourProjectPath
+
+# Initialize EAS for your project
 eas init
+
+# Configure build
 eas build:configure
 ```
 
-###### 5. Build Your App
-
-The first command is to get the .aab file; the second one is to get the .apk file.
+###### 6. Build Your App
 ```bash
+# Build Android App Bundle (.aab)
 eas build --platform android --local
 
+# Build APK for testing
 eas build --platform android --profile preview --local
 ```
 
-###### 6. Converting AAB to APK (if needed)
-
-Create a keystore, download bundle tool and then convert the AAB to APK:
+###### 7. Optional: Converting AAB to Universal APK
 ```bash
+# Create a keystore (if not already created)
 keytool -genkey -v -keystore my-release-key.keystore \
   -alias my-key-alias -keyalg RSA -keysize 2048 -validity 10000
 
+# Download Bundle Tool
 wget https://github.com/google/bundletool/releases/download/1.15.6/bundletool-all-1.15.6.jar \
   -O bundletool.jar
 
-java -jar bundletool.jar build-apks --bundle=your-app.aab --output=my_app.apks \
-  --mode=universal --ks=my-release-key.keystore --ks-pass=pass:your_password \
-  --ks-key-alias=my-key-alias --key-pass=pass:your_password
+# Convert AAB to Universal APK
+java -jar bundletool.jar build-apks \
+  --bundle=your-app.aab \
+  --output=my_app.apks \
+  --mode=universal \
+  --ks=my-release-key.keystore \
+  --ks-pass=pass:your_password \
+  --ks-key-alias=my-key-alias \
+  --key-pass=pass:your_password
 
+# Extract Universal APK
 unzip my_app.apks -d apk_output
 ```
 
-### iOS
+##### Troubleshooting Tips
+- Ensure all paths are correct
+- Check Java and Android SDK versions
+- Verify WSL Ubuntu is up to date
+- Monitor EAS CLI logs for specific errors
 
-#### Remote build
+### iOS Build
+```bash
+npx expo build:ios
+```
 
-1. Configure your Expo account:
+## 🧪 Testing Strategies
 
-   ```bash
-   npx expo login
-   ```
+### Accessibility Testing
+- VoiceOver (iOS)
+- TalkBack (Android)
+- Accessibility Scanner
+- Manual screen reader testing
 
-2. Build the iOS app:
+### Performance Testing
+- React Native Performance Monitor
+- Chrome DevTools Performance Tab
+- Lighthouse Accessibility Audit
 
-   ```bash
-   npx expo build:ios
-   ```
+## 🤝 Contribution Guidelines
 
-   This will generate an IPA file that can be uploaded to the App Store.
+### How to Contribute
+1. Fork the repository
+2. Create a feature branch
+3. Implement your feature/fix
+4. Write comprehensive tests
+5. Ensure accessibility compliance
+6. Submit a pull request
 
-## Troubleshooting
+### Contribution Criteria
+- Follow WCAG 2.2 Guidelines
+- Maintain clean, documented code
+- Include comprehensive accessibility testing
+- Provide detailed pull request descriptions
 
-- If you encounter any issues with missing dependencies or incompatible versions, try clearing the cache and reinstalling the packages:
+## 📚 Learning Resources
 
-  ```bash
-  npx expo start -c
-  ```
+### Accessibility References
+- W3C Web Accessibility Initiative
+- WCAG 2.2 Guidelines
+- MDN Web Docs Accessibility Guide
+- React Native Accessibility Documentation
 
-- If you face any build errors or issues related to Expo, refer to the Expo documentation or reach out to the Expo community for assistance.
+## 📄 License
 
-## Contributing
+MIT License - Open-source and free to use, modify, and distribute
 
-Contributions are welcome! If you find any issues or have suggestions for improvement, please open an issue or submit a pull request.
+## 🏆 Project Acknowledgments
 
-## License
+Developed as part of a research initiative to improve mobile application accessibility, with support from [Your Institution/Organization].
 
-This project is licensed under the [MIT License](LICENSE).
+---
+
+**Empowering Developers, Enabling Accessibility 🌈👨‍💻**
