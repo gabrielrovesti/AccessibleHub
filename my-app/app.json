@@ -10,6 +10,7 @@
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
+      "icon": "./assets/images/icon.png",
       "infoPlist": {
         "CFBundleDevelopmentRegion": "en",
         "CFBundleLocalizations": ["en"],
@@ -24,7 +25,8 @@
       "package": "com.grovesti.accessiblehub",
       "config": {
         "locale": "en"
-      }
+      },
+      "icon": "./assets/images/icon.png"
     },
     "web": {
       "bundler": "metro",
