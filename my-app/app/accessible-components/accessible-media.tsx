@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Image, Clipboard } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Image, Clipboard, AccessibilityInfo } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useTheme } from '../../context/ThemeContext';
-import { AccessibilityInfo } from 'react-native';
 
 const AccessibleMediaExample = () => {
   const [showAltText, setShowAltText] = useState(false);
@@ -27,6 +26,12 @@ const AccessibleMediaExample = () => {
       role: "Controls example"
     }
   ];
+
+  useEffect(() => {
+    if (showAltText) {
+      AccessibilityInfo.announceForAccessibility(`Showing alternative text for image ${currentImage}`);
+    }
+  }, [showAltText, currentImage]);
 
   const codeExample = `<Image
   source={require('./path/to/image.png')}
@@ -134,14 +139,19 @@ const handleCopy = async () => {
             style={styles.demoImage}
             accessibilityLabel={images[currentImage - 1].alt}
             accessible={true}
+            accessibilityRole="image"
           />
           <View style={styles.controls}>
             <TouchableOpacity
               style={styles.controlButton}
-              onPress={() => setCurrentImage(prev => Math.max(1, prev - 1))}
+              onPress={() => {
+                setCurrentImage(prev => Math.max(1, prev - 1));
+                AccessibilityInfo.announceForAccessibility(`Previous image. Now showing image ${currentImage - 1} of ${images.length}`);
+              }}
               disabled={currentImage === 1}
               accessibilityLabel="Previous image"
               accessibilityRole="button"
+              accessibilityHint="Changes to the previous image in the gallery"
               accessibilityState={{ disabled: currentImage === 1 }}
             >
               <Ionicons
@@ -152,9 +162,13 @@ const handleCopy = async () => {
             </TouchableOpacity>
             <TouchableOpacity
               style={[styles.altTextButton, { backgroundColor: colors.primary }]}
-              onPress={() => setShowAltText(!showAltText)}
-              accessibilityLabel={showAltText ? "Hide alt text" : "Show alt text"}
+              onPress={() => {
+                setShowAltText(!showAltText);
+                AccessibilityInfo.announceForAccessibility(`${showAltText ? 'Hiding' : 'Showing'} image alternative text`);
+              }}
+              accessibilityLabel={showAltText ? "Hide alternative text" : "Show alternative text"}
               accessibilityRole="button"
+              accessibilityHint={`Toggles visibility of the alternative text description for the current image`}
             >
               <Text style={{ color: colors.background, fontWeight: '600' }}>
                 {showAltText ? "Hide Alt Text" : "Show Alt Text"}
@@ -162,22 +176,26 @@ const handleCopy = async () => {
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.controlButton}
-              onPress={() => setCurrentImage(prev => Math.min(3, prev + 1))}
-              disabled={currentImage === 3}
+              onPress={() => {
+                setCurrentImage(prev => Math.min(images.length, prev + 1));
+                AccessibilityInfo.announceForAccessibility(`Next image. Now showing image ${currentImage + 1} of ${images.length}`);
+              }}
+              disabled={currentImage === images.length}
               accessibilityLabel="Next image"
               accessibilityRole="button"
-              accessibilityState={{ disabled: currentImage === 3 }}
+              accessibilityHint="Changes to the next image in the gallery"
+              accessibilityState={{ disabled: currentImage === images.length }}
             >
               <Ionicons
                 name="chevron-forward"
                 size={24}
-                color={currentImage === 3 ? colors.textSecondary : colors.primary}
+                color={currentImage === images.length ? colors.textSecondary : colors.primary}
               />
             </TouchableOpacity>
           </View>
           {showAltText && (
             <View style={[styles.altTextContainer, themedStyles.altTextContainer]}>
-              <Text style={[styles.altTextTitle, themedStyles.altTextTitle]}>Alt Text:</Text>
+              <Text style={[styles.altTextTitle, themedStyles.altTextTitle]}>Alternative Text:</Text>
               <Text style={[styles.altTextContent, themedStyles.altTextContent]}>
                 {images[currentImage - 1].alt}
               </Text>
@@ -187,7 +205,7 @@ const handleCopy = async () => {
             </View>
           )}
           <Text style={[styles.demoText, themedStyles.demoText]}>
-            Try this image with VoiceOver/TalkBack enabled
+            Try this image component with VoiceOver/TalkBack enabled
           </Text>
         </View>
       </View>
@@ -210,6 +228,7 @@ const handleCopy = async () => {
                 size={20}
                 color={copied ? "#28A745" : colors.textSecondary}
                 accessibilityElementsHidden={true}
+                importantForAccessibility="no-hide-descendants"
               />
               <Text style={[styles.copyText, copied && styles.copiedText, themedStyles.copyText]}>
                 {copied ? "Copied!" : "Copy"}
@@ -228,10 +247,16 @@ const handleCopy = async () => {
         <View style={[styles.featuresContainer, themedStyles.featuresContainer]}>
           <View style={styles.featureItem}>
             <View style={[styles.iconContainer, { backgroundColor: isDarkMode ? colors.surface : '#E8F1FF' }]}>
-              <Ionicons name="text-outline" size={24} color={colors.primary} />
+              <Ionicons
+                name="text-outline"
+                size={24}
+                color={colors.primary}
+                accessibilityElementsHidden={true}
+                importantForAccessibility="no-hide-descendants"
+              />
             </View>
             <View style={styles.featureContent}>
-              <Text style={[styles.featureTitle, themedStyles.featureTitle]}>Alt Text</Text>
+              <Text style={[styles.featureTitle, themedStyles.featureTitle]}>Alternative Text</Text>
               <Text style={[styles.featureDescription, themedStyles.featureDescription]}>
                 Descriptive text that conveys the content and function of the image
               </Text>
@@ -240,7 +265,13 @@ const handleCopy = async () => {
 
           <View style={styles.featureItem}>
             <View style={[styles.iconContainer, { backgroundColor: isDarkMode ? colors.surface : '#E8F1FF' }]}>
-              <Ionicons name="megaphone-outline" size={24} color={colors.primary} />
+              <Ionicons
+                name="megaphone-outline"
+                size={24}
+                color={colors.primary}
+                accessibilityElementsHidden={true}
+                importantForAccessibility="no-hide-descendants"
+              />
             </View>
             <View style={styles.featureContent}>
               <Text style={[styles.featureTitle, themedStyles.featureTitle]}>Role Announcement</Text>
@@ -252,7 +283,13 @@ const handleCopy = async () => {
 
           <View style={styles.featureItem}>
             <View style={[styles.iconContainer, { backgroundColor: isDarkMode ? colors.surface : '#E8F1FF' }]}>
-              <Ionicons name="hand-left-outline" size={24} color={colors.primary} />
+              <Ionicons
+                name="hand-left-outline"
+                size={24}
+                color={colors.primary}
+                accessibilityElementsHidden={true}
+                importantForAccessibility="no-hide-descendants"
+              />
             </View>
             <View style={styles.featureContent}>
               <Text style={[styles.featureTitle, themedStyles.featureTitle]}>Touch Target</Text>

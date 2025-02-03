@@ -1,0 +1,71 @@
+- Fixed app language set to english and trials to drawer, meaning
+- Added English language configuration in app.json
+- Added accessibilityLanguage attributes to key components
+- Added proper screen reader feedback for copy operations across all copy buttons
+- Tag accessibility improvements (making tags properly announced by screen readers) - done in practices.tsx and components.tsx, the ones with tags
+
+In layout globale:
+
+- Aggiunto accessible e accessibilityRole="button" alle voci del menu
+- Aggiunto accessibilityState per indicare lo stato selezionato
+- Nascosto il footer allo screen reader con importantForAccessibility="no"
+- Nascosti gli elementi decorativi (icone) con importantForAccessibility="no"
+- Mantenuta la lingua impostata su inglese
+
+In gestures:
+- Rimossi tutti i controlli non essenziali, mantenendo solo le 3 gesture fondamentali
+- Implementato il toggle delle sezioni
+- Semplificato lo swipe con un sistema più diretto e comprensibile
+- Migliorati i feedback di accessibilità
+- Aggiunte descrizioni più chiare per ogni gesture
+- Struttura più pulita con array di gesture types
+- Rimossi i riferimenti a "here" nei testi
+- Migliorato il contrasto e la leggibilità
+- Aggiunto swipe verticale
+- Aggiunte le gesture "semplici"
+
+In tools:
+- Rese uniformi le card selezionabili/non selezionabili (aggiunti attributi di accessibilità)
+- Aggiunti i link appropriati per gli strumenti (link documentazione con apertura funzionante)
+- Sistemati gli styling inconsistenti tra le card - ottimizzazione (colori/contrasto/accessibilità/spaziature)
+
+In tools:
+- Rese uniformi le card selezionabili/non selezionabili (aggiunti attributi di accessibilità)
+- Aggiunti i link appropriati per gli strumenti (link documentazione con apertura funzionante)
+- Sistemati gli styling inconsistenti tra le card - ottimizzazione (colori/contrasto/accessibilità/spaziature)
+
+In components:
+- Aggiunto AccessibilityInfo per feedback sonori
+- Implementato handleComponentPress per feedback durante la navigazione
+- Rimosse le label ridondanti dai badge
+- Aggiunto accessibilityElementsHidden alle icone decorative
+- Migliorati gli accessibilityLabel per includere tutte le informazioni importanti
+- Aggiunto importantForAccessibility="no" ai contenitori di elementi decorativi
+- Mantenuto tutto il resto del codice identico (stili, struttura, theming)
+
+Modifiche accessibili a Button:
+
+- Aggiunto feedback sonoro al click del bottone
+- Aggiunto ruolo e label di accessibilità allo ScrollView
+-  Aggiunto ruolo header ai titoli delle sezioni
+- Nascosti elementi decorativi allo screen reade
+- Aggiunto importantForAccessibility="no" ai contenitori decorativi
+- Aggiunto accessibilityElementsHidden={true} a tutte le icone
+
+In accessible-dialog.tsx:
+- Aggiunto un annuncio sonoro quando la finestra viene aperta
+- Migliorato l'accessibilità del pulsante "Open Dialog"
+- Aggiunto un ruolo di accessibilità "dialog" al Modal
+- Assegnato un riferimento al contenuto del dialogo e impostato il focus su di esso quando il dialogo viene aperto
+-Aggiunto un gestore di eventi accessibilityEscape per chiudere il dialogo quando viene premuto il tasto Esc
+- Migliorato l'accessibilità dei pulsanti "Cancel" e "Confirm"
+- Aggiunto un annuncio sonoro quando il codice viene copiato negli appunti
+- Nascosto le icone decorative allo screen reader
+- Aggiunto un annuncio sonoro quando il dialogo viene chiuso
+
+In accessible-media:
+- Aggiunti annunci AccessibilityInfo per interazioni chiave come mostrare/nascondere il testo alt e navigare tra le immagini.
+- Migliorate le etichette di accessibilità, i ruoli e i suggerimenti per i pulsanti di controllo.
+- Aggiunto un accessibilityState per disabilitare i pulsanti prev/next quando si è sulla prima/ultima immagine.
+- Nascoste le icone decorative agli screen reader usando accessibilityElementsHidden e importantForAccessibility.
+- Implementata la stessa funzionalità di copia del codice con gli annunci

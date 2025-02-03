@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Modal, Clipboard } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useTheme } from '../../context/ThemeContext';
@@ -8,6 +8,19 @@ const AccessibleDialogExample = () => {
   const [showDialog, setShowDialog] = useState(false);
   const [copied, setCopied] = useState(false);
   const { colors, textSizes, isDarkMode } = useTheme();
+  const dialogRef = useRef(null);
+
+  useEffect(() => {
+    if (showDialog) {
+      AccessibilityInfo.announceForAccessibility('Example dialog opened');
+      dialogRef.current?.focus();
+    }
+  }, [showDialog]);
+
+  const handleClose = () => {
+    setShowDialog(false);
+    AccessibilityInfo.announceForAccessibility('Dialog closed');
+  };
 
   const codeExample = `// Accessible Dialog Implementation
 const AccessibleDialog = ({ visible, onClose, title, children }) => {
@@ -70,7 +83,6 @@ const handleCopy = async () => {
   try {
     await Clipboard.setString(codeExample);
     setCopied(true);
-    // Add screen reader announcement
     AccessibilityInfo.announceForAccessibility('Code copied to clipboard');
     setTimeout(() => {
       setCopied(false);
@@ -172,6 +184,7 @@ const handleCopy = async () => {
             onPress={() => setShowDialog(true)}
             accessibilityRole="button"
             accessibilityLabel="Open example dialog"
+            accessibilityHint="Opens an accessible modal dialog"
           >
             <Text style={[styles.buttonText, themedStyles.buttonText]}>Open Dialog</Text>
           </TouchableOpacity>
@@ -184,22 +197,35 @@ const handleCopy = async () => {
           visible={showDialog}
           transparent
           animationType="fade"
-          onRequestClose={() => setShowDialog(false)}
+          onRequestClose={handleClose}
           accessibilityViewIsModal={true}
+          accessibilityRole="dialog"
         >
           <View style={[styles.overlay, themedStyles.overlay]}>
-            <View style={[styles.dialog, themedStyles.dialog]}>
+            <View
+              style={[styles.dialog, themedStyles.dialog]}
+              ref={dialogRef}
+              accessible={true}
+              accessibilityLabel="Example dialog content"
+              onAccessibilityEscape={handleClose}
+            >
               <View style={[styles.dialogHeader, themedStyles.dialogHeader]}>
                 <Text style={[styles.dialogTitle, themedStyles.dialogTitle]}>
                   Example Dialog
                 </Text>
                 <TouchableOpacity
-                  onPress={() => setShowDialog(false)}
+                  onPress={handleClose}
                   accessibilityLabel="Close dialog"
                   accessibilityRole="button"
                   style={styles.closeButton}
                 >
-                  <Ionicons name="close" size={24} color={colors.text} />
+                  <Ionicons
+                    name="close"
+                    size={24}
+                    color={colors.text}
+                    accessibilityElementsHidden={true}
+                    importantForAccessibility="no"
+                  />
                 </TouchableOpacity>
               </View>
 
@@ -215,8 +241,10 @@ const handleCopy = async () => {
                     styles.secondaryButton,
                     themedStyles.dialogSecondaryButton,
                   ]}
-                  onPress={() => setShowDialog(false)}
+                  onPress={handleClose}
                   accessibilityRole="button"
+                  accessibilityLabel="Cancel"
+                  accessibilityHint="Closes the dialog without saving changes"
                 >
                   <Text style={[styles.secondaryButtonText, themedStyles.dialogSecondaryButtonText]}>
                     Cancel
@@ -224,8 +252,10 @@ const handleCopy = async () => {
                 </TouchableOpacity>
                 <TouchableOpacity
                   style={[styles.dialogButton, themedStyles.dialogPrimaryButton]}
-                  onPress={() => setShowDialog(false)}
+                  onPress={handleClose}
                   accessibilityRole="button"
+                  accessibilityLabel="Confirm"
+                  accessibilityHint="Saves changes and closes the dialog"
                 >
                   <Text style={[styles.dialogButtonText, themedStyles.dialogButtonText]}>
                     Confirm
@@ -255,6 +285,7 @@ const handleCopy = async () => {
                 size={20}
                 color={copied ? "#28A745" : colors.textSecondary}
                 accessibilityElementsHidden={true}
+                importantForAccessibility="no"
               />
               <Text style={[styles.copyText, copied && styles.copiedText, themedStyles.copyText]}>
                 {copied ? "Copied!" : "Copy"}
@@ -275,7 +306,13 @@ const handleCopy = async () => {
         <View style={[styles.featuresContainer, themedStyles.featuresContainer]}>
           <View style={styles.featureItem}>
             <View style={[styles.iconContainer, { backgroundColor: isDarkMode ? colors.surface : '#E8F1FF' }]}>
-              <Ionicons name="scan-outline" size={24} color={colors.primary} />
+              <Ionicons
+                name="scan-outline"
+                size={24}
+                color={colors.primary}
+                accessibilityElementsHidden={true}
+                importantForAccessibility="no"
+              />
             </View>
             <View style={styles.featureContent}>
               <Text style={[styles.featureTitle, themedStyles.featureTitle]}>Focus Management</Text>
@@ -287,7 +324,13 @@ const handleCopy = async () => {
 
           <View style={styles.featureItem}>
             <View style={[styles.iconContainer, { backgroundColor: isDarkMode ? colors.surface : '#E8F1FF' }]}>
-              <Ionicons name="keypad-outline" size={24} color={colors.primary} />
+              <Ionicons
+                name="keypad-outline"
+                size={24}
+                color={colors.primary}
+                accessibilityElementsHidden={true}
+                importantForAccessibility="no"
+              />
             </View>
             <View style={styles.featureContent}>
               <Text style={[styles.featureTitle, themedStyles.featureTitle]}>Keyboard Navigation</Text>
@@ -299,7 +342,13 @@ const handleCopy = async () => {
 
           <View style={styles.featureItem}>
             <View style={[styles.iconContainer, { backgroundColor: isDarkMode ? colors.surface : '#E8F1FF' }]}>
-              <Ionicons name="megaphone-outline" size={24} color={colors.primary} />
+              <Ionicons
+                name="megaphone-outline"
+                size={24}
+                color={colors.primary}
+                accessibilityElementsHidden={true}
+                importantForAccessibility="no"
+              />
             </View>
             <View style={styles.featureContent}>
               <Text style={[styles.featureTitle, themedStyles.featureTitle]}>Screen Reader Support</Text>
