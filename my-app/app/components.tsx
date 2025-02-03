@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, AccessibilityInfo } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import { useTheme } from '../context/ThemeContext';
@@ -6,6 +6,11 @@ import { useTheme } from '../context/ThemeContext';
 export default function ComponentsScreen() {
   const router = useRouter();
   const { colors, textSizes, isDarkMode } = useTheme();
+
+  const handleComponentPress = (route, title, description, type) => {
+    router.push(route);
+    AccessibilityInfo.announceForAccessibility(`Opening ${title} component details`);
+  };
 
   const themedStyles = {
     container: {
@@ -49,9 +54,18 @@ export default function ComponentsScreen() {
   };
 
   return (
-    <ScrollView style={[styles.container, themedStyles.container]}>
+    <ScrollView
+      style={[styles.container, themedStyles.container]}
+      accessibilityRole="scrollview"
+      accessibilityLabel="Accessibility Components Screen"
+    >
       <View style={[styles.header, themedStyles.header]}>
-        <Text style={[styles.title, themedStyles.title]}>Accessibility Components</Text>
+        <Text
+          style={[styles.title, themedStyles.title]}
+          accessibilityRole="header"
+        >
+          Accessibility Components
+        </Text>
         <Text style={[styles.description, themedStyles.description]}>
           Interactive examples of accessible React Native components with code samples and best practices.
         </Text>
@@ -61,40 +75,60 @@ export default function ComponentsScreen() {
         <TouchableOpacity
           style={[styles.componentCard, themedStyles.componentCard]}
           accessibilityRole="button"
-          onPress={() => router.push('/accessible-components/accessible-button')}
+          accessibilityLabel="Buttons and Touchables component. Create accessible touch targets with proper sizing and feedback. Essential component type."
+          onPress={() => handleComponentPress(
+            '/accessible-components/accessible-button',
+            'Buttons & Touchables',
+            'Create accessible touch targets with proper sizing and feedback',
+            'Essential'
+          )}
         >
           <View style={styles.cardHeader}>
             <View style={[styles.iconContainer, { backgroundColor: '#E8F1FF' }]}>
-              <Ionicons name="radio-button-on-outline" size={24} color="#0055CC" />
+              <Ionicons
+                name="radio-button-on-outline"
+                size={24}
+                color="#0055CC"
+                accessibilityElementsHidden={true}
+              />
             </View>
             <View style={styles.labelContainer}>
               <Text style={[styles.componentName, themedStyles.componentName]}>Buttons & Touchables</Text>
-              <View style={styles.badgeContainer}
-                    accessibilityElementsHidden={true}
-                    importantForAccessibility="no">
+              <View style={styles.badgeContainer} importantForAccessibility="no">
                 <View style={styles.badge}>
-                  <Text
-                    style={[styles.badgeText, themedStyles.badgeText]}
-                    accessibilityRole="text"
-                    accessibilityLabel="Essential component type"
-                  >
+                  <Text style={[styles.badgeText, themedStyles.badgeText]}>
                     Essential
                   </Text>
                 </View>
               </View>
             </View>
-            <Ionicons name="chevron-forward" size={20} color={colors.textSecondary} />
+            <Ionicons
+              name="chevron-forward"
+              size={20}
+              color={colors.textSecondary}
+              accessibilityElementsHidden={true}
+            />
           </View>
           <Text style={[styles.componentDesc, themedStyles.componentDesc]}>
             Create accessible touch targets with proper sizing and feedback
           </Text>
-          <View style={styles.features}>
+          <View style={styles.features} importantForAccessibility="no">
             <View style={styles.featureItem}>
-              <Ionicons name="resize-outline" size={16} color={colors.textSecondary} />
+              <Ionicons
+                name="resize-outline"
+                size={16}
+                color={colors.textSecondary}
+                accessibilityElementsHidden={true}
+              />
               <Text style={[styles.featureText, themedStyles.featureText]}>Touch target sizing</Text>
             </View>
             <View style={styles.featureItem}>
-              <Ionicons name="hand-left-outline" size={16} color={colors.textSecondary} />
+              <Ionicons
+                name="hand-left-outline"
+                size={16}
+                color={colors.textSecondary}
+                accessibilityElementsHidden={true}
+              />
               <Text style={[styles.featureText, themedStyles.featureText]}>Haptic feedback</Text>
             </View>
           </View>
@@ -103,40 +137,60 @@ export default function ComponentsScreen() {
         <TouchableOpacity
           style={[styles.componentCard, themedStyles.componentCard]}
           accessibilityRole="button"
-          onPress={() => router.push('/accessible-components/accessible-form')}
+          accessibilityLabel="Form Controls component. Implement accessible form inputs and controls. Complex component type."
+          onPress={() => handleComponentPress(
+            '/accessible-components/accessible-form',
+            'Form Controls',
+            'Implement accessible form inputs and controls',
+            'Complex'
+          )}
         >
           <View style={styles.cardHeader}>
             <View style={[styles.iconContainer, { backgroundColor: '#F0F8FF' }]}>
-              <Ionicons name="create-outline" size={24} color="#0070F3" />
+              <Ionicons
+                name="create-outline"
+                size={24}
+                color="#0070F3"
+                accessibilityElementsHidden={true}
+              />
             </View>
             <View style={styles.labelContainer}>
               <Text style={[styles.componentName, themedStyles.componentName]}>Form Controls</Text>
-              <View style={styles.badgeContainer}
-                    accessibilityElementsHidden={true}
-                    importantForAccessibility="no">
+              <View style={styles.badgeContainer} importantForAccessibility="no">
                 <View style={styles.badge}>
-                  <Text
-                    style={[styles.badgeText, themedStyles.badgeText]}
-                    accessibilityRole="text"
-                    accessibilityLabel="Complex component type"
-                  >
+                  <Text style={[styles.badgeText, themedStyles.badgeText]}>
                     Complex
                   </Text>
                 </View>
               </View>
             </View>
-            <Ionicons name="chevron-forward" size={20} color={colors.textSecondary} />
+            <Ionicons
+              name="chevron-forward"
+              size={20}
+              color={colors.textSecondary}
+              accessibilityElementsHidden={true}
+            />
           </View>
           <Text style={[styles.componentDesc, themedStyles.componentDesc]}>
             Implement accessible form inputs and controls
           </Text>
-          <View style={styles.features}>
+          <View style={styles.features} importantForAccessibility="no">
             <View style={styles.featureItem}>
-              <Ionicons name="alert-circle-outline" size={16} color={colors.textSecondary} />
+              <Ionicons
+                name="alert-circle-outline"
+                size={16}
+                color={colors.textSecondary}
+                accessibilityElementsHidden={true}
+              />
               <Text style={[styles.featureText, themedStyles.featureText]}>Error states</Text>
             </View>
             <View style={styles.featureItem}>
-              <Ionicons name="help-circle-outline" size={16} color={colors.textSecondary} />
+              <Ionicons
+                name="help-circle-outline"
+                size={16}
+                color={colors.textSecondary}
+                accessibilityElementsHidden={true}
+              />
               <Text style={[styles.featureText, themedStyles.featureText]}>Helper text</Text>
             </View>
           </View>
@@ -145,40 +199,60 @@ export default function ComponentsScreen() {
         <TouchableOpacity
           style={[styles.componentCard, themedStyles.componentCard]}
           accessibilityRole="button"
-          onPress={() => router.push('/accessible-components/accessible-media')}
+          accessibilityLabel="Media Content component. Make images and media content accessible. Advanced component type."
+          onPress={() => handleComponentPress(
+            '/accessible-components/accessible-media',
+            'Media Content',
+            'Make images and media content accessible',
+            'Advanced'
+          )}
         >
           <View style={styles.cardHeader}>
             <View style={[styles.iconContainer, { backgroundColor: '#FFF4E6' }]}>
-              <Ionicons name="image-outline" size={24} color="#FF8C00" />
+              <Ionicons
+                name="image-outline"
+                size={24}
+                color="#FF8C00"
+                accessibilityElementsHidden={true}
+              />
             </View>
             <View style={styles.labelContainer}>
               <Text style={[styles.componentName, themedStyles.componentName]}>Media Content</Text>
-              <View style={styles.badgeContainer}
-                    accessibilityElementsHidden={true}
-                    importantForAccessibility="no">
+              <View style={styles.badgeContainer} importantForAccessibility="no">
                 <View style={styles.badge}>
-                  <Text
-                    style={[styles.badgeText, themedStyles.badgeText]}
-                    accessibilityRole="text"
-                    accessibilityLabel="Advanced component type"
-                  >
+                  <Text style={[styles.badgeText, themedStyles.badgeText]}>
                     Advanced
                   </Text>
                 </View>
               </View>
             </View>
-            <Ionicons name="chevron-forward" size={20} color={colors.textSecondary} />
+            <Ionicons
+              name="chevron-forward"
+              size={20}
+              color={colors.textSecondary}
+              accessibilityElementsHidden={true}
+            />
           </View>
           <Text style={[styles.componentDesc, themedStyles.componentDesc]}>
             Make images and media content accessible
           </Text>
-          <View style={styles.features}>
+          <View style={styles.features} importantForAccessibility="no">
             <View style={styles.featureItem}>
-              <Ionicons name="text-outline" size={16} color={colors.textSecondary} />
+              <Ionicons
+                name="text-outline"
+                size={16}
+                color={colors.textSecondary}
+                accessibilityElementsHidden={true}
+              />
               <Text style={[styles.featureText, themedStyles.featureText]}>Alt text</Text>
             </View>
             <View style={styles.featureItem}>
-              <Ionicons name="play-outline" size={16} color={colors.textSecondary} />
+              <Ionicons
+                name="play-outline"
+                size={16}
+                color={colors.textSecondary}
+                accessibilityElementsHidden={true}
+              />
               <Text style={[styles.featureText, themedStyles.featureText]}>Media controls</Text>
             </View>
           </View>
@@ -187,40 +261,60 @@ export default function ComponentsScreen() {
         <TouchableOpacity
           style={[styles.componentCard, themedStyles.componentCard]}
           accessibilityRole="button"
-          onPress={() => router.push('/accessible-components/accessible-dialog')}
+          accessibilityLabel="Modal Dialogs component. Implement accessible modal dialogs with proper focus management and screen reader support. Advanced component type."
+          onPress={() => handleComponentPress(
+            '/accessible-components/accessible-dialog',
+            'Modal Dialogs',
+            'Implement accessible modal dialogs with proper focus management and screen reader support',
+            'Advanced'
+          )}
         >
           <View style={styles.cardHeader}>
             <View style={[styles.iconContainer, { backgroundColor: '#E6F4FF' }]}>
-              <Ionicons name="browsers-outline" size={24} color="#0066CC" />
+              <Ionicons
+                name="browsers-outline"
+                size={24}
+                color="#0066CC"
+                accessibilityElementsHidden={true}
+              />
             </View>
             <View style={styles.labelContainer}>
               <Text style={[styles.componentName, themedStyles.componentName]}>Modal Dialogs</Text>
-              <View style={styles.badgeContainer}
-                    accessibilityElementsHidden={true}
-                    importantForAccessibility="no">
+              <View style={styles.badgeContainer} importantForAccessibility="no">
                 <View style={styles.badge}>
-                  <Text
-                    style={[styles.badgeText, themedStyles.badgeText]}
-                    accessibilityRole="text"
-                    accessibilityLabel="Advanced component type"
-                  >
+                  <Text style={[styles.badgeText, themedStyles.badgeText]}>
                     Advanced
                   </Text>
                 </View>
               </View>
             </View>
-            <Ionicons name="chevron-forward" size={20} color={colors.textSecondary} />
+            <Ionicons
+              name="chevron-forward"
+              size={20}
+              color={colors.textSecondary}
+              accessibilityElementsHidden={true}
+            />
           </View>
           <Text style={[styles.componentDesc, themedStyles.componentDesc]}>
             Implement accessible modal dialogs with proper focus management and screen reader support
           </Text>
-          <View style={styles.features}>
+          <View style={styles.features} importantForAccessibility="no">
             <View style={styles.featureItem}>
-              <Ionicons name="scan-outline" size={16} color={colors.textSecondary} />
+              <Ionicons
+                name="scan-outline"
+                size={16}
+                color={colors.textSecondary}
+                accessibilityElementsHidden={true}
+              />
               <Text style={[styles.featureText, themedStyles.featureText]}>Focus trapping</Text>
             </View>
             <View style={styles.featureItem}>
-              <Ionicons name="megaphone-outline" size={16} color={colors.textSecondary} />
+              <Ionicons
+                name="megaphone-outline"
+                size={16}
+                color={colors.textSecondary}
+                accessibilityElementsHidden={true}
+              />
               <Text style={[styles.featureText, themedStyles.featureText]}>Screen reader alerts</Text>
             </View>
           </View>

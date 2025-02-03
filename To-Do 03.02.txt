@@ -1,0 +1,43 @@
+Basandomi sul codice che ho visto e sui fix già implementati, i prossimi interventi prioritari dovrebbero essere:
+
+Components section:
+
+
+Fix della doppia lettura dei tag da screen reader
+Implementare correttamente l'accessibilità dei badge
+
+
+Per il copy button:
+
+
+Aggiungere feedback sonoro per lo screen reader
+Implementare l'annuncio di copia avvenuta
+
+
+Form Controls:
+
+
+Aggiungere gestione errori appropriata
+Migliorare visibilità del pulsante submit
+Implementare correttamente i feedback di errore per screen reader
+
+
+Framework comparison:
+
+
+Verificare il problema del bottone performance tagliato su Google Pixel 7
+Verificare che i rating siano correttamente annunciati dallo screen reader
+
+
+settings.tsx:
+
+
+Sistemare le ultime tre impostazioni non funzionanti
+Aggiungere feedback appropriati per le modifiche delle impostazioni
+
+
+Navigation:
+
+
+Implementare un sistema coerente di navigazione back
+Mantenere consistenza tra le etichette nel menu, home e titoli delle pagine

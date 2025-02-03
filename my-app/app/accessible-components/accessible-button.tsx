@@ -43,7 +43,7 @@ const handleCopy = async () => {
   }
 };
 
-  const DemoButton = () => (
+ const DemoButton = () => (
     <TouchableOpacity
       style={[styles.demoButton, { backgroundColor: colors.primary }]}
       accessibilityRole="button"
@@ -51,6 +51,7 @@ const handleCopy = async () => {
       accessibilityHint="Activates form submission"
       onPress={() => {
         setShowSuccess(true);
+        AccessibilityInfo.announceForAccessibility('Button pressed successfully');
         setTimeout(() => setShowSuccess(false), 2000);
       }}
     >
@@ -131,82 +132,134 @@ const handleCopy = async () => {
     }
   };
   return (
-    <ScrollView style={[styles.container, themedStyles.container]}>
-      <View style={styles.section}>
-        <Text style={[styles.sectionTitle, themedStyles.sectionTitle]}>Interactive Example</Text>
-        <View style={[styles.demoContainer, themedStyles.demoContainer]}>
-          <DemoButton />
-          <Text style={[styles.demoText, themedStyles.demoText]}>
-            Try this button with VoiceOver/TalkBack enabled
+      <ScrollView
+        style={[styles.container, themedStyles.container]}
+        accessibilityRole="scrollview"
+        accessibilityLabel="Button Component Example"
+      >
+        <View style={styles.section}>
+          <Text
+            style={[styles.sectionTitle, themedStyles.sectionTitle]}
+            accessibilityRole="header"
+          >
+            Interactive Example
           </Text>
+          <View
+            style={[styles.demoContainer, themedStyles.demoContainer]}
+            importantForAccessibility="no"
+          >
+            <DemoButton />
+            <Text style={[styles.demoText, themedStyles.demoText]}>
+              Try this button with VoiceOver/TalkBack enabled
+            </Text>
+          </View>
         </View>
-      </View>
 
-      <View style={styles.section}>
-        <Text style={[styles.sectionTitle, themedStyles.sectionTitle]}>Implementation</Text>
-        <View style={[styles.codeContainer, themedStyles.codeContainer]}>
-          <View style={[styles.codeHeader, themedStyles.codeHeader]}>
-            <Text style={[styles.codeHeaderText, themedStyles.codeHeaderText]}>JSX</Text>
-            <TouchableOpacity
-              style={styles.copyButton}
-              onPress={handleCopy}
-              accessibilityRole="button"
-              accessibilityLabel={copied ? "Code copied" : "Copy code"}
-              accessibilityHint="Copies the code example to your clipboard"
+        <View style={styles.section}>
+          <Text
+            style={[styles.sectionTitle, themedStyles.sectionTitle]}
+            accessibilityRole="header"
+          >
+            Implementation
+          </Text>
+          <View style={[styles.codeContainer, themedStyles.codeContainer]}>
+            <View style={[styles.codeHeader, themedStyles.codeHeader]}>
+              <Text style={[styles.codeHeaderText, themedStyles.codeHeaderText]}>JSX</Text>
+              <TouchableOpacity
+                style={styles.copyButton}
+                onPress={handleCopy}
+                accessibilityRole="button"
+                accessibilityLabel={copied ? "Code copied" : "Copy code"}
+                accessibilityHint="Copies the code example to your clipboard"
+              >
+                <Ionicons
+                  name={copied ? "checkmark" : "copy-outline"}
+                  size={20}
+                  color={copied ? "#28A745" : colors.textSecondary}
+                  accessibilityElementsHidden={true}
+                />
+                <Text style={[styles.copyText, copied && styles.copiedText, themedStyles.copyText]}>
+                  {copied ? "Copied!" : "Copy"}
+                </Text>
+              </TouchableOpacity>
+            </View>
+            <View style={styles.codeCard}>
+              <Text style={[styles.codeText, themedStyles.codeText]}>{codeExample}</Text>
+            </View>
+          </View>
+        </View>
+
+        <View style={styles.section}>
+          <Text
+            style={[styles.sectionTitle, themedStyles.sectionTitle]}
+            accessibilityRole="header"
+          >
+            Accessibility Features
+          </Text>
+          <View style={[styles.featuresContainer, themedStyles.featuresContainer]}>
+            <View
+              style={styles.featureItem}
+              importantForAccessibility="no"
             >
               <Ionicons
-                name={copied ? "checkmark" : "copy-outline"}
-                size={20}
-                color={copied ? "#28A745" : colors.textSecondary}
+                name="resize"
+                size={24}
+                color={colors.primary}
                 accessibilityElementsHidden={true}
               />
-              <Text style={[styles.copyText, copied && styles.copiedText, themedStyles.copyText]}>
-                {copied ? "Copied!" : "Copy"}
-              </Text>
-            </TouchableOpacity>
-          </View>
-          <View style={styles.codeCard}>
-            <Text style={[styles.codeText, themedStyles.codeText]}>{codeExample}</Text>
+              <View style={styles.featureContent}>
+                <Text style={[styles.featureTitle, themedStyles.featureTitle]}>
+                  Minimum Touch Target
+                </Text>
+                <Text style={[styles.featureDescription, themedStyles.featureDescription]}>
+                  44x44 points minimum size ensures the button is easy to tap
+                </Text>
+              </View>
+            </View>
+
+            <View
+              style={styles.featureItem}
+              importantForAccessibility="no"
+            >
+              <Ionicons
+                name="text"
+                size={24}
+                color={colors.primary}
+                accessibilityElementsHidden={true}
+              />
+              <View style={styles.featureContent}>
+                <Text style={[styles.featureTitle, themedStyles.featureTitle]}>
+                  Screen Reader Label
+                </Text>
+                <Text style={[styles.featureDescription, themedStyles.featureDescription]}>
+                  Clear description announces the button's purpose
+                </Text>
+              </View>
+            </View>
+
+            <View
+              style={styles.featureItem}
+              importantForAccessibility="no"
+            >
+              <Ionicons
+                name="information-circle"
+                size={24}
+                color={colors.primary}
+                accessibilityElementsHidden={true}
+              />
+              <View style={styles.featureContent}>
+                <Text style={[styles.featureTitle, themedStyles.featureTitle]}>
+                  Action Hint
+                </Text>
+                <Text style={[styles.featureDescription, themedStyles.featureDescription]}>
+                  Additional context about what happens on activation
+                </Text>
+              </View>
+            </View>
           </View>
         </View>
-      </View>
 
-      <View style={styles.section}>
-        <Text style={[styles.sectionTitle, themedStyles.sectionTitle]}>Accessibility Features</Text>
-        <View style={[styles.featuresContainer, themedStyles.featuresContainer]}>
-          <View style={styles.featureItem}>
-            <Ionicons name="resize" size={24} color={colors.primary} />
-            <View style={styles.featureContent}>
-              <Text style={[styles.featureTitle, themedStyles.featureTitle]}>Minimum Touch Target</Text>
-              <Text style={[styles.featureDescription, themedStyles.featureDescription]}>
-                44x44 points minimum size ensures the button is easy to tap
-              </Text>
-            </View>
-          </View>
-
-          <View style={styles.featureItem}>
-            <Ionicons name="text" size={24} color={colors.primary} />
-            <View style={styles.featureContent}>
-              <Text style={[styles.featureTitle, themedStyles.featureTitle]}>Screen Reader Label</Text>
-              <Text style={[styles.featureDescription, themedStyles.featureDescription]}>
-                Clear description announces the button's purpose
-              </Text>
-            </View>
-          </View>
-
-          <View style={styles.featureItem}>
-            <Ionicons name="information-circle" size={24} color={colors.primary} />
-            <View style={styles.featureContent}>
-              <Text style={[styles.featureTitle, themedStyles.featureTitle]}>Action Hint</Text>
-              <Text style={[styles.featureDescription, themedStyles.featureDescription]}>
-                Additional context about what happens on activation
-              </Text>
-            </View>
-          </View>
-        </View>
-      </View>
-
-       <Modal
+        <Modal
           visible={showSuccess}
           transparent
           animationType="fade"
@@ -216,8 +269,16 @@ const handleCopy = async () => {
         >
           <View style={[styles.modalOverlay, themedStyles.successModal]}>
             <View style={[styles.successContent, themedStyles.successContent]}>
-              <View style={styles.successIconContainer}>
-                <Ionicons name="checkmark-circle" size={48} color={colors.primary} />
+              <View
+                style={styles.successIconContainer}
+                importantForAccessibility="no"
+              >
+                <Ionicons
+                  name="checkmark-circle"
+                  size={48}
+                  color={colors.primary}
+                  accessibilityElementsHidden={true}
+                />
               </View>
               <Text style={[styles.successText, themedStyles.successText]}>
                 Button pressed successfully
@@ -226,9 +287,9 @@ const handleCopy = async () => {
           </View>
         </Modal>
 
-    </ScrollView>
-  );
-};
+      </ScrollView>
+    );
+  };
 
 const styles = StyleSheet.create({
   container: {

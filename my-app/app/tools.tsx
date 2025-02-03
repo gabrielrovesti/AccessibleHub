@@ -1,192 +1,223 @@
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import React from 'react';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Linking } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useTheme } from '../context/ThemeContext';
+
+const TOOL_LINKS = {
+  'accessibility-inspector': 'https://docs.expo.dev/debugging/tools/#accessibility-inspector',
+  'contrast-analyzer': 'https://developer.android.com/studio/debug/dev-options#drawing',
+  'talkback': 'https://support.google.com/accessibility/android/answer/6283677',
+  'voiceover': 'https://support.apple.com/guide/iphone/turn-on-and-practice-voiceover-iph3e2e415f/ios',
+  'checklist': 'https://developer.android.com/guide/topics/ui/accessibility/testing'
+};
 
 export default function TestingToolsScreen() {
   const { colors, textSizes, isDarkMode } = useTheme();
 
-  const themedStyles = {
-    container: {
-      backgroundColor: colors.background,
-    },
-    header: {
-      backgroundColor: colors.surface,
-      borderBottomColor: colors.border,
-    },
-    title: {
-      color: colors.text,
-      fontSize: textSizes.xlarge,
-    },
-    description: {
-      color: colors.textSecondary,
-      fontSize: textSizes.medium,
-    },
-    sectionTitle: {
-      color: colors.text,
-      fontSize: textSizes.large,
-    },
-    toolCard: {
-      backgroundColor: colors.surface,
-      shadowColor: isDarkMode ? '#000' : '#000',
-      shadowOpacity: isDarkMode ? 0.3 : 0.05,
-    },
-    toolTitle: {
-      color: colors.text,
-      fontSize: textSizes.large,
-    },
-    badgeText: {
-      color: isDarkMode ? colors.primary : '#0055CC',
-    },
-    toolDescription: {
-      color: colors.textSecondary,
-      fontSize: textSizes.small,
-    },
-    gestureText: {
-      color: colors.textSecondary,
-    },
-    featureItem: {
-      color: colors.textSecondary,
-    },
-    checklistCard: {
-      backgroundColor: colors.surface,
-    },
-    checklistTitle: {
-      color: colors.text,
-      fontSize: textSizes.large,
-    },
-    checklistItem: {
-      color: colors.textSecondary,
-    },
+  const handleToolPress = async (toolId) => {
+    const url = TOOL_LINKS[toolId];
+    if (url && await Linking.canOpenURL(url)) {
+      await Linking.openURL(url);
+    }
   };
 
+  const tools = [
+    {
+      id: 'talkback',
+      section: 'Screen Readers',
+      title: 'TalkBack (Android)',
+      description: 'Android\'s built-in screen reader. Essential gestures:',
+      icon: 'phone-portrait-outline',
+      iconBg: '#E8F1FF',
+      iconColor: '#0055CC',
+      features: [
+        'Single tap: Select item',
+        'Double tap: Activate selected item',
+        'Swipe right/left: Next/previous item'
+      ],
+      link: true,
+      badge: 'Built-in'
+    },
+    {
+      id: 'voiceover',
+      section: 'Screen Readers',
+      title: 'VoiceOver (iOS)',
+      description: 'iOS\'s integrated screen reader. Key gestures:',
+      icon: 'logo-apple',
+      iconBg: '#F0F0F0',
+      iconColor: '#333',
+      features: [
+        'Single tap: Select and speak',
+        'Double tap: Activate item',
+        'Three finger swipe: Scroll'
+      ],
+      link: true,
+      badge: 'Built-in'
+    },
+    {
+      id: 'accessibility-inspector',
+      section: 'Development Tools',
+      title: 'Accessibility Inspector',
+      description: 'Built-in tool to inspect accessibility properties:',
+      icon: 'code-working-outline',
+      iconBg: '#FFF4E6',
+      iconColor: '#FF8C00',
+      features: [
+        'Verify accessibility labels and hints',
+        'Check navigation order',
+        'Test screen reader announcements'
+      ],
+      link: true
+    },
+    {
+      id: 'contrast-analyzer',
+      section: 'Development Tools',
+      title: 'Contrast Analyzer',
+      description: 'Verify color contrast ratios for WCAG guidelines:',
+      icon: 'color-palette-outline',
+      iconBg: '#E6F4FF',
+      iconColor: '#0066CC',
+      features: [
+        'Check text contrast ratios',
+        'Verify UI component contrast',
+        'Support for WCAG 2.2 standards'
+      ],
+      link: true
+    },
+    {
+      id: 'checklist',
+      section: 'Testing Checklist',
+      title: 'Automated Testing',
+      icon: 'checkbox-outline',
+      iconBg: '#E8FFE6',
+      iconColor: '#28A745',
+      description: 'Essential checks for accessibility testing:',
+      features: [
+        'Run accessibility linter',
+        'Verify accessibility props',
+        'Check navigation order',
+        'Test color contrast'
+      ],
+      link: true
+    }
+  ];
+
+  const renderSection = (sectionTitle, sectionTools) => (
+    <View key={sectionTitle} style={styles.section}>
+      <Text
+        style={[styles.sectionTitle, { color: colors.text }]}
+        accessibilityRole="header"
+      >
+        {sectionTitle}
+      </Text>
+      {sectionTools.map(tool => renderToolCard(tool))}
+    </View>
+  );
+
+  const renderToolCard = (tool) => (
+    <TouchableOpacity
+      key={tool.id}
+      style={[styles.toolCard, { backgroundColor: colors.surface }]}
+      onPress={() => handleToolPress(tool.id)}
+      accessibilityRole="button"
+      accessibilityLabel={`${tool.title}. ${tool.description}`}
+      accessibilityHint={tool.link ? "Double tap to open documentation" : ""}
+    >
+      <View style={styles.toolHeader}>
+        <View
+          style={[styles.iconContainer, { backgroundColor: tool.iconBg }]}
+          importantForAccessibility="no"
+        >
+          <Ionicons
+            name={tool.icon}
+            size={24}
+            color={tool.iconColor}
+            accessibilityElementsHidden={true}
+          />
+        </View>
+        <View style={styles.titleContainer}>
+          <Text style={[styles.toolTitle, { color: colors.text }]}>
+            {tool.title}
+          </Text>
+          {tool.badge && (
+            <View
+              style={[styles.badge, { backgroundColor: isDarkMode ? colors.surface : '#E8F1FF' }]}
+              importantForAccessibility="no"
+            >
+              <Text style={[styles.badgeText, { color: isDarkMode ? colors.primary : '#0055CC' }]}>
+                {tool.badge}
+              </Text>
+            </View>
+          )}
+        </View>
+      </View>
+
+      <Text style={[styles.toolDescription, { color: colors.textSecondary }]}>
+        {tool.description}
+      </Text>
+
+      <View style={styles.featureList}>
+        {tool.features.map((feature, index) => (
+          <Text
+            key={index}
+            style={[styles.featureItem, { color: colors.textSecondary }]}
+          >
+            • {feature}
+          </Text>
+        ))}
+      </View>
+
+      {tool.link && (
+        <View
+          style={styles.link}
+          importantForAccessibility="no"
+        >
+          <Ionicons
+            name="open-outline"
+            size={16}
+            color={colors.primary}
+            accessibilityElementsHidden={true}
+          />
+          <Text style={[styles.linkText, { color: colors.primary }]}>
+            Open Documentation
+          </Text>
+        </View>
+      )}
+    </TouchableOpacity>
+  );
+
+  const groupedTools = tools.reduce((acc, tool) => {
+    if (!acc[tool.section]) {
+      acc[tool.section] = [];
+    }
+    acc[tool.section].push(tool);
+    return acc;
+  }, {});
+
   return (
-    <ScrollView style={[styles.container, themedStyles.container]}>
-      <View style={[styles.header, themedStyles.header]}>
-        <Text style={[styles.title, themedStyles.title]}>Testing Tools</Text>
-        <Text style={[styles.description, themedStyles.description]}>
-          Discover tools and methods for testing accessibility in your apps.
+    <ScrollView
+      style={[styles.container, { backgroundColor: colors.background }]}
+      accessibilityRole="scrollview"
+      accessibilityLabel="Testing Tools Screen"
+    >
+      <View style={[styles.header, {
+        backgroundColor: colors.surface,
+        borderBottomColor: colors.border
+      }]}>
+        <Text
+          style={[styles.title, { color: colors.text }]}
+          accessibilityRole="header"
+        >
+          Testing Tools
+        </Text>
+        <Text style={[styles.description, { color: colors.textSecondary }]}>
+          Essential tools for testing accessibility in your mobile applications
         </Text>
       </View>
 
-      <View style={styles.section}>
-        <Text style={[styles.sectionTitle, themedStyles.sectionTitle]}>Screen Readers</Text>
-
-        <View style={[styles.toolCard, themedStyles.toolCard]}>
-          <View style={styles.toolHeader}>
-            <View style={[styles.iconContainer, { backgroundColor: '#E8F1FF' }]}>
-              <Ionicons name="phone-portrait-outline" size={24} color="#0055CC" />
-            </View>
-            <View style={styles.toolTitleContainer}>
-              <Text style={[styles.toolTitle, themedStyles.toolTitle]}>TalkBack (Android)</Text>
-              <View style={styles.badge}>
-                <Text style={[styles.badgeText, themedStyles.badgeText]}>Built-in</Text>
-              </View>
-            </View>
-          </View>
-          <Text style={[styles.toolDescription, themedStyles.toolDescription]}>
-            Android's built-in screen reader. Essential gestures:
-          </Text>
-          <View style={styles.gestureList}>
-            <View style={styles.gestureItem}>
-              <Ionicons name="finger-print-outline" size={20} color={colors.textSecondary} />
-              <Text style={[styles.gestureText, themedStyles.gestureText]}>Single tap: Select item</Text>
-            </View>
-            <View style={styles.gestureItem}>
-              <Ionicons name="finger-print-outline" size={20} color={colors.textSecondary} />
-              <Text style={[styles.gestureText, themedStyles.gestureText]}>Double tap: Activate selected item</Text>
-            </View>
-            <View style={styles.gestureItem}>
-              <Ionicons name="finger-print-outline" size={20} color={colors.textSecondary} />
-              <Text style={[styles.gestureText, themedStyles.gestureText]}>Swipe right/left: Next/previous item</Text>
-            </View>
-          </View>
-        </View>
-
-        <View style={[styles.toolCard, themedStyles.toolCard]}>
-          <View style={styles.toolHeader}>
-            <View style={[styles.iconContainer, { backgroundColor: '#F0F0F0' }]}>
-              <Ionicons name="logo-apple" size={24} color="#333" />
-            </View>
-            <View style={styles.toolTitleContainer}>
-              <Text style={[styles.toolTitle, themedStyles.toolTitle]}>VoiceOver (iOS)</Text>
-              <View style={styles.badge}>
-                <Text style={[styles.badgeText, themedStyles.badgeText]}>Built-in</Text>
-              </View>
-            </View>
-          </View>
-          <Text style={[styles.toolDescription, themedStyles.toolDescription]}>
-            iOS's integrated screen reader. Key gestures:
-          </Text>
-          <View style={styles.gestureList}>
-            <View style={styles.gestureItem}>
-              <Ionicons name="finger-print-outline" size={20} color={colors.textSecondary} />
-              <Text style={[styles.gestureText, themedStyles.gestureText]}>Single tap: Select and speak</Text>
-            </View>
-            <View style={styles.gestureItem}>
-              <Ionicons name="finger-print-outline" size={20} color={colors.textSecondary} />
-              <Text style={[styles.gestureText, themedStyles.gestureText]}>Double tap: Activate item</Text>
-            </View>
-            <View style={styles.gestureItem}>
-              <Ionicons name="finger-print-outline" size={20} color={colors.textSecondary} />
-              <Text style={[styles.gestureText, themedStyles.gestureText]}>Three finger swipe: Scroll</Text>
-            </View>
-          </View>
-        </View>
-      </View>
-
-      <View style={styles.section}>
-        <Text style={[styles.sectionTitle, themedStyles.sectionTitle]}>Development Tools</Text>
-
-        <TouchableOpacity style={[styles.toolCard, themedStyles.toolCard]} accessibilityRole="button">
-          <View style={styles.toolHeader}>
-            <View style={[styles.iconContainer, { backgroundColor: '#FFF4E6' }]}>
-              <Ionicons name="code-working-outline" size={24} color="#FF8C00" />
-            </View>
-            <Text style={[styles.toolTitle, themedStyles.toolTitle]}>Accessibility Inspector</Text>
-          </View>
-          <Text style={[styles.toolDescription, themedStyles.toolDescription]}>
-            Built-in tool to inspect accessibility properties:
-          </Text>
-          <View style={styles.featureList}>
-            <Text style={[styles.featureItem, themedStyles.featureItem]}>• Verify accessibility labels and hints</Text>
-            <Text style={[styles.featureItem, themedStyles.featureItem]}>• Check navigation order</Text>
-            <Text style={[styles.featureItem, themedStyles.featureItem]}>• Test screen reader announcements</Text>
-          </View>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={[styles.toolCard, themedStyles.toolCard]} accessibilityRole="button">
-          <View style={styles.toolHeader}>
-            <View style={[styles.iconContainer, { backgroundColor: '#E6F4FF' }]}>
-              <Ionicons name="color-palette-outline" size={24} color="#0066CC" />
-            </View>
-            <Text style={[styles.toolTitle, themedStyles.toolTitle]}>Contrast Analyzer</Text>
-          </View>
-          <Text style={[styles.toolDescription, themedStyles.toolDescription]}>
-            Verify color contrast ratios meet WCAG guidelines:
-          </Text>
-          <View style={styles.featureList}>
-            <Text style={[styles.featureItem, themedStyles.featureItem]}>• Check text contrast ratios</Text>
-            <Text style={[styles.featureItem, themedStyles.featureItem]}>• Verify UI component contrast</Text>
-            <Text style={[styles.featureItem, themedStyles.featureItem]}>• Support for WCAG 2.2 standards</Text>
-          </View>
-        </TouchableOpacity>
-      </View>
-
-      <View style={styles.section}>
-        <Text style={[styles.sectionTitle, themedStyles.sectionTitle]}>Testing Checklist</Text>
-        <View style={[styles.checklistCard, themedStyles.checklistCard]}>
-          <View style={styles.checklistHeader}>
-            <Ionicons name="checkbox-outline" size={24} color="#28A745" />
-            <Text style={[styles.checklistTitle, themedStyles.checklistTitle]}>Automated Testing</Text>
-          </View>
-          <View style={styles.checklist}>
-            <Text style={[styles.checklistItem, themedStyles.checklistItem]}>✓ Run accessibility linter</Text>
-            <Text style={[styles.checklistItem, themedStyles.checklistItem]}>✓ Verify accessibility props</Text>
-            <Text style={[styles.checklistItem, themedStyles.checklistItem]}>✓ Check navigation order</Text>
-            <Text style={[styles.checklistItem, themedStyles.checklistItem]}>✓ Test color contrast</Text>
-          </View>
-        </View>
-      </View>
+      {Object.entries(groupedTools).map(([section, sectionTools]) =>
+        renderSection(section, sectionTools)
+      )}
     </ScrollView>
   );
 }
@@ -194,36 +225,29 @@ export default function TestingToolsScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f8f9fa',
   },
   header: {
     padding: 20,
-    backgroundColor: '#fff',
     borderBottomWidth: 1,
-    borderBottomColor: '#eee',
   },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
-    color: '#1c1c1e',
     marginBottom: 8,
   },
   description: {
     fontSize: 16,
-    color: '#666',
     lineHeight: 24,
   },
   section: {
-    padding: 20,
+    padding: 16,
   },
   sectionTitle: {
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: '600',
-    color: '#1c1c1e',
     marginBottom: 16,
   },
   toolCard: {
-    backgroundColor: '#fff',
     borderRadius: 16,
     padding: 16,
     marginBottom: 16,
@@ -232,6 +256,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.05,
     shadowRadius: 4,
     elevation: 2,
+    minHeight: 44,
   },
   toolHeader: {
     flexDirection: 'row',
@@ -239,82 +264,54 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   iconContainer: {
-    width: 40,
-    height: 40,
+    width: 44,
+    height: 44,
     borderRadius: 12,
     alignItems: 'center',
     justifyContent: 'center',
     marginRight: 12,
   },
-  toolTitleContainer: {
+  titleContainer: {
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
+    gap: 8,
   },
   toolTitle: {
     fontSize: 18,
     fontWeight: '600',
-    color: '#1c1c1e',
-    marginRight: 8,
   },
   badge: {
-    backgroundColor: '#E8F1FF',
     paddingHorizontal: 8,
     paddingVertical: 4,
     borderRadius: 12,
   },
   badgeText: {
     fontSize: 12,
-    color: '#0055CC',
     fontWeight: '500',
   },
   toolDescription: {
     fontSize: 14,
-    color: '#666',
+    lineHeight: 20,
     marginBottom: 12,
   },
-  gestureList: {
-    gap: 8,
-  },
-  gestureItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
-  gestureText: {
-    fontSize: 14,
-    color: '#444',
-  },
   featureList: {
-    gap: 4,
+    gap: 8,
   },
   featureItem: {
     fontSize: 14,
-    color: '#444',
     lineHeight: 20,
+    paddingLeft: 8,
   },
-  checklistCard: {
-    backgroundColor: '#fff',
-    borderRadius: 16,
-    padding: 16,
-  },
-  checklistHeader: {
+  link: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 12,
-    marginBottom: 12,
+    marginTop: 12,
+    paddingVertical: 8,
   },
-  checklistTitle: {
-    fontSize: 18,
-    fontWeight: '600',
-    color: '#1c1c1e',
-  },
-  checklist: {
-    gap: 8,
-  },
-  checklistItem: {
+  linkText: {
     fontSize: 14,
-    color: '#444',
-    lineHeight: 20,
-  },
+    fontWeight: '500',
+    marginLeft: 4,
+  }
 });
