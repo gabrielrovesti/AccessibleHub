@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import {
   View,
   Text,
@@ -8,7 +8,8 @@ import {
   Modal,
   Animated,
   PanResponder,
-  Dimensions
+  AccessibilityInfo,
+  Platform
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useTheme } from '../../context/ThemeContext';
@@ -16,40 +17,86 @@ import { useTheme } from '../../context/ThemeContext';
 const GesturesTutorialScreen = () => {
   const [activeSection, setActiveSection] = useState(null);
   const [showSuccess, setShowSuccess] = useState(false);
-  const [position] = useState(new Animated.ValueXY());
-  const [scale] = useState(new Animated.Value(1));
-  const [rotation] = useState(new Animated.Value(0));
+  const [swipeIndex, setSwipeIndex] = useState(0);
+  const scrollViewRef = useRef(null);
   const { colors, textSizes, isDarkMode } = useTheme();
 
-  // Pan responder for drag gesture example
-  const panResponder = PanResponder.create({
-    onStartShouldSetPanResponder: () => true,
-    onPanResponderMove: Animated.event(
-      [null, { dx: position.x, dy: position.y }],
-      { useNativeDriver: false }
-    ),
-    onPanResponderRelease: () => {
-      Animated.spring(position, {
-        toValue: { x: 0, y: 0 },
-        useNativeDriver: false
-      }).start();
+  // Le gesture più semplici secondo il paper
+  const gestureTypes = [
+    {
+      id: 'tap',
+      title: 'Single Tap',
+      icon: 'finger-print-outline',
+      description: 'Select and announce items. Most basic and reliable gesture.',
+      practice: 'Tap to activate'
+    },
+    {
+      id: 'double',
+      title: 'Double Tap',
+      icon: 'sync-outline',
+      description: 'Activate the selected item. Commonly used and easy to perform.',
+      practice: 'Double tap to activate'
+    },
+    {
+      id: 'swipe-lr',
+      title: 'Swipe Left/Right',
+      icon: 'arrow-forward-outline',
+      description: 'Navigate between items. Basic horizontal movement.',
+      practice: 'Swipe left or right'
+    },
+    {
+      id: 'swipe-ud',
+      title: 'Swipe Up/Down',
+      icon: 'arrow-up-outline',
+      description: 'Scroll content. Simple vertical movement.',
+      practice: 'Swipe up or down'
     }
-  });
+  ];
 
-  // Function to handle tap gesture success
-  const handleTapSuccess = () => {
+  const handleTapSuccess = (gestureName) => {
     setShowSuccess(true);
+    AccessibilityInfo.announceForAccessibility(`${gestureName} gesture completed successfully`);
     setTimeout(() => setShowSuccess(false), 2000);
   };
 
-  // Function to handle pinch gesture
-  const handlePinch = (scale) => {
-    Animated.spring(this.scale, {
-      toValue: scale,
-      friction: 3,
-      useNativeDriver: false
-    }).start();
+  const toggleSection = (section) => {
+    setActiveSection(activeSection === section ? null : section);
+    if (activeSection !== section) {
+      AccessibilityInfo.announceForAccessibility(`${section} practice area opened`);
+    }
   };
+
+  const panResponder = PanResponder.create({
+    onStartShouldSetPanResponder: () => true,
+    onMoveShouldSetPanResponder: () => true,
+    onPanResponderMove: (evt, gestureState) => {
+      const isHorizontal = Math.abs(gestureState.dx) > Math.abs(gestureState.dy);
+      const threshold = 50;
+
+      if (isHorizontal && activeSection === 'swipe-lr') {
+        if (Math.abs(gestureState.dx) > threshold) {
+          const direction = gestureState.dx > 0 ? 'right' : 'left';
+          const newIndex = direction === 'right' ?
+            Math.max(0, swipeIndex - 1) :
+            Math.min(2, swipeIndex + 1);
+
+          if (newIndex !== swipeIndex) {
+            setSwipeIndex(newIndex);
+            AccessibilityInfo.announceForAccessibility(
+              `Swiped ${direction}. Item ${newIndex + 1} of 3`
+            );
+            handleTapSuccess('Swipe');
+          }
+        }
+      } else if (!isHorizontal && activeSection === 'swipe-ud') {
+        if (Math.abs(gestureState.dy) > threshold) {
+          const direction = gestureState.dy > 0 ? 'down' : 'up';
+          AccessibilityInfo.announceForAccessibility(`Swiped ${direction}`);
+          handleTapSuccess('Vertical swipe');
+        }
+      }
+    }
+  });
 
   const themedStyles = {
     container: {
@@ -59,246 +106,156 @@ const GesturesTutorialScreen = () => {
       backgroundColor: colors.surface,
       borderBottomColor: colors.border,
     },
-    headerTitle: {
-      color: colors.text,
-      fontSize: textSizes.xlarge,
-    },
-    headerDescription: {
-      color: colors.textSecondary,
-      fontSize: textSizes.medium,
-    },
-    section: {
-      gap: textSizes.medium,
-    },
-    sectionTitle: {
-      color: colors.text,
-      fontSize: textSizes.large,
-    },
-    gestureCard: {
+    card: {
       backgroundColor: colors.surface,
-      shadowColor: isDarkMode ? '#000' : '#000',
-      shadowOpacity: isDarkMode ? 0.3 : 0.05,
+      shadowColor: isDarkMode ? '#000' : colors.border,
+      shadowOpacity: isDarkMode ? 0.3 : 0.1,
     },
-    gestureHeader: {
-      gap: textSizes.medium,
-    },
-    gestureTitle: {
+    title: {
       color: colors.text,
-      fontSize: textSizes.medium,
     },
-    gestureDescription: {
+    description: {
       color: colors.textSecondary,
-      fontSize: textSizes.small,
     },
     practiceArea: {
-      backgroundColor: colors.background,
+      backgroundColor: isDarkMode ? colors.background : '#f8f9fa',
     },
-    practiceTitle: {
-      color: colors.textSecondary,
-      fontSize: textSizes.small,
-    },
-    practiceTouchable: {
+    practiceButton: {
       backgroundColor: colors.primary,
     },
     practiceText: {
       color: colors.background,
-      fontSize: textSizes.medium,
-    },
-    swipeItem: {
-      backgroundColor: colors.primary,
-    },
-    swipeText: {
-      color: colors.background,
-      fontSize: textSizes.medium,
-    },
-    rotorPracticeArea: {
-      backgroundColor: colors.primary,
-    },
-    rotorText: {
-      color: colors.background,
-      fontSize: textSizes.small,
-    },
-    modalOverlay: {
-      backgroundColor: isDarkMode ? 'rgba(0, 0, 0, 0.7)' : 'rgba(0, 0, 0, 0.5)',
-    },
-    successModal: {
-      backgroundColor: colors.surface,
-    },
-    successText: {
-      color: '#28A745',
-      fontSize: textSizes.medium,
-    },
+    }
+  };
+
+  const renderPracticeArea = (gesture) => {
+    switch (gesture.id) {
+      case 'tap':
+      case 'double':
+        return (
+          <TouchableOpacity
+            style={[styles.practiceButton, themedStyles.practiceButton]}
+            onPress={() => handleTapSuccess(gesture.title)}
+            accessibilityRole="button"
+            accessibilityLabel={`Practice ${gesture.title}`}
+            accessibilityHint={gesture.practice}
+          >
+            <Text style={[styles.practiceText, themedStyles.practiceText]}>
+              {gesture.practice}
+            </Text>
+          </TouchableOpacity>
+        );
+      case 'swipe-lr':
+        return (
+          <View
+            {...panResponder.panHandlers}
+            style={styles.swipeArea}
+            accessibilityLabel="Horizontal swipe practice area"
+            accessibilityHint="Swipe left or right to navigate between items"
+          >
+            <Text style={[styles.itemIndicator, themedStyles.title]}>
+              Item {swipeIndex + 1} of 3
+            </Text>
+            <Text style={[styles.swipeInstruction, themedStyles.description]}>
+              ← Swipe left or right →
+            </Text>
+          </View>
+        );
+      case 'swipe-ud':
+        return (
+          <View
+            {...panResponder.panHandlers}
+            style={styles.swipeArea}
+            accessibilityLabel="Vertical swipe practice area"
+            accessibilityHint="Swipe up or down to scroll"
+          >
+            <Text style={[styles.swipeInstruction, themedStyles.description]}>
+              ↑ Swipe up or down ↓
+            </Text>
+          </View>
+        );
+      default:
+        return null;
+    }
   };
 
   return (
-    <ScrollView style={[styles.container, themedStyles.container]}>
+    <ScrollView
+      style={[styles.container, themedStyles.container]}
+      ref={scrollViewRef}
+      accessibilityRole="scrollView"
+    >
       <View style={[styles.header, themedStyles.header]}>
-        <Text style={[styles.headerTitle, themedStyles.headerTitle]}>Accessibility Gestures</Text>
-        <Text style={[styles.headerDescription, themedStyles.headerDescription]}>
-          Learn and practice common accessibility gestures used with screen readers
+        <Text
+          style={[styles.headerTitle, themedStyles.title]}
+          accessibilityRole="header"
+        >
+          Accessibility Gestures
+        </Text>
+        <Text style={[styles.headerDescription, themedStyles.description]}>
+          Learn and practice the most common and reliable accessibility gestures
         </Text>
       </View>
 
-      {/* Basic Gestures Section */}
-      <View style={[styles.section, themedStyles.section]}>
-        <Text style={[styles.sectionTitle, themedStyles.sectionTitle]}>Basic Screen Reader Gestures</Text>
-
-        <TouchableOpacity
-          style={[styles.gestureCard, themedStyles.gestureCard]}
-          onPress={() => setActiveSection('tap')}
-          accessibilityRole="button"
-          accessibilityLabel="Learn about single tap gesture"
-        >
-          <View style={[styles.gestureHeader, themedStyles.gestureHeader]}>
-            <View style={[styles.iconContainer, { backgroundColor: '#E8F1FF' }]}>
-              <Ionicons name="finger-print-outline" size={24} color="#0055CC" />
+      <View style={styles.content}>
+        {gestureTypes.map((gesture) => (
+          <TouchableOpacity
+            key={gesture.id}
+            style={[styles.card, themedStyles.card]}
+            onPress={() => toggleSection(gesture.id)}
+            accessibilityRole="button"
+            accessibilityState={{ expanded: activeSection === gesture.id }}
+            accessibilityLabel={`${gesture.title} practice section`}
+            accessibilityHint={`Double tap to ${activeSection === gesture.id ? 'close' : 'open'} practice area`}
+          >
+            <View style={styles.cardHeader}>
+              <View style={styles.iconContainer}>
+                <Ionicons
+                  name={gesture.icon}
+                  size={24}
+                  color={colors.primary}
+                  accessibilityElementsHidden={true}
+                />
+              </View>
+              <Text style={[styles.cardTitle, themedStyles.title]}>
+                {gesture.title}
+              </Text>
             </View>
-            <Text style={[styles.gestureTitle, themedStyles.gestureTitle]}>Single Tap</Text>
-          </View>
-          <Text style={[styles.gestureDescription, themedStyles.gestureDescription]}>
-            Select and announce items under your finger
-          </Text>
 
-          {activeSection === 'tap' && (
-            <View style={[styles.practiceArea, themedStyles.practiceArea]}>
-              <Text style={[styles.practiceTitle, themedStyles.practiceTitle]}>Practice Area</Text>
-              <TouchableOpacity
-                style={[styles.practiceTouchable, themedStyles.practiceTouchable]}
-                onPress={handleTapSuccess}
-                accessibilityRole="button"
-                accessibilityLabel="Tap here to practice single tap gesture"
-              >
-                <Text style={[styles.practiceText, themedStyles.practiceText]}>Tap here</Text>
-              </TouchableOpacity>
-            </View>
-          )}
-        </TouchableOpacity>
+            <Text style={[styles.cardDescription, themedStyles.description]}>
+              {gesture.description}
+            </Text>
 
-        <TouchableOpacity
-          style={[styles.gestureCard, themedStyles.gestureCard]}
-          onPress={() => setActiveSection('double')}
-          accessibilityRole="button"
-          accessibilityLabel="Learn about double tap gesture"
-        >
-          <View style={[styles.gestureHeader, themedStyles.gestureHeader]}>
-            <View style={[styles.iconContainer, { backgroundColor: '#E8F1FF' }]}>
-              <Ionicons name="sync-outline" size={24} color="#0055CC" />
-            </View>
-            <Text style={[styles.gestureTitle, themedStyles.gestureTitle]}>Double Tap</Text>
-          </View>
-          <Text style={[styles.gestureDescription, themedStyles.gestureDescription]}>
-            Activate the selected item
-          </Text>
-
-          {activeSection === 'double' && (
-            <View style={[styles.practiceArea, themedStyles.practiceArea]}>
-              <Text style={[styles.practiceTitle, themedStyles.practiceTitle]}>Practice Area</Text>
-              <TouchableOpacity
-                style={[styles.practiceTouchable, themedStyles.practiceTouchable]}
-                onPress={handleTapSuccess}
-                accessibilityRole="button"
-                accessibilityLabel="Double tap here to practice the gesture"
-              >
-                <Text style={[styles.practiceText, themedStyles.practiceText]}>Double tap here</Text>
-              </TouchableOpacity>
-            </View>
-          )}
-        </TouchableOpacity>
+            {activeSection === gesture.id && (
+              <View style={[styles.practiceArea, themedStyles.practiceArea]}>
+                <Text style={[styles.practiceTitle, themedStyles.description]}>
+                  Practice Area
+                </Text>
+                {renderPracticeArea(gesture)}
+              </View>
+            )}
+          </TouchableOpacity>
+        ))}
       </View>
 
-      {/* Navigation Gestures Section */}
-      <View style={[styles.section, themedStyles.section]}>
-        <Text style={[styles.sectionTitle, themedStyles.sectionTitle]}>Navigation Gestures</Text>
-
-        <TouchableOpacity
-          style={[styles.gestureCard, themedStyles.gestureCard]}
-          onPress={() => setActiveSection('swipe')}
-          accessibilityRole="button"
-          accessibilityLabel="Learn about swipe gestures"
-        >
-          <View style={[styles.gestureHeader, themedStyles.gestureHeader]}>
-            <View style={[styles.iconContainer, { backgroundColor: '#E8F1FF' }]}>
-              <Ionicons name="arrow-forward-outline" size={24} color="#0055CC" />
-            </View>
-            <Text style={[styles.gestureTitle, themedStyles.gestureTitle]}>Swipe Right/Left</Text>
-          </View>
-          <Text style={[styles.gestureDescription, themedStyles.gestureDescription]}>
-            Move to next/previous item in the interface
-          </Text>
-
-          {activeSection === 'swipe' && (
-            <View style={[styles.practiceArea, themedStyles.practiceArea]}>
-              <Text style={[styles.practiceTitle, themedStyles.practiceTitle]}>Practice Area</Text>
-              <ScrollView horizontal style={styles.swipePracticeArea}>
-                <View style={[styles.swipeItem, themedStyles.swipeItem]}>
-                  <Text style={[styles.swipeText, themedStyles.swipeText]}>Item 1</Text>
-                </View>
-                <View style={[styles.swipeItem, themedStyles.swipeItem]}>
-                  <Text style={[styles.swipeText, themedStyles.swipeText]}>Item 2</Text>
-                </View>
-                <View style={[styles.swipeItem, themedStyles.swipeItem]}>
-                  <Text style={[styles.swipeText, themedStyles.swipeText]}>Item 3</Text>
-                </View>
-              </ScrollView>
-            </View>
-          )}
-        </TouchableOpacity>
-      </View>
-
-      {/* Advanced Gestures Section */}
-      <View style={[styles.section, themedStyles.section]}>
-        <Text style={[styles.sectionTitle, themedStyles.sectionTitle]}>Advanced Gestures</Text>
-
-        <TouchableOpacity
-          style={[styles.gestureCard, themedStyles.gestureCard]}
-          onPress={() => setActiveSection('rotor')}
-          accessibilityRole="button"
-          accessibilityLabel="Learn about rotor gesture"
-        >
-          <View style={[styles.gestureHeader, themedStyles.gestureHeader]}>
-            <View style={[styles.iconContainer, { backgroundColor: '#E8F1FF' }]}>
-              <Ionicons name="radio-outline" size={24} color="#0055CC" />
-            </View>
-            <Text style={[styles.gestureTitle, themedStyles.gestureTitle]}>Rotor Control</Text>
-          </View>
-          <Text style={[styles.gestureDescription, themedStyles.gestureDescription]}>
-            Two-finger rotation to access additional navigation options
-          </Text>
-
-          {activeSection === 'rotor' && (
-            <View style={[styles.practiceArea, themedStyles.practiceArea]}>
-              <Text style={[styles.practiceTitle, themedStyles.practiceTitle]}>Practice Area</Text>
-              <Animated.View
-                style={[
-                  styles.rotorPracticeArea,
-                  themedStyles.rotorPracticeArea,
-                  {
-                    transform: [
-                      { rotate: rotation.interpolate({
-                        inputRange: [0, 360],
-                        outputRange: ['0deg', '360deg']
-                      })}
-                    ]
-                  }
-                ]}
-              >
-                <Text style={[styles.rotorText, themedStyles.rotorText]}>Rotate with two fingers</Text>
-              </Animated.View>
-            </View>
-          )}
-        </TouchableOpacity>
-      </View>
-
-      {/* Success Modal */}
       <Modal
         visible={showSuccess}
         transparent
         animationType="fade"
+        accessibilityViewIsModal={true}
+        accessibilityLiveRegion="polite"
       >
-        <View style={[styles.modalOverlay, themedStyles.modalOverlay]}>
-          <View style={[styles.successModal, themedStyles.successModal]}>
-            <Ionicons name="checkmark-circle" size={32} color="#28A745" />
-            <Text style={[styles.successText, themedStyles.successText]}>Gesture Completed!</Text>
+        <View style={styles.modalOverlay}>
+          <View style={[styles.successModal, themedStyles.card]}>
+            <Ionicons
+              name="checkmark-circle"
+              size={32}
+              color="#28A745"
+              accessibilityElementsHidden={true}
+            />
+            <Text style={[styles.successText, themedStyles.title]}>
+              Gesture Completed!
+            </Text>
           </View>
         </View>
       </Modal>
@@ -309,7 +266,6 @@ const GesturesTutorialScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f8f9fa',
   },
   header: {
     padding: 20,
@@ -324,43 +280,36 @@ const styles = StyleSheet.create({
     fontSize: 16,
     lineHeight: 24,
   },
-  section: {
+  content: {
     padding: 16,
+    gap: 16,
   },
-  sectionTitle: {
-    fontSize: 18,
-    fontWeight: '600',
-    marginBottom: 12,
-  },
-  gestureCard: {
-    backgroundColor: '#fff',
+  card: {
     borderRadius: 16,
     padding: 16,
-    marginBottom: 16,
-    shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.05,
-    shadowRadius: 4,
-    elevation: 2,
+    shadowRadius: 6,
+    elevation: 3,
   },
-  gestureHeader: {
+  cardHeader: {
     flexDirection: 'row',
     alignItems: 'center',
+    marginBottom: 12,
     gap: 12,
-    marginBottom: 8,
   },
   iconContainer: {
     width: 40,
     height: 40,
     borderRadius: 12,
+    backgroundColor: '#E8F1FF',
     alignItems: 'center',
     justifyContent: 'center',
   },
-  gestureTitle: {
+  cardTitle: {
     fontSize: 18,
     fontWeight: '600',
   },
-  gestureDescription: {
+  cardDescription: {
     fontSize: 14,
     lineHeight: 20,
   },
@@ -372,9 +321,9 @@ const styles = StyleSheet.create({
   practiceTitle: {
     fontSize: 14,
     fontWeight: '600',
-    marginBottom: 12,
+    marginBottom: 16,
   },
-  practiceTouchable: {
+  practiceButton: {
     padding: 16,
     borderRadius: 8,
     alignItems: 'center',
@@ -383,45 +332,32 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '600',
   },
-  swipePracticeArea: {
-    flexDirection: 'row',
-    height: 80,
-  },
-  swipeItem: {
-    width: 120,
-    height: 80,
-    marginRight: 12,
-    borderRadius: 8,
-    justifyContent: 'center',
+  swipeArea: {
     alignItems: 'center',
+    justifyContent: 'center',
+    minHeight: 120,
+    gap: 16,
   },
-  swipeText: {
-    fontSize: 16,
+  itemIndicator: {
+    fontSize: 18,
     fontWeight: '600',
   },
-  rotorPracticeArea: {
-    width: 150,
-    height: 150,
-    borderRadius: 75,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  rotorText: {
+  swipeInstruction: {
     fontSize: 14,
-    fontWeight: '600',
-    textAlign: 'center',
+    opacity: 0.7,
   },
   modalOverlay: {
     flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.5)',
     justifyContent: 'center',
     alignItems: 'center',
   },
   successModal: {
-    backgroundColor: '#fff',
     padding: 24,
     borderRadius: 16,
     alignItems: 'center',
     gap: 12,
+    minWidth: 200,
   },
   successText: {
     fontSize: 18,

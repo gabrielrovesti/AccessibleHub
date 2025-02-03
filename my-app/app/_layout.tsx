@@ -48,16 +48,25 @@ function CustomDrawerContent(props) {
                   isActive && styles.drawerItemActive,
                 ]}
                 onTouchEnd={() => props.navigation.navigate(route.name)}
+                accessible={true}
+                accessibilityRole="button"
+                accessibilityState={{ selected: isActive }}
+                accessibilityLabel={`${drawerLabel || route.name} menu item`}
               >
-                {drawerIcon && drawerIcon({
-                  size: 24,
-                  color: isActive ? colors.primary : colors.textSecondary
-                })}
-                <Text style={[
-                  styles.drawerLabel,
-                  dynamicStyles.drawerLabel,
-                  isActive && dynamicStyles.drawerLabelActive
-                ]}>
+                <View importantForAccessibility="no">
+                  {drawerIcon && drawerIcon({
+                    size: 24,
+                    color: isActive ? colors.primary : colors.textSecondary
+                  })}
+                </View>
+                <Text
+                  style={[
+                    styles.drawerLabel,
+                    dynamicStyles.drawerLabel,
+                    isActive && dynamicStyles.drawerLabelActive
+                  ]}
+                  importantForAccessibility="no"
+                >
                   {drawerLabel || route.name}
                 </Text>
               </View>
@@ -65,7 +74,11 @@ function CustomDrawerContent(props) {
           })}
       </View>
 
-      <View style={[styles.footer, { borderTopColor: colors.border }]}>
+      <View
+        style={[styles.footer, { borderTopColor: colors.border }]}
+        importantForAccessibility="no"
+        accessibilityElementsHidden={true}
+      >
         <View style={styles.footerContent}>
           <Text style={[styles.appName, { color: colors.textSecondary }]}>
             AccessibleHub
@@ -119,7 +132,7 @@ function DrawerNavigator() {
       <Drawer.Screen
         name="components"
         options={{
-          drawerItemStyle: { height: 0, margin: 0 },  // Hiding from drawer as requested
+          drawerItemStyle: { height: 0, margin: 0 },
           drawerLabel: "Accessibility Components",
           drawerIcon: ({ size, color }) => (
             <Ionicons name="cube-outline" size={size} color={color} />
@@ -177,11 +190,9 @@ function DrawerNavigator() {
 
 function AppWrapper({ children }) {
   useEffect(() => {
-    // Set app-wide language for accessibility
     if (Platform.OS === 'ios') {
       AccessibilityInfo.setAccessibilityLanguage('en');
     }
-    // Android automatically uses system language or app configuration
   }, []);
 
   return (
