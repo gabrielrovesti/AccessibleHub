@@ -365,7 +365,7 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     marginBottom: 4,
   },
-  // Code section styles
+
   codeContainer: {
     backgroundColor: '#1c1c1e',
     borderRadius: 8,

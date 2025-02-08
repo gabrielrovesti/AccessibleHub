@@ -5,6 +5,8 @@ import { useRouter } from 'expo-router';
 import { useTheme } from '../../context/ThemeContext';
 
 const AccessibleFormExample = () => {
+  const [errors, setErrors] = useState({});
+
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -24,121 +26,138 @@ const AccessibleFormExample = () => {
   const [copied, setCopied] = useState(false);
   const { colors, textSizes, isDarkMode } = useTheme();
 
-  const handleSubmit = () => {
-    setShowSuccessModal(true);
-    setTimeout(() => {
-      setShowSuccessModal(false);
-      setFormData({
-        name: '',
-        email: '',
-        phone: '',
-        gender: '',
-        contactTime: '',
-        preferences: {
-          email: false,
-          phone: false,
-          sms: false
-        },
-        birthDate: new Date(),
-        agreed: false
-      });
-    }, 2000);
+  const validateForm = () => {
+    const newErrors = {};
+    if (!formData.name) newErrors.name = 'Name is required';
+    if (!formData.email) newErrors.email = 'Email is required';
+    if (!formData.gender) newErrors.gender = 'Gender selection is required';
+    if (!formData.contactTime) newErrors.contactTime = 'Contact time is required';
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
   };
 
-const handleCopy = async () => {
-  try {
-    await Clipboard.setString(codeExample);
-    setCopied(true);
-    AccessibilityInfo.announceForAccessibility('Code copied to clipboard');
-    setTimeout(() => {
-      setCopied(false);
-    }, 2000);
-  } catch (err) {
-    console.error('Failed to copy:', err);
-    AccessibilityInfo.announceForAccessibility('Failed to copy code');
-  }
-};
+  const handleSubmit = () => {
+    if (validateForm()) {
+      AccessibilityInfo.announceForAccessibility('Form submitted successfully');
+      setShowSuccessModal(true);
+      setTimeout(() => {
+        setShowSuccessModal(false);
+        setFormData({
+          name: '',
+          email: '',
+          phone: '',
+          gender: '',
+          contactTime: '',
+          preferences: {
+            email: false,
+            phone: false,
+            sms: false
+          },
+          birthDate: new Date(),
+          agreed: false
+        });
+      }, 2000);
+    } else {
+      AccessibilityInfo.announceForAccessibility('Form has errors. Please review and correct them.');
+    }
+  };
 
-const themedStyles = {
-  container: {
-    backgroundColor: colors.background,
-  },
-  sectionTitle: {
-    color: colors.text,
-    fontSize: textSizes.xlarge,
-  },
-  demoContainer: {
-    backgroundColor: isDarkMode ? '#1c1c1e' : colors.surface,
-  },
-  label: {
-    color: colors.text,
-  },
-  input: {
-    borderColor: isDarkMode ? '#333' : colors.border,
-    color: colors.text,
-    backgroundColor: isDarkMode ? '#2c2c2e' : colors.surface,
-  },
-  radioLabel: {
-    color: colors.text,
-  },
-  checkboxLabel: {
-    color: colors.text,
-  },
-  radioButton: {
-    borderColor: colors.primary,
-  },
-  radioButtonSelected: {
-    backgroundColor: colors.primary,
-  },
-  checkbox: {
-    borderColor: colors.primary,
-  },
-  checkboxChecked: {
-    backgroundColor: colors.primary,
-  },
-  submitButton: {
-    backgroundColor: colors.primary,
-  },
-  submitButtonDisabled: {
-    backgroundColor: isDarkMode ? '#333' : colors.disabled,
-  },
-  submitButtonText: {
-    color: colors.background,
-  },
-  accessibilityTip: {
-    color: colors.textSecondary,
-  },
-  // Code section styling
-  codeContainer: {
-    backgroundColor: isDarkMode ? '#000' : '#1c1c1e',
-  },
-  codeHeader: {
-    borderBottomColor: isDarkMode ? '#333' : colors.border,
-    backgroundColor: isDarkMode ? '#1c1c1e' : '#2d2d2d',
-  },
-  codeHeaderText: {
-    color: isDarkMode ? '#bbb' : '#999',
-  },
-  codeText: {
-    color: '#fff',
-  },
-  copyText: {
-    color: isDarkMode ? '#999' : colors.textSecondary,
-  },
-  copiedText: {
-    color: '#28A745',
-  },
+  const handleCopy = async () => {
+    try {
+      await Clipboard.setString(codeExample);
+      setCopied(true);
+      AccessibilityInfo.announceForAccessibility('Code copied to clipboard');
+      setTimeout(() => {
+        setCopied(false);
+      }, 2000);
+    } catch (err) {
+      console.error('Failed to copy:', err);
+      AccessibilityInfo.announceForAccessibility('Failed to copy code');
+    }
+  };
+
+  const themedStyles = {
+    container: {
+      backgroundColor: colors.background,
+    },
+    sectionTitle: {
+      color: colors.text,
+      fontSize: textSizes.xlarge,
+    },
+    demoContainer: {
+      backgroundColor: isDarkMode ? '#1c1c1e' : colors.surface,
+    },
+    label: {
+      color: colors.text,
+    },
+    input: {
+      borderColor: isDarkMode ? '#333' : colors.border,
+      color: colors.text,
+      backgroundColor: isDarkMode ? '#2c2c2e' : colors.surface,
+    },
+    radioLabel: {
+      color: colors.text,
+    },
+    checkboxLabel: {
+      color: colors.text,
+    },
+    radioButton: {
+      borderColor: colors.primary,
+    },
+    radioButtonSelected: {
+      backgroundColor: colors.primary,
+    },
+    checkbox: {
+      borderColor: colors.primary,
+    },
+    checkboxChecked: {
+      backgroundColor: colors.primary,
+    },
+    submitButton: {
+      backgroundColor: formData.agreed ? colors.primary : colors.disabled,
+      opacity: formData.agreed ? 1 : 0.5,
+    },
+    submitButtonDisabled: {
+      backgroundColor: isDarkMode ? '#333' : colors.disabled,
+    },
+    submitButtonText: {
+      color: colors.background,
+    },
+    accessibilityTip: {
+      color: colors.textSecondary,
+    },
+    // Code section styling
+    codeContainer: {
+      backgroundColor: isDarkMode ? '#000' : '#1c1c1e',
+    },
+    codeHeader: {
+      borderBottomColor: isDarkMode ? '#333' : colors.border,
+      backgroundColor: isDarkMode ? '#1c1c1e' : '#2d2d2d',
+    },
+    codeHeaderText: {
+      color: isDarkMode ? '#bbb' : '#999',
+    },
+    codeText: {
+      color: '#fff',
+    },
+    copyText: {
+      color: isDarkMode ? '#999' : colors.textSecondary,
+    },
+    copiedText: {
+      color: '#28A745',
+    },
     featuresContainer: {
       backgroundColor: isDarkMode ? '#1c1c1e' : colors.surface,
       borderRadius: 12,
       padding: 16,
       gap: 16,
     },
-  featureCard: {
-    backgroundColor: isDarkMode ? '#2c2c2e' : colors.surface,
-    borderColor: isDarkMode ? '#333' : colors.border,
-    borderWidth: 1,
-  },
+    featureCard: {
+      backgroundColor: isDarkMode ? '#2c2c2e' : colors.surface,
+      borderColor: isDarkMode ? '#333' : colors.border,
+      borderWidth: 1,
+    },
     featureIcon: {
       width: 40,
       height: 40,
@@ -148,7 +167,7 @@ const themedStyles = {
       justifyContent: 'center',
       marginRight: 12,
     },
-   featureContent: {
+    featureContent: {
       flex: 1,
     },
     featureTitle: {
@@ -161,23 +180,31 @@ const themedStyles = {
       color: colors.textSecondary,
       lineHeight: 20,
     },
-  successModal: {
-    backgroundColor: isDarkMode ? '#1c1c1e' : colors.surface,
-  },
-  successTitle: {
-    color: '#28A745',
-  },
-  successMessage: {
-    color: colors.textSecondary,
-  },
-  modalOverlay: {
-    backgroundColor: isDarkMode ? 'rgba(0, 0, 0, 0.8)' : 'rgba(0, 0, 0, 0.5)',
-  },
-  agreementText: {
-    color: colors.text,
-  },
-};
-
+    successModal: {
+      backgroundColor: isDarkMode ? '#1c1c1e' : colors.surface,
+    },
+    successTitle: {
+      color: '#28A745',
+    },
+    successMessage: {
+      color: colors.textSecondary,
+    },
+    modalOverlay: {
+      backgroundColor: isDarkMode ? 'rgba(0, 0, 0, 0.8)' : 'rgba(0, 0, 0, 0.5)',
+    },
+    agreementText: {
+      color: colors.text,
+    },
+    errorMessage: {
+      marginTop: 4,
+      paddingHorizontal: 8,
+      paddingVertical: 4,
+    },
+    errorText: {
+      color: '#dc3545',
+      fontSize: 14,
+    },
+  };
 
   return (
     <ScrollView style={[styles.container, themedStyles.container]}>
@@ -193,6 +220,11 @@ const themedStyles = {
               accessibilityLabel="Enter your name"
               accessibilityHint="Type your full name here"
             />
+            {errors.name && (
+              <View style={[styles.errorMessage]} accessibilityRole="alert">
+                <Text style={[styles.errorText]}>{errors.name}</Text>
+              </View>
+            )}
 
             <Text style={[styles.label, themedStyles.label]}>Email</Text>
             <TextInput
@@ -205,6 +237,11 @@ const themedStyles = {
               accessibilityLabel="Enter your email"
               accessibilityHint="Type your email address using the @ keyboard"
             />
+            {errors.email && (
+              <View style={[styles.errorMessage]} accessibilityRole="alert">
+                <Text style={[styles.errorText]}>{errors.email}</Text>
+              </View>
+            )}
 
             <Text style={[styles.label, themedStyles.label]}>Gender</Text>
             <View style={styles.radioGroup}>
@@ -227,6 +264,11 @@ const themedStyles = {
                 </TouchableOpacity>
               ))}
             </View>
+            {errors.gender && (
+              <View style={[styles.errorMessage]} accessibilityRole="alert">
+                <Text style={[styles.errorText]}>{errors.gender}</Text>
+              </View>
+            )}
 
             <Text style={[styles.label, themedStyles.label]}>Preferred Contact Time</Text>
             <View style={styles.radioGroup}>
@@ -249,13 +291,18 @@ const themedStyles = {
                 </TouchableOpacity>
               ))}
             </View>
+            {errors.contactTime && (
+              <View style={[styles.errorMessage]} accessibilityRole="alert">
+                <Text style={[styles.errorText]}>{errors.contactTime}</Text>
+              </View>
+            )}
 
             <Text style={[styles.label, themedStyles.label]}>Communication Preferences</Text>
             <View style={styles.checkboxGroup}>
               {[
                 { key: 'email', label: 'Email' },
                 { key: 'phone', label: 'Phone' },
-                { key: 'sms',   label: 'SMS'   }
+                { key: 'sms', label: 'SMS' }
               ].map((option) => (
                 <TouchableOpacity
                   key={option.key}
@@ -299,7 +346,7 @@ const themedStyles = {
             </View>
 
             <TouchableOpacity
-              style={[styles.submitButton, !formData.agreed && styles.submitButtonDisabled, themedStyles.submitButton, !formData.agreed && themedStyles.submitButtonDisabled]}
+              style={[styles.submitButton, themedStyles.submitButton, { opacity: formData.agreed ? 1 : 0.5 }]}
               onPress={handleSubmit}
               disabled={!formData.agreed}
               accessibilityRole="button"
@@ -347,10 +394,10 @@ const themedStyles = {
         </View>
       </View>
 
+{/* Accessibility Features Section */}
       <View style={styles.section}>
         <Text style={[styles.sectionTitle, themedStyles.sectionTitle]}>Accessibility Features</Text>
         <View style={[styles.featuresContainer, themedStyles.featuresContainer]}>
-          {/* Feature Cards */}
           <View style={[styles.featureCard, themedStyles.featureCard]}>
             <View style={[styles.featureIcon, themedStyles.featureIcon]}>
               <Ionicons name="text-outline" size={24} color={colors.primary} />
@@ -413,7 +460,7 @@ const themedStyles = {
         </View>
       </View>
 
-      {/* Success Modal */}
+     {/* Success Modal */}
       <Modal
         visible={showSuccessModal}
         transparent
@@ -431,8 +478,6 @@ const themedStyles = {
         </View>
       </Modal>
     </ScrollView>
-
-
   );
 };
 
@@ -602,12 +647,19 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#1c1c1e',
   },
-  submitButton: {
-    backgroundColor: '#007AFF',
-    borderRadius: 8,
-    padding: 16,
-    alignItems: 'center',
-  },
+submitButton: {
+  backgroundColor: '#007AFF',
+  borderRadius: 8,
+  padding: 16,
+  alignItems: 'center',
+  marginTop: 24,
+  minHeight: 48,
+  shadowColor: '#000',
+  shadowOffset: { width: 0, height: 2 },
+  shadowOpacity: 0.25,
+  shadowRadius: 3.84,
+  elevation: 5,
+},
   submitButtonDisabled: {
     backgroundColor: '#ccc',
   },
@@ -616,7 +668,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '600',
   },
-  // Code section styles
   codeContainer: {
     backgroundColor: '#1c1c1e',
     borderRadius: 8,
@@ -684,7 +735,6 @@ const styles = StyleSheet.create({
     color: '#666',
     lineHeight: 20,
   },
-  // Modal styles
   modalOverlay: {
     flex: 1,
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
@@ -804,7 +854,7 @@ const styles = StyleSheet.create({
       padding: 12,
       fontSize: 16,
       backgroundColor: '#fff',
-      minHeight: 44, // Ensuring minimum touch target size
+      minHeight: 44,
     },
     modalContent: {
       backgroundColor: '#fff',
@@ -877,7 +927,7 @@ const styles = StyleSheet.create({
         fontSize: 16,
         color: '#1c1c1e',
         marginLeft: 8,
-        flex: 1, // Ensures text stays on one line
+        flex: 1,
       },
       accessibilityTip: {
         fontSize: 14,
