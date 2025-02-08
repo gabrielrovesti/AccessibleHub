@@ -7,11 +7,15 @@ interface ThemeContextType {
   isLargeText: boolean;
   reduceMotion: boolean;
   enhancedFocus: boolean;
+  isLargeTouchTargets: boolean;
+  isHapticFeedback: boolean;
   toggleDarkMode: () => void;
   toggleHighContrast: () => void;
   toggleLargeText: () => void;
   toggleReduceMotion: () => void;
   toggleEnhancedFocus: () => void;
+  toggleLargeTouchTargets: () => void;
+  toggleHapticFeedback: () => void;
   colors: ColorScheme;
   textSizes: TextSizes;
 }
@@ -91,6 +95,8 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     isLargeText: false,
     reduceMotion: false,
     enhancedFocus: false,
+    isLargeTouchTargets: false,
+    isHapticFeedback: false,
   });
 
   useEffect(() => {
@@ -143,6 +149,8 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     toggleLargeText: () => toggleSetting('isLargeText'),
     toggleReduceMotion: () => toggleSetting('reduceMotion'),
     toggleEnhancedFocus: () => toggleSetting('enhancedFocus'),
+    toggleLargeTouchTargets: () => toggleSetting('isLargeTouchTargets'),
+    toggleHapticFeedback: () => toggleSetting('isHapticFeedback'),
     colors: getColors(),
     textSizes: getTextSizes(),
   };
