@@ -84,10 +84,10 @@ export default function HomeScreen() {
       <View style={[styles.hero, themedStyles.hero]}>
         <View style={styles.heroContent}>
           <Text style={[styles.title, themedStyles.title]}>
-            An accessibility testing manual for developers
+            The ultimate accessibility-driven toolkit for developers
           </Text>
           <Text style={[styles.subtitle, themedStyles.subtitle]}>
-            A developer's guide to creating inclusive applications
+            Guidelines and implementations for inclusive software development - explore for more!
           </Text>
         </View>
         <View style={[styles.statsContainer, themedStyles.statsContainer]}>

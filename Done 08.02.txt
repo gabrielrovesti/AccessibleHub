@@ -168,3 +168,20 @@ Modal Handling:
 Added accessibilityViewIsModal attribute
 Implemented proper focus management
 Added screen reader-friendly announcements for modal interactions
+
+Fix dei Toggle nelle Impostazioni:
+
+    I toggle per Dark Mode, High Contrast, Reduce Motion, Large Text e Enhanced Focus aggiornano correttamente lo stato globale nel ThemeContext e vengono salvati in AsyncStorage.
+    Sono stati aggiunti due nuovi toggle: Large Touch Targets (per aumentare l'area tappabile degli elementi interattivi) e Enable Haptic Feedback (per fornire feedback tattile nelle interazioni).
+
+Feedback Immediato all'Utente:
+
+    Ogni toggle attiva un messaggio di feedback: viene mostrato un Toast su Android (o un log su iOS) e viene annunciato tramite AccessibilityInfo.announceForAccessibility, in modo che l’utente sappia immediatamente cosa è stato attivato/disattivato.
+
+Sezione "About" Migliorata:
+
+    La sezione About ora non mostra semplicemente la versione, ma apre una finestra modale che espone informazioni sull’app e sull’autore (Gabriel Studente).
+
+Estensione del ThemeContext:
+
+    Il contesto è stato aggiornato per includere i nuovi toggle (Large Touch Targets e Haptic Feedback), garantendo che tutte le impostazioni siano propagate correttamente in tutta l’app.

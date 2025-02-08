@@ -50,7 +50,7 @@ export default function NavigationFocus() {
   return (
     <ScrollView style={[styles.container, themedStyles.container]}>
       <View style={[styles.header, themedStyles.header]}>
-        <Text style={[styles.title, themedStyles.title]}>Navigation & Focus</Text>
+        <Text style={[styles.title, themedStyles.title]}>Logical focus order</Text>
         <Text style={[styles.description, themedStyles.description]}>
           Guidelines for implementing effective keyboard and focus navigation
         </Text>

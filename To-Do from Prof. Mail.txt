@@ -5,7 +5,7 @@ Inoltre al momento ho testato solo su Android con Talkback, a cose finite lo tes
 
 1. Estetica: manca un'icona per l'app che potrebbe essere utilizzata come logo anche al suo interno. Inoltre l'app ha una buona estetica, ma un po' troppo piatta, anche per aiutare la comprensione da parte di persone con disabilità cognitiva questo andrebbe un po' cambiato. Un'idea che mi viene in mente, ma bisogna fare delle prove, è mettere lo sfondo scuro all'app (e chiaro in dark mode): questo darebbe più risalto alle card con i vari elementi (ad esempio best practice, testing tools, etc). Altrimenti si potrebbe provare con lo stesso azzurrino che usi per i tag, ma questo secondo me migliora l'estetica ma non aiuta con il contrasto.
 
-2. Non lo chiamerei accessibility testing manual, perchè almeno nella mi idea è più uno strumento di aiuto a tutta la fase di sviluppo
+2. Non lo chiamerei accessibility testing manual, perchè almeno nella mia idea è più uno strumento di aiuto a tutta la fase di sviluppo
 
 3. Framework comparison lo metterei anche nel menù. Su questo ho una domanda, i numeri che metti nella valutazione delle performance e dell'accessibilità come li hai calcolati? Inoltre io vedo il bottone performance tagliato, se vuoi fare una prova io sto usando un cellulare uguale a quello che prestiamo in biblioteca, un Google Pixel 7
 
