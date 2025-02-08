@@ -1,13 +1,5 @@
 Basandomi sul codice che ho visto e sui fix già implementati, i prossimi interventi prioritari dovrebbero essere:
 
-tools.tsx:
-
-
-Rendere uniformi le card selezionabili/non selezionabili
-Aggiungere i link appropriati per gli strumenti
-Sistemare gli styling inconsistenti tra le card
-
-
 Components section:
 
 
