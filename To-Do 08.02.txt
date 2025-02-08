@@ -1,5 +1,0 @@
-Navigation:
-
-
-Implementare un sistema coerente di navigazione back
-Mantenere consistenza tra le etichette nel menu, home e titoli delle pagine

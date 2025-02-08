@@ -14,21 +14,27 @@ export default function HomeScreen() {
     hero: {
       backgroundColor: colors.surface,
       borderBottomColor: colors.border,
+      borderBottomWidth: 2,
     },
     title: {
       color: colors.text,
       fontSize: textSizes.xlarge,
+      fontWeight: '700',
     },
     subtitle: {
       color: colors.textSecondary,
       fontSize: textSizes.medium,
+      lineHeight: 24,
+      textAlign: 'center',
     },
     statsContainer: {
       borderTopColor: colors.border,
+      marginTop: 24,
     },
     statNumber: {
       color: colors.text,
       fontSize: textSizes.large,
+      fontWeight: '700',
     },
     statLabel: {
       color: colors.textSecondary,
@@ -36,46 +42,93 @@ export default function HomeScreen() {
     },
     statDivider: {
       backgroundColor: colors.border,
+      height: 40,
+      width: 1,
+      marginHorizontal: 8,
     },
     quickStartCard: {
       backgroundColor: colors.surface,
-      shadowColor: isDarkMode ? '#000' : '#000',
-      shadowOpacity: isDarkMode ? 0.3 : 0.05,
+      borderRadius: 16,
+      padding: 20,
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      marginBottom: 24,
+      shadowOffset: { width: 0, height: 4 },
+      shadowRadius: 8,
+      elevation: 5,
+      borderWidth: 1,
+      borderColor: colors.primary,
     },
     quickStartTitle: {
       color: colors.text,
       fontSize: textSizes.large,
+      fontWeight: '700',
     },
     quickStartDesc: {
       color: colors.textSecondary,
-      fontSize: textSizes.small,
+      fontSize: 16,
     },
     sectionTitle: {
       color: colors.text,
       fontSize: textSizes.large,
+      fontWeight: '700',
+      marginBottom: 16,
     },
     card: {
       backgroundColor: colors.surface,
-      shadowColor: isDarkMode ? '#000' : '#000',
-      shadowOpacity: isDarkMode ? 0.3 : 0.05,
+      borderRadius: 16,
+      marginBottom: 16,
+      padding: 16,
+      shadowOffset: { width: 0, height: 4 },
+      shadowRadius: 8,
+      elevation: 5,
+      borderWidth: 1,
+      borderColor: colors.primary,
+    },
+    cardIconContainer: {
+      backgroundColor: colors.primary,
+      width: 48,
+      height: 48,
+      borderRadius: 12,
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginBottom: 12,
     },
     cardTitle: {
       color: colors.text,
       fontSize: textSizes.medium,
+      fontWeight: '700',
     },
     cardDescription: {
       color: colors.textSecondary,
-      fontSize: textSizes.small,
+      fontSize: 16,
+      lineHeight: 22,
     },
-    cardIconContainer: {
-      backgroundColor: isDarkMode ? colors.surface : '#E8F1FF',
+    cardContent: {
+      flex: 1,
     },
-    cardIconColor: isDarkMode ? colors.primary : '#0055CC',
+    cardHeader: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      marginBottom: 8,
+    },
     tagContainer: {
-      backgroundColor: isDarkMode ? colors.surface : '#E8F1FF',
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      gap: 8,
+    },
+    tag: {
+      paddingHorizontal: 12,
+      paddingVertical: 6,
+      borderRadius: 12,
+      backgroundColor: colors.primary,
     },
     tagText: {
-      color: isDarkMode ? colors.primary : '#0055CC',
+      color: colors.surface,
+      fontSize: textSizes.small,
+      fontWeight: '600',
     },
   };
 
@@ -141,7 +194,7 @@ export default function HomeScreen() {
           accessibilityHint="Learn about WCAG guidelines implementation"
         >
           <View style={[styles.cardIconContainer, themedStyles.cardIconContainer]}>
-            <Ionicons name="book-outline" size={24} color={themedStyles.cardIconColor} />
+            <Ionicons name="book-outline" size={28} color={colors.surface} />
           </View>
           <View style={styles.cardContent}>
             <View style={styles.cardHeader}>
@@ -172,7 +225,7 @@ export default function HomeScreen() {
           accessibilityHint="Access testing tools and methods"
         >
           <View style={[styles.cardIconContainer, themedStyles.cardIconContainer]}>
-            <Ionicons name="build-outline" size={24} color={themedStyles.cardIconColor} />
+            <Ionicons name="build-outline" size={28} color={colors.surface} />
           </View>
           <View style={styles.cardContent}>
             <View style={styles.cardHeader}>
@@ -203,7 +256,7 @@ export default function HomeScreen() {
           accessibilityHint="Compare different mobile development frameworks"
         >
           <View style={[styles.cardIconContainer, themedStyles.cardIconContainer]}>
-            <Ionicons name="git-compare" size={24} color={themedStyles.cardIconColor} />
+            <Ionicons name="git-compare" size={28} color={colors.surface} />
           </View>
           <View style={styles.cardContent}>
             <View style={styles.cardHeader}>
@@ -238,6 +291,7 @@ const styles = StyleSheet.create({
     paddingVertical: 32,
     paddingHorizontal: 20,
     borderBottomWidth: 1,
+    borderRadius: 10,
   },
   heroContent: {
     marginBottom: 24,
@@ -245,9 +299,11 @@ const styles = StyleSheet.create({
   title: {
     fontWeight: 'bold',
     marginBottom: 8,
+    textAlign: 'center',
   },
   subtitle: {
     lineHeight: 24,
+    textAlign: 'center',
   },
   statsContainer: {
     flexDirection: 'row',

@@ -1,52 +1,49 @@
 
-Inoltre al momento ho testato solo su Android con Talkback, a cose finite lo testo anche con Apple, se preferisci prima.
+Inoltre al momento ho testato solo su Android con Talkback, a cose finite lo testo anche con Apple, se preferisci prima. (???)
 
- 
 
-1. Estetica: manca un'icona per l'app che potrebbe essere utilizzata come logo anche al suo interno. Inoltre l'app ha una buona estetica, ma un po' troppo piatta, anche per aiutare la comprensione da parte di persone con disabilità cognitiva questo andrebbe un po' cambiato. Un'idea che mi viene in mente, ma bisogna fare delle prove, è mettere lo sfondo scuro all'app (e chiaro in dark mode): questo darebbe più risalto alle card con i vari elementi (ad esempio best practice, testing tools, etc). Altrimenti si potrebbe provare con lo stesso azzurrino che usi per i tag, ma questo secondo me migliora l'estetica ma non aiuta con il contrasto.
+1. Estetica: manca un'icona per l'app che potrebbe essere utilizzata come logo anche al suo interno. Inoltre l'app ha una buona estetica, ma un po' troppo piatta, anche per aiutare la comprensione da parte di persone con disabilità cognitiva questo andrebbe un po' cambiato. Un'idea che mi viene in mente, ma bisogna fare delle prove, è mettere lo sfondo scuro all'app (e chiaro in dark mode): questo darebbe più risalto alle card con i vari elementi (ad esempio best practice, testing tools, etc). Altrimenti si potrebbe provare con lo stesso azzurrino che usi per i tag, ma questo secondo me migliora l'estetica ma non aiuta con il contrasto. (???) - resa migliore la home, cambio sfondo generale per schermata da implementare
 
-2. Non lo chiamerei accessibility testing manual, perchè almeno nella mia idea è più uno strumento di aiuto a tutta la fase di sviluppo
+2. Non lo chiamerei accessibility testing manual, perchè almeno nella mia idea è più uno strumento di aiuto a tutta la fase di sviluppo ☑️
 
-3. Framework comparison lo metterei anche nel menù. Su questo ho una domanda, i numeri che metti nella valutazione delle performance e dell'accessibilità come li hai calcolati? Inoltre io vedo il bottone performance tagliato, se vuoi fare una prova io sto usando un cellulare uguale a quello che prestiamo in biblioteca, un Google Pixel 7
+3. Framework comparison lo metterei anche nel menù. Su questo ho una domanda, i numeri che metti nella valutazione delle performance e dell'accessibilità come li hai calcolati? Inoltre io vedo il bottone performance tagliato, se vuoi fare una prova io sto usando un cellulare uguale a quello che prestiamo in biblioteca, un Google Pixel 7 ☑️ (risolto bottone - da calcolare "formalmente")
 
-4. ogni sezione "interna" manca del pulsante back per tornare indietro, bisogna necessariamente passare per il menù. Se uso lo swipe per tornare indietro la pagina a cui torno non è l'ultima visitata, non riesco a capire il criterio
+4. ogni sezione "interna" manca del pulsante back per tornare indietro, bisogna necessariamente passare per il menù. Se uso lo swipe per tornare indietro la pagina a cui torno non è l'ultima visitata, non riesco a capire il criterio (???)
 
-5. Gesture tutorial: al momento funziona solo il tap, corretto?
+5. Gesture tutorial: al momento funziona solo il tap, corretto? ☑️
 
-6. Screen Reader Guide: al momento i link non sono funzionanti. Inoltre sulle essential gesture cercherei un'icona precisa per ogni gesture
+6. Screen Reader Guide: al momento i link non sono funzionanti. Inoltre sulle essential gesture cercherei un'icona precisa per ogni gesture ☑️
 
-7. Navigation and Focus: scriverei logical focus order perchè sul cellulare non c'è il tasto tab (forse c'è lo stesso problema anche da altre parti)
+7. Navigation and Focus: scriverei logical focus order perchè sul cellulare non c'è il tasto tab (forse c'è lo stesso problema anche da altre parti) ☑️
 
-8. Dovresti mantenere coerenza tra la stringa utilizzata nel menù, quella messa in home e quella usata come titolo della pagina e tra l'ordine delle voci di menù e in home (su questo ultimo punto ne possiamo discutere)
+8. Dovresti mantenere coerenza tra la stringa utilizzata nel menù, quella messa in home e quella usata come titolo della pagina e tra l'ordine delle voci di menù e in home (su questo ultimo punto ne possiamo discutere) (???) - da implementare
 
-9. Mobile Accessibility Tools: certe card sono selezionabili altre no ma non c'è alcune differenza grafica. Sugli strumenti metterei un link.
+9. Mobile Accessibility Tools: certe card sono selezionabili altre no ma non c'è alcune differenza grafica. Sugli strumenti metterei un link. ☑️
 
-10. Molto bella la sezione interactive example con il pulsante copy e la possibilità di condividere
+10. Molto bella la sezione interactive example con il pulsante copy e la possibilità di condividere ☑️
 
-11. settings: al momento gli ultimi tre non sembrano funzionare
-
- 
+11. settings: al momento gli ultimi tre non sembrano funzionare ☑️
 
 Problemi di accessibilità:
 
-1. ho il sospetto che la lingua principale dell'app non sia inglese, ammesso che si possa definire, onestamente non lo so con questo framework
+1. ho il sospetto che la lingua principale dell'app non sia inglese, ammesso che si possa definire, onestamente non lo so con questo framework ☑️
 
-2. le icone (ex nel menù) sono raggiungibili ma poi non hanno un'alternativa testuale, sarebbe meglio che non fossero raggiungibili, questa cosa andrebbe pure aggiunta alle best practise forse. O meglio, forse tutte le difficoltà che hai trovato tu nel rendere un'app accessibile potrebbero essere aggiunte alle best practise
+2. le icone (ex nel menù) sono raggiungibili ma poi non hanno un'alternativa testuale, sarebbe meglio che non fossero raggiungibili, questa cosa andrebbe pure aggiunta alle best practise forse. O meglio, forse tutte le difficoltà che hai trovato tu nel rendere un'app accessibile potrebbero essere aggiunte alle best practise (????)
 
-3. spesso nei pulsanti il testo è doppio
+3. spesso nei pulsanti il testo è doppio ☑️ (???) - da vedere su device, ma in teoria risolto
 
-4. menù: sono raggiungibili anche accessibleHub e version 1.0.0 e da screen reader non sono distinguibili dalle altre voci
+4. menù: sono raggiungibili anche accessibleHub e version 1.0.0 e da screen reader non sono distinguibili dalle altre voci ☑️ (???) - da vedere su device, ma in teoria risolto
 
-5. Non Tap here ma solo tap, altrimenti per le persone non vedenti non sanno dove
+5. Non Tap here ma solo tap, altrimenti per le persone non vedenti non sanno dove ☑️
 
-6. paradossalmente con Talkback attivato le gesture dei bottoni e gli swipe funzionano, senza no. Magari proviamo insieme. Rotate control invece proprio non funziona
+6. paradossalmente con Talkback attivato le gesture dei bottoni e gli swipe funzionano, senza no. Magari proviamo insieme. Rotate control invece proprio non funziona ☑️ (cambiate le gesture)
 
-7. essential gestures: forse sbaglio io ma me li fa leggere due volte
+7. essential gestures: forse sbaglio io ma me li fa leggere due volte ☑️ (???) - da vedere su device, ma in teoria risolto
 
-8. i tag forse andrebbero identificati via screan reader
+8. i tag forse andrebbero identificati via screen reader ☑️ (???) - da vedere su device, ma in teoria risolto
 
-9. il pulsate copy non dà feedback allo screenreader
+9. il pulsate copy non dà feedback allo screenreader ☑️
 
-10. sulla form non è visibile il pulsante di submit credo sia una scelta ma meglio discuterne, poi non mi pare ci sia la gestione degli errori, ma anche qui potrei aver sbagliato io
+10. sulla form non è visibile il pulsante di submit credo sia una scelta ma meglio discuterne, poi non mi pare ci sia la gestione degli errori, ma anche qui potrei aver sbagliato io ☑️
 
-11. Mobile Accessibility Tools: alcune card sono gestite come elemento unico (Accessibility Inspector e Constrast Analyzer) le altre come elementi composti in cui si naviga all'interno, sarebbe meglio che fossero tutte uguali
+11. Mobile Accessibility Tools: alcune card sono gestite come elemento unico (Accessibility Inspector e Constrast Analyzer) le altre come elementi composti in cui si naviga all'interno, sarebbe meglio che fossero tutte uguali ☑️ - risolto
