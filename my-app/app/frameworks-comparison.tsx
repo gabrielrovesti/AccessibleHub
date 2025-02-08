@@ -338,38 +338,31 @@ const FrameworkComparisonScreen = () => {
     </View>
   );
 
-  const renderCategoryTabs = () => (
-    <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.categoryTabs}>
-      {categories.map((category) => (
-        <TouchableOpacity
-          key={category.id}
-          style={[
-            styles.categoryTab,
-            selectedCategory === category.id && styles.categoryTabActive,
-            themedStyles.categoryTab,
-            selectedCategory === category.id && themedStyles.categoryTabActive,
-          ]}
-          onPress={() => setSelectedCategory(category.id)}
+    const renderCategoryTabs = () => (
+      <View style={styles.categoryTabs}>
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={{paddingHorizontal: 12}}
         >
-          <Ionicons
-            name={category.icon}
-            size={20}
-            color={selectedCategory === category.id ? colors.primary : colors.textSecondary}
-          />
-          <Text
-            style={[
-              styles.categoryTabText,
-              selectedCategory === category.id && styles.categoryTabTextActive,
-              themedStyles.categoryTabText,
-              selectedCategory === category.id && themedStyles.categoryTabTextActive,
-            ]}
-          >
-            {category.label}
-          </Text>
-        </TouchableOpacity>
-      ))}
-    </ScrollView>
-  );
+          {categories.map((category) => (
+            <TouchableOpacity
+              key={category.id}
+              style={[
+                styles.categoryTab,
+                selectedCategory === category.id && styles.categoryTabActive
+              ]}
+              onPress={() => setSelectedCategory(category.id)}
+              accessibilityRole="tab"
+              accessibilityState={{ selected: selectedCategory === category.id }}
+            >
+              <Ionicons name={category.icon} size={20} color={colors.primary} />
+              <Text style={styles.categoryTabText}>{category.label}</Text>
+            </TouchableOpacity>
+          ))}
+        </ScrollView>
+      </View>
+    );
 
   const renderOverviewSection = () => {
     const framework = frameworkData[selectedFramework];
@@ -550,8 +543,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#f8f9fa',
+    width: '100%',
   },
-header: {
+  header: {
     padding: 20,
     backgroundColor: '#fff',
     borderBottomWidth: 1,
@@ -597,20 +591,23 @@ header: {
     color: '#fff',
   },
   categoryTabs: {
-    paddingHorizontal: 16,
+    flexDirection: 'row',
     marginBottom: 16,
+    maxWidth: '100%',
   },
   categoryTab: {
     flexDirection: 'row',
     alignItems: 'center',
     paddingVertical: 8,
-    paddingHorizontal: 16,
-    marginRight: 12,
+    paddingHorizontal: 12,
+    marginHorizontal: 4,
     borderRadius: 20,
-    backgroundColor: '#fff',
-    borderWidth: 1,
-    borderColor: '#eee',
-    gap: 8,
+    minWidth: 80,
+    gap: 4,
+  },
+  performanceSection: {
+    flex: 1,
+    paddingHorizontal: 16,
   },
   categoryTabActive: {
     backgroundColor: '#E8F1FF',
@@ -620,6 +617,7 @@ header: {
     fontSize: 14,
     fontWeight: '500',
     color: '#666',
+    flexShrink: 1,
   },
   categoryTabTextActive: {
     color: '#007AFF',

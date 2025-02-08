@@ -28,11 +28,33 @@ export default function ComponentsScreen() {
       color: colors.textSecondary,
       fontSize: textSizes.medium,
     },
-    componentCard: {
-      backgroundColor: colors.surface,
-      shadowColor: isDarkMode ? '#000' : '#000',
-      shadowOpacity: isDarkMode ? 0.3 : 0.05,
-    },
+  componentCard: {
+    backgroundColor: '#fff',
+    borderRadius: 16,
+    padding: 16,
+    marginBottom: 16,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.05,
+    shadowRadius: 4,
+    elevation: 2,
+  },
+  cardHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 12,
+    flexWrap: 'nowrap',
+    width: '100%',
+  },
+  labelContainer: {
+    flex: 1,
+    marginRight: 8,
+  },
+  componentName: {
+    fontSize: 17,
+    fontWeight: '600',
+    flexShrink: 1,
+  },
     componentName: {
       color: colors.text,
       fontSize: textSizes.large,

@@ -39,13 +39,6 @@ Migliorare visibilità del pulsante submit
 Implementare correttamente i feedback di errore per screen reader
 
 
-Framework comparison:
-
-
-Verificare il problema del bottone performance tagliato su Google Pixel 7
-Verificare che i rating siano correttamente annunciati dallo screen reader
-
-
 settings.tsx:
 
 

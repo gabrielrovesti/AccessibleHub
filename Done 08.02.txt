@@ -69,3 +69,44 @@ In accessible-media:
 - Aggiunto un accessibilityState per disabilitare i pulsanti prev/next quando si è sulla prima/ultima immagine.
 - Nascoste le icone decorative agli screen reader usando accessibilityElementsHidden e importantForAccessibility.
 - Implementata la stessa funzionalità di copia del codice con gli annunci
+
+In layout (global):
+
+- A proper drawer navigation system with consistent accessibility roles and labels
+- Coherent back navigation for nested screens while maintaining the drawer toggle functionality
+- Consistent labeling across all routes, with proper header titles matching drawer labels
+- Proper accessibility implementation including screen reader support and announcements
+- Standardized navigation patterns for both main and nested routes
+
+Framework Comparison Screen Updates:
+
+- Restructured category tabs layout system to prevent truncation on Google Pixel 7 and similar devices:
+
+- Reduced minimum tab width from 100px to 80px to prevent overflow
+- Added proper flexbox layout with flexShrink support
+- Implemented horizontal scroll containment
+- Adjusted padding and margins for consistent display
+
+
+Enhanced accessibility for ratings display:
+
+- Added accessibilityRole and accessibilityLabel to rating components
+- Ensured rating values are properly announced by screen readers
+- Structured rating information in a screen reader-friendly format
+
+Components Screen Updates:
+
+- Fixed layout system for component cards:
+
+Implemented proper content wrapping in label containers
+Added flexShrink support for dynamic content adjustment
+Optimized spacing between card elements
+Enhanced text overflow handling
+
+
+- General Layout Improvements:
+
+Added proper width constraints to prevent content overflow
+Optimized flexbox behavior for better content distribution
+Implemented consistent spacing and padding across components
+Enhanced responsive layout handling for various screen sizes
