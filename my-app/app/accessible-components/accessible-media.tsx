@@ -132,7 +132,7 @@ const handleCopy = async () => {
     <ScrollView style={[styles.container, themedStyles.container]}>
       {/* Interactive Example Section */}
       <View style={styles.section}>
-        <Text style={[styles.sectionTitle, themedStyles.sectionTitle]}>Interactive Example</Text>
+        <Text style={[styles.sectionTitle, themedStyles.sectionTitle]}>Media Content - Interactive Example</Text>
         <View style={[styles.demoContainer, themedStyles.demoContainer]}>
           <Image
             source={images[currentImage - 1].uri}

@@ -159,101 +159,109 @@ function DrawerNavigator() {
   const { colors } = useTheme();
   const router = useRouter();
 
-  const screenOptions = ({ navigation, route }) => ({
-    headerShown: true,
-    drawerStyle: {
-      backgroundColor: colors.background,
-    },
-    headerStyle: {
-      backgroundColor: colors.surface,
-      elevation: 0,
-      shadowOpacity: 0,
-    },
-    headerTintColor: colors.text,
-    headerTitle: route.name === 'index' ? 'Home' :
-      route.name.charAt(0).toUpperCase() + route.name.slice(1),
-    swipeEnabled: true,
-    swipeEdgeWidth: 100,
-    headerLeft: ({ canGoBack }) => {
-      if (canGoBack) {
-        return (
-          <TouchableOpacity
-            onPress={() => router.back()}
-            accessibilityRole="button"
-            accessibilityLabel="Go back to previous screen"
-            accessibilityHint="Double tap to return to the previous view"
-            style={styles.headerButton}
-          >
-            <Ionicons name="arrow-back" size={24} color={colors.text} />
-          </TouchableOpacity>
-        );
-      }
+const screenOptions = ({ navigation, route }) => ({
+  headerShown: true,
+  drawerStyle: {
+    backgroundColor: colors.background,
+  },
+  headerStyle: {
+    backgroundColor: colors.surface,
+    elevation: 0,
+    shadowOpacity: 0,
+  },
+  headerTintColor: colors.text,
+  // Remove headerTitle entirely
+  headerTitle: () => null,
+  headerLeft: () => {
+    const isMainRoute = ['index', 'practices', 'tools', 'components', 'settings'].includes(route.name);
+
+    if (!isMainRoute) {
       return (
         <TouchableOpacity
-          onPress={() => navigation.toggleDrawer()}
+          onPress={() => {
+            const parentRoute = route.name.split('/')[0];
+            if (parentRoute === 'practices-screens') {
+              router.push('/practices');
+            } else if (parentRoute === 'accessible-components') {
+              router.push('/components');
+            } else {
+              navigation.goBack();
+            }
+          }}
           accessibilityRole="button"
-          accessibilityLabel="Toggle navigation drawer"
-          accessibilityHint="Double tap to open or close the navigation menu"
+          accessibilityLabel="Go back"
           style={styles.headerButton}
         >
-          <Ionicons name="menu-outline" size={24} color={colors.text} />
+          <Ionicons name="arrow-back" size={24} color={colors.text} />
         </TouchableOpacity>
       );
-    },
-  });
+    }
 
-  return (
-    <Drawer
-      drawerContent={(props) => <CustomDrawerContent {...props} />}
-      screenOptions={screenOptions}
-    >
-      <Drawer.Screen
-        name="index"
-        options={{
-          drawerLabel: "Home",
-          drawerIcon: ({ size, color }) => (
-            <Ionicons name="home-outline" size={size} color={color} />
-          ),
-        }}
-      />
-      <Drawer.Screen
-        name="practices"
-        options={{
-          drawerLabel: "Best Practices",
-          drawerIcon: ({ size, color }) => (
-            <Ionicons name="book-outline" size={size} color={color} />
-          ),
-        }}
-      />
-      <Drawer.Screen
-        name="tools"
-        options={{
-          drawerLabel: "Mobile Accessibility Tools",
-          drawerIcon: ({ size, color }) => (
-            <Ionicons name="construct-outline" size={size} color={color} />
-          ),
-        }}
-      />
-      <Drawer.Screen
-        name="components"
-        options={{
-          drawerLabel: "Accessibility Components",
-          drawerIcon: ({ size, color }) => (
-            <Ionicons name="cube-outline" size={size} color={color} />
-          ),
-        }}
-      />
-      <Drawer.Screen
-        name="settings"
-        options={{
-          drawerLabel: "Settings",
-          drawerIcon: ({ size, color }) => (
-            <Ionicons name="settings-outline" size={size} color={color} />
-          ),
-        }}
-      />
-    </Drawer>
-  );
+    return (
+      <TouchableOpacity
+        onPress={() => navigation.toggleDrawer()}
+        accessibilityRole="button"
+        accessibilityLabel="Toggle menu"
+        style={styles.headerButton}
+      >
+        <Ionicons name="menu-outline" size={24} color={colors.text} />
+      </TouchableOpacity>
+    );
+  }
+});
+
+return (
+  <Drawer
+    drawerContent={(props) => <CustomDrawerContent {...props} />}
+    screenOptions={screenOptions}
+  >
+    <Drawer.Screen
+      name="index"
+      options={{
+        drawerLabel: "Home",
+        drawerIcon: ({ size, color }) => (
+          <Ionicons name="home-outline" size={size} color={color} />
+        ),
+      }}
+    />
+    <Drawer.Screen
+      name="components"  // Move components right after home since it's the Quick Start destination
+      options={{
+        drawerLabel: "Accessibility Components",
+        drawerIcon: ({ size, color }) => (
+          <Ionicons name="cube-outline" size={size} color={color} />
+        ),
+      }}
+    />
+    <Drawer.Screen
+      name="practices"
+      options={{
+        drawerLabel: "Best Practices",
+        drawerIcon: ({ size, color }) => (
+          <Ionicons name="book-outline" size={size} color={color} />
+        ),
+      }}
+    />
+    <Drawer.Screen
+      name="tools"
+      options={{
+        drawerLabel: "Mobile Accessibility Tools",
+        drawerIcon: ({ size, color }) => (
+          <Ionicons name="construct-outline" size={size} color={color} />
+        ),
+      }}
+    />
+    <Drawer.Screen
+      name="settings"
+      options={{
+        drawerLabel: "Settings",
+        drawerIcon: ({ size, color }) => (
+          <Ionicons name="settings-outline" size={size} color={color} />
+        ),
+      }}
+    />
+  </Drawer>
+);
 }
 
 // App Wrapper Component

@@ -190,7 +190,7 @@ const GesturesTutorialScreen = () => {
           style={[styles.headerTitle, themedStyles.title]}
           accessibilityRole="header"
         >
-          Accessibility Gestures
+          Gestures Tutorial
         </Text>
         <Text style={[styles.headerDescription, themedStyles.description]}>
           Learn and practice the most common and reliable accessibility gestures

@@ -97,7 +97,7 @@ const ScreenReaderSupportScreen = () => {
   return (
     <ScrollView style={[styles.container, themedStyles.container]}>
       <View style={[styles.header, themedStyles.header]}>
-        <Text style={[styles.headerTitle, themedStyles.headerTitle]}>Screen Reader Guide</Text>
+        <Text style={[styles.headerTitle, themedStyles.headerTitle]}>Screen Reader Support</Text>
         <Text style={[styles.headerDescription, themedStyles.headerDescription]}>
           Comprehensive guide for optimizing your app for VoiceOver and TalkBack
         </Text>

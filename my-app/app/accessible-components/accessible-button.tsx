@@ -142,7 +142,7 @@ const handleCopy = async () => {
             style={[styles.sectionTitle, themedStyles.sectionTitle]}
             accessibilityRole="header"
           >
-            Interactive Example
+            Buttons & Touchables - Example
           </Text>
           <View
             style={[styles.demoContainer, themedStyles.demoContainer]}

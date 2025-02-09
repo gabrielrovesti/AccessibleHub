@@ -246,7 +246,7 @@ export default function BestPracticesScreen() {
           </View>
           <View style={styles.guideContent}>
             <View style={styles.guideHeader}>
-              <Text style={[styles.guideTitle, themedStyles.guideTitle]}>Navigation & Focus</Text>
+              <Text style={[styles.guideTitle, themedStyles.guideTitle]}>Logical Focus Order</Text>
                 <View style={styles.badgeContainer}
                       accessibilityElementsHidden={true}
                       importantForAccessibility="no">

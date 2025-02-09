@@ -209,7 +209,7 @@ const AccessibleFormExample = () => {
   return (
     <ScrollView style={[styles.container, themedStyles.container]}>
       <View style={styles.section}>
-        <Text style={[styles.sectionTitle, themedStyles.sectionTitle]}>Interactive Example</Text>
+        <Text style={[styles.sectionTitle, themedStyles.sectionTitle]}>Form Controls - Interactive Example</Text>
         <View style={[styles.demoContainer, themedStyles.demoContainer]}>
           <View style={styles.form}>
             <Text style={[styles.label, themedStyles.label]}>Name</Text>

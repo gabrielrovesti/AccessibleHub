@@ -176,7 +176,7 @@ const handleCopy = async () => {
     <ScrollView style={[styles.container, themedStyles.container]}>
       <View style={[styles.section, themedStyles.section]}>
         <Text style={[styles.sectionTitle, themedStyles.sectionTitle]}>
-          Interactive Example
+          Modal Dialogs - Interactive Example
         </Text>
         <View style={[styles.demoContainer, themedStyles.demoContainer]}>
           <TouchableOpacity
