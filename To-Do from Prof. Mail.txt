@@ -8,7 +8,7 @@ Inoltre al momento ho testato solo su Android con Talkback, a cose finite lo tes
 
 3. Framework comparison lo metterei anche nel menù. Su questo ho una domanda, i numeri che metti nella valutazione delle performance e dell'accessibilità come li hai calcolati? Inoltre io vedo il bottone performance tagliato, se vuoi fare una prova io sto usando un cellulare uguale a quello che prestiamo in biblioteca, un Google Pixel 7 ☑️ (risolto bottone - da calcolare "formalmente")
 
-4. ogni sezione "interna" manca del pulsante back per tornare indietro, bisogna necessariamente passare per il menù. Se uso lo swipe per tornare indietro la pagina a cui torno non è l'ultima visitata, non riesco a capire il criterio (???)
+4. ogni sezione "interna" manca del pulsante back per tornare indietro, bisogna necessariamente passare per il menù. Se uso lo swipe per tornare indietro la pagina a cui torno non è l'ultima visitata, non riesco a capire il criterio ☑️ (risolto)
 
 5. Gesture tutorial: al momento funziona solo il tap, corretto? ☑️
 
@@ -52,39 +52,19 @@ Problemi di accessibilità:
 
 Pending Items:
 
-Navigation Flow Issues:
-
-
-The "back" navigation behavior needs investigation as supervisor noted: "if I use swipe to go back, the page I return to is not the last visited one, I can't understand the criteria"
-This appears to be related to navigation stack management and needs to be properly implemented
-
-
-Menu and Home Consistency:
-
-
-Menu items, home screen labels, and page titles need to be aligned for consistency
-The order of menu items should match the home screen layout
-This is marked as needing implementation in your comments
-
-
-Accessibility Review Points:
-
+- Accessibility Review Points:
 
 Need to verify if text is still being announced twice with TalkBack for essential gestures
 Verify tag announcements are working correctly with screen readers
 Double-check if footer elements in menu are properly hidden from screen readers
 
+- Visual Elements:
 
-Visual Elements:
-
-
-App icon/logo is still missing (both for the app itself and internal usage)
 Background contrast improvements are pending (dark background in light mode, light in dark mode)
 This is part of the aesthetic improvements you mentioned are still needed
 
 
-Documentation:
-
+- Documentation:
 
 The framework comparison ratings need formal calculation methodology
 Consider adding encountered accessibility implementation challenges to best practices

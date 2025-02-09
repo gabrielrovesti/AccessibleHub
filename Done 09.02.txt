@@ -185,3 +185,16 @@ Sezione "About" Migliorata:
 Estensione del ThemeContext:
 
     Il contesto è stato aggiornato per includere i nuovi toggle (Large Touch Targets e Haptic Feedback), garantendo che tutte le impostazioni siano propagate correttamente in tutta l’app.
+
+In layout/index/navigation:
+
+- Style improvements between index and drawer
+- Changed title and functions in navigation's tab
+- FIXED FINALLY routing once and for all in main screens and styles
+
+In all of accessible screens/practices/global layout and practices:
+
+- Removed header titles entirely
+- Reordered and sorted correctly voices in drawer
+- Created the right title so for user to not be confused when landing in subscreen (back button when in subscreen)
+- Properly handled navigation the right way everywhere without problems

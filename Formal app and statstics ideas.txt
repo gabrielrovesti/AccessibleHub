@@ -1,0 +1,40 @@
+**** Future suggestions ****
+
+1. Define clear learning objectives and outcomes for each section of the toolkit. What specific accessibility concepts, guidelines, and implementation techniques do you want developers to learn and be able to apply after going through that section? Having well-defined learning goals will provide structure and direction.
+
+2. Organize the content in a progressive, scaffolded manner. Start with foundational accessibility principles, then build up to specific guidelines (WCAG/MCAG), and finally provide concrete code examples showing how to implement those guidelines in React Native. This progression from theory to practical application will make the learning process more effective.
+
+3. For each accessibility guideline or concept, include the following:
+- Brief explanation of the guideline and its importance 
+- Specific examples of how it applies in a mobile app context
+- Code snippets demonstrating proper implementation in React Native
+- Interactive examples within the app itself where developers can see the guideline in action
+- Common mistakes to avoid
+- Links to additional resources for deeper learning
+
+4. Incorporate knowledge checks and hands-on exercises throughout the toolkit. After learning about a guideline, have developers complete a small coding exercise to reinforce their understanding. Provide immediate feedback and explanations.
+
+5. Leverage the app itself to demonstrate accessibility best practices. As developers navigate through the educational content, they should be interacting with accessible UI elements. Explain why certain techniques are used in the app's interface.
+
+6. Introduce some sort of badging or progress tracking system. As developers complete sections and exercises, they earn badges or points. This gamification element can boost motivation and engagement.
+
+7. Include a way for developers to check their own apps or code snippets against accessibility guidelines. Integrate automated accessibility testing tools and provide instructions on manual testing procedures.
+
+8. Foster a community aspect within the toolkit. Allow developers to share their learning progress, ask questions, and get feedback from both the toolkit maintainers and fellow developers. This could be through forums, chat, or even in-person meetups.
+
+9. Keep the content up-to-date with the latest accessibility guidelines and React Native best practices. Regularly update and expand the toolkit based on developer feedback and industry changes.
+
+10. Offer different learning paths or tracks based on developer needs and experience levels. Have a quickstart path for developers who need to rapidly implement accessibility, and a deeper dive path for those building advanced skills.
+
+
+**** USEFUL ****
+
+To formally incorporate statistics into your app and thesis:
+
+- Identify key metrics that quantify the impact and importance of accessibility (e.g., percentage of users with disabilities, potential - market reach, legal compliance requirements).
+- Gather data on the current state of accessibility in mobile apps (e.g., percentage of apps meeting WCAG guidelines, common accessibility - barriers).
+- Integrate analytics tools into your app to track usage patterns, quiz scores, and areas where developers struggle with implementing - accessibility.
+- Present the statistics using clear visualizations (charts, graphs) accompanied by explanatory text putting the numbers in context.
+- Use the statistics strategically in your thesis to support key arguments, such as the need for better developer education or the - business benefits of prioritizing accessibility.
+- Cite authoritative sources for all statistics, and explain your methodology for collecting original data through your app.
+- Discuss the implications of the statistics and how your accessibility toolkit app addresses the identified challenges and opportunities.
