@@ -47,3 +47,44 @@ Problemi di accessibilità:
 10. sulla form non è visibile il pulsante di submit credo sia una scelta ma meglio discuterne, poi non mi pare ci sia la gestione degli errori, ma anche qui potrei aver sbagliato io ☑️
 
 11. Mobile Accessibility Tools: alcune card sono gestite come elemento unico (Accessibility Inspector e Constrast Analyzer) le altre come elementi composti in cui si naviga all'interno, sarebbe meglio che fossero tutte uguali ☑️ - risolto
+
+****** PENDING 09-02 ******
+
+Pending Items:
+
+Navigation Flow Issues:
+
+
+The "back" navigation behavior needs investigation as supervisor noted: "if I use swipe to go back, the page I return to is not the last visited one, I can't understand the criteria"
+This appears to be related to navigation stack management and needs to be properly implemented
+
+
+Menu and Home Consistency:
+
+
+Menu items, home screen labels, and page titles need to be aligned for consistency
+The order of menu items should match the home screen layout
+This is marked as needing implementation in your comments
+
+
+Accessibility Review Points:
+
+
+Need to verify if text is still being announced twice with TalkBack for essential gestures
+Verify tag announcements are working correctly with screen readers
+Double-check if footer elements in menu are properly hidden from screen readers
+
+
+Visual Elements:
+
+
+App icon/logo is still missing (both for the app itself and internal usage)
+Background contrast improvements are pending (dark background in light mode, light in dark mode)
+This is part of the aesthetic improvements you mentioned are still needed
+
+
+Documentation:
+
+
+The framework comparison ratings need formal calculation methodology
+Consider adding encountered accessibility implementation challenges to best practices
