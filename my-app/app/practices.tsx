@@ -9,54 +9,163 @@ export default function BestPracticesScreen() {
   const router = useRouter();
   const { colors, textSizes, isDarkMode } = useTheme();
 
-    const themedStyles = {
-      container: {
-        backgroundColor: colors.background,
+  const themedStyles = {
+    // Layout & Container styles
+    container: {
+      backgroundColor: colors.background,
+      flex: 1,
+    },
+    header: {
+      backgroundColor: colors.surface,
+      borderBottomColor: colors.border,
+      paddingVertical: 20,
+      paddingHorizontal: 16,
+      borderBottomWidth: 1,
+    },
+    section: {
+      padding: 16,
+      gap: 12,
+    },
+
+    // Typography
+    title: {
+      color: colors.text,
+      fontSize: textSizes.xlarge,
+      fontWeight: '700',
+      marginBottom: 8,
+    },
+    description: {
+      color: colors.textSecondary,
+      fontSize: textSizes.medium,
+      lineHeight: 24,
+    },
+
+    // Card Styles
+    card: {
+      backgroundColor: colors.surface,
+      borderRadius: 16,
+      padding: 16,
+      marginBottom: 8,
+      shadowColor: colors.shadow,
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: isDarkMode ? 0.15 : 0.08,
+      shadowRadius: 8,
+      elevation: 3,
+    },
+    cardContent: {
+      flexDirection: 'row',
+      alignItems: 'flex-start',
+      gap: 12,
+      padding: 12,
+    },
+
+    // Icon Styles
+      iconWrapper: {
+        width: 40,
+        height: 40,
+        borderRadius: 10,
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginRight: 12,
       },
-      header: {
-        backgroundColor: colors.surface,
-        borderBottomColor: colors.border,
+    iconColors: {
+      wcag: {
+        bg: '#E8F1FF',
+        icon: '#0055CC',
       },
-      title: {
-        color: colors.text,
-        fontSize: textSizes.xlarge,
+      semantic: {
+        bg: '#F0F7FF',
+        icon: '#0070F3',
       },
-      description: {
-        color: isDarkMode ? colors.text : colors.textSecondary,
-        fontSize: textSizes.medium,
+      gesture: {
+        bg: '#FFF4E6',
+        icon: '#FF8C00',
       },
-      guideCard: {
-        backgroundColor: isDarkMode ? '#1A1A1A' : colors.surface,
-        shadowColor: '#000',
-        shadowOpacity: isDarkMode ? 0.3 : 0.05,
+      screenReader: {
+        bg: '#E6F4FF',
+        icon: '#0066CC',
       },
-      guideTitle: {
-        color: colors.text,
-        fontSize: textSizes.large,
+      navigation: {
+        bg: '#E6FFE6',
+        icon: '#28A745',
       },
-      badge: {
-        backgroundColor: isDarkMode ? 'rgba(255, 255, 255, 0.15)' : '#E8F1FF', // More visible background in dark mode
-      },
-      badgeText: {
-        color: isDarkMode ? '#0320fc' : '#0055CC',  // Increased contrast in dark mode
-      },
-      guideDescription: {
-        color: isDarkMode ? colors.text : colors.textSecondary,
-        fontSize: textSizes.small,
-      },
-      footerText: {
-        color: isDarkMode ? '#E0E0E0' : colors.textSecondary,
-      },
-      footerIcon: {
-        color: isDarkMode ? '#E0E0E0' : '#666',
-      },
-      iconContainer: {
-        backgroundColor: isDarkMode ? '#333333' : '#E8F1FF',
-      },
-      iconColor: {
-        color: isDarkMode ? '#82B1FF' : '#0055CC',
+    },
+
+    // Content Layout
+    textContent: {
+      flex: 1,
+    },
+    titleRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      marginBottom: 4,
+    },
+    practiceTitle: {
+      fontSize: textSizes.large,
+      fontWeight: '600',
+      color: colors.text,
+      flex: 1,
+      marginRight: 8,
+    },
+
+    // Badge Styles
+    badgeContainer: {
+      flexDirection: 'row',
+      gap: 8,
+    },
+  badge: {
+    paddingHorizontal: 8,
+    paddingVertical: 2,
+    borderRadius: 8,
+    backgroundColor: isDarkMode ? `${colors.primaryLight}15` : colors.primaryLight,
+  },
+    badgeText: {
+      fontSize: textSizes.small,
+      fontWeight: '500',
+      color: colors.primary,
+    },
+
+    // Description & Features
+    practiceDescription: {
+      fontSize: textSizes.medium,
+      color: colors.textSecondary,
+      marginBottom: 12,
+      lineHeight: 22,
+    },
+    featureList: {
+      flexDirection: 'row',
+      gap: 16,
+      paddingTop: 12,
+      borderTopWidth: 1,
+      borderTopColor: isDarkMode ? colors.border : `${colors.primary}15`,
+    },
+    featureItem: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: 6,
+    },
+    featureIcon: {
+      width: 16,
+      height: 16,
+      color: colors.textSecondary,
+    },
+    featureText: {
+      fontSize: textSizes.small,
+      color: colors.textSecondary,
+    },
+
+    // Navigation
+    chevron: {
+      marginLeft: 'auto',
+      color: colors.textSecondary,
+    },
+      features: {
+        flexDirection: 'row',
+        marginTop: 8,
+        gap: 16,
       }
-    };
+  };
 
   return (
     <ScrollView style={[styles.container, themedStyles.container]}>
@@ -67,216 +176,342 @@ export default function BestPracticesScreen() {
         </Text>
       </View>
 
-      <View style={styles.section}>
-        <TouchableOpacity
-          style={[styles.guideCard, themedStyles.guideCard]}
-          onPress={() => router.push('/practices-screens/guidelines')}
-          accessibilityRole="button">
-          <View style={[styles.iconContainer, { backgroundColor: '#E8F1FF' }]}>
-            <Ionicons name="document-text-outline" size={24} color="#0055CC" />
-          </View>
-          <View style={styles.guideContent}>
-            <View style={styles.guideHeader}>
-              <Text style={[styles.guideTitle, themedStyles.guideTitle]}>WCAG Guidelines</Text>
-                <View style={styles.badgeContainer}
-                      accessibilityElementsHidden={true}
-                      importantForAccessibility="no">
-                  <View style={styles.badge}>
-                    <Text
-                      style={[styles.badgeText, themedStyles.badgeText]}
-                      accessibilityRole="text"
-                      accessibilityLabel="WCAG version 2.2"
-                    >
-                      2.2
-                    </Text>
-                  </View>
-                  <View style={[styles.badge, { backgroundColor: '#E6F4FF' }]}>
-                    <Text
-                      style={[styles.badgeText, themedStyles.badgeText]}
-                      accessibilityRole="text"
-                      accessibilityLabel="Documentation type"
-                    >
-                      Documentation
-                    </Text>
-                  </View>
-                </View>
-            </View>
-            <Text style={[styles.guideDescription, themedStyles.guideDescription]}>
-              Understanding and implementing WCAG 2.2 guidelines in mobile apps
-            </Text>
-            <View style={styles.guideFooter}>
-              <View style={styles.footerItem}>
-                <Ionicons name="checkmark-circle" size={16} color="#28A745" />
-                <Text style={[styles.footerText, themedStyles.footerText]}>Success Criteria</Text>
+        <View style={themedStyles.section}>
+          {/* WCAG Guidelines Card */}
+          <TouchableOpacity
+            style={themedStyles.card}
+            onPress={() => router.push('/practices-screens/guidelines')}
+            accessibilityRole="button"
+          >
+            <View style={themedStyles.cardContent}>
+              <View
+                style={[
+                  themedStyles.iconWrapper,
+                  { backgroundColor: themedStyles.iconColors.wcag.bg }
+                ]}
+              >
+                <Ionicons
+                  name="document-text-outline"
+                  size={24}
+                  color={themedStyles.iconColors.wcag.icon}
+                  accessibilityElementsHidden={true}
+                />
               </View>
-              <View style={styles.footerItem}>
-                <Ionicons name="code-slash" size={16} color="#666" />
-                <Text style={[styles.footerText, themedStyles.footerText]}>Examples</Text>
-              </View>
-            </View>
-          </View>
-        </TouchableOpacity>
 
-        <TouchableOpacity
-          style={[styles.guideCard, themedStyles.guideCard]}
-          onPress={() => router.push('/practices-screens/semantics')}
-          accessibilityRole="button">
-          <View style={[styles.iconContainer, { backgroundColor: '#F0F8FF' }]}>
-            <Ionicons name="git-merge-outline" size={24} color="#0070F3" />
-          </View>
-          <View style={styles.guideContent}>
-            <View style={styles.guideHeader}>
-              <Text style={[styles.guideTitle, themedStyles.guideTitle]}>Semantic Structure</Text>
-                <View style={styles.badgeContainer}
-                      accessibilityElementsHidden={true}
-                      importantForAccessibility="no">
-                  <View style={[styles.badge, { backgroundColor: '#FFF4E6' }]}>
-                    <Text
-                      style={[styles.badgeText, themedStyles.badgeText]}
-                      accessibilityRole="text"
-                      accessibilityLabel="Contains code examples"
-                    >
-                      Code Examples
-                    </Text>
+              <View style={themedStyles.textContent}>
+                <View style={themedStyles.titleRow}>
+                  <Text style={themedStyles.practiceTitle}>WCAG Guidelines</Text>
+                  <View style={themedStyles.badgeContainer}>
+                    <View style={themedStyles.badge}>
+                      <Text style={themedStyles.badgeText}>Documentation</Text>
+                    </View>
                   </View>
                 </View>
-            </View>
-            <Text style={[styles.guideDescription, themedStyles.guideDescription]}>
-              Creating meaningful and well-organized content hierarchies
-            </Text>
-            <View style={styles.guideFooter}>
-              <View style={styles.footerItem}>
-                <Ionicons name="layers-outline" size={16} color="#666" />
-                <Text style={[styles.footerText, themedStyles.footerText]}>Hierarchy</Text>
-              </View>
-              <View style={styles.footerItem}>
-                <Ionicons name="code-slash" size={16} color="#666" />
-                <Text style={[styles.footerText, themedStyles.footerText]}>Implementation</Text>
-              </View>
-            </View>
-          </View>
-        </TouchableOpacity>
 
-        <TouchableOpacity
-          style={[styles.guideCard, themedStyles.guideCard]}
-          onPress={() => router.push('/practices-screens/gestures')}
-          accessibilityRole="button">
-          <View style={[styles.iconContainer, { backgroundColor: '#E6F4FF' }]}>
-            <Ionicons name="hand-left-outline" size={24} color="#0066CC" />
-          </View>
-          <View style={styles.guideContent}>
-            <View style={styles.guideHeader}>
-              <Text style={[styles.guideTitle, themedStyles.guideTitle]}>Gesture Tutorial</Text>
-                <View style={styles.badgeContainer}
-                      accessibilityElementsHidden={true}
-                      importantForAccessibility="no">
-                  <View style={[styles.badge, { backgroundColor: '#FFE6E6' }]}>
-                    <Text
-                      style={[styles.badgeText, themedStyles.badgeText]}
-                      accessibilityRole="text"
-                      accessibilityLabel="Interactive guide for learning gestures"
-                    >
-                      Interactive Guide
-                    </Text>
-                  </View>
-                </View>
-            </View>
-            <Text style={[styles.guideDescription, themedStyles.guideDescription]}>
-              Learn and test common accessibility gestures
-            </Text>
-            <View style={styles.guideFooter}>
-              <View style={styles.footerItem}>
-                <Ionicons name="finger-print-outline" size={16} color="#666" />
-                <Text style={[styles.footerText, themedStyles.footerText]}>Gesture Patterns</Text>
-              </View>
-              <View style={styles.footerItem}>
-                <Ionicons name="hand-right-outline" size={16} color="#666" />
-                <Text style={[styles.footerText, themedStyles.footerText]}>Interactive Demo</Text>
-              </View>
-            </View>
-          </View>
-        </TouchableOpacity>
+                <Text style={themedStyles.practiceDescription}>
+                  Understanding and implementing WCAG 2.2 guidelines in mobile apps
+                </Text>
 
-        <TouchableOpacity
-          style={[styles.guideCard, themedStyles.guideCard]}
-          onPress={() => router.push('/practices-screens/screen-reader')}
-          accessibilityRole="button">
-          <View style={[styles.iconContainer, { backgroundColor: '#E6F4FF' }]}>
-            <Ionicons name="eye-outline" size={24} color="#0066CC" />
-          </View>
-          <View style={styles.guideContent}>
-            <View style={styles.guideHeader}>
-              <Text style={[styles.guideTitle, themedStyles.guideTitle]}>Screen Reader Support</Text>
-                <View style={styles.badgeContainer}
+                <View style={themedStyles.featureList}>
+                  <View style={themedStyles.featureItem}>
+                    <Ionicons
+                      name="checkmark-circle"
+                      size={16}
+                      color={colors.textSecondary}
                       accessibilityElementsHidden={true}
-                      importantForAccessibility="no">
-                  <View style={[styles.badge, { backgroundColor: '#E6FFE6' }]}>
-                    <Text
-                      style={[styles.badgeText, themedStyles.badgeText]}
-                      accessibilityRole="text"
-                      accessibilityLabel="Contains accessibility guidelines"
-                    >
-                      Guidelines
-                    </Text>
+                    />
+                    <Text style={themedStyles.featureText}>Success Criteria</Text>
+                  </View>
+                  <View style={themedStyles.featureItem}>
+                    <Ionicons
+                      name="code-slash"
+                      size={16}
+                      color={colors.textSecondary}
+                      accessibilityElementsHidden={true}
+                    />
+                    <Text style={themedStyles.featureText}>Examples</Text>
                   </View>
                 </View>
-            </View>
-            <Text style={[styles.guideDescription, themedStyles.guideDescription]}>
-              Optimizing your app for VoiceOver and TalkBack
-            </Text>
-            <View style={styles.guideFooter}>
-              <View style={styles.footerItem}>
-                <Ionicons name="phone-portrait-outline" size={16} color="#666" />
-                <Text style={[styles.footerText, themedStyles.footerText]}>Platform-specific</Text>
               </View>
-              <View style={styles.footerItem}>
-                <Ionicons name="hand-left-outline" size={16} color="#666" />
-                <Text style={[styles.footerText, themedStyles.footerText]}>Gestures</Text>
-              </View>
-            </View>
-          </View>
-        </TouchableOpacity>
 
-        <TouchableOpacity
-          style={[styles.guideCard, themedStyles.guideCard]}
-          onPress={() => router.push('/practices-screens/navigation')}
-          accessibilityRole="button">
-          <View style={[styles.iconContainer, { backgroundColor: '#FFF4E6' }]}>
-            <Ionicons name="navigate-outline" size={24} color="#FF8C00" />
-          </View>
-          <View style={styles.guideContent}>
-            <View style={styles.guideHeader}>
-              <Text style={[styles.guideTitle, themedStyles.guideTitle]}>Logical Focus Order</Text>
-                <View style={styles.badgeContainer}
-                      accessibilityElementsHidden={true}
-                      importantForAccessibility="no">
-                  <View style={[styles.badge, { backgroundColor: '#FFE6E6' }]}>
-                    <Text
-                      style={[styles.badgeText, themedStyles.badgeText]}
-                      accessibilityRole="text"
-                      accessibilityLabel="Interactive guide for navigation"
-                    >
-                      Interactive Guide
-                    </Text>
+              <Ionicons
+                name="chevron-forward"
+                size={20}
+                color={colors.textSecondary}
+                style={themedStyles.chevron}
+                accessibilityElementsHidden={true}
+              />
+            </View>
+          </TouchableOpacity>
+
+          {/* Semantic Structure Card */}
+          <TouchableOpacity
+            style={themedStyles.card}
+            onPress={() => router.push('/practices-screens/semantics')}
+            accessibilityRole="button"
+          >
+            <View style={themedStyles.cardContent}>
+              <View
+                style={[
+                  themedStyles.iconWrapper,
+                  { backgroundColor: themedStyles.iconColors.semantic.bg }
+                ]}
+              >
+                <Ionicons
+                  name="git-merge-outline"
+                  size={24}
+                  color={themedStyles.iconColors.semantic.icon}
+                  accessibilityElementsHidden={true}
+                />
+              </View>
+
+              <View style={themedStyles.textContent}>
+                <View style={themedStyles.titleRow}>
+                  <Text style={themedStyles.practiceTitle}>Semantic Structure</Text>
+                  <View style={themedStyles.badgeContainer}>
+                    <View style={themedStyles.badge}>
+                      <Text style={themedStyles.badgeText}>Code Examples</Text>
+                    </View>
                   </View>
                 </View>
-            </View>
-            <Text style={[styles.guideDescription, themedStyles.guideDescription]}>
-              Managing focus and keyboard navigation effectively
-            </Text>
-            <View style={styles.guideFooter}>
-              <View style={styles.footerItem}>
-                <Ionicons name="arrow-forward-circle-outline" size={16} color="#666" />
-                <Text style={[styles.footerText, themedStyles.footerText]}>Focus Flow</Text>
+
+                <Text style={themedStyles.practiceDescription}>
+                  Creating meaningful and well-organized content hierarchies
+                </Text>
+
+                <View style={themedStyles.featureList}>
+                  <View style={themedStyles.featureItem}>
+                    <Ionicons
+                      name="layers-outline"
+                      size={16}
+                      color={colors.textSecondary}
+                      accessibilityElementsHidden={true}
+                    />
+                    <Text style={themedStyles.featureText}>Hierarchy</Text>
+                  </View>
+                  <View style={themedStyles.featureItem}>
+                    <Ionicons
+                      name="code-slash"
+                      size={16}
+                      color={colors.textSecondary}
+                      accessibilityElementsHidden={true}
+                    />
+                    <Text style={themedStyles.featureText}>Implementation</Text>
+                  </View>
+                </View>
               </View>
-              <View style={styles.footerItem}>
-                <Ionicons name="hand-right-outline" size={16} color="#666" />
-                <Text style={[styles.footerText, themedStyles.footerText]}>Interactive Demo</Text>
-              </View>
+
+              <Ionicons
+                name="chevron-forward"
+                size={20}
+                color={colors.textSecondary}
+                style={themedStyles.chevron}
+                accessibilityElementsHidden={true}
+              />
             </View>
-          </View>
-        </TouchableOpacity>
-      </View>
+          </TouchableOpacity>
+
+          {/* Gesture Tutorial Card */}
+          <TouchableOpacity
+            style={themedStyles.card}
+            onPress={() => router.push('/practices-screens/gestures')}
+            accessibilityRole="button"
+          >
+            <View style={themedStyles.cardContent}>
+              <View
+                style={[
+                  themedStyles.iconWrapper,
+                  { backgroundColor: themedStyles.iconColors.gesture.bg }
+                ]}
+              >
+                <Ionicons
+                  name="hand-left-outline"
+                  size={24}
+                  color={themedStyles.iconColors.gesture.icon}
+                  accessibilityElementsHidden={true}
+                />
+              </View>
+
+              <View style={themedStyles.textContent}>
+                <View style={themedStyles.titleRow}>
+                  <Text style={themedStyles.practiceTitle}>Gesture Tutorial</Text>
+                  <View style={themedStyles.badgeContainer}>
+                    <View style={themedStyles.badge}>
+                      <Text style={themedStyles.badgeText}>Interactive Guide</Text>
+                    </View>
+                  </View>
+                </View>
+
+                <Text style={themedStyles.practiceDescription}>
+                  Learn and test common accessibility gestures
+                </Text>
+
+                <View style={themedStyles.featureList}>
+                  <View style={themedStyles.featureItem}>
+                    <Ionicons
+                      name="finger-print-outline"
+                      size={16}
+                      color={colors.textSecondary}
+                      accessibilityElementsHidden={true}
+                    />
+                    <Text style={themedStyles.featureText}>Gesture Patterns</Text>
+                  </View>
+                  <View style={themedStyles.featureItem}>
+                    <Ionicons
+                      name="hand-right-outline"
+                      size={16}
+                      color={colors.textSecondary}
+                      accessibilityElementsHidden={true}
+                    />
+                    <Text style={themedStyles.featureText}>Interactive Demo</Text>
+                  </View>
+                </View>
+              </View>
+
+              <Ionicons
+                name="chevron-forward"
+                size={20}
+                color={colors.textSecondary}
+                style={themedStyles.chevron}
+                accessibilityElementsHidden={true}
+              />
+            </View>
+          </TouchableOpacity>
+
+          {/* Screen Reader Support Card */}
+          <TouchableOpacity
+            style={themedStyles.card}
+            onPress={() => router.push('/practices-screens/screen-reader')}
+            accessibilityRole="button"
+          >
+            <View style={themedStyles.cardContent}>
+              <View
+                style={[
+                  themedStyles.iconWrapper,
+                  { backgroundColor: themedStyles.iconColors.screenReader.bg }
+                ]}
+              >
+                <Ionicons
+                  name="eye-outline"
+                  size={24}
+                  color={themedStyles.iconColors.screenReader.icon}
+                  accessibilityElementsHidden={true}
+                />
+              </View>
+
+              <View style={themedStyles.textContent}>
+                <View style={themedStyles.titleRow}>
+                  <Text style={themedStyles.practiceTitle}>Screen Reader Support</Text>
+                  <View style={themedStyles.badgeContainer}>
+                    <View style={themedStyles.badge}>
+                      <Text style={themedStyles.badgeText}>Guidelines</Text>
+                    </View>
+                  </View>
+                </View>
+
+                <Text style={themedStyles.practiceDescription}>
+                  Optimizing your app for VoiceOver and TalkBack
+                </Text>
+
+                <View style={themedStyles.featureList}>
+                  <View style={themedStyles.featureItem}>
+                    <Ionicons
+                      name="phone-portrait-outline"
+                      size={16}
+                      color={colors.textSecondary}
+                      accessibilityElementsHidden={true}
+                    />
+                    <Text style={themedStyles.featureText}>Platform-specific</Text>
+                  </View>
+                  <View style={themedStyles.featureItem}>
+                    <Ionicons
+                      name="hand-left-outline"
+                      size={16}
+                      color={colors.textSecondary}
+                      accessibilityElementsHidden={true}
+                    />
+                    <Text style={themedStyles.featureText}>Gestures</Text>
+                  </View>
+                </View>
+              </View>
+
+              <Ionicons
+                name="chevron-forward"
+                size={20}
+                color={colors.textSecondary}
+                style={themedStyles.chevron}
+                accessibilityElementsHidden={true}
+              />
+            </View>
+          </TouchableOpacity>
+
+          {/* Navigation and Focus Card */}
+          <TouchableOpacity
+            style={themedStyles.card}
+            onPress={() => router.push('/practices-screens/navigation')}
+            accessibilityRole="button"
+          >
+            <View style={themedStyles.cardContent}>
+              <View
+                style={[
+                  themedStyles.iconWrapper,
+                  { backgroundColor: themedStyles.iconColors.navigation.bg }
+                ]}
+              >
+                <Ionicons
+                  name="navigate-outline"
+                  size={24}
+                  color={themedStyles.iconColors.navigation.icon}
+                  accessibilityElementsHidden={true}
+                />
+              </View>
+
+              <View style={themedStyles.textContent}>
+                <View style={themedStyles.titleRow}>
+                  <Text style={themedStyles.practiceTitle}>Logical Focus Order</Text>
+                  <View style={themedStyles.badgeContainer}>
+                    <View style={themedStyles.badge}>
+                      <Text style={themedStyles.badgeText}>Interactive Guide</Text>
+                    </View>
+                  </View>
+                </View>
+
+                <Text style={themedStyles.practiceDescription}>
+                  Managing focus and keyboard navigation effectively
+                </Text>
+
+                <View style={themedStyles.featureList}>
+                  <View style={themedStyles.featureItem}>
+                    <Ionicons
+                      name="arrow-forward-circle-outline"
+                      size={16}
+                      color={colors.textSecondary}
+                      accessibilityElementsHidden={true}
+                    />
+                    <Text style={themedStyles.featureText}>Focus Flow</Text>
+                  </View>
+                  <View style={themedStyles.featureItem}>
+                    <Ionicons
+                      name="hand-right-outline"
+                      size={16}
+                      color={colors.textSecondary}
+                      accessibilityElementsHidden={true}
+                    />
+                    <Text style={themedStyles.featureText}>Interactive Demo</Text>
+                  </View>
+                </View>
+              </View>
+
+              <Ionicons
+                name="chevron-forward"
+                size={20}
+                color={colors.textSecondary}
+                style={themedStyles.chevron}
+                accessibilityElementsHidden={true}
+              />
+            </View>
+          </TouchableOpacity>
+        </View>
     </ScrollView>
   );
 }

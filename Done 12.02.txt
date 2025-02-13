@@ -198,3 +198,9 @@ In all of accessible screens/practices/global layout and practices:
 - Reordered and sorted correctly voices in drawer
 - Created the right title so for user to not be confused when landing in subscreen (back button when in subscreen)
 - Properly handled navigation the right way everywhere without problems
+
+Some styling fixes:
+
+- Fixed accessible button styling and screen reader problems
+- Fixed some context styling but need more work
+- Some other little styling fixes on index, more rework needed
