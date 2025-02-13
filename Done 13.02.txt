@@ -208,3 +208,8 @@ Some styling fixes:
 Other styling fixes - practices and components
 - Made finally more uniform styling of both pages - compliant even to dark mode now
 - Updated to-do of yesterday
+
+- Fixed screen reader problem into drawer (to test on device)
+- Fixed Quick Start overlap into home
+- Started working on the separate gamification/community screen with quizzes working as test (to uniform the style for dark mode and stuff)
+- Fixes to guidelines styling (finally - text bigger and general better styling)
