@@ -204,3 +204,7 @@ Some styling fixes:
 - Fixed accessible button styling and screen reader problems
 - Fixed some context styling but need more work
 - Some other little styling fixes on index, more rework needed
+
+Other styling fixes - practices and components
+- Made finally more uniform styling of both pages - compliant even to dark mode now
+- Updated to-do of yesterday

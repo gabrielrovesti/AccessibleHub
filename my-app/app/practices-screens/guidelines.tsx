@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useTheme } from '../../context/ThemeContext';
 
@@ -17,21 +17,26 @@ const WCAGGuidelinesScreen = () => {
     headerTitle: {
       color: colors.text,
       fontSize: textSizes.xlarge,
+      fontWeight: 'bold',
+      marginBottom: 16,
     },
     headerSubtitle: {
       color: colors.textSecondary,
-      fontSize: textSizes.medium,
+      fontSize: textSizes.large,
+      lineHeight: 28,
     },
     section: {
-      gap: textSizes.medium,
+      gap: 24,
     },
     guidelineCard: {
       backgroundColor: colors.surface,
       shadowColor: colors.shadow,
       shadowOpacity: 0.05,
+      paddingVertical: 24,
+      paddingHorizontal: 20,
     },
     cardHeader: {
-      gap: textSizes.medium,
+      gap: 16,
     },
     iconContainer: {
       backgroundColor: '#E8F1FF',
@@ -39,15 +44,20 @@ const WCAGGuidelinesScreen = () => {
     iconColor: '#0055CC',
     cardTitle: {
       color: colors.text,
-      fontSize: textSizes.medium,
+      fontSize: textSizes.large,
+      fontWeight: 'bold',
+      marginBottom: 8,
     },
     cardDescription: {
-      color: colors.text,
-      fontSize: textSizes.small,
+      color: colors.textSecondary,
+      fontSize: textSizes.medium,
+      lineHeight: 24,
+      marginBottom: 16,
     },
     checkItem: {
       color: colors.text,
-      fontSize: textSizes.small,
+      fontSize: textSizes.medium,
+      marginVertical: 8,
     },
   };
 
@@ -56,112 +66,100 @@ const WCAGGuidelinesScreen = () => {
       <View style={[styles.header, themedStyles.header]}>
         <Text style={[styles.headerTitle, themedStyles.headerTitle]}>WCAG 2.2 Guidelines</Text>
         <Text style={[styles.headerSubtitle, themedStyles.headerSubtitle]}>
-          Essential guidelines for mobile accessibility
+          Essential principles for building accessible mobile apps
         </Text>
       </View>
 
       <View style={[styles.section, themedStyles.section]}>
-        <View style={[styles.guidelineCard, themedStyles.guidelineCard]}>
-          <View style={[styles.cardHeader, themedStyles.cardHeader]}>
-            <View style={[styles.iconContainer, { backgroundColor: '#E8F1FF' }]}>
-              <Ionicons name="eye-outline" size={24} color={themedStyles.iconColor} />
+        {guidelineData.map((guideline, index) => (
+          <View key={index} style={[styles.guidelineCard, themedStyles.guidelineCard]}>
+            <View style={[styles.cardHeader, themedStyles.cardHeader]}>
+              <View style={[styles.iconContainer, { backgroundColor: '#E8F1FF' }]}>
+                <Ionicons name={guideline.icon} size={28} color={themedStyles.iconColor} />
+              </View>
+              <Text style={[styles.cardTitle, themedStyles.cardTitle]}>{guideline.title}</Text>
             </View>
-            <Text style={[styles.cardTitle, themedStyles.cardTitle]}>Perceivable</Text>
-          </View>
-          <Text style={[styles.cardDescription, themedStyles.cardDescription]}>
-            Information must be presentable to users in ways they can perceive.
-          </Text>
-          <View style={styles.checkList}>
-            <Text style={[styles.checkItem, themedStyles.checkItem]}>• Text alternatives for non-text content</Text>
-            <Text style={[styles.checkItem, themedStyles.checkItem]}>• Sufficient color contrast ratios</Text>
-            <Text style={[styles.checkItem, themedStyles.checkItem]}>• Clear content structure and relationships</Text>
-          </View>
-        </View>
-
-        <View style={[styles.guidelineCard, themedStyles.guidelineCard]}>
-          <View style={[styles.cardHeader, themedStyles.cardHeader]}>
-            <View style={[styles.iconContainer, { backgroundColor: '#E8F1FF' }]}>
-              <Ionicons name="hand-left-outline" size={24} color={themedStyles.iconColor} />
+            <Text style={[styles.cardDescription, themedStyles.cardDescription]}>
+              {guideline.description}
+            </Text>
+            <View style={styles.checkList}>
+              {guideline.checkItems.map((item, itemIndex) => (
+                <View key={itemIndex} style={styles.checkItem}>
+                  <Ionicons name="checkmark-circle" size={20} color="#28A745" style={styles.checkIcon} />
+                  <Text style={[themedStyles.checkItem]}>{item}</Text>
+                </View>
+              ))}
             </View>
-            <Text style={[styles.cardTitle, themedStyles.cardTitle]}>Operable</Text>
           </View>
-          <Text style={[styles.cardDescription, themedStyles.cardDescription]}>
-            Interface components must be operable by all users.
-          </Text>
-          <View style={styles.checkList}>
-            <Text style={[styles.checkItem, themedStyles.checkItem]}>• All functionality available via keyboard</Text>
-            <Text style={[styles.checkItem, themedStyles.checkItem]}>• Sufficient time to read and use content</Text>
-            <Text style={[styles.checkItem, themedStyles.checkItem]}>• No content that could cause seizures</Text>
-          </View>
-        </View>
-
-        <View style={[styles.guidelineCard, themedStyles.guidelineCard]}>
-          <View style={[styles.cardHeader, themedStyles.cardHeader]}>
-            <View style={[styles.iconContainer, { backgroundColor: '#E8F1FF' }]}>
-              <Ionicons name="document-text-outline" size={24} color={themedStyles.iconColor} />
-            </View>
-            <Text style={[styles.cardTitle, themedStyles.cardTitle]}>Understandable</Text>
-          </View>
-          <Text style={[styles.cardDescription, themedStyles.cardDescription]}>
-            Information and interface operation must be understandable.
-          </Text>
-          <View style={styles.checkList}>
-            <Text style={[styles.checkItem, themedStyles.checkItem]}>• Readable and understandable text content</Text>
-            <Text style={[styles.checkItem, themedStyles.checkItem]}>• Predictable functionality</Text>
-            <Text style={[styles.checkItem, themedStyles.checkItem]}>• Input assistance and error prevention</Text>
-          </View>
-        </View>
-
-        <View style={[styles.guidelineCard, themedStyles.guidelineCard]}>
-          <View style={[styles.cardHeader, themedStyles.cardHeader]}>
-            <View style={[styles.iconContainer, { backgroundColor: '#E8F1FF' }]}>
-              <Ionicons name="code-outline" size={24} color={themedStyles.iconColor} />
-            </View>
-            <Text style={[styles.cardTitle, themedStyles.cardTitle]}>Robust</Text>
-          </View>
-          <Text style={[styles.cardDescription, themedStyles.cardDescription]}>
-            Content must be robust enough to work with various assistive technologies.
-          </Text>
-          <View style={styles.checkList}>
-            <Text style={[styles.checkItem, themedStyles.checkItem]}>• Compatible with current and future tools</Text>
-            <Text style={[styles.checkItem, themedStyles.checkItem]}>• Proper markup and structure</Text>
-            <Text style={[styles.checkItem, themedStyles.checkItem]}>• Accessible custom controls</Text>
-          </View>
-        </View>
+        ))}
       </View>
     </ScrollView>
   );
 };
 
+const guidelineData = [
+  {
+    title: 'Perceivable',
+    icon: 'eye-outline',
+    description: 'Information and user interface components must be presentable to users in ways they can perceive.',
+    checkItems: [
+      'Provide text alternatives for non-text content',
+      'Provide captions and other alternatives for multimedia',
+      'Create content that can be presented in different ways without losing meaning',
+      'Make it easier for users to see and hear content',
+    ],
+  },
+  {
+    title: 'Operable',
+    icon: 'hand-left-outline',
+    description:
+      'User interface components and navigation must be operable.',
+    checkItems: [
+      'Make all functionality available from a keyboard',
+      'Give users enough time to read and use content',
+      'Do not use content that causes seizures or physical reactions',
+      'Help users navigate and find content',
+    ],
+  },
+  {
+    title: 'Understandable',
+    icon: 'document-text-outline',
+    description: 'Information and the operation of user interface must be understandable.',
+    checkItems: [
+      'Make text readable and understandable',
+      'Make content appear and operate in predictable ways',
+      'Help users avoid and correct mistakes',
+    ],
+  },
+  {
+    title: 'Robust',
+    icon: 'code-outline',
+    description:
+      'Content must be robust enough that it can be interpreted by a wide variety of user agents, including assistive technologies.',
+    checkItems: [
+      'Maximize compatibility with current and future user tools',
+    ],
+  },
+];
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f8f9fa',
   },
   header: {
     padding: 20,
     borderBottomWidth: 1,
   },
   headerTitle: {
-    fontSize: 24,
-    fontWeight: 'bold',
     marginBottom: 8,
   },
-  headerSubtitle: {
-    fontSize: 16,
-    lineHeight: 24,
-  },
   section: {
-    padding: 16,
+    padding: 20,
   },
   guidelineCard: {
-    backgroundColor: '#fff',
     borderRadius: 16,
-    padding: 16,
-    marginBottom: 16,
-    shadowColor: '#000',
+    marginBottom: 20,
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.05,
     shadowRadius: 4,
     elevation: 2,
   },
@@ -169,7 +167,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 12,
-    gap: 12,
   },
   iconContainer: {
     width: 40,
@@ -178,22 +175,19 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  cardTitle: {
-    fontSize: 18,
-    fontWeight: '600',
-  },
   cardDescription: {
-    fontSize: 14,
-    lineHeight: 20,
     marginBottom: 12,
   },
   checkList: {
-    gap: 8,
+    gap: 12,
   },
   checkItem: {
-    fontSize: 14,
-    lineHeight: 20,
-    paddingLeft: 8,
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    gap: 8,
+  },
+  checkIcon: {
+    marginTop: 4,
   },
 });
 

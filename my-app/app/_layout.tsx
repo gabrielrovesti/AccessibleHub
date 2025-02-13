@@ -58,16 +58,6 @@ function CustomDrawerContent(props) {
     footerContent: {
       alignItems: 'center',
     },
-    appName: {
-      fontSize: 16,
-      fontWeight: 'bold',
-      color: colors.textSecondary,
-    },
-    version: {
-      fontSize: 14,
-      color: colors.textSecondary,
-      marginTop: 4,
-    },
   });
 
   useEffect(() => {
@@ -111,7 +101,7 @@ function CustomDrawerContent(props) {
                 }}
                 accessibilityRole="menuitem"
                 accessibilityState={{ selected: isActive }}
-                accessibilityLabel={`${label}${isActive ? ', currently selected' : ''}`}
+                accessibilityLabel={label}
                 accessibilityHint={`Double tap to navigate to ${label} screen`}
                 accessible={true}
               >
@@ -119,8 +109,8 @@ function CustomDrawerContent(props) {
                   {drawerIcon && (
                     <View
                       style={dynamicStyles.drawerIcon}
-                      importantForAccessibility="auto"
-                      accessibilityElementsHidden={false}
+                      importantForAccessibility="no"
+                      accessibilityElementsHidden={true}
                     >
                       {drawerIcon({
                         size: 24,
@@ -144,9 +134,12 @@ function CustomDrawerContent(props) {
       </View>
 
       {/* Footer */}
-      <View style={dynamicStyles.footer}>
+      <View
+        style={dynamicStyles.footer}
+        importantForAccessibility="no"
+      >
         <View style={dynamicStyles.footerContent}>
-          <Text style={dynamicStyles.appName}>AccessibleHub</Text>
+          <Text style={dynamicStyles.appName}>AccessibleHub - G. Rovesti</Text>
           <Text style={dynamicStyles.version}>Version 1.0.0</Text>
         </View>
       </View>

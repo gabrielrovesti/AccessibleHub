@@ -99,6 +99,7 @@ export default function HomeScreen() {
       backgroundColor: colors.surface,
       borderRadius: 16,
       padding: 20,
+      marginVertical: 24,
       marginHorizontal: 20,
       marginTop: -20,
       marginBottom: 24,
@@ -186,6 +187,86 @@ export default function HomeScreen() {
       fontSize: textSizes.small,
       fontWeight: '600',
     },
+    communityCard: {
+      backgroundColor: colors.surface,
+      borderRadius: 16,
+      padding: 16,
+      marginBottom: 16,
+      shadowColor: colors.text,
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.1,
+      shadowRadius: 4,
+      elevation: 2,
+      borderWidth: 1,
+      borderColor: colors.border,
+    },
+    communityTitle: {
+      color: colors.text,
+      fontSize: textSizes.large,
+      fontWeight: '700',
+      marginBottom: 8,
+    },
+    communityDescription: {
+      color: colors.textSecondary,
+      fontSize: textSizes.medium,
+      lineHeight: 22,
+    },
+    communityFeatures: {
+      marginTop: 12,
+      gap: 8,
+    },
+    communityFeature: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: 8,
+    },
+    communityIcon: {
+      color: colors.primary,
+    },
+    communityFeatureText: {
+      color: colors.text,
+      fontSize: textSizes.medium,
+    },
+   communitySection: {
+      backgroundColor: colors.surface,
+      borderRadius: 16,
+      padding: 20,
+      marginBottom: 24,
+      shadowColor: colors.text,
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.1,
+      shadowRadius: 4,
+      elevation: 2,
+      borderWidth: 1,
+      borderColor: colors.border,
+    },
+    communitySectionTitle: {
+      color: colors.text,
+      fontSize: textSizes.large,
+      fontWeight: 'bold',
+      marginBottom: 12,
+    },
+    communitySectionDescription: {
+      color: colors.textSecondary,
+      fontSize: textSizes.medium,
+      lineHeight: 24,
+      marginBottom: 20,
+    },
+    achievementsButton: {
+      backgroundColor: colors.primary,
+      paddingVertical: 12,
+      paddingHorizontal: 24,
+      borderRadius: 8,
+      alignItems: 'center',
+      justifyContent: 'center',
+      flexDirection: 'row',
+    },
+    achievementsButtonText: {
+      color: colors.background,
+      fontSize: textSizes.medium,
+      fontWeight: 'bold',
+      marginRight: 8,
+    },
   };
 
   return (
@@ -193,6 +274,7 @@ export default function HomeScreen() {
       style={[styles.container, themedStyles.container]}
       accessibilityRole="scrollview"
       accessibilityLabel="AccessibleHub Home Screen"
+      contentContainerStyle={{ paddingBottom: 24 }}
     >
       <View style={themedStyles.hero}>
         <Text
@@ -315,6 +397,34 @@ export default function HomeScreen() {
             </View>
           </TouchableOpacity>
         ))}
+        </View>
+
+      <View style={themedStyles.mainContent}>
+        <View style={themedStyles.communitySection}>
+          <Text style={themedStyles.communitySectionTitle}>
+            Developer Community
+          </Text>
+          <Text style={themedStyles.communitySectionDescription}>
+            Join our accessibility community to connect with experts, discuss best practices, and level up your skills. Earn badges as you progress on your accessibility journey!
+          </Text>
+
+          <TouchableOpacity
+            style={themedStyles.achievementsButton}
+            onPress={() => router.push('/achievements')}
+            accessibilityRole="button"
+            accessibilityLabel="View accessibility achievements"
+            accessibilityHint="Navigate to the achievements screen to track your progress"
+          >
+            <Text style={themedStyles.achievementsButtonText}>
+              View Achievements
+            </Text>
+            <Ionicons
+              name="trophy-outline"
+              size={20}
+              color={colors.background}
+            />
+          </TouchableOpacity>
+        </View>
       </View>
     </ScrollView>
   );
