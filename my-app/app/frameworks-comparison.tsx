@@ -1,324 +1,343 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Platform, Dimensions, AccessibilityInfo  } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  TouchableOpacity,
+  AccessibilityInfo,
+  Platform,
+} from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useTheme } from '../context/ThemeContext';
+import { LinearGradient } from 'expo-linear-gradient';
 
-const FrameworkComparisonScreen = () => {
+/* --------------------------------------------
+   1) FRAMEWORK DATA
+-------------------------------------------- */
+const frameworkData = {
+  'react-native': {
+    name: 'React Native',
+    company: 'Meta (Facebook)',
+    version: '0.73',
+    description: 'A framework for building native applications using React',
+    accessibility: {
+      overview: 'Comprehensive accessibility support with native integration',
+      screenReaders: {
+        ios: 'Full VoiceOver support with native bridge',
+        android: 'Complete TalkBack integration',
+        rating: 4.5
+      },
+      semantics: {
+        support: 'Extensive semantic property support',
+        features: [
+          'accessibilityLabel',
+          'accessibilityHint',
+          'accessibilityRole',
+          'accessibilityState',
+          'accessibilityValue'
+        ],
+        rating: 4.5
+      },
+      gestures: {
+        support: 'Native gesture recognition',
+        features: [
+          'Touch feedback',
+          'Custom touch handlers',
+          'Screen reader gestures'
+        ],
+        rating: 4.0
+      },
+      focusManagement: {
+        support: 'Built-in focus management',
+        features: [
+          'accessibilityViewIsModal',
+          'Focus control methods',
+          'Focus trapping'
+        ],
+        rating: 4.0
+      }
+    },
+    performance: {
+      startupTime: '1.2s',
+      memoryUsage: 'Medium',
+      bundleSize: '7-12MB',
+      rating: 4.0
+    },
+    development: {
+      language: 'JavaScript/TypeScript',
+      learning: 'Moderate',
+      tooling: 'Extensive',
+      hot: true,
+      testing: 'Jest, React Native Testing Library',
+      debugging: 'Chrome DevTools, React DevTools'
+    }
+  },
+  'flutter': {
+    name: 'Flutter',
+    company: 'Google',
+    version: '3.16',
+    description: 'A framework for building multi-platform apps using Dart',
+    accessibility: {
+      overview: 'Built-in accessibility features with strong platform integration',
+      screenReaders: {
+        ios: 'Native VoiceOver support',
+        android: 'Full TalkBack integration',
+        rating: 4.5
+      },
+      semantics: {
+        support: 'Rich semantic node system',
+        features: [
+          'Semantic properties',
+          'Custom semantic actions',
+          'Label annotations',
+          'Live region support'
+        ],
+        rating: 5.0
+      },
+      gestures: {
+        support: 'Advanced gesture system',
+        features: [
+          'Custom gesture recognizers',
+          'Screen reader gestures',
+          'Touch feedback systems'
+        ],
+        rating: 4.5
+      },
+      focusManagement: {
+        support: 'Comprehensive focus control',
+        features: [
+          'Focus traversal',
+          'Focus nodes',
+          'Modal barriers'
+        ],
+        rating: 4.5
+      }
+    },
+    performance: {
+      startupTime: '0.8s',
+      memoryUsage: 'Low-Medium',
+      bundleSize: '4-8MB',
+      rating: 4.5
+    },
+    development: {
+      language: 'Dart',
+      learning: 'Steep',
+      tooling: 'Comprehensive',
+      hot: true,
+      testing: 'Built-in testing framework',
+      debugging: 'Dart DevTools'
+    }
+  },
+  'ionic': {
+    name: 'Ionic',
+    company: 'Ionic',
+    version: '7.5',
+    description: 'A framework for building cross-platform apps using web technologies',
+    accessibility: {
+      overview: 'Web-based accessibility support with ARIA integration',
+      screenReaders: {
+        ios: 'VoiceOver support through WebView',
+        android: 'TalkBack support through WebView',
+        rating: 3.5
+      },
+      semantics: {
+        support: 'ARIA-based semantics',
+        features: [
+          'ARIA attributes',
+          'Role support',
+          'State management',
+          'Live regions'
+        ],
+        rating: 4.0
+      },
+      gestures: {
+        support: 'Web-based gesture handling',
+        features: [
+          'Touch events',
+          'Gesture recognition',
+          'Screen reader interaction'
+        ],
+        rating: 3.5
+      },
+      focusManagement: {
+        support: 'DOM-based focus management',
+        features: [
+          'Focus control',
+          'Tab order',
+          'Focus trapping'
+        ],
+        rating: 4.0
+      }
+    },
+    performance: {
+      startupTime: '1.5s',
+      memoryUsage: 'Medium-High',
+      bundleSize: '15-20MB',
+      rating: 3.5
+    },
+    development: {
+      language: 'JavaScript/TypeScript',
+      learning: 'Easy',
+      tooling: 'Good',
+      hot: true,
+      testing: 'Any web testing framework',
+      debugging: 'Chrome DevTools'
+    }
+  }
+};
+
+/* --------------------------------------------
+   2) Score Calculation
+-------------------------------------------- */
+function calculateMetrics(framework) {
+  if (!framework) return { accessibility: 0, performance: 0 };
+
+  // Accessibility Score
+  const a11y = framework.accessibility;
+  const screenReaders = a11y.screenReaders?.rating ?? 0;
+  const semantics = a11y.semantics?.rating ?? 0;
+  const gestures = a11y.gestures?.rating ?? 0;
+  const focus = a11y.focusManagement?.rating ?? 0;
+
+  const accessibilityScore = Number(
+    (
+      screenReaders * 0.3 +
+      semantics * 0.3 +
+      gestures * 0.2 +
+      focus * 0.2
+    ).toFixed(1)
+  );
+
+  // Performance Score
+  const perf = framework.performance;
+  const startupTimeNum = parseFloat(perf.startupTime) || 0; // e.g. "1.2s" → 1.2
+  const memoryScore =
+    perf.memoryUsage === 'Low' ? 5 :
+    perf.memoryUsage === 'Low-Medium' ? 4 :
+    perf.memoryUsage === 'Medium' ? 3 :
+    perf.memoryUsage === 'Medium-High' ? 2.5 : 2;
+  const bundleSizeNum = parseFloat(perf.bundleSize) || 0;  // e.g. "7-12MB" → 7
+
+  const performanceScore = Number(
+    (
+      -0.3 * startupTimeNum +
+      0.3 * memoryScore +
+      -0.4 * bundleSizeNum +
+      5
+    ).toFixed(1)
+  );
+
+  // Clamp to [0, 5]
+  return {
+    accessibility: Math.max(0, Math.min(5, accessibilityScore)),
+    performance: Math.max(0, Math.min(5, performanceScore))
+  };
+}
+
+/* --------------------------------------------
+   3) FrameworkComparisonScreen
+-------------------------------------------- */
+export default function FrameworkComparisonScreen() {
   const [selectedCategory, setSelectedCategory] = useState('overview');
   const [selectedFramework, setSelectedFramework] = useState('react-native');
   const { colors, textSizes, isDarkMode } = useTheme();
 
-  // Formal metric calculation methodology
-const calculateMetrics = (framework) => {
-  // Accessibility score calculation with proper rounding
-  const accessibilityScore = Number(
-    (framework.accessibility.screenReaders.rating * 0.3 +
-    framework.accessibility.semantics.rating * 0.3 +
-    framework.accessibility.gestures.rating * 0.2 +
-    framework.accessibility.focusManagement.rating * 0.2)
-    .toFixed(1)
-  );
-
-  // Performance score with safer number handling
-  const startupTime = parseFloat(framework.performance.startupTime.replace('s', '')) || 0;
-  const memoryScore =
-    framework.performance.memoryUsage === 'Low' ? 5 :
-    framework.performance.memoryUsage === 'Low-Medium' ? 4 :
-    framework.performance.memoryUsage === 'Medium' ? 3 : 2;
-
-  // Safely parse bundle size
-  const bundleSizeStr = framework.performance.bundleSize.split('-')[0];
-  const bundleSize = parseFloat(bundleSizeStr) || 0;
-
-  const performanceScore = Number(
-    (startupTime * -0.3 +
-    memoryScore * 0.3 +
-    (bundleSize * -0.4) + 5)
-    .toFixed(1)
-  );
-
-  return {
-    accessibility: Math.max(0, Math.min(5, accessibilityScore)), // Ensure score is between 0-5
-    performance: Math.max(0, Math.min(5, performanceScore)) // Ensure score is between 0-5
-  };
-}; // Removed extra closing brace here
-
-  // Enhanced accessibility announcements
-  useEffect(() => {
-    const framework = frameworkData[selectedFramework];
-    const metrics = calculateMetrics(framework);
-
-    AccessibilityInfo.announceForAccessibility(
-      `Selected ${framework.name}. Current category: ${selectedCategory}. ${selectedCategory} rating: ${metrics[selectedCategory] || metrics.accessibility}`
-    );
-  }, [selectedFramework, selectedCategory]);
-
-  const frameworkData = {
-    'react-native': {
-      name: 'React Native',
-      company: 'Meta (Facebook)',
-      version: '0.73',
-      description: 'A framework for building native applications using React',
-      accessibility: {
-        overview: 'Comprehensive accessibility support with native integration',
-        screenReaders: {
-          ios: 'Full VoiceOver support with native bridge',
-          android: 'Complete TalkBack integration',
-          rating: Number(4.5)
-        },
-        semantics: {
-          support: 'Extensive semantic property support',
-          features: [
-            'accessibilityLabel',
-            'accessibilityHint',
-            'accessibilityRole',
-            'accessibilityState',
-            'accessibilityValue'
-          ],
-          rating: Number(4.5)
-        },
-        gestures: {
-          support: 'Native gesture recognition',
-          features: [
-            'Touch feedback',
-            'Custom touch handlers',
-            'Screen reader gestures'
-          ],
-          rating: Number(4.0)
-        },
-        focusManagement: {
-          support: 'Built-in focus management',
-          features: [
-            'accessibilityViewIsModal',
-            'Focus control methods',
-            'Focus trapping'
-          ],
-          rating: Number(4.0)
-        }
-      },
-      performance: {
-        startupTime: '1.2s',
-        memoryUsage: 'Medium',
-        bundleSize: '7-12MB',
-        rating: Number(4.0)
-      },
-      development: {
-        language: 'JavaScript/TypeScript',
-        learning: 'Moderate',
-        tooling: 'Extensive',
-        hot: true,
-        testing: 'Jest, React Native Testing Library',
-        debugging: 'Chrome DevTools, React DevTools'
-      }
-    },
-    'flutter': {
-      name: 'Flutter',
-      company: 'Google',
-      version: '3.16',
-      description: 'A framework for building multi-platform applications using Dart',
-      accessibility: {
-        overview: 'Built-in accessibility features with strong platform integration',
-        screenReaders: {
-          ios: 'Native VoiceOver support',
-          android: 'Full TalkBack integration',
-          rating: Number(4.5)
-        },
-        semantics: {
-          support: 'Rich semantic node system',
-          features: [
-            'Semantic properties',
-            'Custom semantic actions',
-            'Label annotations',
-            'Live region support'
-          ],
-          rating: Number(5.0)
-        },
-        gestures: {
-          support: 'Advanced gesture system',
-          features: [
-            'Custom gesture recognizers',
-            'Screen reader gestures',
-            'Touch feedback systems'
-          ],
-          rating: Number(4.5)
-        },
-        focusManagement: {
-          support: 'Comprehensive focus control',
-          features: [
-            'Focus traversal',
-            'Focus nodes',
-            'Modal barriers'
-          ],
-          rating: Number(4.5)
-        }
-      },
-      performance: {
-        startupTime: '0.8s',
-        memoryUsage: 'Low-Medium',
-        bundleSize: '4-8MB',
-        rating: Number(4.5)
-      },
-      development: {
-        language: 'Dart',
-        learning: 'Steep',
-        tooling: 'Comprehensive',
-        hot: true,
-        testing: 'Built-in testing framework',
-        debugging: 'Dart DevTools'
-      }
-    },
-    'ionic': {
-      name: 'Ionic',
-      company: 'Ionic',
-      version: '7.5',
-      description: 'A framework for building cross-platform apps using web technologies',
-      accessibility: {
-        overview: 'Web-based accessibility support with ARIA integration',
-        screenReaders: {
-          ios: 'VoiceOver support through WebView',
-          android: 'TalkBack support through WebView',
-          rating: Number(3.5)
-        },
-        semantics: {
-          support: 'ARIA-based semantics',
-          features: [
-            'ARIA attributes',
-            'Role support',
-            'State management',
-            'Live regions'
-          ],
-          rating: Number(4.0)
-        },
-        gestures: {
-          support: 'Web-based gesture handling',
-          features: [
-            'Touch events',
-            'Gesture recognition',
-            'Screen reader interaction'
-          ],
-          rating: Number(3.5)
-        },
-        focusManagement: {
-          support: 'DOM-based focus management',
-          features: [
-            'Focus control',
-            'Tab order',
-            'Focus trapping'
-          ],
-          rating: Number(4.0)
-        }
-      },
-      performance: {
-        startupTime: '1.5s',
-        memoryUsage: 'Medium-High',
-        bundleSize: '15-20MB',
-        rating: Number(3.5)
-      },
-      development: {
-        language: 'JavaScript/TypeScript',
-        learning: 'Easy',
-        tooling: 'Good',
-        hot: true,
-        testing: 'Any web testing framework',
-        debugging: 'Chrome DevTools'
-      }
-    }
-  };
-
-  const handleCategoryChange = (category) => {
-      setSelectedCategory(category);
-      const framework = frameworkData[selectedFramework];
-      AccessibilityInfo.announceForAccessibility(
-        `Viewing ${category} details for ${framework.name}`
-      );
-    };
-
-    const handleFrameworkChange = (fw) => {
-      setSelectedFramework(fw);
-      const framework = frameworkData[fw];
-      const metrics = calculateMetrics(framework);
-      AccessibilityInfo.announceForAccessibility(
-        `Selected ${framework.name}. ${selectedCategory} rating: ${metrics[selectedCategory] || metrics.accessibility}`
-      );
-    };
-
+  // Categories
   const categories = [
     { id: 'overview', label: 'Overview', icon: 'information-circle' },
     { id: 'accessibility', label: 'Accessibility', icon: 'eye' },
     { id: 'performance', label: 'Performance', icon: 'speedometer' },
-    { id: 'development', label: 'Development', icon: 'code-slash' }
+    { id: 'development', label: 'Development', icon: 'code-slash' },
   ];
 
-const renderRatingBar = (rating, label = '') => {
-  try {
-    // Convert rating to number and handle undefined/null
-    const numericRating = Number(rating) || 0;
-    // Ensure width calculation is a valid number
-    const filledWidth = Math.min(100, Math.max(0, (numericRating / 5) * 100));
+  /*
+   * Accessibility announcements on changes
+   */
+  useEffect(() => {
+    const fw = frameworkData[selectedFramework];
+    const metrics = calculateMetrics(fw);
 
-    return (
-      <View
-        style={styles.ratingContainer}
-        accessible={true}
-        accessibilityRole="progressbar"
-        accessibilityLabel={`${label}: ${numericRating.toFixed(1)} out of 5`}
-      >
-        <View style={styles.ratingBar}>
-          <View
-            style={[
-              styles.ratingFilled,
-              { width: `${Math.round(filledWidth)}%`, backgroundColor: colors.primary }
-            ]}
-          />
-        </View>
-        <Text style={[styles.ratingText, { color: colors.primary }]}>
-          {numericRating.toFixed(1)}
-        </Text>
-      </View>
+    AccessibilityInfo.announceForAccessibility(
+      `Selected ${fw.name}. Current category: ${selectedCategory}.
+       ${selectedCategory} rating: ${
+         metrics[selectedCategory] ?? metrics.accessibility
+       }`
     );
-  } catch (error) {
-    console.warn('Error rendering rating bar:', error);
-    return null; // Fallback in case of error
-  }
-};
+  }, [selectedFramework, selectedCategory]);
+
+  /*
+   * 4) Themed + local styles
+   */
+  const gradientColors = isDarkMode
+    ? [colors.background, '#2c2c2e']
+    : ['#e2e2e2', colors.background];
 
   const themedStyles = {
     container: {
-      backgroundColor: colors.background,
+      flex: 1,
     },
-    header: {
+    heroCard: {
       backgroundColor: colors.surface,
-      borderBottomColor: colors.border,
+      marginHorizontal: 16,
+      marginTop: 16,
+      paddingVertical: 24,
+      paddingHorizontal: 16,
+      borderRadius: 16,
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 4 },
+      shadowOpacity: isDarkMode ? 0.3 : 0.15,
+      shadowRadius: 6,
+      elevation: 4,
+      borderWidth: isDarkMode ? 1 : 0,
+      borderColor: isDarkMode ? colors.border : 'transparent',
     },
-    headerTitle: {
+    heroTitle: {
       color: colors.text,
       fontSize: textSizes.xlarge,
+      fontWeight: 'bold',
+      marginBottom: 8,
     },
-    headerDescription: {
+    heroSubtitle: {
       color: colors.textSecondary,
       fontSize: textSizes.medium,
+      lineHeight: 24,
+    },
+    frameworkSelection: {
+      flexDirection: 'row',
+      gap: 12,
+      padding: 16,
     },
     frameworkButton: {
-      backgroundColor: colors.surface,
+      flex: 1,
+      paddingVertical: 12,
+      paddingHorizontal: 16,
+      borderRadius: 12,
+      alignItems: 'center',
+      justifyContent: 'center',
+      borderWidth: 1,
       borderColor: colors.border,
+      backgroundColor: colors.surface,
     },
     frameworkButtonActive: {
       backgroundColor: colors.primary,
       borderColor: colors.primary,
     },
     frameworkButtonText: {
+      fontSize: textSizes.medium,
+      fontWeight: '600',
       color: colors.text,
     },
     frameworkButtonTextActive: {
       color: colors.background,
     },
     categoryTabsContainer: {
-      maxHeight: 48,
       marginBottom: 16,
+      paddingHorizontal: 16,
     },
     categoryTabsContent: {
-      paddingHorizontal: 16,
       gap: 8,
+      flexDirection: 'row',
     },
     categoryTab: {
       flexDirection: 'row',
@@ -329,6 +348,10 @@ const renderRatingBar = (rating, label = '') => {
       minWidth: 80,
       height: 40,
       marginRight: 8,
+      backgroundColor: colors.surface,
+      borderWidth: 1,
+      borderColor: colors.border,
+      gap: 6,
     },
     categoryTabActive: {
       backgroundColor: colors.primaryLight,
@@ -336,100 +359,316 @@ const renderRatingBar = (rating, label = '') => {
     },
     categoryTabText: {
       color: colors.textSecondary,
+      fontSize: textSizes.small + 1,
+      fontWeight: '500',
     },
     categoryTabTextActive: {
       color: colors.primary,
     },
+    section: {
+      padding: 16,
+      gap: 16,
+    },
     infoCard: {
       backgroundColor: colors.surface,
+      borderRadius: 16,
+      padding: 20,
+      marginBottom: 16,
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 3 },
+      shadowOpacity: isDarkMode ? 0.3 : 0.1,
+      shadowRadius: 4,
+      elevation: 2,
+      borderWidth: isDarkMode ? 1 : 0,
+      borderColor: isDarkMode ? colors.border : 'transparent',
     },
     frameworkName: {
       color: colors.text,
+      fontSize: textSizes.large,
+      fontWeight: 'bold',
+      marginBottom: 4,
     },
     companyName: {
       color: colors.textSecondary,
+      fontSize: textSizes.medium,
+      marginBottom: 8,
     },
     version: {
       color: colors.primary,
+      fontSize: textSizes.small + 1,
+      fontWeight: '500',
+      marginBottom: 12,
     },
     description: {
       color: colors.textSecondary,
+      fontSize: textSizes.medium,
+      lineHeight: 24,
+    },
+    quickStats: {
+      flexDirection: 'row',
+      gap: 12,
+      marginTop: 16,
     },
     statItem: {
+      flex: 1,
       backgroundColor: colors.surface,
+      borderRadius: 12,
+      padding: 16,
+      alignItems: 'center',
+      justifyContent: 'center',
+      borderWidth: isDarkMode ? 1 : 0,
+      borderColor: isDarkMode ? colors.border : 'transparent',
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: isDarkMode ? 0.2 : 0.05,
+      shadowRadius: 4,
+      elevation: 2,
     },
     statLabel: {
+      marginTop: 8,
+      marginBottom: 4,
       color: colors.textSecondary,
+      fontSize: textSizes.small + 1,
     },
     statValue: {
+      fontSize: textSizes.medium,
+      fontWeight: '600',
       color: colors.text,
+    },
+    ratingContainer: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: 8,
+      marginTop: 8,
+    },
+    ratingBar: {
+      flex: 1,
+      height: 8,
+      backgroundColor: isDarkMode ? colors.border : '#f0f0f0',
+      borderRadius: 4,
+      overflow: 'hidden',
+    },
+    ratingFilled: {
+      height: '100%',
+      backgroundColor: colors.primary,
+    },
+    ratingText: {
+      fontSize: textSizes.small + 1,
+      fontWeight: '600',
+      color: colors.primary,
+      minWidth: 32,
+      textAlign: 'right',
+    },
+    ratingLabel: {
+      color: colors.text,
+      fontSize: textSizes.medium,
+      fontWeight: '600',
+      marginBottom: 8,
     },
     accessibilityCard: {
       backgroundColor: colors.surface,
+      borderRadius: 16,
+      padding: 20,
+      marginBottom: 16,
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 3 },
+      shadowOpacity: isDarkMode ? 0.3 : 0.1,
+      shadowRadius: 4,
+      elevation: 2,
+      borderWidth: isDarkMode ? 1 : 0,
+      borderColor: isDarkMode ? colors.border : 'transparent',
     },
     cardTitle: {
       color: colors.text,
+      fontSize: textSizes.large,
+      fontWeight: '600',
+      marginBottom: 12,
+    },
+    platformSupport: {
+      marginBottom: 16,
+      gap: 12,
+    },
+    platformItem: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: 12,
     },
     platformText: {
+      fontSize: textSizes.small + 1,
       color: colors.textSecondary,
+      flex: 1,
     },
-    supportText: {
-      color: colors.textSecondary,
+    featureList: {
+      gap: 8,
+      marginBottom: 16,
+    },
+    featureItem: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: 8,
     },
     featureText: {
       color: colors.textSecondary,
+      fontSize: textSizes.small + 1,
     },
     performanceCard: {
       backgroundColor: colors.surface,
+      borderRadius: 16,
+      padding: 20,
+      marginBottom: 16,
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 3 },
+      shadowOpacity: isDarkMode ? 0.3 : 0.1,
+      shadowRadius: 4,
+      elevation: 2,
+      borderWidth: isDarkMode ? 1 : 0,
+      borderColor: isDarkMode ? colors.border : 'transparent',
+    },
+    performanceItem: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginBottom: 16,
+      gap: 12,
+    },
+    performanceInfo: {
+      flex: 1,
     },
     performanceLabel: {
+      fontSize: textSizes.small + 1,
       color: colors.textSecondary,
+      marginBottom: 4,
     },
     performanceValue: {
+      fontSize: textSizes.medium,
+      fontWeight: '600',
       color: colors.text,
     },
     performanceRating: {
       backgroundColor: colors.surface,
-    },
-    ratingLabel: {
-      color: colors.text,
+      borderRadius: 16,
+      padding: 20,
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 3 },
+      shadowOpacity: isDarkMode ? 0.3 : 0.1,
+      shadowRadius: 4,
+      elevation: 2,
+      borderWidth: isDarkMode ? 1 : 0,
+      borderColor: isDarkMode ? colors.border : 'transparent',
     },
     developmentCard: {
       backgroundColor: colors.surface,
+      borderRadius: 16,
+      padding: 20,
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 3 },
+      shadowOpacity: isDarkMode ? 0.3 : 0.1,
+      shadowRadius: 4,
+      elevation: 2,
+      borderWidth: isDarkMode ? 1 : 0,
+      borderColor: isDarkMode ? colors.border : 'transparent',
+    },
+    toolList: {
+      gap: 16,
+      marginTop: 12,
+    },
+    toolItem: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: 12,
+    },
+    toolInfo: {
+      flex: 1,
     },
     toolLabel: {
+      fontSize: textSizes.small + 1,
       color: colors.textSecondary,
+      marginBottom: 4,
     },
     toolValue: {
+      fontSize: textSizes.medium,
       color: colors.text,
     },
   };
 
-  const renderFrameworkSelection = () => (
-    <View style={styles.frameworkSelection}>
-      {Object.keys(frameworkData).map((fw) => (
-        <TouchableOpacity
-          key={fw}
-          style={[
-            styles.frameworkButton,
-            selectedFramework === fw && styles.frameworkButtonActive,
-            themedStyles.frameworkButton,
-            selectedFramework === fw && themedStyles.frameworkButtonActive,
-          ]}
-          onPress={() => setSelectedFramework(fw)}
-        >
-          <Text
+  /* --------------------------------------------
+     5) RENDER RATING BAR
+  -------------------------------------------- */
+  const renderRatingBar = (rating, label = '') => {
+    const numericRating = Number(rating) || 0;
+    const filledWidth = Math.min(100, Math.max(0, (numericRating / 5) * 100));
+
+    return (
+      <View
+        style={themedStyles.ratingContainer}
+        accessible
+        accessibilityRole="progressbar"
+        accessibilityLabel={`${label}: ${numericRating.toFixed(1)} out of 5`}
+      >
+        <View style={themedStyles.ratingBar}>
+          <View
             style={[
-              styles.frameworkButtonText,
-              selectedFramework === fw && styles.frameworkButtonTextActive,
-              themedStyles.frameworkButtonText,
-              selectedFramework === fw && themedStyles.frameworkButtonTextActive,
+              themedStyles.ratingFilled,
+              { width: `${Math.round(filledWidth)}%` },
             ]}
+          />
+        </View>
+        <Text style={themedStyles.ratingText}>{numericRating.toFixed(1)}</Text>
+      </View>
+    );
+  };
+
+  /* --------------------------------------------
+     6) HANDLERS
+  -------------------------------------------- */
+  const handleCategoryChange = (catId) => {
+    setSelectedCategory(catId);
+    const fw = frameworkData[selectedFramework];
+    AccessibilityInfo.announceForAccessibility(
+      `Viewing ${catId} details for ${fw.name}`
+    );
+  };
+
+  const handleFrameworkChange = (fwId) => {
+    setSelectedFramework(fwId);
+    const fw = frameworkData[fwId];
+    const metrics = calculateMetrics(fw);
+    AccessibilityInfo.announceForAccessibility(
+      `Selected ${fw.name}. ${selectedCategory} rating: ${
+        metrics[selectedCategory] ?? metrics.accessibility
+      }`
+    );
+  };
+
+  /* --------------------------------------------
+     7) RENDER UI PIECES
+  -------------------------------------------- */
+  const renderFrameworkSelection = () => (
+    <View style={themedStyles.frameworkSelection}>
+      {Object.keys(frameworkData).map((fwId) => {
+        const fwActive = selectedFramework === fwId;
+        return (
+          <TouchableOpacity
+            key={fwId}
+            style={[
+              themedStyles.frameworkButton,
+              fwActive && themedStyles.frameworkButtonActive,
+            ]}
+            onPress={() => handleFrameworkChange(fwId)}
+            accessibilityRole="button"
+            accessibilityLabel={`Select ${frameworkData[fwId].name} framework`}
+            accessibilityState={{ selected: fwActive }}
           >
-            {frameworkData[fw].name}
-          </Text>
-        </TouchableOpacity>
-      ))}
+            <Text
+              style={[
+                themedStyles.frameworkButtonText,
+                fwActive && themedStyles.frameworkButtonTextActive,
+              ]}
+            >
+              {frameworkData[fwId].name}
+            </Text>
+          </TouchableOpacity>
+        );
+      })}
     </View>
   );
 
@@ -437,424 +676,295 @@ const renderRatingBar = (rating, label = '') => {
     <ScrollView
       horizontal
       showsHorizontalScrollIndicator={false}
-      style={styles.categoryTabsContainer}
-      contentContainerStyle={styles.categoryTabsContent}
+      style={themedStyles.categoryTabsContainer}
+      contentContainerStyle={themedStyles.categoryTabsContent}
       accessibilityRole="tablist"
     >
-      {categories.map((category) => (
-        <TouchableOpacity
-          key={category.id}
-          style={[
-            styles.categoryTab,
-            selectedCategory === category.id && styles.categoryTabActive,
-            themedStyles.categoryTab,
-            selectedCategory === category.id && themedStyles.categoryTabActive,
-          ]}
-          onPress={() => handleCategoryChange(category.id)}
-          accessibilityRole="tab"
-          accessibilityState={{ selected: selectedCategory === category.id }}
-          accessibilityLabel={`${category.label} tab`}
-          accessibilityHint={`Shows ${category.label.toLowerCase()} information for selected framework`}
-        >
-          <Ionicons
-            name={category.icon}
-            size={20}
-            color={selectedCategory === category.id ? colors.primary : colors.textSecondary}
-            accessibilityElementsHidden={true}
-          />
-          <Text style={[
-            styles.categoryTabText,
-            selectedCategory === category.id && styles.categoryTabTextActive,
-            themedStyles.categoryTabText,
-            selectedCategory === category.id && themedStyles.categoryTabTextActive,
-          ]}>
-            {category.label}
-          </Text>
-        </TouchableOpacity>
-      ))}
+      {categories.map((cat) => {
+        const active = selectedCategory === cat.id;
+        return (
+          <TouchableOpacity
+            key={cat.id}
+            style={[
+              themedStyles.categoryTab,
+              active && themedStyles.categoryTabActive,
+            ]}
+            onPress={() => handleCategoryChange(cat.id)}
+            accessibilityRole="tab"
+            accessibilityState={{ selected: active }}
+            accessibilityLabel={`${cat.label} tab`}
+            accessibilityHint={`Shows ${cat.label.toLowerCase()} information`}
+          >
+            <Ionicons
+              name={cat.icon}
+              size={18}
+              color={active ? colors.primary : colors.textSecondary}
+              accessibilityElementsHidden
+            />
+            <Text
+              style={[
+                themedStyles.categoryTabText,
+                active && themedStyles.categoryTabTextActive,
+              ]}
+            >
+              {cat.label}
+            </Text>
+          </TouchableOpacity>
+        );
+      })}
     </ScrollView>
   );
 
-
+  /*
+   * 7A) Overview Section
+   */
   const renderOverviewSection = () => {
-    const framework = frameworkData[selectedFramework];
+    const fw = frameworkData[selectedFramework];
     return (
-      <View style={styles.section}>
-        <View style={[styles.infoCard, themedStyles.infoCard]}>
-          <Text style={[styles.frameworkName, themedStyles.frameworkName]}>{framework.name}</Text>
-          <Text style={[styles.companyName, themedStyles.companyName]}>by {framework.company}</Text>
-          <Text style={[styles.version, themedStyles.version]}>Version {framework.version}</Text>
-          <Text style={[styles.description, themedStyles.description]}>{framework.description}</Text>
+      <View style={themedStyles.section}>
+        {/* Info Card */}
+        <View style={themedStyles.infoCard}>
+          <Text style={themedStyles.frameworkName}>{fw.name}</Text>
+          <Text style={themedStyles.companyName}>by {fw.company}</Text>
+          <Text style={themedStyles.version}>Version {fw.version}</Text>
+          <Text style={themedStyles.description}>{fw.description}</Text>
         </View>
 
-        <View style={styles.quickStats}>
-          <View style={[styles.statItem, themedStyles.statItem]}>
+        {/* Quick Stats */}
+        <View style={themedStyles.quickStats}>
+          <View style={themedStyles.statItem}>
             <Ionicons name="code-slash" size={24} color={colors.primary} />
-            <Text style={[styles.statLabel, themedStyles.statLabel]}>Language</Text>
-            <Text style={[styles.statValue, themedStyles.statValue]}>{framework.development.language}</Text>
+            <Text style={themedStyles.statLabel}>Language</Text>
+            <Text style={themedStyles.statValue}>{fw.development.language}</Text>
           </View>
-          <View style={[styles.statItem, themedStyles.statItem]}>
+          <View style={themedStyles.statItem}>
             <Ionicons name="trending-up" size={24} color={colors.primary} />
-            <Text style={[styles.statLabel, themedStyles.statLabel]}>Learning Curve</Text>
-            <Text style={[styles.statValue, themedStyles.statValue]}>{framework.development.learning}</Text>
+            <Text style={themedStyles.statLabel}>Learning Curve</Text>
+            <Text style={themedStyles.statValue}>{fw.development.learning}</Text>
           </View>
-          <View style={[styles.statItem, themedStyles.statItem]}>
+          <View style={themedStyles.statItem}>
             <Ionicons name="flash" size={24} color={colors.primary} />
-            <Text style={[styles.statLabel, themedStyles.statLabel]}>Hot Reload</Text>
-            <Text style={[styles.statValue, themedStyles.statValue]}>{framework.development.hot ? 'Yes' : 'No'}</Text>
+            <Text style={themedStyles.statLabel}>Hot Reload</Text>
+            <Text style={themedStyles.statValue}>{fw.development.hot ? 'Yes' : 'No'}</Text>
           </View>
         </View>
       </View>
     );
   };
 
-const renderAccessibilitySection = () => {
-  const framework = frameworkData[selectedFramework];
+  /*
+   * 7B) Accessibility Section
+   */
+  const renderAccessibilitySection = () => {
+    const fw = frameworkData[selectedFramework];
+    const sr = fw.accessibility.screenReaders;
+    const sem = fw.accessibility.semantics;
+    const focus = fw.accessibility.focusManagement;
 
-  // Safely access nested properties
-  const screenReaders = framework?.accessibility?.screenReaders || {};
-  const semantics = framework?.accessibility?.semantics || {};
-  const focusManagement = framework?.accessibility?.focusManagement || {};
-
-  return (
-    <View style={styles.section}>
-      {/* Screen Reader Support Card */}
-      <View style={[styles.accessibilityCard, themedStyles.accessibilityCard]}>
-        <Text style={[styles.cardTitle, themedStyles.cardTitle]}>
-          Screen Reader Support
-        </Text>
-        <View style={styles.platformSupport}>
-          <View style={styles.platformItem}>
-            <Ionicons
-              name="logo-apple"
-              size={24}
-              color={isDarkMode ? colors.text : '#000'}
-              accessibilityElementsHidden={true}
-            />
-            <Text style={[styles.platformText, themedStyles.platformText]}>
-              {screenReaders.ios || 'Not specified'}
-            </Text>
-          </View>
-          <View style={styles.platformItem}>
-            <Ionicons
-              name="logo-android"
-              size={24}
-              color={isDarkMode ? colors.text : '#3DDC84'}
-              accessibilityElementsHidden={true}
-            />
-            <Text style={[styles.platformText, themedStyles.platformText]}>
-              {screenReaders.android || 'Not specified'}
-            </Text>
-          </View>
-        </View>
-        {renderRatingBar(screenReaders.rating, 'Screen Reader Support')}
-      </View>
-
-      {/* Semantic Support Card */}
-      <View style={[styles.accessibilityCard, themedStyles.accessibilityCard]}>
-        <Text style={[styles.cardTitle, themedStyles.cardTitle]}>
-          Semantic Support
-        </Text>
-        <Text style={[styles.supportText, themedStyles.supportText]}>
-          {semantics.support || 'No semantic support information available'}
-        </Text>
-        <View style={styles.featureList}>
-          {(semantics.features || []).map((feature, index) => (
-            <View
-              key={index}
-              style={styles.featureItem}
-              accessibilityRole="text"
-            >
+    return (
+      <View style={themedStyles.section}>
+        {/* Screen Reader Support */}
+        <View style={themedStyles.accessibilityCard}>
+          <Text style={themedStyles.cardTitle}>Screen Reader Support</Text>
+          <View style={styles.platformSupport}>
+            <View style={styles.platformItem}>
               <Ionicons
-                name="checkmark-circle"
-                size={20}
-                color="#28A745"
-                accessibilityElementsHidden={true}
+                name="logo-apple"
+                size={24}
+                color={isDarkMode ? colors.text : '#000'}
+                accessibilityElementsHidden
               />
-              <Text style={[styles.featureText, themedStyles.featureText]}>
-                {feature}
-              </Text>
+              <Text style={themedStyles.platformText}>{sr.ios}</Text>
             </View>
-          ))}
-        </View>
-        {renderRatingBar(semantics.rating, 'Semantic Support')}
-      </View>
-
-      {/* Focus Management Card */}
-      <View style={[styles.accessibilityCard, themedStyles.accessibilityCard]}>
-        <Text style={[styles.cardTitle, themedStyles.cardTitle]}>
-          Focus Management
-        </Text>
-        <Text style={[styles.supportText, themedStyles.supportText]}>
-          {focusManagement.support || 'No focus management information available'}
-        </Text>
-        <View style={styles.featureList}>
-          {(focusManagement.features || []).map((feature, index) => (
-            <View
-              key={index}
-              style={styles.featureItem}
-              accessibilityRole="text"
-            >
+            <View style={styles.platformItem}>
               <Ionicons
-                name="checkmark-circle"
-                size={20}
-                color="#28A745"
-                accessibilityElementsHidden={true}
+                name="logo-android"
+                size={24}
+                color={isDarkMode ? colors.text : '#3DDC84'}
+                accessibilityElementsHidden
               />
-              <Text style={[styles.featureText, themedStyles.featureText]}>
-                {feature}
-              </Text>
+              <Text style={themedStyles.platformText}>{sr.android}</Text>
             </View>
-          ))}
+          </View>
+          {renderRatingBar(sr.rating, 'Screen Reader Support')}
         </View>
-        {renderRatingBar(focusManagement.rating, 'Focus Management')}
-      </View>
-    </View>
-  );
-};
 
-const renderPerformanceSection = () => {
-  const framework = frameworkData[selectedFramework];
+        {/* Semantic Support */}
+        <View style={themedStyles.accessibilityCard}>
+          <Text style={themedStyles.cardTitle}>Semantic Support</Text>
+          <Text style={themedStyles.platformText}>{sem.support}</Text>
+          <View style={styles.featureList}>
+            {sem.features.map((feature, idx) => (
+              <View key={idx} style={styles.featureItem} accessibilityRole="text">
+                <Ionicons
+                  name="checkmark-circle"
+                  size={20}
+                  color="#28A745"
+                  accessibilityElementsHidden
+                />
+                <Text style={themedStyles.featureText}>{feature}</Text>
+              </View>
+            ))}
+          </View>
+          {renderRatingBar(sem.rating, 'Semantic Support')}
+        </View>
+
+        {/* Focus Management */}
+        <View style={themedStyles.accessibilityCard}>
+          <Text style={themedStyles.cardTitle}>Focus Management</Text>
+          <Text style={themedStyles.platformText}>{focus.support}</Text>
+          <View style={styles.featureList}>
+            {focus.features.map((feature, idx) => (
+              <View key={idx} style={styles.featureItem} accessibilityRole="text">
+                <Ionicons
+                  name="checkmark-circle"
+                  size={20}
+                  color="#28A745"
+                  accessibilityElementsHidden
+                />
+                <Text style={themedStyles.featureText}>{feature}</Text>
+              </View>
+            ))}
+          </View>
+          {renderRatingBar(focus.rating, 'Focus Management')}
+        </View>
+      </View>
+    );
+  };
+
+  /*
+   * 7C) Performance Section
+   */
+  const renderPerformanceSection = () => {
+    const fw = frameworkData[selectedFramework];
+    return (
+      <View style={themedStyles.section}>
+        <View style={themedStyles.performanceCard}>
+          {/* Startup Time */}
+          <View style={styles.performanceItem}>
+            <Ionicons name="timer-outline" size={24} color={colors.primary} />
+            <View style={styles.performanceInfo}>
+              <Text style={styles.performanceLabel}>Startup Time</Text>
+              <Text style={styles.performanceValue}>{fw.performance.startupTime}</Text>
+            </View>
+          </View>
+          {/* Memory Usage */}
+          <View style={styles.performanceItem}>
+            <Ionicons name="hardware-chip-outline" size={24} color={colors.primary} />
+            <View style={styles.performanceInfo}>
+              <Text style={styles.performanceLabel}>Memory Usage</Text>
+              <Text style={styles.performanceValue}>{fw.performance.memoryUsage}</Text>
+            </View>
+          </View>
+          {/* Bundle Size */}
+          <View style={styles.performanceItem}>
+            <Ionicons name="archive-outline" size={24} color={colors.primary} />
+            <View style={styles.performanceInfo}>
+              <Text style={styles.performanceLabel}>Bundle Size</Text>
+              <Text style={styles.performanceValue}>{fw.performance.bundleSize}</Text>
+            </View>
+          </View>
+        </View>
+
+        {/* Overall Performance Rating */}
+        <View style={themedStyles.performanceRating}>
+          <Text style={themedStyles.ratingLabel}>Overall Performance Rating</Text>
+          {renderRatingBar(fw.performance.rating)}
+        </View>
+      </View>
+    );
+  };
+
+  /*
+   * 7D) Development Section
+   */
+  const renderDevelopmentSection = () => {
+    const fw = frameworkData[selectedFramework];
+    return (
+      <View style={themedStyles.section}>
+        <View style={themedStyles.developmentCard}>
+          <Text style={themedStyles.cardTitle}>Development Tools</Text>
+          <View style={styles.toolList}>
+            <View style={styles.toolItem}>
+              <Ionicons name="construct-outline" size={24} color={colors.primary} />
+              <View style={styles.toolInfo}>
+                <Text style={styles.toolLabel}>Testing Framework</Text>
+                <Text style={styles.toolValue}>{fw.development.testing}</Text>
+              </View>
+            </View>
+            <View style={styles.toolItem}>
+              <Ionicons name="bug-outline" size={24} color={colors.primary} />
+              <View style={styles.toolInfo}>
+                <Text style={styles.toolLabel}>Debugging Tools</Text>
+                <Text style={styles.toolValue}>{fw.development.debugging}</Text>
+              </View>
+            </View>
+          </View>
+        </View>
+      </View>
+    );
+  };
+
+  /*
+   * 8) MAIN CONTENT SWITCH
+   */
+  const renderContent = () => {
+    switch (selectedCategory) {
+      case 'overview':
+        return renderOverviewSection();
+      case 'accessibility':
+        return renderAccessibilitySection();
+      case 'performance':
+        return renderPerformanceSection();
+      case 'development':
+        return renderDevelopmentSection();
+      default:
+        return renderOverviewSection();
+    }
+  };
+
   return (
-    <View style={styles.section}>
-      <View style={[styles.performanceCard, themedStyles.performanceCard]}>
-        <View style={styles.performanceItem}>
-          <Ionicons name="timer-outline" size={24} color={colors.primary} />
-          <View style={styles.performanceInfo}>
-            <Text style={[styles.performanceLabel, themedStyles.performanceLabel]}>Startup Time</Text>
-            <Text style={[styles.performanceValue, themedStyles.performanceValue]}>{framework.performance.startupTime}</Text>
-          </View>
+    <LinearGradient colors={gradientColors} style={themedStyles.container}>
+      <ScrollView
+        contentContainerStyle={{ paddingBottom: 24 }}
+        accessibilityRole="scrollview"
+        accessibilityLabel="Framework Comparison Screen"
+      >
+        {/* HERO CARD */}
+        <View style={themedStyles.heroCard}>
+          <Text style={themedStyles.heroTitle} accessibilityRole="header">
+            Framework Comparison
+          </Text>
+          <Text style={themedStyles.heroSubtitle}>
+            Compare key features and capabilities of popular mobile development frameworks
+          </Text>
         </View>
-        <View style={styles.performanceItem}>
-          <Ionicons name="hardware-chip-outline" size={24} color={colors.primary} />
-          <View style={styles.performanceInfo}>
-            <Text style={[styles.performanceLabel, themedStyles.performanceLabel]}>Memory Usage</Text>
-            <Text style={[styles.performanceValue, themedStyles.performanceValue]}>{framework.performance.memoryUsage}</Text>
-          </View>
+
+        {/* Framework Selection (React Native, Flutter, Ionic) */}
+        {renderFrameworkSelection()}
+
+        {/* Category Tabs (Overview, Accessibility, Performance, Development) */}
+        <View style={themedStyles.categoryTabsContainer}>
+          {renderCategoryTabs()}
         </View>
-        <View style={styles.performanceItem}>
-          <Ionicons name="archive-outline" size={24} color={colors.primary} />
-          <View style={styles.performanceInfo}>
-            <Text style={[styles.performanceLabel, themedStyles.performanceLabel]}>Bundle Size</Text>
-            <Text style={[styles.performanceValue, themedStyles.performanceValue]}>{framework.performance.bundleSize}</Text>
-          </View>
-        </View>
-      </View>
-      <View style={[styles.performanceRating, themedStyles.performanceRating]}>
-        <Text style={[styles.ratingLabel, themedStyles.ratingLabel]}>Overall Performance Rating</Text>
-        {renderRatingBar(framework.performance.rating)}
-      </View>
-    </View>
+
+        {/* Main Content based on selectedCategory */}
+        {renderContent()}
+      </ScrollView>
+    </LinearGradient>
   );
-};
+}
 
-const renderDevelopmentSection = () => {
-  const framework = frameworkData[selectedFramework];
-  return (
-    <View style={styles.section}>
-      <View style={[styles.developmentCard, themedStyles.developmentCard]}>
-        <Text style={[styles.cardTitle, themedStyles.cardTitle]}>Development Tools</Text>
-        <View style={styles.toolList}>
-          <View style={styles.toolItem}>
-            <Ionicons name="construct-outline" size={24} color={colors.primary} />
-            <View style={styles.toolInfo}>
-              <Text style={[styles.toolLabel, themedStyles.toolLabel]}>Testing Framework</Text>
-              <Text style={[styles.toolValue, themedStyles.toolValue]}>{framework.development.testing}</Text>
-            </View>
-          </View>
-          <View style={styles.toolItem}>
-            <Ionicons name="bug-outline" size={24} color={colors.primary} />
-            <View style={styles.toolInfo}>
-              <Text style={[styles.toolLabel, themedStyles.toolLabel]}>Debugging Tools</Text>
-              <Text style={[styles.toolValue, themedStyles.toolValue]}>{framework.development.debugging}</Text>
-            </View>
-          </View>
-        </View>
-      </View>
-    </View>
-  );
-};
-
-const renderContent = () => {
-  switch (selectedCategory) {
-    case 'overview':
-      return renderOverviewSection();
-    case 'accessibility':
-      return renderAccessibilitySection();
-    case 'performance':
-      return renderPerformanceSection();
-    case 'development':
-      return renderDevelopmentSection();
-    default:
-      return renderOverviewSection();
-  }
-};
-
-return (
-  <ScrollView style={[styles.container, themedStyles.container]}>
-    <View style={[styles.header, themedStyles.header]}>
-      <Text style={[styles.headerTitle, themedStyles.headerTitle]}>Framework Comparison</Text>
-      <Text style={[styles.headerDescription, themedStyles.headerDescription]}>
-        Compare key features and capabilities of popular mobile development frameworks
-      </Text>
-    </View>
-
-    {renderFrameworkSelection()}
-    {renderCategoryTabs()}
-    {renderContent()}
-  </ScrollView>
-);
-};
-
+/* --------------------------------------------
+   9) BASE STYLES
+-------------------------------------------- */
 const styles = StyleSheet.create({
+  /* Container fallback */
   container: {
     flex: 1,
-    backgroundColor: '#f8f9fa',
-    width: '100%',
   },
-  header: {
-    padding: 20,
-    backgroundColor: '#fff',
-    borderBottomWidth: 1,
-    borderBottomColor: '#eee',
-  },
-  headerTitle: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#1c1c1e',
-    marginBottom: 8,
-  },
-  headerDescription: {
-    fontSize: 16,
-    color: '#666',
-    lineHeight: 24,
-  },
-  frameworkSelection: {
-    flexDirection: 'row',
-    padding: 16,
-    gap: 12,
-  },
-  frameworkButton: {
-    flex: 1,
-    paddingVertical: 12,
-    paddingHorizontal: 16,
-    backgroundColor: '#fff',
-    borderRadius: 12,
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderWidth: 1,
-    borderColor: '#eee',
-  },
-  frameworkButtonActive: {
-    backgroundColor: '#007AFF',
-    borderColor: '#007AFF',
-  },
-  frameworkButtonText: {
-    fontSize: 15,
-    fontWeight: '600',
-    color: '#1c1c1e',
-  },
-  frameworkButtonTextActive: {
-    color: '#fff',
-  },
-  categoryTabs: {
-    flexDirection: 'row',
-    marginBottom: 16,
-    maxWidth: '100%',
-  },
-  categoryTab: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingVertical: 8,
-    paddingHorizontal: 12,
-    marginHorizontal: 4,
-    borderRadius: 20,
-    minWidth: 80,
-    gap: 4,
-  },
-  performanceSection: {
-    flex: 1,
-    paddingHorizontal: 16,
-  },
-  categoryTabActive: {
-    backgroundColor: '#E8F1FF',
-    borderColor: '#007AFF',
-  },
-  categoryTabText: {
-    fontSize: 14,
-    fontWeight: '500',
-    color: '#666',
-    flexShrink: 1,
-  },
-  categoryTabTextActive: {
-    color: '#007AFF',
-  },
-  section: {
-    padding: 16,
-    gap: 16,
-  },
-  infoCard: {
-    backgroundColor: '#fff',
-    borderRadius: 16,
-    padding: 20,
-    marginBottom: 16,
-  },
-  frameworkName: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#1c1c1e',
-    marginBottom: 4,
-  },
-  companyName: {
-    fontSize: 16,
-    color: '#666',
-    marginBottom: 8,
-  },
-  version: {
-    fontSize: 14,
-    color: '#007AFF',
-    fontWeight: '500',
-    marginBottom: 12,
-  },
-  description: {
-    fontSize: 16,
-    color: '#444',
-    lineHeight: 24,
-  },
-  quickStats: {
-    flexDirection: 'row',
-    gap: 12,
-  },
-  statItem: {
-    flex: 1,
-    backgroundColor: '#fff',
-    borderRadius: 12,
-    padding: 16,
-    alignItems: 'center',
-  },
-  statLabel: {
-    fontSize: 14,
-    color: '#666',
-    marginTop: 8,
-    marginBottom: 4,
-  },
-  statValue: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: '#1c1c1e',
-  },
-  accessibilityCard: {
-    backgroundColor: '#fff',
-    borderRadius: 16,
-    padding: 20,
-    marginBottom: 16,
-  },
-  cardTitle: {
-    fontSize: 18,
-    fontWeight: '600',
-    color: '#1c1c1e',
-    marginBottom: 12,
-  },
+  /* Hero area fallback is replaced by a card in themedStyles */
+  /* ... */
   platformSupport: {
     marginBottom: 16,
     gap: 12,
@@ -864,58 +974,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 12,
   },
-  platformText: {
-    fontSize: 14,
-    color: '#444',
-    flex: 1,
-  },
-  ratingContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 12,
-  },
-  ratingBar: {
-    flex: 1,
-    height: 8,
-    backgroundColor: '#f0f0f0',
-    borderRadius: 4,
-    overflow: 'hidden',
-  },
-  ratingFilled: {
-    height: '100%',
-    backgroundColor: '#007AFF',
-  },
-  ratingText: {
-    fontSize: 14,
-    fontWeight: '600',
-    color: '#007AFF',
-    minWidth: 32,
-    textAlign: 'right',
-  },
-  supportText: {
-    fontSize: 14,
-    color: '#666',
-    marginBottom: 16,
-    lineHeight: 20,
-  },
   featureList: {
-    marginBottom: 16,
-    gap: 8,
+    marginTop: 12,
   },
   featureItem: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 8,
-  },
-  featureText: {
-    fontSize: 14,
-    color: '#444',
-  },
-  performanceCard: {
-    backgroundColor: '#fff',
-    borderRadius: 16,
-    padding: 20,
-    marginBottom: 16,
   },
   performanceItem: {
     flexDirection: 'row',
@@ -936,24 +1001,9 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: '#1c1c1e',
   },
-  performanceRating: {
-    backgroundColor: '#fff',
-    borderRadius: 16,
-    padding: 20,
-  },
-  ratingLabel: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: '#1c1c1e',
-    marginBottom: 12,
-  },
-  developmentCard: {
-    backgroundColor: '#fff',
-    borderRadius: 16,
-    padding: 20,
-  },
   toolList: {
     gap: 16,
+    marginTop: 12,
   },
   toolItem: {
     flexDirection: 'row',
@@ -973,5 +1023,3 @@ const styles = StyleSheet.create({
     color: '#1c1c1e',
   },
 });
-
-export default FrameworkComparisonScreen;

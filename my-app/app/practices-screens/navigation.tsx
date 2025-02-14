@@ -5,108 +5,117 @@ import {
   StyleSheet,
   ScrollView,
   TouchableOpacity,
-  TextInput
+  TextInput,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useTheme } from '../../context/ThemeContext';
+import { LinearGradient } from 'expo-linear-gradient';
 
-/**
- * Demonstrates logical focus flow and visual focus highlighting.
- * - Users can tap on "focusable" items, an input, and a button
- * - The currently focused element is highlighted visually
- * - Accessibility labels and roles help screen readers
- * - Respects theming (light/dark) for consistent UI
- */
-export default function FocusOrderScreen() {
+export default function LogicalFocusOrderScreen() {
   const { colors, textSizes, isDarkMode } = useTheme();
   const [focusedElement, setFocusedElement] = useState<string | null>(null);
 
-  /**
-   * Called when the user interacts with a focusable element.
-   * We store its name so we can visually highlight it.
-   */
   const handleElementPress = (elementName: string) => {
     setFocusedElement(elementName);
   };
 
-  /**
-   * Themed + local styling
-   */
+  // Define a gradient background for depth.
+  const gradientColors = isDarkMode
+    ? [colors.background, '#2c2c2e']
+    : ['#e2e2e2', colors.background];
+
+  // Define common shadow style for elevated cards.
+  const cardShadowStyle = {
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: isDarkMode ? 0.3 : 0.1,
+    shadowRadius: 6,
+    elevation: 3,
+  };
+
+  // Themed and local styles.
   const themedStyles = {
     container: {
-      backgroundColor: colors.background,
       flex: 1,
     },
-    header: {
+    // Hero card for the page title and description.
+    heroCard: {
       backgroundColor: colors.surface,
-      borderBottomColor: colors.border,
-      borderBottomWidth: 1,
-      padding: 16,
+      marginHorizontal: 16,
+      marginTop: 16,
+      paddingVertical: 24,
+      paddingHorizontal: 16,
+      borderRadius: 16,
+      ...cardShadowStyle,
+      borderWidth: isDarkMode ? 1 : 0,
+      borderColor: isDarkMode ? colors.border : 'transparent',
     },
-    title: {
+    heroTitle: {
       color: colors.text,
       fontSize: textSizes.xlarge,
       fontWeight: 'bold',
+      textAlign: 'center',
       marginBottom: 8,
     },
-    description: {
+    heroSubtitle: {
       color: colors.textSecondary,
       fontSize: textSizes.medium,
       lineHeight: 24,
+      textAlign: 'center',
     },
     section: {
       padding: 16,
       gap: 16,
     },
-    /* Cards */
-    card: {
+    // Instruction card for focus flow best practices.
+    instructionCard: {
       backgroundColor: colors.surface,
-      borderRadius: 12,
-      padding: 16,
-      // Stronger shadow for depth
-      shadowColor: isDarkMode ? '#000' : '#000',
-      shadowOffset: { width: 0, height: 3 },
-      shadowOpacity: 0.07,
-      shadowRadius: 6,
-      elevation: 3,
-      marginBottom: 20,
+      borderRadius: 16,
+      padding: 20,
+      ...cardShadowStyle,
+      borderWidth: isDarkMode ? 1 : 0,
+      borderColor: isDarkMode ? colors.border : 'transparent',
     },
-    cardHeader: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      gap: 12,
-      marginBottom: 8,
-    },
-    cardTitle: {
+    instructionTitle: {
       color: colors.text,
       fontSize: textSizes.large,
       fontWeight: '600',
+      marginBottom: 8,
     },
-    cardDescription: {
+    instructionText: {
       color: colors.textSecondary,
-      fontSize: textSizes.small + 1,
-      lineHeight: 20,
+      fontSize: textSizes.medium,
+      lineHeight: 22,
       marginBottom: 12,
     },
-    bulletItem: {
+    // Interactive demo card.
+    demoCard: {
+      backgroundColor: colors.surface,
+      borderRadius: 16,
+      padding: 20,
+      ...cardShadowStyle,
+      borderWidth: isDarkMode ? 1 : 0,
+      borderColor: isDarkMode ? colors.border : 'transparent',
+    },
+    demoTitle: {
+      color: colors.text,
+      fontSize: textSizes.large,
+      fontWeight: '600',
+      marginBottom: 12,
+    },
+    demoDescription: {
       color: colors.textSecondary,
-      fontSize: textSizes.small,
-      lineHeight: 20,
-      paddingLeft: 8,
+      fontSize: textSizes.medium,
+      marginBottom: 16,
     },
-    bulletList: {
-      gap: 8,
-    },
-
-    /* Focus simulation area */
+    // Focusable element styles: button, input, and generic focusable items.
     focusableElement: {
       padding: 16,
       borderRadius: 10,
       marginBottom: 10,
       borderWidth: 2,
-      // Conditionally highlight if "focusable" is pressed
-      borderColor: focusedElement === 'focusable' ? colors.primary : colors.border,
-      backgroundColor: focusedElement === 'focusable' ? colors.primaryLight : colors.surface,
+      borderColor: focusedElement === 'item' ? colors.primary : colors.border,
+      backgroundColor: focusedElement === 'item' ? colors.primaryLight : colors.surface,
     },
     focusInput: {
       padding: 16,
@@ -123,9 +132,8 @@ export default function FocusOrderScreen() {
       borderRadius: 8,
       marginBottom: 10,
       alignItems: 'center',
-      // Extra highlight if "button" is pressed
-      borderColor: focusedElement === 'button' ? colors.primaryLight : colors.primary,
       borderWidth: focusedElement === 'button' ? 2 : 0,
+      borderColor: focusedElement === 'button' ? colors.primaryLight : colors.primary,
     },
     focusButtonText: {
       color: colors.surface,
@@ -135,152 +143,90 @@ export default function FocusOrderScreen() {
   };
 
   return (
-    <ScrollView
-      style={themedStyles.container}
-      accessibilityRole="scrollView"
-      contentContainerStyle={{ paddingBottom: 24 }}
-    >
-      {/* HEADER */}
-      <View style={themedStyles.header}>
-        <Text style={themedStyles.title} accessibilityRole="header">
-          Logical Focus Order
-        </Text>
-        <Text style={themedStyles.description}>
-          Learn how to manage focus navigation and improve accessibility for mobile users.
-        </Text>
-      </View>
-
-      <View style={themedStyles.section}>
-        {/* FOCUS FLOW CARD */}
-        <View style={themedStyles.card}>
-          <View style={themedStyles.cardHeader}>
-            <Ionicons name="git-branch-outline" size={24} color={colors.primary} />
-            <Text style={themedStyles.cardTitle}>Focus Flow</Text>
-          </View>
-          <Text style={themedStyles.cardDescription}>
-            Managing focus and accessibility in mobile navigation.
+    <LinearGradient colors={gradientColors} style={themedStyles.container}>
+      <ScrollView
+        contentContainerStyle={{ paddingBottom: 24 }}
+        accessibilityRole="scrollview"
+        accessibilityLabel="Logical Focus Order Screen"
+      >
+        {/* HERO CARD */}
+        <View style={themedStyles.heroCard}>
+          <Text style={themedStyles.heroTitle} accessibilityRole="header">
+            Logical Focus Order
           </Text>
-          <View style={themedStyles.bulletList}>
-            <Text style={themedStyles.bulletItem}>• Clear touch targets</Text>
-            <Text style={themedStyles.bulletItem}>• Accessible labels for screen readers</Text>
-            <Text style={themedStyles.bulletItem}>• Visual feedback on interaction</Text>
-          </View>
+          <Text style={themedStyles.heroSubtitle}>
+            Master the art of focus navigation to improve user experience and screen reader interaction.
+          </Text>
         </View>
 
-        {/* INTERACTIVE DEMO CARD */}
-        <View style={themedStyles.card}>
-          <View style={themedStyles.cardHeader}>
-            <Ionicons name="scan-outline" size={24} color={colors.primary} />
-            <Text style={themedStyles.cardTitle}>Try Focus Simulation</Text>
+        {/* INSTRUCTION CARD */}
+        <View style={themedStyles.section}>
+          <View style={themedStyles.instructionCard}>
+            <Text style={themedStyles.instructionTitle}>Focus Flow Best Practices</Text>
+            <Text style={themedStyles.instructionText}>
+              Ensure that focus follows a logical order that matches your visual layout. Avoid keyboard traps, use clear labels, and provide visible focus indicators.
+            </Text>
           </View>
-          <Text style={themedStyles.cardDescription}>
-            Tap the interactive elements below to see how focus highlighting works.
-          </Text>
 
-          {/* Focusable Items */}
-          <TouchableOpacity
-            style={themedStyles.focusableElement}
-            onPress={() => handleElementPress('focusable')}
-            accessible
-            accessibilityRole="button"
-            accessibilityLabel="Focusable Item 1"
-            accessibilityHint="Double tap to focus this item"
-          >
-            <Text style={{ color: colors.text }}>Focusable Item 1</Text>
-          </TouchableOpacity>
+          {/* DEMO CARD */}
+          <View style={themedStyles.demoCard}>
+            <Text style={themedStyles.demoTitle}>Interactive Focus Demo</Text>
+            <Text style={themedStyles.demoDescription}>
+              Tap the items below to see how focus is highlighted.
+            </Text>
 
-          <TouchableOpacity
-            style={themedStyles.focusableElement}
-            onPress={() => handleElementPress('focusable')}
-            accessible
-            accessibilityRole="button"
-            accessibilityLabel="Focusable Item 2"
-            accessibilityHint="Double tap to focus this item"
-          >
-            <Text style={{ color: colors.text }}>Focusable Item 2</Text>
-          </TouchableOpacity>
+            {/* Focusable Items */}
+            <TouchableOpacity
+              style={themedStyles.focusableElement}
+              onPress={() => handleElementPress('item')}
+              accessibilityRole="button"
+              accessibilityLabel="Focusable Item 1"
+              accessibilityHint="Double tap to focus this item"
+            >
+              <Text style={{ color: colors.text }}>Focusable Item 1</Text>
+            </TouchableOpacity>
 
-          {/* Focusable TextInput */}
-          <TextInput
-            style={themedStyles.focusInput}
-            onFocus={() => handleElementPress('input')}
-            onBlur={() => setFocusedElement(null)}
-            placeholder="Tap to focus me"
-            placeholderTextColor={colors.textSecondary}
-            accessible
-            accessibilityLabel="Input Field"
-            accessibilityHint="Double tap to enter text"
-          />
+            <TouchableOpacity
+              style={themedStyles.focusableElement}
+              onPress={() => handleElementPress('item')}
+              accessibilityRole="button"
+              accessibilityLabel="Focusable Item 2"
+              accessibilityHint="Double tap to focus this item"
+            >
+              <Text style={{ color: colors.text }}>Focusable Item 2</Text>
+            </TouchableOpacity>
 
-          {/* Focusable Button */}
-          <TouchableOpacity
-            style={themedStyles.focusButton}
-            onPress={() => handleElementPress('button')}
-            accessible
-            accessibilityRole="button"
-            accessibilityLabel="Focusable Button"
-            accessibilityHint="Double tap to focus and activate button"
-          >
-            <Text style={themedStyles.focusButtonText}>Focusable Button</Text>
-          </TouchableOpacity>
+            {/* TextInput */}
+            <TextInput
+              style={themedStyles.focusInput}
+              onFocus={() => handleElementPress('input')}
+              onBlur={() => setFocusedElement(null)}
+              placeholder="Tap to focus the input"
+              placeholderTextColor={colors.textSecondary}
+              accessible
+              accessibilityLabel="Input Field"
+              accessibilityHint="Double tap to enter text"
+            />
+
+            {/* Focusable Button */}
+            <TouchableOpacity
+              style={themedStyles.focusButton}
+              onPress={() => handleElementPress('button')}
+              accessibilityRole="button"
+              accessibilityLabel="Focusable Button"
+              accessibilityHint="Double tap to focus and activate the button"
+            >
+              <Text style={themedStyles.focusButtonText}>Focusable Button</Text>
+            </TouchableOpacity>
+          </View>
         </View>
-      </View>
-    </ScrollView>
+      </ScrollView>
+    </LinearGradient>
   );
 }
 
-
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#f8f9fa',
-  },
-  header: {
-    padding: 16,
-    borderBottomWidth: 1,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 8,
-  },
-  description: {
-    fontSize: 16,
-    lineHeight: 24,
-  },
-  section: {
-    padding: 16,
-  },
-  card: {
-    backgroundColor: '#fff',
-    borderRadius: 12,
-    padding: 16,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.05,
-    shadowRadius: 4,
-    elevation: 2,
-  },
-  cardHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 12,
-    marginBottom: 8,
-  },
-  cardTitle: {
-    fontSize: 18,
-    fontWeight: '600',
-  },
-  cardDescription: {
-    fontSize: 14,
-    marginBottom: 12,
-  },
-  bulletList: {
-    gap: 8,
-  },
-  bulletItem: {
-    fontSize: 14,
-    paddingLeft: 8,
-  },
+  // Fallback styles (if needed) can be defined here.
 });
 
+export default LogicalFocusOrderScreen;

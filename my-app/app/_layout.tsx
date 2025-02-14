@@ -8,7 +8,6 @@ import {
   TouchableOpacity,
   Platform,
   AccessibilityInfo,
-  Modal,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { ThemeProvider, useTheme } from '../context/ThemeContext';
@@ -20,24 +19,23 @@ function CustomDrawerContent(props) {
   const { colors, textSizes } = useTheme();
   const router = useRouter();
 
-  // Add the new routes so they appear in the drawer
+  // List of main routes, replacing "achievements" with "accessibility-instruction"
   const mainRoutes = [
     'index',
     'components',
     'practices',
     'tools',
     'frameworks-comparison',
-    'achievements',
+    'accessibility-instruction', // Updated
     'settings',
   ];
 
-  // "Graphical Overhaul" styles
+  // Overhauled styles
   const dynamicStyles = StyleSheet.create({
     container: {
       flex: 1,
       backgroundColor: colors.background,
     },
-    /* Header with background color, icon, etc. */
     header: {
       backgroundColor: colors.primary,
       paddingVertical: 40,
@@ -47,7 +45,7 @@ function CustomDrawerContent(props) {
       marginBottom: 16,
       borderBottomLeftRadius: 24,
       borderBottomRightRadius: 24,
-      // Hides this entire block from screen readers
+      // Hidden from screen readers
       importantForAccessibility: 'no',
     },
     appIcon: {
@@ -55,7 +53,7 @@ function CustomDrawerContent(props) {
     },
     appName: {
       fontSize: textSizes.large,
-      color: colors.surface, // so it's visible on the primary background
+      color: colors.surface,
       fontWeight: 'bold',
       marginBottom: 4,
     },
@@ -115,7 +113,7 @@ function CustomDrawerContent(props) {
       accessibilityLanguage="en"
       accessibilityLiveRegion="polite"
     >
-      {/* NEW: Header with app name + version, hidden from screen readers */}
+      {/* Header with app name + version, hidden from screen readers */}
       <View style={dynamicStyles.header}>
         <Ionicons
           name="rocket-outline"
@@ -205,15 +203,13 @@ function DrawerNavigator() {
     // Remove headerTitle entirely
     headerTitle: () => null,
     headerLeft: () => {
-      // If user is in a "main" route, show menu button
-      // Otherwise show "back" button
       const isMainRoute = [
         'index',
         'components',
         'practices',
         'tools',
         'frameworks-comparison',
-        'achievements',
+        'accessibility-instruction', // Updated
         'settings',
       ].includes(route.name);
 
@@ -296,7 +292,7 @@ function DrawerNavigator() {
         }}
       />
 
-      {/* NEW: Framework Comparison & Achievements */}
+      {/* Updated: Framework Comparison & Accessibility Instruction */}
       <Drawer.Screen
         name="frameworks-comparison"
         options={{
@@ -307,11 +303,11 @@ function DrawerNavigator() {
         }}
       />
       <Drawer.Screen
-        name="achievements"
+        name="accessibility-instruction"
         options={{
-          drawerLabel: 'Achievements',
+          drawerLabel: 'Instruction & Community', // Updated
           drawerIcon: ({ size, color }) => (
-            <Ionicons name="trophy-outline" size={size} color={color} />
+            <Ionicons name="people-outline" size={size} color={color} />
           ),
         }}
       />

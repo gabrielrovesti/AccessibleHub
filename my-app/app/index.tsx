@@ -44,13 +44,13 @@ export default function HomeScreen() {
   const accessibilityMetrics = calculateAccessibilityScore();
 
   /**
-   * 1) Use an inverted gradient:
-   *    - Light mode: darker background gradient
-   *    - Dark mode: lighter background gradient
+   * Use an inverted gradient for the background:
+   * - Light mode: slightly darker → background
+   * - Dark mode: background → #2c2c2e
    */
   const backgroundGradientColors = isDarkMode
-    ? [colors.background, '#2c2c2e']  // subtle gradient in dark mode
-    : ['#e2e2e2', colors.background]; // light mode → slightly darker to lighter
+    ? [colors.background, '#2c2c2e']
+    : ['#e2e2e2', colors.background];
 
   /* -----------------------------------------
      Themed styles
@@ -59,10 +59,6 @@ export default function HomeScreen() {
     container: {
       flex: 1,
     },
-    /**
-     * 2) "Hero" area: place it inside a raised card
-     *    with bigger shadow and optional shape background
-     */
     heroCard: {
       backgroundColor: colors.surface,
       borderRadius: 20,
@@ -92,9 +88,6 @@ export default function HomeScreen() {
       textAlign: 'center',
       marginBottom: 20,
     },
-    /**
-     * 3) Stats area as smaller cards
-     */
     statsContainer: {
       flexDirection: 'row',
       justifyContent: 'space-between',
@@ -135,9 +128,6 @@ export default function HomeScreen() {
       height: 48,
       marginHorizontal: 16,
     },
-    /**
-     * 4) Quick Start Card
-     */
     quickStartCard: {
       backgroundColor: colors.surface,
       borderRadius: 16,
@@ -169,9 +159,6 @@ export default function HomeScreen() {
       color: colors.textSecondary,
       fontSize: textSizes.medium,
     },
-    /**
-     * 5) Main Content
-     */
     mainContent: {
       paddingHorizontal: 16,
       paddingTop: 20,
@@ -232,9 +219,6 @@ export default function HomeScreen() {
       fontSize: textSizes.small,
       fontWeight: '600',
     },
-    /**
-     * 6) Community Section
-     */
     communitySection: {
       backgroundColor: colors.surface,
       borderRadius: 16,
@@ -261,7 +245,8 @@ export default function HomeScreen() {
       lineHeight: 24,
       marginBottom: 20,
     },
-    achievementsButton: {
+    // Renamed to reflect new approach
+    communityButton: {
       backgroundColor: colors.primary,
       paddingVertical: 12,
       paddingHorizontal: 24,
@@ -270,7 +255,7 @@ export default function HomeScreen() {
       justifyContent: 'center',
       flexDirection: 'row',
     },
-    achievementsButtonText: {
+    communityButtonText: {
       color: colors.background,
       fontSize: textSizes.medium,
       fontWeight: 'bold',
@@ -279,16 +264,13 @@ export default function HomeScreen() {
   };
 
   return (
-    <LinearGradient
-      colors={backgroundGradientColors}
-      style={themedStyles.container}
-    >
+    <LinearGradient colors={backgroundGradientColors} style={themedStyles.container}>
       <ScrollView
         contentContainerStyle={{ paddingBottom: 24 }}
         accessibilityRole="scrollview"
         accessibilityLabel="AccessibleHub Home Screen"
       >
-        {/* HERO CARD */}
+        {/* HERO SECTION */}
         <View style={themedStyles.heroCard}>
           <Text style={themedStyles.heroTitle} accessibilityRole="header">
             The ultimate accessibility-driven toolkit for developers
@@ -300,35 +282,23 @@ export default function HomeScreen() {
           {/* STATS */}
           <View style={themedStyles.statsContainer}>
             <View style={themedStyles.statCard} accessibilityRole="text">
-              <Text style={themedStyles.statNumber}>
-                {accessibilityMetrics.componentCount}
-              </Text>
+              <Text style={themedStyles.statNumber}>{accessibilityMetrics.componentCount}</Text>
               <Text style={themedStyles.statLabel}>Components</Text>
               <Text style={themedStyles.statDescription}>Ready to Use</Text>
             </View>
 
-            <View
-              style={themedStyles.statDivider}
-              importantForAccessibility="no"
-            />
+            <View style={themedStyles.statDivider} importantForAccessibility="no" />
 
             <View style={themedStyles.statCard} accessibilityRole="text">
-              <Text style={themedStyles.statNumber}>
-                {accessibilityMetrics.wcagCompliance}%
-              </Text>
+              <Text style={themedStyles.statNumber}>{accessibilityMetrics.wcagCompliance}%</Text>
               <Text style={themedStyles.statLabel}>WCAG 2.2</Text>
               <Text style={themedStyles.statDescription}>Level AA</Text>
             </View>
 
-            <View
-              style={themedStyles.statDivider}
-              importantForAccessibility="no"
-            />
+            <View style={themedStyles.statDivider} importantForAccessibility="no" />
 
             <View style={themedStyles.statCard} accessibilityRole="text">
-              <Text style={themedStyles.statNumber}>
-                {accessibilityMetrics.testingScore}%
-              </Text>
+              <Text style={themedStyles.statNumber}>{accessibilityMetrics.testingScore}%</Text>
               <Text style={themedStyles.statLabel}>Screen Reader</Text>
               <Text style={themedStyles.statDescription}>Test Coverage</Text>
             </View>
@@ -359,9 +329,7 @@ export default function HomeScreen() {
 
         {/* DEVELOPMENT RESOURCES */}
         <View style={themedStyles.mainContent}>
-          <Text style={themedStyles.sectionTitle}>
-            Development Resources
-          </Text>
+          <Text style={themedStyles.sectionTitle}>Development Resources</Text>
 
           {[
             {
@@ -405,19 +373,11 @@ export default function HomeScreen() {
                   accessibilityElementsHidden
                 />
               </View>
-              <Text style={themedStyles.featureTitle}>
-                {feature.title}
-              </Text>
-              <Text style={themedStyles.featureDescription}>
-                {feature.description}
-              </Text>
+              <Text style={themedStyles.featureTitle}>{feature.title}</Text>
+              <Text style={themedStyles.featureDescription}>{feature.description}</Text>
               <View style={themedStyles.tagContainer}>
                 {feature.tags.map((tag, tagIndex) => (
-                  <View
-                    key={tagIndex}
-                    style={themedStyles.tag}
-                    importantForAccessibility="no"
-                  >
+                  <View key={tagIndex} style={themedStyles.tag} importantForAccessibility="no">
                     <Text style={themedStyles.tagText}>{tag}</Text>
                   </View>
                 ))}
@@ -426,30 +386,31 @@ export default function HomeScreen() {
           ))}
         </View>
 
-        {/* COMMUNITY SECTION */}
+        {/* COMMUNITY / INSTRUCTION SECTION */}
         <View style={themedStyles.mainContent}>
           <View style={themedStyles.communitySection}>
             <Text style={themedStyles.communitySectionTitle}>
-              Developer Community
+              Accessibility Instruction & Community
             </Text>
             <Text style={themedStyles.communitySectionDescription}>
-              Join our accessibility community to connect with experts, discuss best practices, and level up your skills. Earn badges as you progress on your accessibility journey!
+              Dive deeper into accessibility with in-depth articles, success stories, and an engaged community. Share your insights, learn from experts, and grow your accessibility skills.
             </Text>
 
             <TouchableOpacity
-              style={themedStyles.achievementsButton}
-              onPress={() => router.push('/achievements')}
+              style={themedStyles.communityButton}
+              onPress={() => router.push('/accessibility-instruction')}
               accessibilityRole="button"
-              accessibilityLabel="View accessibility achievements"
-              accessibilityHint="Navigate to the achievements screen to track your progress"
+              accessibilityLabel="Open accessibility instruction and community"
+              accessibilityHint="Navigate to instructional modules and community resources"
             >
-              <Text style={themedStyles.achievementsButtonText}>
-                View Achievements
+              <Text style={themedStyles.communityButtonText}>
+                Open Instruction
               </Text>
               <Ionicons
-                name="trophy-outline"
+                name="people-outline"
                 size={20}
                 color={colors.background}
+                accessibilityElementsHidden
               />
             </TouchableOpacity>
           </View>
@@ -458,3 +419,9 @@ export default function HomeScreen() {
     </LinearGradient>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+});

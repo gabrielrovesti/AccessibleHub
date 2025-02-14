@@ -1,7 +1,17 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Linking, AccessibilityInfo, Platform } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  TouchableOpacity,
+  Linking,
+  AccessibilityInfo,
+  Platform
+} from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useTheme } from '../context/ThemeContext';
+import { LinearGradient } from 'expo-linear-gradient';
 
 const TOOL_LINKS = {
   'accessibility-inspector': 'https://docs.expo.dev/debugging/tools/#accessibility-inspector',
@@ -14,24 +24,24 @@ const TOOL_LINKS = {
 export default function TestingToolsScreen() {
   const { colors, textSizes, isDarkMode } = useTheme();
 
-  const handleToolPress = async (toolId: string, toolName: string) => {
-    const url = TOOL_LINKS[toolId];
-    if (url && await Linking.canOpenURL(url)) {
-      try {
-        await Linking.openURL(url);
-        AccessibilityInfo.announceForAccessibility(`Opening documentation for ${toolName}`);
-      } catch (error) {
-        AccessibilityInfo.announceForAccessibility('Failed to open documentation');
-      }
-    }
-  };
+  /*
+   * 1) Gradient background
+   *    Light mode: slightly darker gray → background
+   *    Dark mode: background → #2c2c2e
+   */
+  const gradientColors = isDarkMode
+    ? [colors.background, '#2c2c2e']
+    : ['#e2e2e2', colors.background];
 
+  /*
+   * 2) Tools data
+   */
   const tools = [
     {
       id: 'talkback',
       section: 'Screen Readers',
       title: 'TalkBack (Android)',
-      description: 'Android\'s built-in screen reader. Essential gestures:',
+      description: "Android's built-in screen reader. Essential gestures:",
       icon: 'phone-portrait-outline',
       iconBg: '#E8F1FF',
       iconColor: '#0055CC',
@@ -47,7 +57,7 @@ export default function TestingToolsScreen() {
       id: 'voiceover',
       section: 'Screen Readers',
       title: 'VoiceOver (iOS)',
-      description: 'iOS\'s integrated screen reader. Key gestures:',
+      description: "iOS's integrated screen reader. Key gestures:",
       icon: 'logo-apple',
       iconBg: '#F0F0F0',
       iconColor: '#333',
@@ -107,83 +117,226 @@ export default function TestingToolsScreen() {
     }
   ];
 
-  const renderToolCard = (tool) => {
+  /*
+   * 3) Attempt to open external link
+   */
+  const handleToolPress = async (toolId: string, toolName: string) => {
+    const url = TOOL_LINKS[toolId];
+    if (url && (await Linking.canOpenURL(url))) {
+      try {
+        await Linking.openURL(url);
+        AccessibilityInfo.announceForAccessibility(`Opening documentation for ${toolName}`);
+      } catch (error) {
+        AccessibilityInfo.announceForAccessibility('Failed to open documentation');
+      }
+    }
+  };
+
+  /*
+   * 4) Group tools by their "section"
+   */
+  const groupedTools = tools.reduce((acc, tool) => {
+    if (!acc[tool.section]) {
+      acc[tool.section] = [];
+    }
+    acc[tool.section].push(tool);
+    return acc;
+  }, {} as Record<string, typeof tools>);
+
+  /*
+   * 5) Themed + local styles
+   */
+  const themedStyles = {
+    container: {
+      flex: 1,
+    },
+    /* Hero card for the screen title/description */
+    heroCard: {
+      backgroundColor: colors.surface,
+      marginHorizontal: 16,
+      marginTop: 16,
+      paddingVertical: 24,
+      paddingHorizontal: 16,
+      borderRadius: 16,
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 4 },
+      shadowOpacity: isDarkMode ? 0.3 : 0.15,
+      shadowRadius: 6,
+      elevation: 4,
+      borderWidth: isDarkMode ? 1 : 0,
+      borderColor: isDarkMode ? colors.border : 'transparent',
+    },
+    heroTitle: {
+      color: colors.text,
+      fontSize: textSizes.xlarge,
+      fontWeight: 'bold',
+      marginBottom: 8,
+    },
+    heroSubtitle: {
+      color: colors.textSecondary,
+      fontSize: textSizes.medium,
+      lineHeight: 24,
+    },
+    section: {
+      padding: 16,
+    },
+    sectionTitle: {
+      color: colors.text,
+      fontSize: textSizes.large,
+      fontWeight: '600',
+      marginBottom: 16,
+    },
+    /* Tools card */
+    toolCard: {
+      backgroundColor: colors.surface,
+      borderRadius: 16,
+      padding: 16,
+      marginBottom: 16,
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 3 },
+      shadowOpacity: isDarkMode ? 0.3 : 0.1,
+      shadowRadius: 4,
+      elevation: 2,
+      minHeight: 44,
+      borderWidth: isDarkMode ? 1 : 0,
+      borderColor: isDarkMode ? colors.border : 'transparent',
+    },
+    interactiveCard: {
+      ...Platform.select({
+        ios: {
+          shadowColor: '#000',
+          shadowOffset: { width: 0, height: 2 },
+          shadowOpacity: 0.1,
+          shadowRadius: 4,
+        },
+        android: {
+          elevation: 4,
+        },
+      }),
+    },
+    toolHeader: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginBottom: 12,
+    },
+    iconContainer: {
+      width: 44,
+      height: 44,
+      borderRadius: 12,
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginRight: 12,
+    },
+    titleContainer: {
+      flex: 1,
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: 8,
+    },
+    toolTitle: {
+      fontSize: textSizes.large,
+      fontWeight: '600',
+      flexShrink: 1,
+      color: colors.text,
+    },
+    badge: {
+      paddingHorizontal: 8,
+      paddingVertical: 4,
+      borderRadius: 12,
+      backgroundColor: isDarkMode ? colors.surface : '#E8F1FF',
+    },
+    badgeText: {
+      fontSize: textSizes.small,
+      fontWeight: '500',
+      color: isDarkMode ? colors.primary : '#0055CC',
+    },
+    linkIcon: {
+      marginLeft: 8,
+    },
+    toolDescription: {
+      fontSize: textSizes.small + 1,
+      lineHeight: 20,
+      marginBottom: 12,
+      color: colors.textSecondary,
+    },
+    featureList: {
+      gap: 8,
+    },
+    featureItem: {
+      fontSize: textSizes.small + 1,
+      lineHeight: 20,
+      paddingLeft: 8,
+      color: colors.textSecondary,
+    },
+  };
+
+  /*
+   * 6) Render a single tool card
+   */
+  const renderToolCard = (tool: any) => {
     const CardComponent = tool.link ? TouchableOpacity : View;
-    const cardProps = tool.link ? {
-      onPress: () => handleToolPress(tool.id, tool.title),
-      accessibilityRole: "button",
-      accessibilityLabel: `${tool.title}. ${tool.description}`,
-      accessibilityHint: "Double tap to open documentation",
-      style: [
-        styles.toolCard,
-        { backgroundColor: colors.surface },
-        tool.link && styles.interactiveCard
-      ]
-    } : {
-      accessibilityRole: "text",
-      style: [styles.toolCard, { backgroundColor: colors.surface }]
-    };
+    const cardProps = tool.link
+      ? {
+          onPress: () => handleToolPress(tool.id, tool.title),
+          accessibilityRole: 'button' as const,
+          accessibilityLabel: `${tool.title}. ${tool.description}`,
+          accessibilityHint: 'Double tap to open documentation',
+          style: [
+            themedStyles.toolCard,
+            tool.link && themedStyles.interactiveCard,
+          ],
+        }
+      : {
+          accessibilityRole: 'text' as const,
+          style: [themedStyles.toolCard],
+        };
 
     return (
       <CardComponent key={tool.id} {...cardProps}>
-        <View style={styles.toolHeader}>
+        {/* Header with icon + title + optional badge + link icon */}
+        <View style={themedStyles.toolHeader}>
           <View
-            style={[styles.iconContainer, { backgroundColor: tool.iconBg }]}
+            style={[
+              themedStyles.iconContainer,
+              { backgroundColor: tool.iconBg },
+            ]}
             importantForAccessibility="no"
           >
             <Ionicons
               name={tool.icon}
               size={24}
               color={tool.iconColor}
-              accessibilityElementsHidden={true}
+              accessibilityElementsHidden
             />
           </View>
-          <View style={styles.titleContainer}>
-            <Text style={[styles.toolTitle, { color: colors.text }]}>
-              {tool.title}
-            </Text>
+
+          <View style={themedStyles.titleContainer}>
+            <Text style={themedStyles.toolTitle}>{tool.title}</Text>
             {tool.badge && (
-              <View
-                style={[styles.badge, {
-                  backgroundColor: isDarkMode ? colors.surface : '#E8F1FF'
-                }]}
-                importantForAccessibility="no"
-              >
-                <Text
-                  style={[styles.badgeText, {
-                    color: isDarkMode ? colors.primary : '#0055CC'
-                  }]}
-                >
-                  {tool.badge}
-                </Text>
+              <View style={themedStyles.badge} importantForAccessibility="no">
+                <Text style={themedStyles.badgeText}>{tool.badge}</Text>
               </View>
             )}
           </View>
+
           {tool.link && (
             <Ionicons
               name="open-outline"
               size={20}
               color={colors.primary}
-              style={styles.linkIcon}
-              accessibilityElementsHidden={true}
+              style={themedStyles.linkIcon}
+              accessibilityElementsHidden
             />
           )}
         </View>
 
-        <Text
-          style={[styles.toolDescription, { color: colors.textSecondary }]}
-          accessibilityRole="text"
-        >
-          {tool.description}
-        </Text>
+        {/* Description */}
+        <Text style={themedStyles.toolDescription}>{tool.description}</Text>
 
-        <View style={styles.featureList}>
-          {tool.features.map((feature, index) => (
-            <Text
-              key={index}
-              style={[styles.featureItem, { color: colors.textSecondary }]}
-              accessibilityRole="text"
-            >
+        {/* Features */}
+        <View style={themedStyles.featureList}>
+          {tool.features.map((feature: string, index: number) => (
+            <Text key={index} style={themedStyles.featureItem}>
               • {feature}
             </Text>
           ))}
@@ -192,154 +345,46 @@ export default function TestingToolsScreen() {
     );
   };
 
-  const renderSection = (sectionTitle, sectionTools) => (
-    <View key={sectionTitle} style={styles.section}>
-      <Text
-        style={[styles.sectionTitle, { color: colors.text }]}
-        accessibilityRole="header"
-      >
+  /*
+   * 7) Render each section (e.g., "Screen Readers", "Development Tools")
+   */
+  const renderSection = (sectionTitle: string, sectionTools: any[]) => (
+    <View key={sectionTitle} style={themedStyles.section}>
+      <Text style={themedStyles.sectionTitle} accessibilityRole="header">
         {sectionTitle}
       </Text>
-      {sectionTools.map(tool => renderToolCard(tool))}
+      {sectionTools.map((tool) => renderToolCard(tool))}
     </View>
   );
 
-  const groupedTools = tools.reduce((acc, tool) => {
-    if (!acc[tool.section]) {
-      acc[tool.section] = [];
-    }
-    acc[tool.section].push(tool);
-    return acc;
-  }, {});
-
+  /*
+   * 8) Render screen
+   */
   return (
-    <ScrollView
-      style={[styles.container, { backgroundColor: colors.background }]}
-      accessibilityRole="scrollview"
-      accessibilityLabel="Testing Tools Screen"
-      contentInsetAdjustmentBehavior="automatic"
+    <LinearGradient
+      colors={gradientColors}
+      style={themedStyles.container}
     >
-      <View style={[styles.header, {
-        backgroundColor: colors.surface,
-        borderBottomColor: colors.border
-      }]}>
-        <Text
-          style={[styles.title, { color: colors.text }]}
-          accessibilityRole="header"
-        >
-          Testing Tools
-        </Text>
-        <Text
-          style={[styles.description, { color: colors.textSecondary }]}
-          accessibilityRole="text"
-        >
-          Essential tools for testing accessibility in your mobile applications
-        </Text>
-      </View>
+      <ScrollView
+        contentContainerStyle={{ paddingBottom: 24 }}
+        accessibilityRole="scrollview"
+        accessibilityLabel="Testing Tools Screen"
+      >
+        {/* HERO CARD */}
+        <View style={themedStyles.heroCard}>
+          <Text style={themedStyles.heroTitle} accessibilityRole="header">
+            Testing Tools
+          </Text>
+          <Text style={themedStyles.heroSubtitle}>
+            Essential tools for testing accessibility in your mobile applications
+          </Text>
+        </View>
 
-      {Object.entries(groupedTools).map(([section, sectionTools]) =>
-        renderSection(section, sectionTools)
-      )}
-    </ScrollView>
+        {/* Sections (Screen Readers, Development Tools, Testing Checklist, etc.) */}
+        {Object.entries(groupedTools).map(([section, sectionTools]) =>
+          renderSection(section, sectionTools)
+        )}
+      </ScrollView>
+    </LinearGradient>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  header: {
-    padding: 20,
-    borderBottomWidth: 1,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 8,
-  },
-  description: {
-    fontSize: 16,
-    lineHeight: 24,
-  },
-  section: {
-    padding: 16,
-  },
-  sectionTitle: {
-    fontSize: 20,
-    fontWeight: '600',
-    marginBottom: 16,
-  },
-  toolCard: {
-    borderRadius: 16,
-    padding: 16,
-    marginBottom: 16,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.05,
-    shadowRadius: 4,
-    elevation: 2,
-    minHeight: 44,
-  },
-  interactiveCard: {
-    ...Platform.select({
-      ios: {
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.1,
-        shadowRadius: 4,
-      },
-      android: {
-        elevation: 4,
-      },
-    }),
-  },
-  toolHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 12,
-  },
-  iconContainer: {
-    width: 44,
-    height: 44,
-    borderRadius: 12,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginRight: 12,
-  },
-  titleContainer: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
-  toolTitle: {
-    fontSize: 18,
-    fontWeight: '600',
-    flexShrink: 1,
-  },
-  badge: {
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderRadius: 12,
-  },
-  badgeText: {
-    fontSize: 12,
-    fontWeight: '500',
-  },
-  toolDescription: {
-    fontSize: 14,
-    lineHeight: 20,
-    marginBottom: 12,
-  },
-  featureList: {
-    gap: 8,
-  },
-  featureItem: {
-    fontSize: 14,
-    lineHeight: 20,
-    paddingLeft: 8,
-  },
-  linkIcon: {
-    marginLeft: 8,
-  }
-});

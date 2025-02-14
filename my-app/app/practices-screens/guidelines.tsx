@@ -2,106 +2,14 @@ import React from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useTheme } from '../../context/ThemeContext';
-
-const WCAGGuidelinesScreen = () => {
-  const { colors, textSizes } = useTheme();
-
-  const themedStyles = {
-    container: {
-      backgroundColor: colors.background,
-    },
-    header: {
-      backgroundColor: colors.surface,
-      borderBottomColor: colors.border,
-    },
-    headerTitle: {
-      color: colors.text,
-      fontSize: textSizes.xlarge,
-      fontWeight: 'bold',
-      marginBottom: 16,
-    },
-    headerSubtitle: {
-      color: colors.textSecondary,
-      fontSize: textSizes.large,
-      lineHeight: 28,
-    },
-    section: {
-      gap: 24,
-    },
-    guidelineCard: {
-      backgroundColor: colors.surface,
-      shadowColor: colors.shadow,
-      shadowOpacity: 0.05,
-      paddingVertical: 24,
-      paddingHorizontal: 20,
-    },
-    cardHeader: {
-      gap: 16,
-    },
-    iconContainer: {
-      backgroundColor: '#E8F1FF',
-    },
-    iconColor: '#0055CC',
-    cardTitle: {
-      color: colors.text,
-      fontSize: textSizes.large,
-      fontWeight: 'bold',
-      marginBottom: 8,
-    },
-    cardDescription: {
-      color: colors.textSecondary,
-      fontSize: textSizes.medium,
-      lineHeight: 24,
-      marginBottom: 16,
-    },
-    checkItem: {
-      color: colors.text,
-      fontSize: textSizes.medium,
-      marginVertical: 8,
-    },
-  };
-
-  return (
-    <ScrollView style={[styles.container, themedStyles.container]}>
-      <View style={[styles.header, themedStyles.header]}>
-        <Text style={[styles.headerTitle, themedStyles.headerTitle]}>WCAG 2.2 Guidelines</Text>
-        <Text style={[styles.headerSubtitle, themedStyles.headerSubtitle]}>
-          Essential principles for building accessible mobile apps
-        </Text>
-      </View>
-
-      <View style={[styles.section, themedStyles.section]}>
-        {guidelineData.map((guideline, index) => (
-          <View key={index} style={[styles.guidelineCard, themedStyles.guidelineCard]}>
-            <View style={[styles.cardHeader, themedStyles.cardHeader]}>
-              <View style={[styles.iconContainer, { backgroundColor: '#E8F1FF' }]}>
-                <Ionicons name={guideline.icon} size={28} color={themedStyles.iconColor} />
-              </View>
-              <Text style={[styles.cardTitle, themedStyles.cardTitle]}>{guideline.title}</Text>
-            </View>
-            <Text style={[styles.cardDescription, themedStyles.cardDescription]}>
-              {guideline.description}
-            </Text>
-            <View style={styles.checkList}>
-              {guideline.checkItems.map((item, itemIndex) => (
-                <View key={itemIndex} style={styles.checkItem}>
-                  <Ionicons name="checkmark-circle" size={20} color="#28A745" style={styles.checkIcon} />
-                  <Text style={[themedStyles.checkItem]}>{item}</Text>
-                </View>
-              ))}
-            </View>
-          </View>
-        ))}
-      </View>
-    </ScrollView>
-  );
-};
+import { LinearGradient } from 'expo-linear-gradient';
 
 const guidelineData = [
   {
     title: 'Perceivable',
     icon: 'eye-outline',
-    description: 'Information and user interface components must be presentable to users in ways they can perceive.',
+    description:
+      'Information and user interface components must be presentable to users in ways they can perceive.',
     checkItems: [
       'Provide text alternatives for non-text content',
       'Provide captions and other alternatives for multimedia',
@@ -124,7 +32,8 @@ const guidelineData = [
   {
     title: 'Understandable',
     icon: 'document-text-outline',
-    description: 'Information and the operation of user interface must be understandable.',
+    description:
+      'Information and the operation of user interface must be understandable.',
     checkItems: [
       'Make text readable and understandable',
       'Make content appear and operate in predictable ways',
@@ -142,53 +51,168 @@ const guidelineData = [
   },
 ];
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  header: {
-    padding: 20,
-    borderBottomWidth: 1,
-  },
-  headerTitle: {
-    marginBottom: 8,
-  },
-  section: {
-    padding: 20,
-  },
-  guidelineCard: {
-    borderRadius: 16,
-    marginBottom: 20,
-    shadowOffset: { width: 0, height: 2 },
-    shadowRadius: 4,
-    elevation: 2,
-  },
-  cardHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 12,
-  },
-  iconContainer: {
-    width: 40,
-    height: 40,
-    borderRadius: 12,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  cardDescription: {
-    marginBottom: 12,
-  },
-  checkList: {
-    gap: 12,
-  },
-  checkItem: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    gap: 8,
-  },
-  checkIcon: {
-    marginTop: 4,
-  },
-});
+export default function WCAGGuidelinesScreen() {
+  const { colors, textSizes, isDarkMode } = useTheme();
 
-export default WCAGGuidelinesScreen;
+  // Define a subtle gradient for the background
+  const gradientColors = isDarkMode
+    ? [colors.background, '#2c2c2e']
+    : ['#e2e2e2', colors.background];
+
+  /* ---------------------------------------
+     Themed + local styles
+  ----------------------------------------*/
+  const themedStyles = {
+    container: {
+      flex: 1,
+    },
+    // Hero card at top
+    heroCard: {
+      backgroundColor: colors.surface,
+      marginHorizontal: 16,
+      marginTop: 16,
+      paddingVertical: 24,
+      paddingHorizontal: 16,
+      borderRadius: 16,
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 4 },
+      shadowOpacity: isDarkMode ? 0.3 : 0.15,
+      shadowRadius: 6,
+      elevation: 4,
+      borderWidth: isDarkMode ? 1 : 0,
+      borderColor: isDarkMode ? colors.border : 'transparent',
+    },
+    heroTitle: {
+      color: colors.text,
+      fontSize: textSizes.xlarge,
+      fontWeight: 'bold',
+      marginBottom: 8,
+    },
+    heroSubtitle: {
+      color: colors.textSecondary,
+      fontSize: textSizes.large,
+      lineHeight: 28,
+    },
+    section: {
+      padding: 16,
+      gap: 16,
+    },
+    // Elevated card for each WCAG guideline
+    guidelineCard: {
+      backgroundColor: colors.surface,
+      borderRadius: 16,
+      padding: 20,
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 3 },
+      shadowOpacity: isDarkMode ? 0.3 : 0.1,
+      shadowRadius: 4,
+      elevation: 2,
+      borderWidth: isDarkMode ? 1 : 0,
+      borderColor: isDarkMode ? colors.border : 'transparent',
+    },
+    cardHeader: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginBottom: 12,
+      gap: 12,
+    },
+    iconContainer: {
+      width: 48,
+      height: 48,
+      borderRadius: 12,
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: '#E8F1FF', // Light highlight for icons
+    },
+    cardTitle: {
+      color: colors.text,
+      fontSize: textSizes.large,
+      fontWeight: 'bold',
+      marginBottom: 4,
+    },
+    cardDescription: {
+      color: colors.textSecondary,
+      fontSize: textSizes.medium,
+      lineHeight: 24,
+      marginBottom: 16,
+    },
+    checkList: {
+      gap: 12,
+    },
+    checkItemRow: {
+      flexDirection: 'row',
+      alignItems: 'flex-start',
+      gap: 8,
+    },
+    checkItemText: {
+      color: colors.text,
+      fontSize: textSizes.medium,
+      lineHeight: 22,
+      flexShrink: 1,
+    },
+    checkIcon: {
+      marginTop: 4,
+    },
+  };
+
+  return (
+    <LinearGradient colors={gradientColors} style={themedStyles.container}>
+      <ScrollView
+        contentContainerStyle={{ paddingBottom: 24 }}
+        accessibilityRole="scrollview"
+        accessibilityLabel="WCAG Guidelines Screen"
+      >
+        {/* HERO CARD */}
+        <View style={themedStyles.heroCard}>
+          <Text style={themedStyles.heroTitle} accessibilityRole="header">
+            WCAG 2.2 Guidelines
+          </Text>
+          <Text style={themedStyles.heroSubtitle}>
+            Essential principles for building accessible mobile apps
+          </Text>
+        </View>
+
+        {/* MAIN SECTION */}
+        <View style={themedStyles.section}>
+          {guidelineData.map((guideline, index) => (
+            <View key={index} style={themedStyles.guidelineCard}>
+              {/* Header: Icon + Title */}
+              <View style={themedStyles.cardHeader}>
+                <View style={themedStyles.iconContainer}>
+                  <Ionicons
+                    name={guideline.icon}
+                    size={28}
+                    color="#0055CC"
+                    accessibilityElementsHidden={true}
+                  />
+                </View>
+                <Text style={themedStyles.cardTitle}>{guideline.title}</Text>
+              </View>
+
+              {/* Description */}
+              <Text style={themedStyles.cardDescription}>
+                {guideline.description}
+              </Text>
+
+              {/* Checklist items */}
+              <View style={themedStyles.checkList}>
+                {guideline.checkItems.map((item, itemIndex) => (
+                  <View key={itemIndex} style={themedStyles.checkItemRow}>
+                    <Ionicons
+                      name="checkmark-circle"
+                      size={20}
+                      color="#28A745"
+                      style={themedStyles.checkIcon}
+                      accessibilityElementsHidden={true}
+                    />
+                    <Text style={themedStyles.checkItemText}>{item}</Text>
+                  </View>
+                ))}
+              </View>
+            </View>
+          ))}
+        </View>
+      </ScrollView>
+    </LinearGradient>
+  );
+}
