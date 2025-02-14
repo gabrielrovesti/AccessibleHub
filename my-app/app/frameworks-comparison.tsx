@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Platform, Dimensions } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Platform, Dimensions, AccessibilityInfo  } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useTheme } from '../context/ThemeContext';
 
@@ -7,6 +7,51 @@ const FrameworkComparisonScreen = () => {
   const [selectedCategory, setSelectedCategory] = useState('overview');
   const [selectedFramework, setSelectedFramework] = useState('react-native');
   const { colors, textSizes, isDarkMode } = useTheme();
+
+  // Formal metric calculation methodology
+const calculateMetrics = (framework) => {
+  // Accessibility score calculation with proper rounding
+  const accessibilityScore = Number(
+    (framework.accessibility.screenReaders.rating * 0.3 +
+    framework.accessibility.semantics.rating * 0.3 +
+    framework.accessibility.gestures.rating * 0.2 +
+    framework.accessibility.focusManagement.rating * 0.2)
+    .toFixed(1)
+  );
+
+  // Performance score with safer number handling
+  const startupTime = parseFloat(framework.performance.startupTime.replace('s', '')) || 0;
+  const memoryScore =
+    framework.performance.memoryUsage === 'Low' ? 5 :
+    framework.performance.memoryUsage === 'Low-Medium' ? 4 :
+    framework.performance.memoryUsage === 'Medium' ? 3 : 2;
+
+  // Safely parse bundle size
+  const bundleSizeStr = framework.performance.bundleSize.split('-')[0];
+  const bundleSize = parseFloat(bundleSizeStr) || 0;
+
+  const performanceScore = Number(
+    (startupTime * -0.3 +
+    memoryScore * 0.3 +
+    (bundleSize * -0.4) + 5)
+    .toFixed(1)
+  );
+
+  return {
+    accessibility: Math.max(0, Math.min(5, accessibilityScore)), // Ensure score is between 0-5
+    performance: Math.max(0, Math.min(5, performanceScore)) // Ensure score is between 0-5
+  };
+}; // Removed extra closing brace here
+
+  // Enhanced accessibility announcements
+  useEffect(() => {
+    const framework = frameworkData[selectedFramework];
+    const metrics = calculateMetrics(framework);
+
+    AccessibilityInfo.announceForAccessibility(
+      `Selected ${framework.name}. Current category: ${selectedCategory}. ${selectedCategory} rating: ${metrics[selectedCategory] || metrics.accessibility}`
+    );
+  }, [selectedFramework, selectedCategory]);
 
   const frameworkData = {
     'react-native': {
@@ -19,7 +64,7 @@ const FrameworkComparisonScreen = () => {
         screenReaders: {
           ios: 'Full VoiceOver support with native bridge',
           android: 'Complete TalkBack integration',
-          rating: 4.5
+          rating: Number(4.5)
         },
         semantics: {
           support: 'Extensive semantic property support',
@@ -30,7 +75,7 @@ const FrameworkComparisonScreen = () => {
             'accessibilityState',
             'accessibilityValue'
           ],
-          rating: 4.5
+          rating: Number(4.5)
         },
         gestures: {
           support: 'Native gesture recognition',
@@ -39,7 +84,7 @@ const FrameworkComparisonScreen = () => {
             'Custom touch handlers',
             'Screen reader gestures'
           ],
-          rating: 4.0
+          rating: Number(4.0)
         },
         focusManagement: {
           support: 'Built-in focus management',
@@ -48,14 +93,14 @@ const FrameworkComparisonScreen = () => {
             'Focus control methods',
             'Focus trapping'
           ],
-          rating: 4.0
+          rating: Number(4.0)
         }
       },
       performance: {
         startupTime: '1.2s',
         memoryUsage: 'Medium',
         bundleSize: '7-12MB',
-        rating: 4.0
+        rating: Number(4.0)
       },
       development: {
         language: 'JavaScript/TypeScript',
@@ -76,7 +121,7 @@ const FrameworkComparisonScreen = () => {
         screenReaders: {
           ios: 'Native VoiceOver support',
           android: 'Full TalkBack integration',
-          rating: 4.5
+          rating: Number(4.5)
         },
         semantics: {
           support: 'Rich semantic node system',
@@ -86,7 +131,7 @@ const FrameworkComparisonScreen = () => {
             'Label annotations',
             'Live region support'
           ],
-          rating: 5.0
+          rating: Number(5.0)
         },
         gestures: {
           support: 'Advanced gesture system',
@@ -95,7 +140,7 @@ const FrameworkComparisonScreen = () => {
             'Screen reader gestures',
             'Touch feedback systems'
           ],
-          rating: 4.5
+          rating: Number(4.5)
         },
         focusManagement: {
           support: 'Comprehensive focus control',
@@ -104,14 +149,14 @@ const FrameworkComparisonScreen = () => {
             'Focus nodes',
             'Modal barriers'
           ],
-          rating: 4.5
+          rating: Number(4.5)
         }
       },
       performance: {
         startupTime: '0.8s',
         memoryUsage: 'Low-Medium',
         bundleSize: '4-8MB',
-        rating: 4.5
+        rating: Number(4.5)
       },
       development: {
         language: 'Dart',
@@ -132,7 +177,7 @@ const FrameworkComparisonScreen = () => {
         screenReaders: {
           ios: 'VoiceOver support through WebView',
           android: 'TalkBack support through WebView',
-          rating: 3.5
+          rating: Number(3.5)
         },
         semantics: {
           support: 'ARIA-based semantics',
@@ -142,7 +187,7 @@ const FrameworkComparisonScreen = () => {
             'State management',
             'Live regions'
           ],
-          rating: 4.0
+          rating: Number(4.0)
         },
         gestures: {
           support: 'Web-based gesture handling',
@@ -151,7 +196,7 @@ const FrameworkComparisonScreen = () => {
             'Gesture recognition',
             'Screen reader interaction'
           ],
-          rating: 3.5
+          rating: Number(3.5)
         },
         focusManagement: {
           support: 'DOM-based focus management',
@@ -160,14 +205,14 @@ const FrameworkComparisonScreen = () => {
             'Tab order',
             'Focus trapping'
           ],
-          rating: 4.0
+          rating: Number(4.0)
         }
       },
       performance: {
         startupTime: '1.5s',
         memoryUsage: 'Medium-High',
         bundleSize: '15-20MB',
-        rating: 3.5
+        rating: Number(3.5)
       },
       development: {
         language: 'JavaScript/TypeScript',
@@ -180,6 +225,23 @@ const FrameworkComparisonScreen = () => {
     }
   };
 
+  const handleCategoryChange = (category) => {
+      setSelectedCategory(category);
+      const framework = frameworkData[selectedFramework];
+      AccessibilityInfo.announceForAccessibility(
+        `Viewing ${category} details for ${framework.name}`
+      );
+    };
+
+    const handleFrameworkChange = (fw) => {
+      setSelectedFramework(fw);
+      const framework = frameworkData[fw];
+      const metrics = calculateMetrics(framework);
+      AccessibilityInfo.announceForAccessibility(
+        `Selected ${framework.name}. ${selectedCategory} rating: ${metrics[selectedCategory] || metrics.accessibility}`
+      );
+    };
+
   const categories = [
     { id: 'overview', label: 'Overview', icon: 'information-circle' },
     { id: 'accessibility', label: 'Accessibility', icon: 'eye' },
@@ -187,19 +249,38 @@ const FrameworkComparisonScreen = () => {
     { id: 'development', label: 'Development', icon: 'code-slash' }
   ];
 
-  const renderRatingBar = (rating) => {
-    const maxRating = 5;
-    const filledWidth = (rating / maxRating) * 100;
+const renderRatingBar = (rating, label = '') => {
+  try {
+    // Convert rating to number and handle undefined/null
+    const numericRating = Number(rating) || 0;
+    // Ensure width calculation is a valid number
+    const filledWidth = Math.min(100, Math.max(0, (numericRating / 5) * 100));
 
     return (
-      <View style={styles.ratingContainer}>
+      <View
+        style={styles.ratingContainer}
+        accessible={true}
+        accessibilityRole="progressbar"
+        accessibilityLabel={`${label}: ${numericRating.toFixed(1)} out of 5`}
+      >
         <View style={styles.ratingBar}>
-          <View style={[styles.ratingFilled, { width: `${filledWidth}%`, backgroundColor: colors.primary }]} />
+          <View
+            style={[
+              styles.ratingFilled,
+              { width: `${Math.round(filledWidth)}%`, backgroundColor: colors.primary }
+            ]}
+          />
         </View>
-        <Text style={[styles.ratingText, { color: colors.primary }]}>{rating.toFixed(1)}</Text>
+        <Text style={[styles.ratingText, { color: colors.primary }]}>
+          {numericRating.toFixed(1)}
+        </Text>
       </View>
     );
-  };
+  } catch (error) {
+    console.warn('Error rendering rating bar:', error);
+    return null; // Fallback in case of error
+  }
+};
 
   const themedStyles = {
     container: {
@@ -231,9 +312,23 @@ const FrameworkComparisonScreen = () => {
     frameworkButtonTextActive: {
       color: colors.background,
     },
+    categoryTabsContainer: {
+      maxHeight: 48,
+      marginBottom: 16,
+    },
+    categoryTabsContent: {
+      paddingHorizontal: 16,
+      gap: 8,
+    },
     categoryTab: {
-      backgroundColor: colors.surface,
-      borderColor: colors.border,
+      flexDirection: 'row',
+      alignItems: 'center',
+      paddingVertical: 8,
+      paddingHorizontal: 16,
+      borderRadius: 24,
+      minWidth: 80,
+      height: 40,
+      marginRight: 8,
     },
     categoryTabActive: {
       backgroundColor: colors.primaryLight,
@@ -338,31 +433,48 @@ const FrameworkComparisonScreen = () => {
     </View>
   );
 
-    const renderCategoryTabs = () => (
-      <View style={styles.categoryTabs}>
-        <ScrollView
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={{paddingHorizontal: 12}}
+  const renderCategoryTabs = () => (
+    <ScrollView
+      horizontal
+      showsHorizontalScrollIndicator={false}
+      style={styles.categoryTabsContainer}
+      contentContainerStyle={styles.categoryTabsContent}
+      accessibilityRole="tablist"
+    >
+      {categories.map((category) => (
+        <TouchableOpacity
+          key={category.id}
+          style={[
+            styles.categoryTab,
+            selectedCategory === category.id && styles.categoryTabActive,
+            themedStyles.categoryTab,
+            selectedCategory === category.id && themedStyles.categoryTabActive,
+          ]}
+          onPress={() => handleCategoryChange(category.id)}
+          accessibilityRole="tab"
+          accessibilityState={{ selected: selectedCategory === category.id }}
+          accessibilityLabel={`${category.label} tab`}
+          accessibilityHint={`Shows ${category.label.toLowerCase()} information for selected framework`}
         >
-          {categories.map((category) => (
-            <TouchableOpacity
-              key={category.id}
-              style={[
-                styles.categoryTab,
-                selectedCategory === category.id && styles.categoryTabActive
-              ]}
-              onPress={() => setSelectedCategory(category.id)}
-              accessibilityRole="tab"
-              accessibilityState={{ selected: selectedCategory === category.id }}
-            >
-              <Ionicons name={category.icon} size={20} color={colors.primary} />
-              <Text style={styles.categoryTabText}>{category.label}</Text>
-            </TouchableOpacity>
-          ))}
-        </ScrollView>
-      </View>
-    );
+          <Ionicons
+            name={category.icon}
+            size={20}
+            color={selectedCategory === category.id ? colors.primary : colors.textSecondary}
+            accessibilityElementsHidden={true}
+          />
+          <Text style={[
+            styles.categoryTabText,
+            selectedCategory === category.id && styles.categoryTabTextActive,
+            themedStyles.categoryTabText,
+            selectedCategory === category.id && themedStyles.categoryTabTextActive,
+          ]}>
+            {category.label}
+          </Text>
+        </TouchableOpacity>
+      ))}
+    </ScrollView>
+  );
+
 
   const renderOverviewSection = () => {
     const framework = frameworkData[selectedFramework];
@@ -396,54 +508,109 @@ const FrameworkComparisonScreen = () => {
     );
   };
 
-  const renderAccessibilitySection = () => {
-    const framework = frameworkData[selectedFramework];
-    return (
-      <View style={styles.section}>
-        <View style={[styles.accessibilityCard, themedStyles.accessibilityCard]}>
-          <Text style={[styles.cardTitle, themedStyles.cardTitle]}>Screen Reader Support</Text>
-          <View style={styles.platformSupport}>
-            <View style={styles.platformItem}>
-              <Ionicons name="logo-apple" size={24} color={isDarkMode ? colors.text : '#000'} />
-              <Text style={[styles.platformText, themedStyles.platformText]}>{framework.accessibility.screenReaders.ios}</Text>
-            </View>
-            <View style={styles.platformItem}>
-              <Ionicons name="logo-android" size={24} color={isDarkMode ? colors.text : '#3DDC84'} />
-              <Text style={[styles.platformText, themedStyles.platformText]}>{framework.accessibility.screenReaders.android}</Text>
-            </View>
-          </View>
-          {renderRatingBar(framework.accessibility.screenReaders.rating)}
-        </View>
+const renderAccessibilitySection = () => {
+  const framework = frameworkData[selectedFramework];
 
-        <View style={[styles.accessibilityCard, themedStyles.accessibilityCard]}>
-          <Text style={[styles.cardTitle, themedStyles.cardTitle]}>Semantic Support</Text>
-          <Text style={[styles.supportText, themedStyles.supportText]}>{framework.accessibility.semantics.support}</Text>
-          <View style={styles.featureList}>
-            {framework.accessibility.semantics.features.map((feature, index) => (
-              <View key={index} style={styles.featureItem}>
-                <Ionicons name="checkmark-circle" size={20} color="#28A745" />
-                <Text style={[styles.featureText, themedStyles.featureText]}>{feature}</Text>
-              </View>
-            ))}
-          </View>
-          {renderRatingBar(framework.accessibility.semantics.rating)}
-        </View>
+  // Safely access nested properties
+  const screenReaders = framework?.accessibility?.screenReaders || {};
+  const semantics = framework?.accessibility?.semantics || {};
+  const focusManagement = framework?.accessibility?.focusManagement || {};
 
-        <View style={[styles.accessibilityCard, themedStyles.accessibilityCard]}>
-          <Text style={[styles.cardTitle, themedStyles.cardTitle]}>Focus Management</Text>
-          <Text style={[styles.supportText, themedStyles.supportText]}>{framework.accessibility.focusManagement.support}</Text>
-          <View style={styles.featureList}>
-{framework.accessibility.focusManagement.features.map((feature, index) => (
-    <View key={index} style={styles.featureItem}>
-      <Ionicons name="checkmark-circle" size={20} color="#28A745" />
-      <Text style={[styles.featureText, themedStyles.featureText]}>{feature}</Text>
+  return (
+    <View style={styles.section}>
+      {/* Screen Reader Support Card */}
+      <View style={[styles.accessibilityCard, themedStyles.accessibilityCard]}>
+        <Text style={[styles.cardTitle, themedStyles.cardTitle]}>
+          Screen Reader Support
+        </Text>
+        <View style={styles.platformSupport}>
+          <View style={styles.platformItem}>
+            <Ionicons
+              name="logo-apple"
+              size={24}
+              color={isDarkMode ? colors.text : '#000'}
+              accessibilityElementsHidden={true}
+            />
+            <Text style={[styles.platformText, themedStyles.platformText]}>
+              {screenReaders.ios || 'Not specified'}
+            </Text>
+          </View>
+          <View style={styles.platformItem}>
+            <Ionicons
+              name="logo-android"
+              size={24}
+              color={isDarkMode ? colors.text : '#3DDC84'}
+              accessibilityElementsHidden={true}
+            />
+            <Text style={[styles.platformText, themedStyles.platformText]}>
+              {screenReaders.android || 'Not specified'}
+            </Text>
+          </View>
+        </View>
+        {renderRatingBar(screenReaders.rating, 'Screen Reader Support')}
+      </View>
+
+      {/* Semantic Support Card */}
+      <View style={[styles.accessibilityCard, themedStyles.accessibilityCard]}>
+        <Text style={[styles.cardTitle, themedStyles.cardTitle]}>
+          Semantic Support
+        </Text>
+        <Text style={[styles.supportText, themedStyles.supportText]}>
+          {semantics.support || 'No semantic support information available'}
+        </Text>
+        <View style={styles.featureList}>
+          {(semantics.features || []).map((feature, index) => (
+            <View
+              key={index}
+              style={styles.featureItem}
+              accessibilityRole="text"
+            >
+              <Ionicons
+                name="checkmark-circle"
+                size={20}
+                color="#28A745"
+                accessibilityElementsHidden={true}
+              />
+              <Text style={[styles.featureText, themedStyles.featureText]}>
+                {feature}
+              </Text>
+            </View>
+          ))}
+        </View>
+        {renderRatingBar(semantics.rating, 'Semantic Support')}
+      </View>
+
+      {/* Focus Management Card */}
+      <View style={[styles.accessibilityCard, themedStyles.accessibilityCard]}>
+        <Text style={[styles.cardTitle, themedStyles.cardTitle]}>
+          Focus Management
+        </Text>
+        <Text style={[styles.supportText, themedStyles.supportText]}>
+          {focusManagement.support || 'No focus management information available'}
+        </Text>
+        <View style={styles.featureList}>
+          {(focusManagement.features || []).map((feature, index) => (
+            <View
+              key={index}
+              style={styles.featureItem}
+              accessibilityRole="text"
+            >
+              <Ionicons
+                name="checkmark-circle"
+                size={20}
+                color="#28A745"
+                accessibilityElementsHidden={true}
+              />
+              <Text style={[styles.featureText, themedStyles.featureText]}>
+                {feature}
+              </Text>
+            </View>
+          ))}
+        </View>
+        {renderRatingBar(focusManagement.rating, 'Focus Management')}
+      </View>
     </View>
-  ))}
-</View>
-{renderRatingBar(framework.accessibility.focusManagement.rating)}
-</View>
-</View>
-);
+  );
 };
 
 const renderPerformanceSection = () => {
