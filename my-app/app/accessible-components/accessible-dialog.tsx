@@ -1,12 +1,21 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Modal, Clipboard } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  TouchableOpacity,
+  Modal,
+  Clipboard,
+  AccessibilityInfo
+} from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useTheme } from '../../context/ThemeContext';
-import { AccessibilityInfo } from 'react-native';
 
 const AccessibleDialogExample = () => {
   const [showDialog, setShowDialog] = useState(false);
   const [copied, setCopied] = useState(false);
+
   const { colors, textSizes, isDarkMode } = useTheme();
   const dialogRef = useRef(null);
 
@@ -79,106 +88,154 @@ const AccessibleDialog = ({ visible, onClose, title, children }) => {
   );
 };`;
 
-const handleCopy = async () => {
-  try {
-    await Clipboard.setString(codeExample);
-    setCopied(true);
-    AccessibilityInfo.announceForAccessibility('Code copied to clipboard');
-    setTimeout(() => {
-      setCopied(false);
-    }, 2000);
-  } catch (err) {
-    console.error('Failed to copy:', err);
-    AccessibilityInfo.announceForAccessibility('Failed to copy code');
-  }
-};
+  const handleCopy = async () => {
+    try {
+      await Clipboard.setString(codeExample);
+      setCopied(true);
+      AccessibilityInfo.announceForAccessibility('Code copied to clipboard');
+      setTimeout(() => setCopied(false), 2000);
+    } catch (err) {
+      console.error('Failed to copy:', err);
+      AccessibilityInfo.announceForAccessibility('Failed to copy code');
+    }
+  };
 
+  /**
+   * Themed styles for overriding base styles,
+   * applying dark mode and color preferences to key components
+   */
   const themedStyles = {
     container: {
-      backgroundColor: colors.background,
+      backgroundColor: colors.background
     },
     section: {
-      backgroundColor: colors.background,
+      backgroundColor: colors.background
     },
     sectionTitle: {
       color: colors.text,
-      fontSize: textSizes.xlarge,
+      fontSize: textSizes.xlarge
     },
     demoContainer: {
-      backgroundColor: colors.surface,
+      backgroundColor: colors.surface
     },
     demoButton: {
-      backgroundColor: colors.primary,
+      backgroundColor: colors.primary
     },
     buttonText: {
-      color: colors.background,
+      color: colors.background
     },
     demoText: {
-      color: colors.textSecondary,
+      color: colors.textSecondary
     },
     overlay: {
-      backgroundColor: isDarkMode ? 'rgba(0, 0, 0, 0.7)' : 'rgba(0, 0, 0, 0.5)',
+      backgroundColor: isDarkMode ? 'rgba(0, 0, 0, 0.7)' : 'rgba(0, 0, 0, 0.5)'
     },
     dialog: {
-      backgroundColor: colors.surface,
+      backgroundColor: colors.surface
     },
     dialogHeader: {
-      borderBottomColor: colors.border,
+      borderBottomColor: colors.border
     },
     dialogTitle: {
-      color: colors.text,
+      color: colors.text
     },
     dialogContent: {
-      color: colors.text,
+      color: colors.text
     },
     dialogButtonText: {
-      color: colors.background,
+      color: colors.background
     },
     dialogSecondaryButton: {
-      backgroundColor: isDarkMode ? colors.surface : '#f2f2f2',
+      backgroundColor: isDarkMode ? colors.surface : '#f2f2f2'
     },
     dialogSecondaryButtonText: {
-      color: colors.text,
+      color: colors.text
     },
     dialogPrimaryButton: {
-      backgroundColor: colors.primary,
+      backgroundColor: colors.primary
     },
-    featuresContainer: {
+ featuresContainer: {
       backgroundColor: colors.surface,
+      borderRadius: 12,
+      borderWidth: 2,
+      borderColor: '#D1D1D1',
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.1,
+      shadowRadius: 4,
+      elevation: 3,
+      padding: 16,
+      gap: 16
+    },
+    featureItem: {
+      backgroundColor: isDarkMode ? '#2c2c2e' : '#fff',
+      borderRadius: 12,
+      padding: 16,
+      flexDirection: 'row',
+      alignItems: 'flex-start',
+      gap: 12,
+      marginBottom: 12, // If you want spacing between items
+      borderWidth: 1,
+      borderColor: isDarkMode ? '#333' : '#ddd'
     },
     featureTitle: {
       color: colors.text,
+      fontSize: 16,
+      fontWeight: '600',
+      marginBottom: 4
     },
     featureDescription: {
       color: colors.textSecondary,
+      fontSize: 14,
+      lineHeight: 20
     },
+    featureIconContainer: {
+      width: 40,
+      height: 40,
+      borderRadius: 12,
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: isDarkMode ? '#333' : '#E8F1FF'
+    },
+    // Code container styling: border, background, etc.
     codeContainer: {
       backgroundColor: isDarkMode ? '#1c1c1e' : '#2d2d2d',
+      borderRadius: 12,
+      borderWidth: 2,
+      borderColor: '#333',
+      marginTop: 8,
+      overflow: 'hidden',
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.1,
+      shadowRadius: 4,
+      elevation: 3
     },
     codeHeader: {
-      borderBottomColor: isDarkMode ? '#333' : '#444',
+      borderBottomColor: isDarkMode ? '#333' : '#444'
     },
     codeHeaderText: {
-      color: isDarkMode ? '#999' : '#bbb',
+      color: isDarkMode ? '#999' : '#bbb'
     },
     copyText: {
-      color: isDarkMode ? '#666' : '#999',
+      color: isDarkMode ? '#666' : '#999'
     },
     copiedText: {
-      color: '#28A745',
+      color: '#28A745'
     },
     codeText: {
-      color: '#fff',
-    },
+      color: '#fff'
+    }
   };
 
   return (
     <ScrollView style={[styles.container, themedStyles.container]}>
+      {/* Interactive Example Section */}
       <View style={[styles.section, themedStyles.section]}>
         <Text style={[styles.sectionTitle, themedStyles.sectionTitle]}>
           Modal Dialogs - Interactive Example
         </Text>
-        <View style={[styles.demoContainer, themedStyles.demoContainer]}>
+        <View style={[styles.demoContainer, themedStyles.demoContainer, styles.demoContainerBase]}>
           <TouchableOpacity
             style={[styles.demoButton, themedStyles.demoButton]}
             onPress={() => setShowDialog(true)}
@@ -188,11 +245,9 @@ const handleCopy = async () => {
           >
             <Text style={[styles.buttonText, themedStyles.buttonText]}>Open Dialog</Text>
           </TouchableOpacity>
-          <Text style={[styles.demoText, themedStyles.demoText]}>
-            Try this dialog with VoiceOver/TalkBack enabled
-          </Text>
         </View>
 
+        {/* Actual Modal Dialog */}
         <Modal
           visible={showDialog}
           transparent
@@ -209,7 +264,9 @@ const handleCopy = async () => {
               accessibilityLabel="Example dialog content"
               onAccessibilityEscape={handleClose}
             >
-              <View style={[styles.dialogHeader, themedStyles.dialogHeader]}>
+              <View
+                style={[styles.dialogHeader, themedStyles.dialogHeader]}
+              >
                 <Text style={[styles.dialogTitle, themedStyles.dialogTitle]}>
                   Example Dialog
                 </Text>
@@ -239,25 +296,35 @@ const handleCopy = async () => {
                   style={[
                     styles.dialogButton,
                     styles.secondaryButton,
-                    themedStyles.dialogSecondaryButton,
+                    themedStyles.dialogSecondaryButton
                   ]}
                   onPress={handleClose}
                   accessibilityRole="button"
                   accessibilityLabel="Cancel"
                   accessibilityHint="Closes the dialog without saving changes"
                 >
-                  <Text style={[styles.secondaryButtonText, themedStyles.dialogSecondaryButtonText]}>
+                  <Text
+                    style={[
+                      styles.secondaryButtonText,
+                      themedStyles.dialogSecondaryButtonText
+                    ]}
+                  >
                     Cancel
                   </Text>
                 </TouchableOpacity>
                 <TouchableOpacity
-                  style={[styles.dialogButton, themedStyles.dialogPrimaryButton]}
+                  style={[
+                    styles.dialogButton,
+                    themedStyles.dialogPrimaryButton
+                  ]}
                   onPress={handleClose}
                   accessibilityRole="button"
                   accessibilityLabel="Confirm"
                   accessibilityHint="Saves changes and closes the dialog"
                 >
-                  <Text style={[styles.dialogButtonText, themedStyles.dialogButtonText]}>
+                  <Text
+                    style={[styles.dialogButtonText, themedStyles.dialogButtonText]}
+                  >
                     Confirm
                   </Text>
                 </TouchableOpacity>
@@ -268,44 +335,80 @@ const handleCopy = async () => {
       </View>
 
       {/* Implementation Section */}
-      <View style={styles.section}>
-        <Text style={[styles.sectionTitle, themedStyles.sectionTitle]}>Implementation</Text>
+      <View style={[styles.section, themedStyles.section]}>
+        <Text style={[styles.sectionTitle, themedStyles.sectionTitle]}>
+          Implementation
+        </Text>
+
         <View style={[styles.codeContainer, themedStyles.codeContainer]}>
+          {/* Short, descriptive label for the snippet header */}
           <View style={[styles.codeHeader, themedStyles.codeHeader]}>
-            <Text style={[styles.codeHeaderText, themedStyles.codeHeaderText]}>JSX</Text>
+            <Text
+              style={[styles.codeHeaderText, themedStyles.codeHeaderText]}
+              accessible={true}
+              accessibilityRole="text"
+              accessibilityLabel="Source code for dialog component."
+              accessibilityHint="Use the copy button to copy."
+            >
+              JSX
+            </Text>
             <TouchableOpacity
               style={styles.copyButton}
               onPress={handleCopy}
               accessibilityRole="button"
-              accessibilityLabel={copied ? "Code copied" : "Copy code"}
+              accessibilityLabel={copied ? 'Code copied' : 'Copy code'}
               accessibilityHint="Copies the code example to your clipboard"
             >
               <Ionicons
-                name={copied ? "checkmark" : "copy-outline"}
+                name={copied ? 'checkmark' : 'copy-outline'}
                 size={20}
-                color={copied ? "#28A745" : colors.textSecondary}
+                color={copied ? '#28A745' : colors.textSecondary}
                 accessibilityElementsHidden={true}
-                importantForAccessibility="no"
+                importantForAccessibility="no-hide-descendants"
               />
-              <Text style={[styles.copyText, copied && styles.copiedText, themedStyles.copyText]}>
-                {copied ? "Copied!" : "Copy"}
+              <Text
+                style={[
+                  styles.copyText,
+                  themedStyles.copyText,
+                  copied && [styles.copiedText, themedStyles.copiedText]
+                ]}
+              >
+                {copied ? 'Copied!' : 'Copy'}
               </Text>
             </TouchableOpacity>
           </View>
-          <ScrollView style={styles.codeCard}>
-            <Text style={[styles.codeText, themedStyles.codeText]}>{codeExample}</Text>
+
+          {/* Code snippet hidden from screen readers */}
+          <ScrollView
+            style={styles.codeCard}
+            accessible={false}
+            importantForAccessibility="no"
+            accessibilityElementsHidden={true}
+          >
+            <Text
+              style={[styles.codeText, themedStyles.codeText]}
+              accessibilityElementsHidden={true}
+              importantForAccessibility="no-hide-descendants"
+            >
+              {codeExample}
+            </Text>
           </ScrollView>
         </View>
       </View>
 
       {/* Accessibility Features Section */}
-      <View style={styles.section}>
+      <View style={[styles.section, themedStyles.section]}>
         <Text style={[styles.sectionTitle, themedStyles.sectionTitle]}>
           Accessibility Features
         </Text>
         <View style={[styles.featuresContainer, themedStyles.featuresContainer]}>
           <View style={styles.featureItem}>
-            <View style={[styles.iconContainer, { backgroundColor: isDarkMode ? colors.surface : '#E8F1FF' }]}>
+            <View
+              style={[
+                styles.iconContainer,
+                { backgroundColor: isDarkMode ? colors.surface : '#E8F1FF' }
+              ]}
+            >
               <Ionicons
                 name="scan-outline"
                 size={24}
@@ -315,7 +418,9 @@ const handleCopy = async () => {
               />
             </View>
             <View style={styles.featureContent}>
-              <Text style={[styles.featureTitle, themedStyles.featureTitle]}>Focus Management</Text>
+              <Text style={[styles.featureTitle, themedStyles.featureTitle]}>
+                Focus Management
+              </Text>
               <Text style={[styles.featureDescription, themedStyles.featureDescription]}>
                 Proper focus trapping and restoration when dialog opens/closes
               </Text>
@@ -323,7 +428,12 @@ const handleCopy = async () => {
           </View>
 
           <View style={styles.featureItem}>
-            <View style={[styles.iconContainer, { backgroundColor: isDarkMode ? colors.surface : '#E8F1FF' }]}>
+            <View
+              style={[
+                styles.iconContainer,
+                { backgroundColor: isDarkMode ? colors.surface : '#E8F1FF' }
+              ]}
+            >
               <Ionicons
                 name="keypad-outline"
                 size={24}
@@ -333,7 +443,9 @@ const handleCopy = async () => {
               />
             </View>
             <View style={styles.featureContent}>
-              <Text style={[styles.featureTitle, themedStyles.featureTitle]}>Keyboard Navigation</Text>
+              <Text style={[styles.featureTitle, themedStyles.featureTitle]}>
+                Keyboard Navigation
+              </Text>
               <Text style={[styles.featureDescription, themedStyles.featureDescription]}>
                 Full keyboard support including escape key to close
               </Text>
@@ -341,7 +453,12 @@ const handleCopy = async () => {
           </View>
 
           <View style={styles.featureItem}>
-            <View style={[styles.iconContainer, { backgroundColor: isDarkMode ? colors.surface : '#E8F1FF' }]}>
+            <View
+              style={[
+                styles.iconContainer,
+                { backgroundColor: isDarkMode ? colors.surface : '#E8F1FF' }
+              ]}
+            >
               <Ionicons
                 name="megaphone-outline"
                 size={24}
@@ -351,7 +468,9 @@ const handleCopy = async () => {
               />
             </View>
             <View style={styles.featureContent}>
-              <Text style={[styles.featureTitle, themedStyles.featureTitle]}>Screen Reader Support</Text>
+              <Text style={[styles.featureTitle, themedStyles.featureTitle]}>
+                Screen Reader Support
+              </Text>
               <Text style={[styles.featureDescription, themedStyles.featureDescription]}>
                 Proper ARIA roles and live region announcements
               </Text>
@@ -363,43 +482,55 @@ const handleCopy = async () => {
   );
 };
 
+/**
+ * Base styles. The new themedStyles overrides or extends
+ * these in various places, for consistent theming and
+ * improved accessibility.
+ */
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flex: 1
   },
   section: {
     padding: 16,
-    marginBottom: 16,
+    marginBottom: 16
   },
   sectionTitle: {
     fontSize: 20,
     fontWeight: '600',
-    marginBottom: 12,
+    marginBottom: 12
   },
-  demoContainer: {
+  demoContainerBase: {
     padding: 20,
     borderRadius: 12,
     alignItems: 'center',
+    borderWidth: 2,
+    borderColor: '#D1D1D1',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3
   },
   demoButton: {
     paddingVertical: 12,
     paddingHorizontal: 24,
     borderRadius: 8,
-    minHeight: 44,
+    minHeight: 44
   },
   buttonText: {
     fontSize: 16,
-    fontWeight: '600',
+    fontWeight: '600'
   },
   demoText: {
     fontSize: 14,
     textAlign: 'center',
-    marginTop: 12,
+    marginTop: 12
   },
   overlay: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'center'
   },
   dialog: {
     borderRadius: 16,
@@ -410,114 +541,114 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.25,
     shadowRadius: 8,
-    elevation: 5,
+    elevation: 5
   },
   dialogHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 16,
+    marginBottom: 16
   },
   dialogTitle: {
     fontSize: 20,
-    fontWeight: 'bold',
+    fontWeight: 'bold'
   },
   closeButton: {
-    padding: 4,
+    padding: 4
   },
   dialogContent: {
     fontSize: 16,
     lineHeight: 24,
-    marginBottom: 24,
+    marginBottom: 24
   },
   dialogActions: {
     flexDirection: 'row',
     justifyContent: 'flex-end',
-    gap: 12,
+    gap: 12
   },
   dialogButton: {
     paddingVertical: 10,
     paddingHorizontal: 16,
     borderRadius: 8,
     minWidth: 80,
-    alignItems: 'center',
+    alignItems: 'center'
   },
   secondaryButton: {
-    backgroundColor: '#f2f2f2',
+    backgroundColor: '#f2f2f2'
   },
   dialogButtonText: {
     fontSize: 16,
-    fontWeight: '600',
+    fontWeight: '600'
   },
   secondaryButtonText: {
     fontSize: 16,
-    fontWeight: '600',
+    fontWeight: '600'
   },
   codeContainer: {
     borderRadius: 8,
-    overflow: 'hidden',
+    overflow: 'hidden'
   },
   codeHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     padding: 8,
-    borderBottomWidth: 1,
+    borderBottomWidth: 1
   },
   codeHeaderText: {
     fontSize: 14,
-    fontFamily: 'monospace',
+    fontFamily: 'monospace'
   },
   copyButton: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 4,
-    padding: 4,
+    padding: 4
   },
   copyText: {
-    fontSize: 14,
+    fontSize: 14
   },
   copiedText: {
-    color: '#28A745',
+    color: '#28A745'
   },
   codeCard: {
     padding: 16,
-    maxHeight: 400,
+    maxHeight: 400
   },
   codeText: {
     fontFamily: 'monospace',
     fontSize: 14,
-    lineHeight: 20,
+    lineHeight: 20
   },
   featuresContainer: {
     borderRadius: 12,
     padding: 16,
-    gap: 16,
+    gap: 16
   },
   featureItem: {
     flexDirection: 'row',
     alignItems: 'flex-start',
-    gap: 12,
+    gap: 12
   },
   iconContainer: {
     width: 40,
     height: 40,
     borderRadius: 12,
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'center'
   },
   featureContent: {
-    flex: 1,
+    flex: 1
   },
   featureTitle: {
     fontSize: 16,
     fontWeight: '600',
-    marginBottom: 4,
+    marginBottom: 4
   },
   featureDescription: {
     fontSize: 14,
-    lineHeight: 20,
-  },
+    lineHeight: 20
+  }
 });
 
 export default AccessibleDialogExample;

@@ -7,119 +7,124 @@ export default function ComponentsScreen() {
   const router = useRouter();
   const { colors, textSizes, isDarkMode } = useTheme();
 
-  const handleComponentPress = (route, title, description, type) => {
+  const handleComponentPress = (route, title) => {
     router.push(route);
     AccessibilityInfo.announceForAccessibility(`Opening ${title} component details`);
   };
 
-const themedStyles = {
-  container: {
-    backgroundColor: colors.background,
-  },
-  header: {
-    backgroundColor: colors.surface,
-    borderBottomColor: colors.border,
-    paddingVertical: 20,
-    paddingHorizontal: 16,
-  },
-  title: {
-    color: colors.text,
-    fontSize: textSizes.xlarge,
-    fontWeight: '700',
-  },
-  description: {
-    color: colors.textSecondary,
-    fontSize: textSizes.medium,
-    marginTop: 4,
-  },
-  section: {
-    padding: 16,
-    gap: 16,
-  },
-  card: {
-    backgroundColor: colors.surface,
-    borderRadius: 16,
-    padding: 16,
-    marginBottom: 8,
-    borderWidth: 1,
-    borderColor: isDarkMode ? colors.border : 'transparent',
-    shadowColor: colors.shadow,
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: isDarkMode ? 0.3 : 0.1,
-    shadowRadius: 12,
-    elevation: 4,
-  },
-  cardHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 16,
-    paddingBottom: 12,
-  },
-  iconWrapper: {
-    width: 52,
-    height: 52,
-    borderRadius: 12,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: isDarkMode ? `${colors.primaryLight}20` : colors.primaryLight,
-  },
-  cardContent: {
-    flex: 1,
-    gap: 8,
-  },
-  cardTitleRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    marginBottom: 4,
-  },
-  titleArea: {
-    flex: 1,
-    marginRight: 8,
-  },
-  cardTitle: {
-    fontSize: textSizes.large,
-    fontWeight: '600',
-    color: colors.text,
-    marginBottom: 2,
-  },
-  badge: {
-    backgroundColor: isDarkMode ? `${colors.primaryLight}30` : colors.primaryLight,
-    paddingHorizontal: 10,
-    paddingVertical: 4,
-    borderRadius: 12,
-  },
-  badgeText: {
-    color: colors.primary,
-    fontSize: textSizes.small,
-    fontWeight: '600',
-  },
-  cardDescription: {
-    fontSize: textSizes.medium,
-    color: colors.textSecondary,
-    marginVertical: 8,
-  },
-  features: {
-    flexDirection: 'row',
-    gap: 16,
-    marginTop: 12,
-    paddingTop: 8,
-    borderTopWidth: 1,
-    borderTopColor: isDarkMode ? colors.border : colors.primaryLight,
-  },
-  featureItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 6,
-  },
-  featureText: {
-    fontSize: textSizes.small,
-    color: colors.textSecondary,
-  },
-  chevron: {
-    marginLeft: 'auto',
-  }
-};
+  // Themed styles, consistent with other screens
+  const themedStyles = {
+    container: {
+      backgroundColor: colors.background
+    },
+    header: {
+      backgroundColor: colors.surface,
+      borderBottomColor: colors.border,
+      paddingVertical: 20,
+      paddingHorizontal: 16
+    },
+    title: {
+      color: colors.text,
+      fontSize: textSizes.xlarge,
+      fontWeight: '700'
+    },
+    description: {
+      color: colors.textSecondary,
+      fontSize: textSizes.medium,
+      marginTop: 4
+    },
+    section: {
+      paddingHorizontal: 16,
+      paddingVertical: 12
+    },
+    card: {
+      backgroundColor: colors.surface,
+      borderRadius: 16,
+      padding: 14,
+      marginBottom: 10,
+      borderWidth: isDarkMode ? 1 : 0,
+      borderColor: isDarkMode ? colors.border : 'transparent',
+      shadowColor: colors.shadow,
+      shadowOffset: { width: 0, height: 3 },
+      shadowOpacity: isDarkMode ? 0.3 : 0.1,
+      shadowRadius: 6,
+      elevation: 2
+    },
+    cardHeader: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: 16,
+      marginBottom: 8
+    },
+    iconWrapper: {
+      width: 48,
+      height: 48,
+      borderRadius: 12,
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: isDarkMode
+        ? `${colors.primaryLight}33`
+        : `${colors.primaryLight}80`
+    },
+    cardContent: {
+      flex: 1,
+      gap: 6
+    },
+    cardTitleRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between'
+    },
+    titleArea: {
+      flex: 1,
+      marginRight: 8
+    },
+    cardTitle: {
+      fontSize: textSizes.large,
+      fontWeight: '600',
+      color: colors.text,
+      marginBottom: 2
+    },
+    badge: {
+      backgroundColor: isDarkMode
+        ? `${colors.primaryLight}44`
+        : colors.primaryLight,
+      paddingHorizontal: 8,
+      paddingVertical: 2,
+      borderRadius: 12
+    },
+    badgeText: {
+      color: colors.primary,
+      fontSize: textSizes.small,
+      fontWeight: '600'
+    },
+    cardDescription: {
+      fontSize: textSizes.small,
+      color: colors.textSecondary,
+      marginBottom: 4
+    },
+    features: {
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      gap: 14,
+      marginTop: 4,
+      paddingTop: 6,
+      borderTopWidth: 1,
+      borderTopColor: isDarkMode ? colors.border : `${colors.primaryLight}66`
+    },
+    featureItem: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: 4
+    },
+    featureText: {
+      fontSize: textSizes.xsmall,
+      color: colors.textSecondary
+    },
+    chevron: {
+      marginLeft: 'auto'
+    }
+  };
 
   return (
     <ScrollView
@@ -128,10 +133,7 @@ const themedStyles = {
       accessibilityLabel="Accessibility Components Screen"
     >
       <View style={[styles.header, themedStyles.header]}>
-        <Text
-          style={[styles.title, themedStyles.title]}
-          accessibilityRole="header"
-        >
+        <Text style={[styles.title, themedStyles.title]} accessibilityRole="header">
           Accessibility Components
         </Text>
         <Text style={[styles.description, themedStyles.description]}>
@@ -139,17 +141,13 @@ const themedStyles = {
         </Text>
       </View>
 
-      <View style={styles.section}>
+      <View style={[styles.section, themedStyles.section]}>
+        {/* Buttons & Touchables */}
         <TouchableOpacity
           style={themedStyles.card}
           accessibilityRole="button"
           accessibilityLabel="Buttons and Touchables component. Create accessible touch targets with proper sizing and feedback. Essential component type."
-          onPress={() => handleComponentPress(
-            '/accessible-components/accessible-button',
-            'Buttons & Touchables',
-            'Create accessible touch targets with proper sizing and feedback',
-            'Essential'
-          )}
+          onPress={() => handleComponentPress('/accessible-components/accessible-button', 'Buttons & Touchables')}
         >
           <View style={themedStyles.cardHeader}>
             <View style={themedStyles.iconWrapper}>
@@ -203,16 +201,12 @@ const themedStyles = {
           </View>
         </TouchableOpacity>
 
+        {/* Form Controls */}
         <TouchableOpacity
           style={themedStyles.card}
           accessibilityRole="button"
           accessibilityLabel="Form Controls component. Implement accessible form inputs and controls. Complex component type."
-          onPress={() => handleComponentPress(
-            '/accessible-components/accessible-form',
-            'Form Controls',
-            'Implement accessible form inputs and controls',
-            'Complex'
-          )}
+          onPress={() => handleComponentPress('/accessible-components/accessible-form', 'Form Controls')}
         >
           <View style={themedStyles.cardHeader}>
             <View style={themedStyles.iconWrapper}>
@@ -266,16 +260,12 @@ const themedStyles = {
           </View>
         </TouchableOpacity>
 
+        {/* Media Content */}
         <TouchableOpacity
           style={themedStyles.card}
           accessibilityRole="button"
           accessibilityLabel="Media Content component. Make images and media content accessible. Advanced component type."
-          onPress={() => handleComponentPress(
-            '/accessible-components/accessible-media',
-            'Media Content',
-            'Make images and media content accessible',
-            'Advanced'
-          )}
+          onPress={() => handleComponentPress('/accessible-components/accessible-media', 'Media Content')}
         >
           <View style={themedStyles.cardHeader}>
             <View style={themedStyles.iconWrapper}>
@@ -329,16 +319,12 @@ const themedStyles = {
           </View>
         </TouchableOpacity>
 
+        {/* Modal Dialogs */}
         <TouchableOpacity
           style={themedStyles.card}
           accessibilityRole="button"
           accessibilityLabel="Modal Dialogs component. Implement accessible modal dialogs with proper focus management and screen reader support. Advanced component type."
-          onPress={() => handleComponentPress(
-            '/accessible-components/accessible-dialog',
-            'Modal Dialogs',
-            'Implement accessible modal dialogs with proper focus management and screen reader support',
-            'Advanced'
-          )}
+          onPress={() => handleComponentPress('/accessible-components/accessible-dialog', 'Modal Dialogs')}
         >
           <View style={themedStyles.cardHeader}>
             <View style={themedStyles.iconWrapper}>
@@ -395,6 +381,7 @@ const themedStyles = {
     </ScrollView>
   );
 }
+
 
 const styles = StyleSheet.create({
   container: {

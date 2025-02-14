@@ -28,19 +28,19 @@ Problemi di accessibilità:
 
 1. ho il sospetto che la lingua principale dell'app non sia inglese, ammesso che si possa definire, onestamente non lo so con questo framework ☑️
 
-2. le icone (ex nel menù) sono raggiungibili ma poi non hanno un'alternativa testuale, sarebbe meglio che non fossero raggiungibili, questa cosa andrebbe pure aggiunta alle best practise forse. O meglio, forse tutte le difficoltà che hai trovato tu nel rendere un'app accessibile potrebbero essere aggiunte alle best practise (????)
+2. le icone (ex nel menù) sono raggiungibili ma poi non hanno un'alternativa testuale, sarebbe meglio che non fossero raggiungibili, questa cosa andrebbe pure aggiunta alle best practise forse. O meglio, forse tutte le difficoltà che hai trovato tu nel rendere un'app accessibile potrebbero essere aggiunte alle best practise ☑️
 
-3. spesso nei pulsanti il testo è doppio ☑️ (???) - da vedere su device, ma in teoria risolto
+3. spesso nei pulsanti il testo è doppio ☑️
 
-4. menù: sono raggiungibili anche accessibleHub e version 1.0.0 e da screen reader non sono distinguibili dalle altre voci ☑️ (???) - da vedere su device, ma in teoria risolto
+4. menù: sono raggiungibili anche accessibleHub e version 1.0.0 e da screen reader non sono distinguibili dalle altre voci ☑️
 
 5. Non Tap here ma solo tap, altrimenti per le persone non vedenti non sanno dove ☑️
 
 6. paradossalmente con Talkback attivato le gesture dei bottoni e gli swipe funzionano, senza no. Magari proviamo insieme. Rotate control invece proprio non funziona ☑️ (cambiate le gesture)
 
-7. essential gestures: forse sbaglio io ma me li fa leggere due volte ☑️ (???) - da vedere su device, ma in teoria risolto
+7. essential gestures: forse sbaglio io ma me li fa leggere due volte (???) - da rifare e correggere
 
-8. i tag forse andrebbero identificati via screen reader ☑️ (???) - da vedere su device, ma in teoria risolto
+8. i tag forse andrebbero identificati via screen reader ☑️
 
 9. il pulsate copy non dà feedback allo screenreader ☑️
 
