@@ -1,157 +1,185 @@
-# AccessibleHub: A Comprehensive Mobile Accessibility Learning Platform for Developers
+# AccessibleHub: A Comprehensive Mobile Accessibility Learning Platform
 
-## 🎯 Project Overview
+AccessibleHub is an **innovative React Native** mobile application designed to help developers **learn and implement** accessibility best practices. Built with **Expo** and guided by **WCAG 2.2** standards, the app provides **interactive demos**, **comparisons**, and **practical examples** of how to create inclusive mobile experiences.
 
-AccessibleHub is an innovative React Native mobile application designed to serve as an educational resource and practical guide for developers seeking to create truly accessible mobile applications. Born from a research-driven approach, this application bridges the gap between theoretical accessibility guidelines and practical implementation.
+---
 
-### 📘 Core Mission
+## 📂 Project Structure
 
-The primary goal of AccessibleHub is to transform the way developers understand and implement accessibility in mobile applications. By providing interactive, hands-on learning experiences, the platform aims to:
+Below is the main directory layout inside the `my-app` folder (the core Expo project):
 
-- Demystify complex accessibility concepts
-- Provide practical, implementable accessibility solutions
-- Raise awareness about the importance of inclusive design
-- Offer comparative insights across different mobile development frameworks
+```
+my-app/
+├─ .expo/
+├─ app/
+│  ├─ index.tsx                 # Home screen
+│  ├─ components.tsx            # Main screen listing accessible components
+│  ├─ practices.tsx             # Main screen listing best practices
+│  ├─ tools.tsx                 # Mobile Accessibility Tools screen
+│  ├─ frameworks-comparison.tsx # Framework comparison screen
+│  ├─ accessibility-instruction.tsx # Instruction & Community screen
+│  ├─ settings.tsx              # Settings & accessibility toggles
+│  └─ _layout.tsx               # Global Drawer/Navigation layout
+│
+├─ accessible-components/
+│  ├─ _layout.tsx
+│  ├─ accessible-button.tsx     # Buttons & Touchables demo
+│  ├─ accessible-dialog.tsx     # Modal dialogs demo
+│  ├─ accessible-form.tsx       # Accessible forms demo
+│  ├─ accessible-media.tsx      # Images/media content demo
+│  └─ accessible-advanced.tsx   # Combined advanced components (Tabs, Progress, Alerts, Sliders)
+│
+├─ practices-screens/
+│  ├─ _layout.tsx
+│  ├─ guidelines.tsx            # WCAG 2.2 guidelines
+│  ├─ gestures.tsx              # Gesture tutorial
+│  ├─ navigation.tsx            # Logical focus order / navigation focus
+│  ├─ screen-reader.tsx         # Screen reader support
+│  ├─ semantics.tsx             # Semantic structure
+│  └─ accessibility-instruction.tsx  # (If further instruction sub-screens needed)
+│
+├─ context/
+│  └─ ThemeContext.tsx          # Custom theming & accessibility settings
+│
+├─ assets/
+│  ├─ images/
+│  │  ├─ placeholder1.png
+│  │  ├─ placeholder2.png
+│  │  └─ placeholder3.png
+│  └─ fonts/ (if custom fonts used)
+│
+├─ scripts/                     # (Optional scripts, e.g., for builds or linting)
+├─ package.json
+├─ tsconfig.json
+├─ babel.config.js
+└─ README.md                    # This file
+```
 
-## 🌐 Application Structure and Screens
+---
 
-### 1. Home Screen (`index.tsx`)
-- Entry point of the application
-- Provides an overview of the accessibility learning journey
-- Quick access to key sections
-- Highlights key statistics and application purpose
+## 🎯 Overview & Goals
 
-### 2. Accessibility Components (`components.tsx`)
-A curated collection of accessible React Native components:
-- Accessible Buttons
-- Form Controls
-- Media Content Handling
-- Modal Dialogs
+**AccessibleHub** aims to:
 
-Each component demonstrates:
-- Proper accessibility implementation
-- Code samples
-- Best practice guidelines
-- Interactive examples
+- **Educate** developers on **mobile accessibility** techniques  
+- **Demonstrate** WCAG principles in **React Native** context  
+- **Compare** frameworks (React Native, Flutter, Ionic) from an accessibility standpoint  
+- **Provide** ready-to-use code examples with best practices  
 
-### 3. Best Practices Screen (`practices.tsx`)
-Comprehensive guide to mobile accessibility, covering:
-- WCAG 2.2 Guidelines
-- Semantic Structure
-- Gesture Tutorials
-- Screen Reader Support
-- Navigation and Focus Management
+---
 
-### 4. Framework Comparison (`frameworks-comparison.tsx`)
-An in-depth comparative analysis of mobile development frameworks:
-- React Native
-- Flutter
-- Ionic
-- Accessibility feature comparisons
-- Performance metrics
-- Development experience evaluation
+## 🚀 Key Screens & Features
 
-### 5. Accessibility Tools (`tools.tsx`)
-A comprehensive resource for accessibility testing and development:
-- Screen Reader Tools (TalkBack, VoiceOver)
-- Development Accessibility Inspectors
-- Contrast Analysis Tools
-- Testing Checklists
+1. **Home Screen (`index.tsx`)**  
+   - Introductory page with quick stats and navigation to core sections  
+   - Announces the app’s purpose and highlights the main features  
 
-### 6. Settings (`settings.tsx`)
-Customization options for accessibility:
-- Dark/Light Mode
-- High Contrast Mode
-- Text Size Adjustment
-- Motion Reduction
-- Enhanced Focus Settings
+2. **Accessibility Components (`components.tsx`)**  
+   - Overview of multiple sub-demos in `accessible-components/` folder:
+     - **Buttons & Touchables** (`accessible-button.tsx`)
+     - **Form Controls** (`accessible-form.tsx`)
+     - **Media Content** (`accessible-media.tsx`)
+     - **Modal Dialogs** (`accessible-dialog.tsx`)
+     - **Advanced** (`accessible-advanced.tsx`): Tabs, Progress, Alerts, Sliders
+
+3. **Best Practices (`practices.tsx`)**  
+   - Index of best practice demos in `practices-screens/` folder:
+     - **WCAG Guidelines** (`guidelines.tsx`)
+     - **Gestures** (`gestures.tsx`)
+     - **Screen Reader Support** (`screen-reader.tsx`)
+     - **Semantic Structure** (`semantics.tsx`)
+     - **Focus/Navigation** (`navigation.tsx`)
+
+4. **Mobile Accessibility Tools (`tools.tsx`)**  
+   - Summaries of TalkBack, VoiceOver, Inspector, Contrast Analyzer, etc.  
+   - Link out to external docs or tool usage
+
+5. **Framework Comparison (`frameworks-comparison.tsx`)**  
+   - Evaluates popular frameworks (React Native, Flutter, Ionic)  
+   - Compares accessibility support, performance, dev experience
+
+6. **Instruction & Community (`accessibility-instruction.tsx`)**  
+   - Replaces older “achievements” approach  
+   - Focuses on broader accessibility instruction, community links, success stories
+
+7. **Settings (`settings.tsx`)**  
+   - Toggles for **Dark Mode**, **High Contrast**, **Large Text**, etc.  
+   - Stores user preferences in local storage  
+   - Provides immediate accessibility feedback
+
+---
 
 ## 🛠 Technical Architecture
 
-### Framework and Technologies
-- **Base Framework**: React Native
-- **Development Platform**: Expo
-- **Styling**: Custom Theme Context with dynamic theming
-- **Accessibility**: Native Accessibility API integration
-- **Navigation**: Expo Router
-- **State Management**: React Hooks and Context API
+- **React Native** + **Expo**  
+- **Expo Router** for navigation  
+- **ThemeContext** for dynamic theming (light/dark, large text, high contrast)  
+- **Accessibility** integrated via `AccessibilityInfo`, `accessibilityRole`, `accessibilityLabel`, etc.  
+- **Context API** for global state (settings, theming)  
+- **TypeScript** for robust type definitions  
 
-### Key Technical Implementations
-- Dynamic theming with light/dark mode
-- Accessibility-first component design
-- Comprehensive semantic markup
-- Cross-platform compatibility
-- Performance-optimized rendering
+---
 
-## 📋 Development Requirements
+## 🧰 Installation & Setup
 
-### Minimum System Requirements
-- Node.js 18.x LTS
-- npm 9.x or Yarn 1.22.x
-- Expo CLI
-- Git
-- Android Studio (for Android development)
-- Xcode (for iOS development, macOS only)
+1. **Clone the Repository**  
+   ```bash
+   git clone https://github.com/your-username/AccessibleHub.git
+   cd AccessibleHub/my-app
+   ```
 
-### Recommended Development Environment
-- Visual Studio Code
-- React Native Developer Tools
-- Expo Go App (Mobile Testing)
-- Chrome DevTools
-- React Native Debugger
+2. **Install Dependencies**  
+   ```bash
+   # npm
+   npm install
 
-## 🚀 Setup and Installation
+   # or yarn
+   yarn install
+   ```
 
-### 1. Clone the Repository
-```bash
-git clone https://github.com/your-username/AccessibleHub.git
-cd AccessibleHub/my-app
-```
+3. **Configure Expo**  
+   ```bash
+   npm install -g expo-cli
+   npx expo login
+   ```
 
-### 2. Install Dependencies
-```bash
-# Using npm
-npm install
+4. **Start Development**  
+   ```bash
+   npx expo start
+   # or
+   yarn start
+   ```
 
-# Using Yarn
-yarn install
-```
+---
 
-### 3. Configure Development Environment
-```bash
-# Install Expo CLI globally
-npm install -g expo-cli
+## 🔨 Build Instructions
 
-# Login to Expo (if not already logged in)
-npx expo login
-```
+1. **Android Build**  
+   ```bash
+   npx expo build:android
+   # or using EAS
+   eas build --platform android
+   ```
 
-### 4. Start Development Server
-```bash
-# Start development server
-npx expo start
+2. **iOS Build**  
+   ```bash
+   npx expo build:ios
+   # or using EAS
+   eas build --platform ios
+   ```
 
-# Clear cache if needed
-npx expo start -c
-```
+3. **Local Builds (Advanced)**  
+   - Requires **Android SDK**, **Xcode** (on macOS), or WSL on Windows  
+   - Use `eas build --local` with properly configured environment  
 
-## 🔨 Build Configurations
+### Windows Local Build (Recommended for Advanced Users)
 
-### Android Build Options
-
-#### Remote Build
-```bash
-npx expo build:android
-```
-
-#### Local Build (Recommended for Advanced Users)
-
-##### Prerequisites
+#### Prerequisites
 - Windows 10/11
 - Basic command line knowledge
 - Existing Expo/React Native project
 
-##### Detailed Step-by-Step Local Build Guide
+#### Detailed Step-by-Step Local Build Guide
 
 ###### 1. Install Windows Subsystem for Linux (WSL)
 ```bash
@@ -257,62 +285,40 @@ java -jar bundletool.jar build-apks \
 unzip my_app.apks -d apk_output
 ```
 
-##### Troubleshooting Tips
-- Ensure all paths are correct
-- Check Java and Android SDK versions
-- Verify WSL Ubuntu is up to date
-- Monitor EAS CLI logs for specific errors
+---
 
-### iOS Build
-```bash
-npx expo build:ios
-```
+## 🧪 Testing & Accessibility
 
-## 🧪 Testing Strategies
-
-### Accessibility Testing
-- VoiceOver (iOS)
-- TalkBack (Android)
-- Accessibility Scanner
-- Manual screen reader testing
-
-### Performance Testing
-- React Native Performance Monitor
-- Chrome DevTools Performance Tab
-- Lighthouse Accessibility Audit
-
-## 🤝 Contribution Guidelines
-
-### How to Contribute
-1. Fork the repository
-2. Create a feature branch
-3. Implement your feature/fix
-4. Write comprehensive tests
-5. Ensure accessibility compliance
-6. Submit a pull request
-
-### Contribution Criteria
-- Follow WCAG 2.2 Guidelines
-- Maintain clean, documented code
-- Include comprehensive accessibility testing
-- Provide detailed pull request descriptions
-
-## 📚 Learning Resources
-
-### Accessibility References
-- W3C Web Accessibility Initiative
-- WCAG 2.2 Guidelines
-- MDN Web Docs Accessibility Guide
-- React Native Accessibility Documentation
-
-## 📄 License
-
-MIT License - Open-source and free to use, modify, and distribute
-
-## 🏆 Project Acknowledgments
-
-Developed as part of a research initiative to improve mobile application accessibility, with support from [Your Institution/Organization].
+- **TalkBack** (Android) & **VoiceOver** (iOS)  
+- **Accessibility Scanner** (Android)  
+- **Manual checks**: ensuring correct roles, labels, states  
+- **Performance**: React DevTools, profiling, etc.  
 
 ---
 
-**Empowering Developers, Enabling Accessibility 🌈👨‍💻**
+## 🤝 Contributing
+
+1. **Fork** & create a feature branch  
+2. **Implement** changes with thorough accessibility considerations  
+3. **Open a Pull Request** describing your feature/fix  
+4. Ensure **WCAG compliance** and **relevant tests**  
+
+---
+
+## 📚 Additional Resources
+
+- **W3C WCAG 2.2**  
+- **React Native Accessibility Docs**  
+- **Expo Documentation**  
+- **MDN Accessibility Guides**  
+
+---
+
+## ⚖ License
+
+Distributed under the **MIT License**. See `LICENSE` for more details.
+
+---
+
+**Empowering Developers, Enabling Accessibility.**  
+Your feedback and contributions are welcome!

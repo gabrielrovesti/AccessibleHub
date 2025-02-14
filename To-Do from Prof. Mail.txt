@@ -1,8 +1,7 @@
 
-Inoltre al momento ho testato solo su Android con Talkback, a cose finite lo testo anche con Apple, se preferisci prima. (???)
+Inoltre al momento ho testato solo su Android con Talkback, a cose finite lo testo anche con Apple, se preferisci prima.
 
-
-1. Estetica: manca un'icona per l'app che potrebbe essere utilizzata come logo anche al suo interno. Inoltre l'app ha una buona estetica, ma un po' troppo piatta, anche per aiutare la comprensione da parte di persone con disabilità cognitiva questo andrebbe un po' cambiato. Un'idea che mi viene in mente, ma bisogna fare delle prove, è mettere lo sfondo scuro all'app (e chiaro in dark mode): questo darebbe più risalto alle card con i vari elementi (ad esempio best practice, testing tools, etc). Altrimenti si potrebbe provare con lo stesso azzurrino che usi per i tag, ma questo secondo me migliora l'estetica ma non aiuta con il contrasto. (???) - resa migliore la home, cambio sfondo generale per schermata da implementare
+1. Estetica: manca un'icona per l'app che potrebbe essere utilizzata come logo anche al suo interno. Inoltre l'app ha una buona estetica, ma un po' troppo piatta, anche per aiutare la comprensione da parte di persone con disabilità cognitiva questo andrebbe un po' cambiato. Un'idea che mi viene in mente, ma bisogna fare delle prove, è mettere lo sfondo scuro all'app (e chiaro in dark mode): questo darebbe più risalto alle card con i vari elementi (ad esempio best practice, testing tools, etc). Altrimenti si potrebbe provare con lo stesso azzurrino che usi per i tag, ma questo secondo me migliora l'estetica ma non aiuta con il contrasto. (???) - resa migliore la home, cambio sfondo generale per schermata da implementare ☑️
 
 2. Non lo chiamerei accessibility testing manual, perchè almeno nella mia idea è più uno strumento di aiuto a tutta la fase di sviluppo ☑️
 
@@ -38,7 +37,7 @@ Problemi di accessibilità:
 
 6. paradossalmente con Talkback attivato le gesture dei bottoni e gli swipe funzionano, senza no. Magari proviamo insieme. Rotate control invece proprio non funziona ☑️ (cambiate le gesture)
 
-7. essential gestures: forse sbaglio io ma me li fa leggere due volte (???) - da rifare e correggere
+7. essential gestures: forse sbaglio io ma me li fa leggere due volte ☑️
 
 8. i tag forse andrebbero identificati via screen reader ☑️
 
@@ -46,23 +45,9 @@ Problemi di accessibilità:
 
 10. sulla form non è visibile il pulsante di submit credo sia una scelta ma meglio discuterne, poi non mi pare ci sia la gestione degli errori, ma anche qui potrei aver sbagliato io ☑️
 
-11. Mobile Accessibility Tools: alcune card sono gestite come elemento unico (Accessibility Inspector e Constrast Analyzer) le altre come elementi composti in cui si naviga all'interno, sarebbe meglio che fossero tutte uguali ☑️ - risolto
+11. Mobile Accessibility Tools: alcune card sono gestite come elemento unico (Accessibility Inspector e Constrast Analyzer) le altre come elementi composti in cui si naviga all'interno, sarebbe meglio che fossero tutte uguali ☑️ 
 
-****** PENDING 09-02 ******
-
-Pending Items:
-
-- Accessibility Review Points:
-
-Need to verify if text is still being announced twice with TalkBack for essential gestures
-Verify tag announcements are working correctly with screen readers
-Double-check if footer elements in menu are properly hidden from screen readers
-
-- Visual Elements:
-
-Background contrast improvements are pending (dark background in light mode, light in dark mode)
-This is part of the aesthetic improvements you mentioned are still needed
-
+****** PENDING 14-02 ******
 
 - Documentation:
 
