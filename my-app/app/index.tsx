@@ -3,8 +3,11 @@ import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-nati
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { useTheme } from '../context/ThemeContext';
+import { LinearGradient } from 'expo-linear-gradient';
 
-// Accessibility metrics calculation utilities
+/* -----------------------------------------
+   1. Accessibility metrics calculation
+----------------------------------------- */
 const calculateAccessibilityScore = () => {
   const metrics = {
     components: {
@@ -32,14 +35,28 @@ const calculateAccessibilityScore = () => {
   };
 };
 
+/* -----------------------------------------
+   2. HomeScreen Component
+----------------------------------------- */
 export default function HomeScreen() {
   const router = useRouter();
   const { colors, textSizes, isDarkMode } = useTheme();
   const accessibilityMetrics = calculateAccessibilityScore();
 
+  /*
+   * Conditionally choose a gradient or solid color
+   * for the background based on dark mode.
+   */
+  const backgroundGradientColors = isDarkMode
+    ? [colors.background, colors.background]  // solid in dark mode
+    : [colors.background, '#e5e5ea'];         // slight gradient in light mode
+
+  /* -----------------------------------------
+     Themed styles
+  ----------------------------------------- */
   const themedStyles = {
     container: {
-      backgroundColor: colors.background,
+      // We'll rely on the <LinearGradient> for background
     },
     hero: {
       backgroundColor: colors.surface,
@@ -101,8 +118,6 @@ export default function HomeScreen() {
       padding: 20,
       marginVertical: 24,
       marginHorizontal: 20,
-      marginTop: -20,
-      marginBottom: 24,
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'space-between',
@@ -187,47 +202,7 @@ export default function HomeScreen() {
       fontSize: textSizes.small,
       fontWeight: '600',
     },
-    communityCard: {
-      backgroundColor: colors.surface,
-      borderRadius: 16,
-      padding: 16,
-      marginBottom: 16,
-      shadowColor: colors.text,
-      shadowOffset: { width: 0, height: 2 },
-      shadowOpacity: 0.1,
-      shadowRadius: 4,
-      elevation: 2,
-      borderWidth: 1,
-      borderColor: colors.border,
-    },
-    communityTitle: {
-      color: colors.text,
-      fontSize: textSizes.large,
-      fontWeight: '700',
-      marginBottom: 8,
-    },
-    communityDescription: {
-      color: colors.textSecondary,
-      fontSize: textSizes.medium,
-      lineHeight: 22,
-    },
-    communityFeatures: {
-      marginTop: 12,
-      gap: 8,
-    },
-    communityFeature: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      gap: 8,
-    },
-    communityIcon: {
-      color: colors.primary,
-    },
-    communityFeatureText: {
-      color: colors.text,
-      fontSize: textSizes.medium,
-    },
-   communitySection: {
+    communitySection: {
       backgroundColor: colors.surface,
       borderRadius: 16,
       padding: 20,
@@ -270,166 +245,187 @@ export default function HomeScreen() {
   };
 
   return (
-    <ScrollView
-      style={[styles.container, themedStyles.container]}
-      accessibilityRole="scrollview"
-      accessibilityLabel="AccessibleHub Home Screen"
-      contentContainerStyle={{ paddingBottom: 24 }}
+    <LinearGradient
+      colors={backgroundGradientColors}
+      style={{ flex: 1 }}
     >
-      <View style={themedStyles.hero}>
-        <Text
-          style={themedStyles.title}
-          accessibilityRole="header"
-        >
-        The ultimate accessibility-driven toolkit for developers
-        </Text>
-        <Text style={themedStyles.subtitle}>
-          A comprehensive resource for building inclusive React Native applications with verified accessibility standards - explore for more!
-        </Text>
-
-        <View style={themedStyles.statsContainer}>
-          <View style={styles.statItem} accessibilityRole="text">
-            <Text style={themedStyles.statNumber}>{accessibilityMetrics.componentCount}</Text>
-            <Text style={themedStyles.statLabel}>Components</Text>
-            <Text style={themedStyles.statDescription}>Ready to Use</Text>
-          </View>
-
-          <View style={themedStyles.statDivider} importantForAccessibility="no" />
-
-          <View style={styles.statItem} accessibilityRole="text">
-            <Text style={themedStyles.statNumber}>{accessibilityMetrics.wcagCompliance}%</Text>
-            <Text style={themedStyles.statLabel}>WCAG 2.2</Text>
-            <Text style={themedStyles.statDescription}>Level AA</Text>
-          </View>
-
-          <View style={themedStyles.statDivider} importantForAccessibility="no" />
-
-          <View style={styles.statItem} accessibilityRole="text">
-            <Text style={themedStyles.statNumber}>{accessibilityMetrics.testingScore}%</Text>
-            <Text style={themedStyles.statLabel}>Screen Reader</Text>
-            <Text style={themedStyles.statDescription}>Test Coverage</Text>
-          </View>
-        </View>
-      </View>
-
-      <TouchableOpacity
-        style={themedStyles.quickStartCard}
-        onPress={() => router.push('/components')}
-        accessibilityRole="button"
-        accessibilityLabel="Quick start with component examples"
-        accessibilityHint="Navigate to components section"
+      <ScrollView
+        style={[styles.container]}
+        contentContainerStyle={{ paddingBottom: 24 }}
+        accessibilityRole="scrollview"
+        accessibilityLabel="AccessibleHub Home Screen"
       >
-        <View style={themedStyles.cardText}>
-          <Text style={themedStyles.cardTitle}>Quick Start</Text>
-          <Text style={themedStyles.cardDescription}>
-            Explore accessible component examples
-          </Text>
-        </View>
-        <Ionicons
-          name="arrow-forward-circle"
-          size={32}
-          color={colors.primary}
-          accessibilityElementsHidden={true}
-        />
-      </TouchableOpacity>
-
-      <View style={themedStyles.mainContent}>
-        <Text style={themedStyles.sectionTitle}>
-          Development Resources
-        </Text>
-
-        {[
-          {
-            title: 'Best Practices',
-            description: 'Comprehensive WCAG 2.2 implementation guidelines for React Native',
-            icon: 'book-outline',
-            route: '/practices',
-            tags: ['WCAG 2.2', 'Guidelines'],
-            hint: 'Access WCAG implementation guidelines'
-          },
-          {
-            title: 'Testing Tools',
-            description: 'Essential tools and methods for accessibility verification',
-            icon: 'build-outline',
-            route: '/tools',
-            tags: ['TalkBack', 'VoiceOver'],
-            hint: 'Access accessibility testing tools'
-          },
-          {
-            title: 'Framework Comparison',
-            description: 'Detailed analysis of accessibility support across mobile frameworks',
-            icon: 'git-compare',
-            route: '/frameworks-comparison',
-            tags: ['React Native', 'Flutter'],
-            hint: 'Compare framework accessibility features'
-          }
-        ].map((feature, index) => (
-          <TouchableOpacity
-            key={index}
-            style={themedStyles.featureCard}
-            onPress={() => router.push(feature.route)}
-            accessibilityRole="button"
-            accessibilityLabel={feature.title}
-            accessibilityHint={feature.hint}
+        {/* HERO SECTION */}
+        <View style={themedStyles.hero}>
+          <Text
+            style={themedStyles.title}
+            accessibilityRole="header"
           >
-            <View style={themedStyles.featureIconContainer}>
+            The ultimate accessibility-driven toolkit for developers
+          </Text>
+          <Text style={themedStyles.subtitle}>
+            A comprehensive resource for building inclusive React Native applications with verified accessibility standards - explore for more!
+          </Text>
+
+          {/* STATS */}
+          <View style={themedStyles.statsContainer}>
+            <View style={styles.statItem} accessibilityRole="text">
+              <Text style={themedStyles.statNumber}>
+                {accessibilityMetrics.componentCount}
+              </Text>
+              <Text style={themedStyles.statLabel}>Components</Text>
+              <Text style={themedStyles.statDescription}>Ready to Use</Text>
+            </View>
+
+            <View style={themedStyles.statDivider} importantForAccessibility="no" />
+
+            <View style={styles.statItem} accessibilityRole="text">
+              <Text style={themedStyles.statNumber}>
+                {accessibilityMetrics.wcagCompliance}%
+              </Text>
+              <Text style={themedStyles.statLabel}>WCAG 2.2</Text>
+              <Text style={themedStyles.statDescription}>Level AA</Text>
+            </View>
+
+            <View style={themedStyles.statDivider} importantForAccessibility="no" />
+
+            <View style={styles.statItem} accessibilityRole="text">
+              <Text style={themedStyles.statNumber}>
+                {accessibilityMetrics.testingScore}%
+              </Text>
+              <Text style={themedStyles.statLabel}>Screen Reader</Text>
+              <Text style={themedStyles.statDescription}>Test Coverage</Text>
+            </View>
+          </View>
+        </View>
+
+        {/* QUICK START */}
+        <TouchableOpacity
+          style={themedStyles.quickStartCard}
+          onPress={() => router.push('/components')}
+          accessibilityRole="button"
+          accessibilityLabel="Quick start with component examples"
+          accessibilityHint="Navigate to components section"
+        >
+          <View style={themedStyles.cardText}>
+            <Text style={themedStyles.cardTitle}>Quick Start</Text>
+            <Text style={themedStyles.cardDescription}>
+              Explore accessible component examples
+            </Text>
+          </View>
+          <Ionicons
+            name="arrow-forward-circle"
+            size={32}
+            color={colors.primary}
+            accessibilityElementsHidden
+          />
+        </TouchableOpacity>
+
+        {/* DEVELOPMENT RESOURCES */}
+        <View style={themedStyles.mainContent}>
+          <Text style={themedStyles.sectionTitle}>
+            Development Resources
+          </Text>
+
+          {[
+            {
+              title: 'Best Practices',
+              description: 'Comprehensive WCAG 2.2 implementation guidelines for React Native',
+              icon: 'book-outline',
+              route: '/practices',
+              tags: ['WCAG 2.2', 'Guidelines'],
+              hint: 'Access WCAG implementation guidelines'
+            },
+            {
+              title: 'Testing Tools',
+              description: 'Essential tools and methods for accessibility verification',
+              icon: 'build-outline',
+              route: '/tools',
+              tags: ['TalkBack', 'VoiceOver'],
+              hint: 'Access accessibility testing tools'
+            },
+            {
+              title: 'Framework Comparison',
+              description: 'Detailed analysis of accessibility support across mobile frameworks',
+              icon: 'git-compare',
+              route: '/frameworks-comparison',
+              tags: ['React Native', 'Flutter'],
+              hint: 'Compare framework accessibility features'
+            }
+          ].map((feature, index) => (
+            <TouchableOpacity
+              key={index}
+              style={themedStyles.featureCard}
+              onPress={() => router.push(feature.route)}
+              accessibilityRole="button"
+              accessibilityLabel={feature.title}
+              accessibilityHint={feature.hint}
+            >
+              <View style={themedStyles.featureIconContainer}>
+                <Ionicons
+                  name={feature.icon}
+                  size={28}
+                  color={colors.primary}
+                  accessibilityElementsHidden
+                />
+              </View>
+              <Text style={themedStyles.featureTitle}>
+                {feature.title}
+              </Text>
+              <Text style={themedStyles.featureDescription}>
+                {feature.description}
+              </Text>
+              <View style={themedStyles.tagContainer}>
+                {feature.tags.map((tag, tagIndex) => (
+                  <View
+                    key={tagIndex}
+                    style={themedStyles.tag}
+                    importantForAccessibility="no"
+                  >
+                    <Text style={themedStyles.tagText}>{tag}</Text>
+                  </View>
+                ))}
+              </View>
+            </TouchableOpacity>
+          ))}
+        </View>
+
+        {/* COMMUNITY SECTION */}
+        <View style={themedStyles.mainContent}>
+          <View style={themedStyles.communitySection}>
+            <Text style={themedStyles.communitySectionTitle}>
+              Developer Community
+            </Text>
+            <Text style={themedStyles.communitySectionDescription}>
+              Join our accessibility community to connect with experts, discuss best practices, and level up your skills. Earn badges as you progress on your accessibility journey!
+            </Text>
+
+            <TouchableOpacity
+              style={themedStyles.achievementsButton}
+              onPress={() => router.push('/achievements')}
+              accessibilityRole="button"
+              accessibilityLabel="View accessibility achievements"
+              accessibilityHint="Navigate to the achievements screen to track your progress"
+            >
+              <Text style={themedStyles.achievementsButtonText}>
+                View Achievements
+              </Text>
               <Ionicons
-                name={feature.icon}
-                size={28}
-                color={colors.primary}
-                accessibilityElementsHidden={true}
+                name="trophy-outline"
+                size={20}
+                color={colors.background}
               />
-            </View>
-            <Text style={themedStyles.featureTitle}>{feature.title}</Text>
-            <Text style={themedStyles.featureDescription}>
-              {feature.description}
-            </Text>
-            <View style={themedStyles.tagContainer}>
-              {feature.tags.map((tag, tagIndex) => (
-                <View
-                  key={tagIndex}
-                  style={themedStyles.tag}
-                  importantForAccessibility="no"
-                >
-                  <Text style={themedStyles.tagText}>{tag}</Text>
-                </View>
-              ))}
-            </View>
-          </TouchableOpacity>
-        ))}
+            </TouchableOpacity>
+          </View>
         </View>
-
-      <View style={themedStyles.mainContent}>
-        <View style={themedStyles.communitySection}>
-          <Text style={themedStyles.communitySectionTitle}>
-            Developer Community
-          </Text>
-          <Text style={themedStyles.communitySectionDescription}>
-            Join our accessibility community to connect with experts, discuss best practices, and level up your skills. Earn badges as you progress on your accessibility journey!
-          </Text>
-
-          <TouchableOpacity
-            style={themedStyles.achievementsButton}
-            onPress={() => router.push('/achievements')}
-            accessibilityRole="button"
-            accessibilityLabel="View accessibility achievements"
-            accessibilityHint="Navigate to the achievements screen to track your progress"
-          >
-            <Text style={themedStyles.achievementsButtonText}>
-              View Achievements
-            </Text>
-            <Ionicons
-              name="trophy-outline"
-              size={20}
-              color={colors.background}
-            />
-          </TouchableOpacity>
-        </View>
-      </View>
-    </ScrollView>
+      </ScrollView>
+    </LinearGradient>
   );
 }
 
+/* -----------------------------------------
+   3. Local base styles
+----------------------------------------- */
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -454,5 +450,5 @@ const styles = StyleSheet.create({
   flexRow: {
     flexDirection: 'row',
     alignItems: 'center',
-  }
+  },
 });
