@@ -90,13 +90,15 @@ const handleCopy = async () => {
       backgroundColor: colors.surface,
     },
     featureTitle: {
-      color: colors.textSecondary,
+      color: colors.text,
     },
     featureDescription: {
       color: colors.textSecondary,
     },
     codeContainer: {
       backgroundColor: '#1c1c1e',
+      borderWidth: 2,
+      borderColor: '#333',
     },
     codeText: {
       color: '#fff',
@@ -123,8 +125,8 @@ const handleCopy = async () => {
       color: colors.textSecondary,
     },
     altTextTitle: {
-          color: colors.text,
-          fontWeight: '600',
+      color: colors.text,
+      fontWeight: '600',
     },
   };
 
@@ -205,7 +207,7 @@ const handleCopy = async () => {
             </View>
           )}
           <Text style={[styles.demoText, themedStyles.demoText]}>
-            Try this image component with VoiceOver/TalkBack enabled
+            Try this image component with VoiceOver enabled
           </Text>
         </View>
       </View>
@@ -235,8 +237,18 @@ const handleCopy = async () => {
               </Text>
             </TouchableOpacity>
           </View>
-          <View style={styles.codeCard}>
-            <Text style={[styles.codeText, themedStyles.codeText]}>{codeExample}</Text>
+          <View
+            style={styles.codeCard}
+            accessible={false}
+            importantForAccessibility="no"
+            accessibilityElementsHidden={true}
+          >
+            <Text
+              style={[styles.codeText, themedStyles.codeText]}
+              accessibilityElementsHidden={true}
+            >
+              {codeExample}
+            </Text>
           </View>
         </View>
       </View>
@@ -307,7 +319,6 @@ const handleCopy = async () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f8f9fa',
   },
   section: {
     padding: 16,
@@ -316,14 +327,19 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 20,
     fontWeight: '600',
-    color: '#1c1c1e',
     marginBottom: 12,
   },
   demoContainer: {
-    backgroundColor: '#fff',
     padding: 20,
     borderRadius: 12,
     alignItems: 'center',
+    borderWidth: 2,
+    borderColor: '#D1D1D1',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
   },
   demoImage: {
     width: 300,
@@ -350,12 +366,10 @@ const styles = StyleSheet.create({
   },
   demoText: {
     fontSize: 14,
-    color: '#666',
     textAlign: 'center',
     marginTop: 8,
   },
   altTextContainer: {
-    backgroundColor: '#f8f9fa',
     padding: 12,
     borderRadius: 8,
     marginTop: 8,
@@ -365,9 +379,7 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     marginBottom: 4,
   },
-
   codeContainer: {
-    backgroundColor: '#1c1c1e',
     borderRadius: 8,
     overflow: 'hidden',
   },
@@ -377,10 +389,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 8,
     borderBottomWidth: 1,
-    borderBottomColor: '#333',
   },
   codeHeaderText: {
-    color: '#999',
     fontSize: 14,
     fontFamily: 'monospace',
   },
@@ -391,7 +401,6 @@ const styles = StyleSheet.create({
     padding: 4,
   },
   copyText: {
-    color: '#666',
     fontSize: 14,
   },
   copiedText: {
@@ -401,17 +410,21 @@ const styles = StyleSheet.create({
     padding: 16,
   },
   codeText: {
-    color: '#fff',
     fontFamily: 'monospace',
     fontSize: 14,
     lineHeight: 20,
   },
-  // Features section styles
   featuresContainer: {
-    backgroundColor: '#fff',
     borderRadius: 12,
     padding: 16,
     gap: 16,
+    borderWidth: 2,
+    borderColor: '#D1D1D1',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
   },
   featureItem: {
     flexDirection: 'row',
@@ -424,12 +437,10 @@ const styles = StyleSheet.create({
   featureTitle: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#1c1c1e',
     marginBottom: 4,
   },
   featureDescription: {
     fontSize: 14,
-    color: '#666',
     lineHeight: 20,
   },
   iconContainer: {
