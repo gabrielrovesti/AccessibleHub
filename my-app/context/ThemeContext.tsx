@@ -1,7 +1,11 @@
+// context/ThemeContext.tsx
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ViewStyle, TextStyle } from 'react-native';
 
+/* --------------------------------------------
+   INTERFACES
+-------------------------------------------- */
 interface StyleSystem {
   spacing: {
     xs: number;
@@ -29,20 +33,22 @@ interface StyleSystem {
 }
 
 interface ThemeContextType {
+  // Toggles
   isDarkMode: boolean;
   isHighContrast: boolean;
   isLargeText: boolean;
-  reduceMotion: boolean;
-  enhancedFocus: boolean;
   isLargeTouchTargets: boolean;
-  isHapticFeedback: boolean;
+  isDyslexiaFont: boolean;
+  isColorFilter: boolean;
+
   toggleDarkMode: () => void;
   toggleHighContrast: () => void;
   toggleLargeText: () => void;
-  toggleReduceMotion: () => void;
-  toggleEnhancedFocus: () => void;
   toggleLargeTouchTargets: () => void;
-  toggleHapticFeedback: () => void;
+  toggleDyslexiaFont: () => void;
+  toggleColorFilter: () => void;
+
+  // Theme values
   colors: ColorScheme;
   textSizes: TextSizes;
   styles: StyleSystem;
@@ -70,6 +76,9 @@ interface TextSizes {
   xlarge: number;
 }
 
+/* --------------------------------------------
+   DEFAULT COLOR DEFINITIONS
+-------------------------------------------- */
 const defaultColors = {
   light: {
     background: '#f8f9fa',
@@ -83,7 +92,7 @@ const defaultColors = {
     codeBackground: '#1c1c1e',
     codeBorder: '#333333',
     error: '#dc3545',
-    success: '#28a745'
+    success: '#28a745',
   },
   dark: {
     background: '#000000',
@@ -92,6 +101,7 @@ const defaultColors = {
     textSecondary: '#ebebf5',
     primary: '#0a84ff',
     border: '#38383a',
+    // You could define surfaceHover, codeBackground, etc. if needed
   },
   highContrastLight: {
     background: '#ffffff',
@@ -100,6 +110,12 @@ const defaultColors = {
     textSecondary: '#1c1c1e',
     primary: '#0055cc',
     border: '#000000',
+    codeBackground: '#000000',
+    codeBorder: '#ffffff',
+    error: '#dc3545',
+    success: '#28a745',
+    surfaceHover: '#f0f0f0',
+    primaryLight: '#e1f0ff',
   },
   highContrastDark: {
     background: '#000000',
@@ -108,9 +124,18 @@ const defaultColors = {
     textSecondary: '#ffffff',
     primary: '#409cff',
     border: '#ffffff',
+    codeBackground: '#000000',
+    codeBorder: '#ffffff',
+    error: '#dc3545',
+    success: '#28a745',
+    surfaceHover: '#111111',
+    primaryLight: '#666666',
   },
 };
 
+/* --------------------------------------------
+   DEFAULT TEXT SIZE DEFINITIONS
+-------------------------------------------- */
 const defaultTextSizes = {
   regular: {
     small: 13,
@@ -126,13 +151,21 @@ const defaultTextSizes = {
   },
 };
 
-const createStyleSystem = (colors: ColorScheme, textSizes: TextSizes): StyleSystem => ({
+/* --------------------------------------------
+   STYLE SYSTEM CREATOR
+-------------------------------------------- */
+const createStyleSystem = (
+  colors: ColorScheme,
+  textSizes: TextSizes,
+  isLargeTouchTargets: boolean,
+  isDyslexiaFont: boolean
+): StyleSystem => ({
   spacing: {
     xs: 4,
     sm: 8,
     md: 16,
     lg: 24,
-    xl: 32
+    xl: 32,
   },
   containers: {
     card: {
@@ -144,7 +177,7 @@ const createStyleSystem = (colors: ColorScheme, textSizes: TextSizes): StyleSyst
       shadowOffset: { width: 0, height: 2 },
       shadowOpacity: 0.1,
       shadowRadius: 4,
-      elevation: 2
+      elevation: 2,
     },
     codeBlock: {
       backgroundColor: colors.codeBackground,
@@ -152,7 +185,7 @@ const createStyleSystem = (colors: ColorScheme, textSizes: TextSizes): StyleSyst
       padding: 16,
       marginVertical: 12,
       borderWidth: 1,
-      borderColor: colors.codeBorder
+      borderColor: colors.codeBorder,
     },
     modal: {
       backgroundColor: colors.surface,
@@ -162,61 +195,68 @@ const createStyleSystem = (colors: ColorScheme, textSizes: TextSizes): StyleSyst
       shadowOffset: { width: 0, height: 4 },
       shadowOpacity: 0.25,
       shadowRadius: 8,
-      elevation: 5
-    }
+      elevation: 5,
+    },
   },
   buttons: {
     primary: {
       backgroundColor: colors.primary,
-      paddingVertical: 12,
-      paddingHorizontal: 24,
+      paddingVertical: isLargeTouchTargets ? 16 : 12,
+      paddingHorizontal: isLargeTouchTargets ? 28 : 24,
       borderRadius: 8,
-      minHeight: 48,
+      minHeight: isLargeTouchTargets ? 56 : 48,
       justifyContent: 'center',
-      alignItems: 'center'
+      alignItems: 'center',
     },
     secondary: {
       backgroundColor: colors.surfaceHover,
-      paddingVertical: 12,
-      paddingHorizontal: 24,
+      paddingVertical: isLargeTouchTargets ? 16 : 12,
+      paddingHorizontal: isLargeTouchTargets ? 28 : 24,
       borderRadius: 8,
-      minHeight: 48,
+      minHeight: isLargeTouchTargets ? 56 : 48,
       justifyContent: 'center',
-      alignItems: 'center'
-    }
+      alignItems: 'center',
+    },
   },
   typography: {
     title: {
       fontSize: textSizes.xlarge,
       fontWeight: '700',
       color: colors.text,
-      marginBottom: 8
+      marginBottom: 8,
+      fontFamily: isDyslexiaFont ? 'OpenDyslexic-Regular' : 'System',
     },
     subtitle: {
       fontSize: textSizes.large,
       fontWeight: '600',
       color: colors.text,
-      marginBottom: 16
+      marginBottom: 16,
+      fontFamily: isDyslexiaFont ? 'OpenDyslexic-Regular' : 'System',
     },
     body: {
       fontSize: textSizes.medium,
       color: colors.text,
-      lineHeight: 24
+      lineHeight: 24,
+      fontFamily: isDyslexiaFont ? 'OpenDyslexic-Regular' : 'System',
     },
     code: {
       fontFamily: 'monospace',
       fontSize: textSizes.medium,
       color: '#fff',
-      lineHeight: 20
+      lineHeight: 20,
     },
     caption: {
       fontSize: textSizes.small,
       color: colors.textSecondary,
-      lineHeight: 20
-    }
-  }
+      lineHeight: 20,
+      fontFamily: isDyslexiaFont ? 'OpenDyslexic-Regular' : 'System',
+    },
+  },
 });
 
+/* --------------------------------------------
+   THEME CONTEXT
+-------------------------------------------- */
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -224,10 +264,10 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     isDarkMode: false,
     isHighContrast: false,
     isLargeText: false,
-    reduceMotion: false,
-    enhancedFocus: false,
     isLargeTouchTargets: false,
-    isHapticFeedback: false,
+    // New toggles
+    isDyslexiaFont: false,
+    isColorFilter: false,
   });
 
   useEffect(() => {
@@ -262,30 +302,80 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     saveSettings(newSettings);
   };
 
-  const getColors = (): ColorScheme => {
+  /* 
+   * 1) Determine base color scheme 
+   *    from dark mode / high contrast
+   */
+  const getBaseScheme = (): ColorScheme => {
     if (settings.isDarkMode) {
-      return settings.isHighContrast ? defaultColors.highContrastDark : defaultColors.dark;
+      return settings.isHighContrast
+        ? defaultColors.highContrastDark
+        : defaultColors.dark;
     }
-    return settings.isHighContrast ? defaultColors.highContrastLight : defaultColors.light;
+    return settings.isHighContrast
+      ? defaultColors.highContrastLight
+      : defaultColors.light;
   };
 
+  /* 
+   * 2) If colorFilter is enabled, override 
+   *    certain colors to create a basic 
+   *    grayscale effect
+   */
+  const applyColorFilter = (scheme: ColorScheme): ColorScheme => {
+    if (!settings.isColorFilter) return scheme;
+    // Approximate grayscale
+    return {
+      ...scheme,
+      background: '#e0e0e0',
+      surface: '#f2f2f2',
+      text: '#333333',
+      textSecondary: '#666666',
+      border: '#999999',
+      primary: '#555555',
+      primaryLight: '#bdbdbd',
+    };
+  };
+
+  /* 
+   * 3) Build final color scheme 
+   */
+  const getColors = (): ColorScheme => {
+    const baseScheme = getBaseScheme();
+    return applyColorFilter(baseScheme);
+  };
+
+  /* 
+   * 4) Determine text sizes 
+   */
   const getTextSizes = (): TextSizes => {
     return settings.isLargeText ? defaultTextSizes.large : defaultTextSizes.regular;
   };
 
   const colors = getColors();
   const textSizes = getTextSizes();
-  const styles = createStyleSystem(colors, textSizes, settings.isLargeTouchTargets);
 
+  /* 
+   * 5) Create style system 
+   */
+  const styles = createStyleSystem(
+    colors,
+    textSizes,
+    settings.isLargeTouchTargets,
+    settings.isDyslexiaFont
+  );
+
+  /* 
+   * 6) Expose toggles + theme 
+   */
   const value = {
     ...settings,
     toggleDarkMode: () => toggleSetting('isDarkMode'),
     toggleHighContrast: () => toggleSetting('isHighContrast'),
     toggleLargeText: () => toggleSetting('isLargeText'),
-    toggleReduceMotion: () => toggleSetting('reduceMotion'),
-    toggleEnhancedFocus: () => toggleSetting('enhancedFocus'),
     toggleLargeTouchTargets: () => toggleSetting('isLargeTouchTargets'),
-    toggleHapticFeedback: () => toggleSetting('isHapticFeedback'),
+    toggleDyslexiaFont: () => toggleSetting('isDyslexiaFont'),
+    toggleColorFilter: () => toggleSetting('isColorFilter'),
     colors,
     textSizes,
     styles,

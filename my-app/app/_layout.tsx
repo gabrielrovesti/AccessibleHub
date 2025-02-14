@@ -1,22 +1,71 @@
 import { Drawer } from 'expo-router/drawer';
 import { useRouter } from 'expo-router';
-import { View, Text, StyleSheet, TouchableOpacity, Platform } from 'react-native';
-import { useEffect } from 'react';
-import { AccessibilityInfo } from 'react-native';
+import React, { useEffect } from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Platform,
+  AccessibilityInfo,
+  Modal,
+} from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { ThemeProvider } from '../context/ThemeContext';
-import { useTheme } from '../context/ThemeContext';
+import { ThemeProvider, useTheme } from '../context/ThemeContext';
 
-// Custom Drawer Content Component
+/* ---------------------------------------------
+   1. Custom Drawer Content
+--------------------------------------------- */
 function CustomDrawerContent(props) {
   const { colors, textSizes } = useTheme();
-  const mainRoutes = ['index', 'practices', 'tools', 'components', 'settings'];
   const router = useRouter();
 
+  // Add the new routes so they appear in the drawer
+  const mainRoutes = [
+    'index',
+    'components',
+    'practices',
+    'tools',
+    'frameworks-comparison',
+    'achievements',
+    'settings',
+  ];
+
+  // "Graphical Overhaul" styles
   const dynamicStyles = StyleSheet.create({
     container: {
       flex: 1,
       backgroundColor: colors.background,
+    },
+    /* Header with background color, icon, etc. */
+    header: {
+      backgroundColor: colors.primary,
+      paddingVertical: 40,
+      paddingHorizontal: 16,
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginBottom: 16,
+      borderBottomLeftRadius: 24,
+      borderBottomRightRadius: 24,
+      // Hides this entire block from screen readers
+      importantForAccessibility: 'no',
+    },
+    appIcon: {
+      marginBottom: 8,
+    },
+    appName: {
+      fontSize: textSizes.large,
+      color: colors.surface, // so it's visible on the primary background
+      fontWeight: 'bold',
+      marginBottom: 4,
+    },
+    version: {
+      fontSize: textSizes.small,
+      color: colors.surface,
+    },
+    drawerContent: {
+      flex: 1,
+      padding: 16,
     },
     drawerItem: {
       backgroundColor: colors.surface,
@@ -48,18 +97,9 @@ function CustomDrawerContent(props) {
     drawerIcon: {
       marginRight: 12,
     },
-    footer: {
-      paddingTop: 16,
-      paddingBottom: 24,
-      borderTopWidth: 1,
-      borderTopColor: colors.border,
-      paddingHorizontal: 16,
-    },
-    footerContent: {
-      alignItems: 'center',
-    },
   });
 
+  // Announce menu open/close
   useEffect(() => {
     AccessibilityInfo.announceForAccessibility('Navigation menu opened');
     return () => {
@@ -69,15 +109,28 @@ function CustomDrawerContent(props) {
 
   return (
     <View
-      style={[styles.container, dynamicStyles.container]}
+      style={dynamicStyles.container}
       accessibilityRole="menu"
       accessibilityLabel="Main navigation menu"
       accessibilityLanguage="en"
       accessibilityLiveRegion="polite"
     >
-      <View style={styles.drawerContent}>
+      {/* NEW: Header with app name + version, hidden from screen readers */}
+      <View style={dynamicStyles.header}>
+        <Ionicons
+          name="rocket-outline"
+          size={48}
+          color={colors.surface}
+          style={dynamicStyles.appIcon}
+        />
+        <Text style={dynamicStyles.appName}>AccessibleHub</Text>
+        <Text style={dynamicStyles.version}>Version 1.0.0</Text>
+      </View>
+
+      {/* Drawer Items */}
+      <View style={dynamicStyles.drawerContent}>
         {props.state.routes
-          .filter(route => mainRoutes.includes(route.name))
+          .filter((route) => mainRoutes.includes(route.name))
           .map((route, index) => {
             const isActive = props.state.index === index;
             const { drawerLabel, drawerIcon } = props.descriptors[route.key].options;
@@ -87,7 +140,6 @@ function CustomDrawerContent(props) {
               <TouchableOpacity
                 key={route.key}
                 style={[
-                  styles.drawerItem,
                   dynamicStyles.drawerItem,
                   isActive && dynamicStyles.drawerItemActive,
                 ]}
@@ -103,161 +155,183 @@ function CustomDrawerContent(props) {
                 accessibilityState={{ selected: isActive }}
                 accessibilityLabel={label}
                 accessibilityHint={`Double tap to navigate to ${label} screen`}
-                accessible={true}
               >
-                <View style={styles.drawerItemContent}>
-                  {drawerIcon && (
-                    <View
-                      style={dynamicStyles.drawerIcon}
-                      importantForAccessibility="no"
-                      accessibilityElementsHidden={true}
-                    >
-                      {drawerIcon({
-                        size: 24,
-                        color: isActive ? colors.primary : colors.textSecondary,
-                      })}
-                    </View>
-                  )}
-                  <Text
-                    style={[
-                      styles.drawerLabel,
-                      dynamicStyles.drawerLabel,
-                      isActive && dynamicStyles.drawerLabelActive,
-                    ]}
+                {drawerIcon && (
+                  <View
+                    style={dynamicStyles.drawerIcon}
+                    importantForAccessibility="no"
+                    accessibilityElementsHidden
                   >
-                    {label}
-                  </Text>
-                </View>
+                    {drawerIcon({
+                      size: 24,
+                      color: isActive ? colors.primary : colors.textSecondary,
+                    })}
+                  </View>
+                )}
+                <Text
+                  style={[
+                    dynamicStyles.drawerLabel,
+                    isActive && dynamicStyles.drawerLabelActive,
+                  ]}
+                >
+                  {label}
+                </Text>
               </TouchableOpacity>
             );
           })}
-      </View>
-
-      {/* Footer */}
-      <View
-        style={dynamicStyles.footer}
-        importantForAccessibility="no"
-      >
-        <View style={dynamicStyles.footerContent}>
-          <Text style={dynamicStyles.appName}>AccessibleHub - G. Rovesti</Text>
-          <Text style={dynamicStyles.version}>Version 1.0.0</Text>
-        </View>
       </View>
     </View>
   );
 }
 
-// Drawer Navigator Component
+/* ---------------------------------------------
+   2. Drawer Navigator
+--------------------------------------------- */
 function DrawerNavigator() {
   const { colors } = useTheme();
   const router = useRouter();
 
-const screenOptions = ({ navigation, route }) => ({
-  headerShown: true,
-  drawerStyle: {
-    backgroundColor: colors.background,
-  },
-  headerStyle: {
-    backgroundColor: colors.surface,
-    elevation: 0,
-    shadowOpacity: 0,
-  },
-  headerTintColor: colors.text,
-  // Remove headerTitle entirely
-  headerTitle: () => null,
-  headerLeft: () => {
-    const isMainRoute = ['index', 'practices', 'tools', 'components', 'settings'].includes(route.name);
+  const screenOptions = ({ navigation, route }) => ({
+    headerShown: true,
+    drawerStyle: {
+      backgroundColor: colors.background,
+    },
+    headerStyle: {
+      backgroundColor: colors.surface,
+      elevation: 0,
+      shadowOpacity: 0,
+    },
+    headerTintColor: colors.text,
+    // Remove headerTitle entirely
+    headerTitle: () => null,
+    headerLeft: () => {
+      // If user is in a "main" route, show menu button
+      // Otherwise show "back" button
+      const isMainRoute = [
+        'index',
+        'components',
+        'practices',
+        'tools',
+        'frameworks-comparison',
+        'achievements',
+        'settings',
+      ].includes(route.name);
 
-    if (!isMainRoute) {
+      if (!isMainRoute) {
+        return (
+          <TouchableOpacity
+            onPress={() => {
+              // For nested routes
+              const parentRoute = route.name.split('/')[0];
+              if (parentRoute === 'practices-screens') {
+                router.push('/practices');
+              } else if (parentRoute === 'accessible-components') {
+                router.push('/components');
+              } else {
+                navigation.goBack();
+              }
+            }}
+            accessibilityRole="button"
+            accessibilityLabel="Go back"
+            style={styles.headerButton}
+          >
+            <Ionicons name="arrow-back" size={24} color={colors.text} />
+          </TouchableOpacity>
+        );
+      }
+
       return (
         <TouchableOpacity
-          onPress={() => {
-            const parentRoute = route.name.split('/')[0];
-            if (parentRoute === 'practices-screens') {
-              router.push('/practices');
-            } else if (parentRoute === 'accessible-components') {
-              router.push('/components');
-            } else {
-              navigation.goBack();
-            }
-          }}
+          onPress={() => navigation.toggleDrawer()}
           accessibilityRole="button"
-          accessibilityLabel="Go back"
+          accessibilityLabel="Toggle menu"
           style={styles.headerButton}
         >
-          <Ionicons name="arrow-back" size={24} color={colors.text} />
+          <Ionicons name="menu-outline" size={24} color={colors.text} />
         </TouchableOpacity>
       );
-    }
+    },
+  });
 
-    return (
-      <TouchableOpacity
-        onPress={() => navigation.toggleDrawer()}
-        accessibilityRole="button"
-        accessibilityLabel="Toggle menu"
-        style={styles.headerButton}
-      >
-        <Ionicons name="menu-outline" size={24} color={colors.text} />
-      </TouchableOpacity>
-    );
-  }
-});
+  return (
+    <Drawer
+      drawerContent={(props) => <CustomDrawerContent {...props} />}
+      screenOptions={screenOptions}
+    >
+      {/* Existing Routes */}
+      <Drawer.Screen
+        name="index"
+        options={{
+          drawerLabel: 'Home',
+          drawerIcon: ({ size, color }) => (
+            <Ionicons name="home-outline" size={size} color={color} />
+          ),
+        }}
+      />
+      <Drawer.Screen
+        name="components"
+        options={{
+          drawerLabel: 'Accessibility Components',
+          drawerIcon: ({ size, color }) => (
+            <Ionicons name="cube-outline" size={size} color={color} />
+          ),
+        }}
+      />
+      <Drawer.Screen
+        name="practices"
+        options={{
+          drawerLabel: 'Best Practices',
+          drawerIcon: ({ size, color }) => (
+            <Ionicons name="book-outline" size={size} color={color} />
+          ),
+        }}
+      />
+      <Drawer.Screen
+        name="tools"
+        options={{
+          drawerLabel: 'Mobile Accessibility Tools',
+          drawerIcon: ({ size, color }) => (
+            <Ionicons name="construct-outline" size={size} color={color} />
+          ),
+        }}
+      />
 
-return (
-  <Drawer
-    drawerContent={(props) => <CustomDrawerContent {...props} />}
-    screenOptions={screenOptions}
-  >
-    <Drawer.Screen
-      name="index"
-      options={{
-        drawerLabel: "Home",
-        drawerIcon: ({ size, color }) => (
-          <Ionicons name="home-outline" size={size} color={color} />
-        ),
-      }}
-    />
-    <Drawer.Screen
-      name="components"  // Move components right after home since it's the Quick Start destination
-      options={{
-        drawerLabel: "Accessibility Components",
-        drawerIcon: ({ size, color }) => (
-          <Ionicons name="cube-outline" size={size} color={color} />
-        ),
-      }}
-    />
-    <Drawer.Screen
-      name="practices"
-      options={{
-        drawerLabel: "Best Practices",
-        drawerIcon: ({ size, color }) => (
-          <Ionicons name="book-outline" size={size} color={color} />
-        ),
-      }}
-    />
-    <Drawer.Screen
-      name="tools"
-      options={{
-        drawerLabel: "Mobile Accessibility Tools",
-        drawerIcon: ({ size, color }) => (
-          <Ionicons name="construct-outline" size={size} color={color} />
-        ),
-      }}
-    />
-    <Drawer.Screen
-      name="settings"
-      options={{
-        drawerLabel: "Settings",
-        drawerIcon: ({ size, color }) => (
-          <Ionicons name="settings-outline" size={size} color={color} />
-        ),
-      }}
-    />
-  </Drawer>
-);
+      {/* NEW: Framework Comparison & Achievements */}
+      <Drawer.Screen
+        name="frameworks-comparison"
+        options={{
+          drawerLabel: 'Framework Comparison',
+          drawerIcon: ({ size, color }) => (
+            <Ionicons name="git-compare" size={size} color={color} />
+          ),
+        }}
+      />
+      <Drawer.Screen
+        name="achievements"
+        options={{
+          drawerLabel: 'Achievements',
+          drawerIcon: ({ size, color }) => (
+            <Ionicons name="trophy-outline" size={size} color={color} />
+          ),
+        }}
+      />
+
+      <Drawer.Screen
+        name="settings"
+        options={{
+          drawerLabel: 'Settings',
+          drawerIcon: ({ size, color }) => (
+            <Ionicons name="settings-outline" size={size} color={color} />
+          ),
+        }}
+      />
+    </Drawer>
+  );
 }
 
-// App Wrapper Component
+/* ---------------------------------------------
+   3. App Wrapper
+--------------------------------------------- */
 function AppWrapper({ children }) {
   useEffect(() => {
     const setupAccessibility = async () => {
@@ -268,7 +342,6 @@ function AppWrapper({ children }) {
         AccessibilityInfo.announceForAccessibility('AccessibleHub application ready');
       }, 1000);
     };
-
     setupAccessibility();
   }, []);
 
@@ -284,31 +357,24 @@ function AppWrapper({ children }) {
   );
 }
 
+/* ---------------------------------------------
+   4. Main App Layout
+--------------------------------------------- */
+export default function AppLayout() {
+  return (
+    <ThemeProvider>
+      <AppWrapper>
+        <DrawerNavigator />
+      </AppWrapper>
+    </ThemeProvider>
+  );
+}
+
+/* ---------------------------------------------
+   STYLES
+--------------------------------------------- */
 const styles = StyleSheet.create({
   appContainer: {
-    flex: 1,
-  },
-  container: {
-    flex: 1,
-  },
-  drawerContent: {
-    flex: 1,
-    padding: 16,
-  },
-  drawerItemContent: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 16,
-  },
-  drawerItem: {
-    paddingVertical: 12,
-    paddingHorizontal: 16,
-    marginBottom: 8,
-    borderRadius: 8,
-    borderWidth: 1,
-  },
-  drawerLabel: {
-    fontSize: 16,
     flex: 1,
   },
   headerButton: {
@@ -320,14 +386,3 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
 });
-
-// Main App Layout
-export default function AppLayout() {
-  return (
-    <ThemeProvider>
-      <AppWrapper>
-        <DrawerNavigator />
-      </AppWrapper>
-    </ThemeProvider>
-  );
-}

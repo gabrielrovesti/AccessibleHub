@@ -10,53 +10,89 @@ import {
   ToastAndroid,
   Platform,
   Modal,
-  Button
+  Button,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useTheme } from '../context/ThemeContext';
 
 export default function SettingsScreen() {
   const {
+    // Toggles
     isDarkMode,
     isHighContrast,
     isLargeText,
-    reduceMotion,
-    enhancedFocus,
     isLargeTouchTargets,
-    isHapticFeedback,
+    isDyslexiaFont,
+    isColorFilter,
+
+    // Toggle methods
     toggleDarkMode,
     toggleHighContrast,
     toggleLargeText,
-    toggleReduceMotion,
-    toggleEnhancedFocus,
     toggleLargeTouchTargets,
-    toggleHapticFeedback,
+    toggleDyslexiaFont,
+    toggleColorFilter,
+
+    // Theming
     colors,
-    textSizes
+    textSizes,
   } = useTheme();
 
   const [aboutModalVisible, setAboutModalVisible] = useState(false);
 
-  const SettingRow = ({ icon, title, description, value, onToggle }) => (
+  /**
+   * Reusable Setting Row
+   */
+  const SettingRow = ({
+    icon,
+    title,
+    description,
+    value,
+    onToggle,
+  }: {
+    icon: string;
+    title: string;
+    description: string;
+    value: boolean;
+    onToggle: () => void;
+  }) => (
     <View
-      style={[styles.settingRow, { backgroundColor: colors.surface }]}
+      style={[
+        styles.settingRow,
+        {
+          backgroundColor: colors.surface,
+        },
+      ]}
       accessible={true}
       accessibilityLabel={`${title}. ${description}. Switch is ${value ? 'on' : 'off'}.`}
       accessibilityRole="switch"
     >
+      {/* Icon */}
       <View style={styles.settingIcon}>
         <Ionicons
           name={icon}
           size={24}
           color={colors.primary}
-          accessibilityElementsHidden={true}
-          importantForAccessibility="no"
+          accessibilityElementsHidden
         />
       </View>
+
+      {/* Text */}
       <View style={styles.settingContent}>
-        <Text style={[styles.settingTitle, { color: colors.text, fontSize: textSizes.medium }]}>{title}</Text>
-        <Text style={[styles.settingDescription, { color: colors.textSecondary, fontSize: textSizes.small }]}>{description}</Text>
+        <Text style={[styles.settingTitle, { color: colors.text, fontSize: textSizes.medium }]}>
+          {title}
+        </Text>
+        <Text
+          style={[
+            styles.settingDescription,
+            { color: colors.textSecondary, fontSize: textSizes.small },
+          ]}
+        >
+          {description}
+        </Text>
       </View>
+
+      {/* Switch */}
       <Switch
         value={value}
         onValueChange={() => {
@@ -84,12 +120,26 @@ export default function SettingsScreen() {
         style={[styles.container, { backgroundColor: colors.background }]}
         contentContainerStyle={styles.contentContainer}
       >
-        {/* Visual Settings */}
+        {/* VISUAL SETTINGS */}
         <View style={styles.section}>
-          <Text style={[styles.sectionHeader, { color: colors.textSecondary, fontSize: textSizes.small }]} accessibilityRole="header">
+          <Text
+            style={[
+              styles.sectionHeader,
+              { color: colors.textSecondary, fontSize: textSizes.small },
+            ]}
+            accessibilityRole="header"
+          >
             Visual Settings
           </Text>
-          <View style={[styles.card, { backgroundColor: colors.surface }]}>
+          <View
+            style={[
+              styles.card,
+              {
+                backgroundColor: colors.surface,
+                borderColor: colors.border, // added border to card
+              },
+            ]}
+          >
             <SettingRow
               icon="moon-outline"
               title="Dark Mode"
@@ -108,20 +158,26 @@ export default function SettingsScreen() {
           </View>
         </View>
 
-        {/* Accessibility Enhancements */}
+        {/* READABILITY ENHANCEMENTS */}
         <View style={styles.section}>
-          <Text style={[styles.sectionHeader, { color: colors.textSecondary, fontSize: textSizes.small }]} accessibilityRole="header">
-            Accessibility Enhancements
+          <Text
+            style={[
+              styles.sectionHeader,
+              { color: colors.textSecondary, fontSize: textSizes.small },
+            ]}
+            accessibilityRole="header"
+          >
+            Readability Enhancements
           </Text>
-          <View style={[styles.card, { backgroundColor: colors.surface }]}>
-            <SettingRow
-              icon="walk-outline"
-              title="Reduce Motion"
-              description="Minimize animations (e.g. confirmation dialogs)"
-              value={reduceMotion}
-              onToggle={toggleReduceMotion}
-            />
-            <View style={[styles.divider, { backgroundColor: colors.border }]} />
+          <View
+            style={[
+              styles.card,
+              {
+                backgroundColor: colors.surface,
+                borderColor: colors.border,
+              },
+            ]}
+          >
             <SettingRow
               icon="text-outline"
               title="Large Text"
@@ -131,21 +187,43 @@ export default function SettingsScreen() {
             />
             <View style={[styles.divider, { backgroundColor: colors.border }]} />
             <SettingRow
-              icon="eye-outline"
-              title="Enhanced Focus"
-              description="Highlight focused elements for easier navigation"
-              value={enhancedFocus}
-              onToggle={toggleEnhancedFocus}
+              icon="book-outline"
+              title="Dyslexia-Friendly Font"
+              description="Use a font optimized for dyslexia"
+              value={isDyslexiaFont}
+              onToggle={toggleDyslexiaFont}
             />
           </View>
         </View>
 
-        {/* Additional Accessibility Options */}
+        {/* COLOR & TOUCH SETTINGS */}
         <View style={styles.section}>
-          <Text style={[styles.sectionHeader, { color: colors.textSecondary, fontSize: textSizes.small }]} accessibilityRole="header">
-            Additional Accessibility Options
+          <Text
+            style={[
+              styles.sectionHeader,
+              { color: colors.textSecondary, fontSize: textSizes.small },
+            ]}
+            accessibilityRole="header"
+          >
+            Color & Touch Settings
           </Text>
-          <View style={[styles.card, { backgroundColor: colors.surface }]}>
+          <View
+            style={[
+              styles.card,
+              {
+                backgroundColor: colors.surface,
+                borderColor: colors.border,
+              },
+            ]}
+          >
+            <SettingRow
+              icon="color-filter-outline"
+              title="Color Filter"
+              description="Apply basic grayscale filtering"
+              value={isColorFilter}
+              onToggle={toggleColorFilter}
+            />
+            <View style={[styles.divider, { backgroundColor: colors.border }]} />
             <SettingRow
               icon="resize-outline"
               title="Large Touch Targets"
@@ -153,23 +231,29 @@ export default function SettingsScreen() {
               value={isLargeTouchTargets}
               onToggle={toggleLargeTouchTargets}
             />
-            <View style={[styles.divider, { backgroundColor: colors.border }]} />
-            <SettingRow
-              icon="happy-outline"
-              title="Enable Haptic Feedback"
-              description="Provide tactile feedback on interactions"
-              value={isHapticFeedback}
-              onToggle={toggleHapticFeedback}
-            />
           </View>
         </View>
 
-        {/* About Section */}
+        {/* ABOUT SECTION */}
         <View style={styles.section}>
-          <Text style={[styles.sectionHeader, { color: colors.textSecondary, fontSize: textSizes.small }]} accessibilityRole="header">
+          <Text
+            style={[
+              styles.sectionHeader,
+              { color: colors.textSecondary, fontSize: textSizes.small },
+            ]}
+            accessibilityRole="header"
+          >
             About
           </Text>
-          <View style={[styles.card, { backgroundColor: colors.surface }]}>
+          <View
+            style={[
+              styles.card,
+              {
+                backgroundColor: colors.surface,
+                borderColor: colors.border,
+              },
+            ]}
+          >
             <TouchableOpacity
               style={styles.aboutRow}
               onPress={() => setAboutModalVisible(true)}
@@ -181,10 +265,15 @@ export default function SettingsScreen() {
                   name="information-circle-outline"
                   size={24}
                   color={colors.primary}
-                  accessibilityElementsHidden={true}
-                  importantForAccessibility="no"
+                  accessibilityElementsHidden
                 />
-                <Text style={[styles.aboutText, { color: colors.text, fontSize: textSizes.medium }]} accessibilityRole="text">
+                <Text
+                  style={[
+                    styles.aboutText,
+                    { color: colors.text, fontSize: textSizes.medium },
+                  ]}
+                  accessibilityRole="text"
+                >
                   About this App
                 </Text>
               </View>
@@ -192,29 +281,28 @@ export default function SettingsScreen() {
                 name="chevron-forward"
                 size={20}
                 color={colors.textSecondary}
-                accessibilityElementsHidden={true}
-                importantForAccessibility="no"
+                accessibilityElementsHidden
               />
             </TouchableOpacity>
           </View>
         </View>
       </ScrollView>
 
-      {/* Modal About */}
+      {/* ABOUT MODAL */}
       <Modal
         animationType="slide"
-        transparent={true}
+        transparent
         visible={aboutModalVisible}
         onRequestClose={() => setAboutModalVisible(false)}
       >
         <View style={styles.modalOverlay}>
           <View style={[styles.modalContent, { backgroundColor: colors.surface }]}>
-            <Text style={[styles.modalHeader, { color: colors.text, fontSize: textSizes.medium }]}>About This App</Text>
-            <Text style={[styles.modalText, { color: colors.textSecondary, fontSize: textSizes.small }]}>
-              This app was created by Gabriel Rovesti.
+            <Text style={[styles.modalHeader, { color: colors.text, fontSize: textSizes.medium }]}>
+              About This App
             </Text>
             <Text style={[styles.modalText, { color: colors.textSecondary, fontSize: textSizes.small }]}>
-              It serves as a manual for accessibility best practices in React Native.
+              This app demonstrates an accessible Settings screen with toggles for color filters,
+              dyslexia-friendly font, and more.
             </Text>
             <Button title="Close" onPress={() => setAboutModalVisible(false)} />
           </View>
@@ -242,6 +330,13 @@ const styles = StyleSheet.create({
   card: {
     borderRadius: 12,
     overflow: 'hidden',
+    // Add a border around the entire card
+    borderWidth: 1,
+    marginBottom: 16,
+  },
+  divider: {
+    height: 1,
+    marginLeft: 68, // to align under text, so the divider is offset
   },
   settingRow: {
     flexDirection: 'row',
@@ -261,10 +356,8 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     marginBottom: 4,
   },
-  settingDescription: {},
-  divider: {
-    height: 1,
-    marginLeft: 68,
+  settingDescription: {
+    flexWrap: 'wrap',
   },
   aboutRow: {
     flexDirection: 'row',
@@ -275,13 +368,14 @@ const styles = StyleSheet.create({
   aboutContent: {
     flexDirection: 'row',
     alignItems: 'center',
+    gap: 8,
   },
   aboutText: {},
   modalOverlay: {
     flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   modalContent: {
     width: '80%',

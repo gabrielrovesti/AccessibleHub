@@ -43,49 +43,72 @@ export default function HomeScreen() {
   const { colors, textSizes, isDarkMode } = useTheme();
   const accessibilityMetrics = calculateAccessibilityScore();
 
-  /*
-   * Conditionally choose a gradient or solid color
-   * for the background based on dark mode.
+  /**
+   * 1) Use an inverted gradient:
+   *    - Light mode: darker background gradient
+   *    - Dark mode: lighter background gradient
    */
   const backgroundGradientColors = isDarkMode
-    ? [colors.background, colors.background]  // solid in dark mode
-    : [colors.background, '#e5e5ea'];         // slight gradient in light mode
+    ? [colors.background, '#2c2c2e']  // subtle gradient in dark mode
+    : ['#e2e2e2', colors.background]; // light mode → slightly darker to lighter
 
   /* -----------------------------------------
      Themed styles
   ----------------------------------------- */
   const themedStyles = {
     container: {
-      // We'll rely on the <LinearGradient> for background
+      flex: 1,
     },
-    hero: {
+    /**
+     * 2) "Hero" area: place it inside a raised card
+     *    with bigger shadow and optional shape background
+     */
+    heroCard: {
       backgroundColor: colors.surface,
-      borderBottomColor: colors.border,
-      borderBottomWidth: 2,
-      paddingVertical: 32,
+      borderRadius: 20,
+      marginHorizontal: 16,
+      marginTop: 16,
+      paddingVertical: 24,
       paddingHorizontal: 20,
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 4 },
+      shadowOpacity: 0.15,
+      shadowRadius: 8,
+      elevation: 5,
+      borderWidth: 1,
+      borderColor: colors.border,
     },
-    title: {
+    heroTitle: {
       color: colors.text,
       fontSize: textSizes.xlarge,
       fontWeight: '700',
       textAlign: 'center',
-      marginBottom: 16,
+      marginBottom: 12,
     },
-    subtitle: {
+    heroSubtitle: {
       color: colors.textSecondary,
       fontSize: textSizes.medium,
       lineHeight: 24,
       textAlign: 'center',
-      marginBottom: 24,
+      marginBottom: 20,
     },
+    /**
+     * 3) Stats area as smaller cards
+     */
     statsContainer: {
-      borderTopColor: colors.border,
-      borderTopWidth: 1,
-      paddingTop: 24,
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'center',
+      marginTop: 12,
+      borderTopWidth: 1,
+      borderTopColor: colors.border,
+      paddingTop: 16,
+    },
+    statCard: {
+      flex: 1,
+      alignItems: 'center',
+      justifyContent: 'center',
+      paddingVertical: 8,
     },
     statNumber: {
       color: colors.primary,
@@ -112,20 +135,23 @@ export default function HomeScreen() {
       height: 48,
       marginHorizontal: 16,
     },
+    /**
+     * 4) Quick Start Card
+     */
     quickStartCard: {
       backgroundColor: colors.surface,
       borderRadius: 16,
       padding: 20,
-      marginVertical: 24,
-      marginHorizontal: 20,
+      marginHorizontal: 16,
+      marginTop: 16,
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'space-between',
-      shadowColor: colors.text,
-      shadowOffset: { width: 0, height: 4 },
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 3 },
       shadowOpacity: 0.1,
-      shadowRadius: 8,
-      elevation: 5,
+      shadowRadius: 6,
+      elevation: 3,
       borderWidth: 1,
       borderColor: colors.primary,
     },
@@ -143,8 +169,12 @@ export default function HomeScreen() {
       color: colors.textSecondary,
       fontSize: textSizes.medium,
     },
+    /**
+     * 5) Main Content
+     */
     mainContent: {
-      padding: 20,
+      paddingHorizontal: 16,
+      paddingTop: 20,
     },
     sectionTitle: {
       color: colors.text,
@@ -157,11 +187,11 @@ export default function HomeScreen() {
       borderRadius: 16,
       padding: 16,
       marginBottom: 16,
-      shadowColor: colors.text,
-      shadowOffset: { width: 0, height: 2 },
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 3 },
       shadowOpacity: 0.1,
-      shadowRadius: 4,
-      elevation: 2,
+      shadowRadius: 6,
+      elevation: 3,
       borderWidth: 1,
       borderColor: colors.border,
     },
@@ -202,16 +232,20 @@ export default function HomeScreen() {
       fontSize: textSizes.small,
       fontWeight: '600',
     },
+    /**
+     * 6) Community Section
+     */
     communitySection: {
       backgroundColor: colors.surface,
       borderRadius: 16,
       padding: 20,
       marginBottom: 24,
-      shadowColor: colors.text,
-      shadowOffset: { width: 0, height: 2 },
+      marginTop: 16,
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 3 },
       shadowOpacity: 0.1,
-      shadowRadius: 4,
-      elevation: 2,
+      shadowRadius: 6,
+      elevation: 3,
       borderWidth: 1,
       borderColor: colors.border,
     },
@@ -247,29 +281,25 @@ export default function HomeScreen() {
   return (
     <LinearGradient
       colors={backgroundGradientColors}
-      style={{ flex: 1 }}
+      style={themedStyles.container}
     >
       <ScrollView
-        style={[styles.container]}
         contentContainerStyle={{ paddingBottom: 24 }}
         accessibilityRole="scrollview"
         accessibilityLabel="AccessibleHub Home Screen"
       >
-        {/* HERO SECTION */}
-        <View style={themedStyles.hero}>
-          <Text
-            style={themedStyles.title}
-            accessibilityRole="header"
-          >
+        {/* HERO CARD */}
+        <View style={themedStyles.heroCard}>
+          <Text style={themedStyles.heroTitle} accessibilityRole="header">
             The ultimate accessibility-driven toolkit for developers
           </Text>
-          <Text style={themedStyles.subtitle}>
-            A comprehensive resource for building inclusive React Native applications with verified accessibility standards - explore for more!
+          <Text style={themedStyles.heroSubtitle}>
+            A comprehensive resource for building inclusive React Native applications with verified accessibility standards – explore for more!
           </Text>
 
           {/* STATS */}
           <View style={themedStyles.statsContainer}>
-            <View style={styles.statItem} accessibilityRole="text">
+            <View style={themedStyles.statCard} accessibilityRole="text">
               <Text style={themedStyles.statNumber}>
                 {accessibilityMetrics.componentCount}
               </Text>
@@ -277,9 +307,12 @@ export default function HomeScreen() {
               <Text style={themedStyles.statDescription}>Ready to Use</Text>
             </View>
 
-            <View style={themedStyles.statDivider} importantForAccessibility="no" />
+            <View
+              style={themedStyles.statDivider}
+              importantForAccessibility="no"
+            />
 
-            <View style={styles.statItem} accessibilityRole="text">
+            <View style={themedStyles.statCard} accessibilityRole="text">
               <Text style={themedStyles.statNumber}>
                 {accessibilityMetrics.wcagCompliance}%
               </Text>
@@ -287,9 +320,12 @@ export default function HomeScreen() {
               <Text style={themedStyles.statDescription}>Level AA</Text>
             </View>
 
-            <View style={themedStyles.statDivider} importantForAccessibility="no" />
+            <View
+              style={themedStyles.statDivider}
+              importantForAccessibility="no"
+            />
 
-            <View style={styles.statItem} accessibilityRole="text">
+            <View style={themedStyles.statCard} accessibilityRole="text">
               <Text style={themedStyles.statNumber}>
                 {accessibilityMetrics.testingScore}%
               </Text>
@@ -422,33 +458,3 @@ export default function HomeScreen() {
     </LinearGradient>
   );
 }
-
-/* -----------------------------------------
-   3. Local base styles
------------------------------------------ */
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  statItem: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: 8,
-  },
-  dividerContainer: {
-    height: 40,
-    justifyContent: 'center',
-  },
-  cardBase: {
-    overflow: 'hidden',
-    borderRadius: 16,
-  },
-  contentPadding: {
-    padding: 20,
-  },
-  flexRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-});
