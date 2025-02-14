@@ -14,23 +14,16 @@ export default function ComponentsScreen() {
     AccessibilityInfo.announceForAccessibility(`Opening ${title} component details`);
   };
 
-  /*
-   * 1) Gradient background:
-   *    - Light mode: slightly darker → background
-   *    - Dark mode: background → #2c2c2e
-   */
+  // Background gradient
   const gradientColors = isDarkMode
     ? [colors.background, '#2c2c2e']
     : ['#e2e2e2', colors.background];
 
-  /*
-   * 2) Themed + local styles
-   */
+  // Themed + local styles
   const themedStyles = {
     container: {
       flex: 1,
     },
-    /* Hero card for screen title & subtitle */
     heroCard: {
       backgroundColor: colors.surface,
       marginHorizontal: 16,
@@ -60,7 +53,6 @@ export default function ComponentsScreen() {
     section: {
       padding: 16,
     },
-    /* Elevated Card for each component */
     card: {
       backgroundColor: colors.surface,
       borderRadius: 16,
@@ -87,7 +79,7 @@ export default function ComponentsScreen() {
       justifyContent: 'center',
       marginRight: 12,
       backgroundColor: isDarkMode
-        ? `${colors.primaryLight}33` // semi-transparent
+        ? `${colors.primaryLight}33`
         : `${colors.primaryLight}99`,
     },
     cardContent: {
@@ -151,9 +143,6 @@ export default function ComponentsScreen() {
     },
   };
 
-  /*
-   * 3) Render UI
-   */
   return (
     <LinearGradient
       colors={gradientColors}
@@ -412,6 +401,83 @@ export default function ComponentsScreen() {
               />
             </View>
           </TouchableOpacity>
+
+        <TouchableOpacity
+          style={themedStyles.card}
+          onPress={() => handleComponentPress('/accessible-components/accessible-advanced', 'Loading and Navigation')}
+          accessibilityRole="button"
+          accessibilityLabel="Advanced Accessible Components. Includes Tabs, Progress, Alerts, and Sliders. Beta component type."
+        >
+          <View style={themedStyles.cardHeader}>
+            <View style={themedStyles.iconWrapper}>
+              <Ionicons
+                name="apps-outline"
+                size={24}
+                color={colors.primary}
+                accessibilityElementsHidden
+              />
+            </View>
+            <View style={themedStyles.cardContent}>
+              <View style={themedStyles.cardTitleRow}>
+                <View style={themedStyles.titleArea}>
+                  <Text style={themedStyles.cardTitle}>Loading & Navigation</Text>
+                </View>
+                <View style={themedStyles.badge}>
+                  <Text style={themedStyles.badgeText}>Beta</Text>
+                </View>
+              </View>
+              <Text style={themedStyles.cardDescription}>
+                Explore advanced patterns such as Tabs/Carousels, Progress Indicators, Alerts/Toasts, and Sliders.
+              </Text>
+              <View style={themedStyles.features}>
+                <View style={themedStyles.featureItem}>
+                  <Ionicons
+                    name="albums-outline"
+                    size={16}
+                    color={colors.textSecondary}
+                    accessibilityElementsHidden
+                  />
+                  <Text style={themedStyles.featureText}>Tabs &amp; Carousels</Text>
+                </View>
+                <View style={themedStyles.featureItem}>
+                  <Ionicons
+                    name="hourglass-outline"
+                    size={16}
+                    color={colors.textSecondary}
+                    accessibilityElementsHidden
+                  />
+                  <Text style={themedStyles.featureText}>Progress Indicators</Text>
+                </View>
+                <View style={themedStyles.featureItem}>
+                  <Ionicons
+                    name="notifications-outline"
+                    size={16}
+                    color={colors.textSecondary}
+                    accessibilityElementsHidden
+                  />
+                  <Text style={themedStyles.featureText}>Alerts &amp; Toasts</Text>
+                </View>
+                <View style={themedStyles.featureItem}>
+                  <Ionicons
+                    name="options-outline"
+                    size={16}
+                    color={colors.textSecondary}
+                    accessibilityElementsHidden
+                  />
+                  <Text style={themedStyles.featureText}>Sliders &amp; Range</Text>
+                </View>
+              </View>
+            </View>
+            <Ionicons
+              name="chevron-forward"
+              size={20}
+              color={colors.textSecondary}
+              style={themedStyles.chevron}
+              accessibilityElementsHidden
+            />
+          </View>
+        </TouchableOpacity>
+
 
         </View>
       </ScrollView>

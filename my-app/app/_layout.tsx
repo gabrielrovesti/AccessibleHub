@@ -19,14 +19,13 @@ function CustomDrawerContent(props) {
   const { colors, textSizes } = useTheme();
   const router = useRouter();
 
-  // List of main routes, replacing "achievements" with "accessibility-instruction"
   const mainRoutes = [
     'index',
     'components',
     'practices',
     'tools',
     'frameworks-comparison',
-    'accessibility-instruction', // Updated
+    'accessibility-instruction',
     'settings',
   ];
 
