@@ -75,9 +75,6 @@ const AccessibleButtonExample = () => {
           importantForAccessibility="no"
         >
           <DemoButton />
-          <Text style={[styles.demoText, { color: colors.textSecondary }]}>
-            Try this button with VoiceOver/TalkBack enabled
-          </Text>
         </View>
       </View>
 
@@ -95,7 +92,7 @@ const AccessibleButtonExample = () => {
               style={styles.copyButton}
               onPress={handleCopy}
               accessibilityRole="button"
-              accessibilityLabel={copied ? "Code copied" : "Copy code"}
+              accessibilityLabel={copied ? "Code copied" : "Copy code example"}
               accessibilityHint="Copies the code example to your clipboard"
             >
               <Ionicons
@@ -113,7 +110,7 @@ const AccessibleButtonExample = () => {
             style={styles.codeCard}
             accessible={true}
             accessibilityRole="text"
-            accessibilityLabel="Button component code example with accessibility features"
+            accessibilityLabel="Button component code example with accessibility features. Double-tap to copy."
             importantForAccessibility="yes"
           >
             <Text
@@ -126,6 +123,7 @@ const AccessibleButtonExample = () => {
         </View>
       </View>
 
+      {/* RESTORED: Accessibility Features Section */}
       <View style={styles.section}>
         <Text
           style={[styles.sectionTitle, { color: colors.text }]}
@@ -217,6 +215,9 @@ const AccessibleButtonExample = () => {
   );
 };
 
+export default AccessibleButtonExample;
+
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -230,22 +231,33 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     marginBottom: 12,
   },
-  demoContainer: {
+ demoContainer: {
     padding: 20,
     borderRadius: 12,
     alignItems: 'center',
+    backgroundColor: '#F0F0F0', // Light gray background to separate it from the white
+    borderWidth: 2, // Slightly thicker border for clarity
+    borderColor: '#D1D1D1', // Soft gray border
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.15,
+    shadowRadius: 4,
+    elevation: 3, // Adds shadow for Android
   },
+
   demoButton: {
     minHeight: 44,
     paddingHorizontal: 16,
     borderRadius: 8,
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 12,
+    backgroundColor: '#0057D9', // Deeper blue for contrast
   },
+
   buttonText: {
     fontSize: 16,
     fontWeight: '600',
+    color: '#FFFFFF', // Ensures strong contrast on blue button
   },
   demoText: {
     fontSize: 14,
@@ -291,26 +303,50 @@ const styles = StyleSheet.create({
     lineHeight: 20,
   },
   featuresContainer: {
+    padding: 20,
     borderRadius: 12,
-    padding: 16,
-    gap: 16,
+    backgroundColor: '#F8F9FA', // Light gray background for contrast
+    borderWidth: 2,
+    borderColor: '#D1D1D1', // Soft gray border
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3, // Android shadow
   },
+
   featureItem: {
     flexDirection: 'row',
-    alignItems: 'flex-start',
+    alignItems: 'flex-start', // Aligns icon and text properly
     gap: 12,
+    marginBottom: 16,
+    flexWrap: 'wrap', // Ensures wrapping of long text
   },
+
+  iconStyle: {
+    width: 28, // Larger for better visibility
+    height: 28,
+    textAlign: 'center',
+    color: '#0057D9', // Stronger blue for visibility
+  },
+
   featureContent: {
-    flex: 1,
+    flex: 1, // Ensures the text takes up remaining space
   },
+
   featureTitle: {
     fontSize: 16,
     fontWeight: '600',
-    marginBottom: 4,
+    color: '#222222', // Darker text for contrast
+    flexShrink: 1, // Prevents overflow by wrapping text
   },
+
   featureDescription: {
     fontSize: 14,
+    color: '#555555', // Slightly darker gray for readability
     lineHeight: 20,
+    flexShrink: 1,
+    flexWrap: 'wrap', // Ensures wrapping instead of cutting off text
   },
   modalOverlay: {
     flex: 1,
