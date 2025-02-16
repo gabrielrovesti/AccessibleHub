@@ -1,4 +1,3 @@
-// context/ThemeContext.tsx
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ViewStyle, TextStyle } from 'react-native';
@@ -38,14 +37,14 @@ interface ThemeContextType {
   isHighContrast: boolean;
   isLargeText: boolean;
   isLargeTouchTargets: boolean;
-  isDyslexiaFont: boolean;
+  isReduceMotion: boolean;  // New setting
   isColorFilter: boolean;
 
   toggleDarkMode: () => void;
   toggleHighContrast: () => void;
   toggleLargeText: () => void;
   toggleLargeTouchTargets: () => void;
-  toggleDyslexiaFont: () => void;
+  toggleReduceMotion: () => void; // New toggle
   toggleColorFilter: () => void;
 
   // Theme values
@@ -97,39 +96,44 @@ const defaultColors = {
   dark: {
     background: '#000000',
     surface: '#1c1c1e',
+    surfaceHover: '#2c2c2e',
     text: '#ffffff',
     textSecondary: '#ebebf5',
     primary: '#0a84ff',
+    primaryLight: '#4da3ff',
     border: '#38383a',
-    // You could define surfaceHover, codeBackground, etc. if needed
+    codeBackground: '#1c1c1e',
+    codeBorder: '#555555',
+    error: '#ff453a',
+    success: '#30d158',
   },
   highContrastLight: {
     background: '#ffffff',
     surface: '#ffffff',
+    surfaceHover: '#f0f0f0',
     text: '#000000',
-    textSecondary: '#1c1c1e',
+    textSecondary: '#000000',
     primary: '#0055cc',
+    primaryLight: '#bdbdbd',
     border: '#000000',
     codeBackground: '#000000',
     codeBorder: '#ffffff',
     error: '#dc3545',
     success: '#28a745',
-    surfaceHover: '#f0f0f0',
-    primaryLight: '#e1f0ff',
   },
   highContrastDark: {
     background: '#000000',
     surface: '#000000',
+    surfaceHover: '#111111',
     text: '#ffffff',
     textSecondary: '#ffffff',
     primary: '#409cff',
+    primaryLight: '#666666',
     border: '#ffffff',
     codeBackground: '#000000',
     codeBorder: '#ffffff',
-    error: '#dc3545',
-    success: '#28a745',
-    surfaceHover: '#111111',
-    primaryLight: '#666666',
+    error: '#ff453a',
+    success: '#30d158',
   },
 };
 
@@ -157,8 +161,7 @@ const defaultTextSizes = {
 const createStyleSystem = (
   colors: ColorScheme,
   textSizes: TextSizes,
-  isLargeTouchTargets: boolean,
-  isDyslexiaFont: boolean
+  isLargeTouchTargets: boolean
 ): StyleSystem => ({
   spacing: {
     xs: 4,
@@ -224,20 +227,21 @@ const createStyleSystem = (
       fontWeight: '700',
       color: colors.text,
       marginBottom: 8,
-      fontFamily: isDyslexiaFont ? 'OpenDyslexic-Regular' : 'System',
+      // Removed dyslexia font reference
+      fontFamily: 'System',
     },
     subtitle: {
       fontSize: textSizes.large,
       fontWeight: '600',
       color: colors.text,
       marginBottom: 16,
-      fontFamily: isDyslexiaFont ? 'OpenDyslexic-Regular' : 'System',
+      fontFamily: 'System',
     },
     body: {
       fontSize: textSizes.medium,
       color: colors.text,
       lineHeight: 24,
-      fontFamily: isDyslexiaFont ? 'OpenDyslexic-Regular' : 'System',
+      fontFamily: 'System',
     },
     code: {
       fontFamily: 'monospace',
@@ -249,7 +253,7 @@ const createStyleSystem = (
       fontSize: textSizes.small,
       color: colors.textSecondary,
       lineHeight: 20,
-      fontFamily: isDyslexiaFont ? 'OpenDyslexic-Regular' : 'System',
+      fontFamily: 'System',
     },
   },
 });
@@ -265,8 +269,8 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     isHighContrast: false,
     isLargeText: false,
     isLargeTouchTargets: false,
-    // New toggles
-    isDyslexiaFont: false,
+    // Removed dyslexia font
+    isReduceMotion: false, // New setting
     isColorFilter: false,
   });
 
@@ -302,29 +306,16 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     saveSettings(newSettings);
   };
 
-  /* 
-   * 1) Determine base color scheme 
-   *    from dark mode / high contrast
-   */
+  // Determine base color scheme
   const getBaseScheme = (): ColorScheme => {
     if (settings.isDarkMode) {
-      return settings.isHighContrast
-        ? defaultColors.highContrastDark
-        : defaultColors.dark;
+      return settings.isHighContrast ? defaultColors.highContrastDark : defaultColors.dark;
     }
-    return settings.isHighContrast
-      ? defaultColors.highContrastLight
-      : defaultColors.light;
+    return settings.isHighContrast ? defaultColors.highContrastLight : defaultColors.light;
   };
 
-  /* 
-   * 2) If colorFilter is enabled, override 
-   *    certain colors to create a basic 
-   *    grayscale effect
-   */
   const applyColorFilter = (scheme: ColorScheme): ColorScheme => {
     if (!settings.isColorFilter) return scheme;
-    // Approximate grayscale
     return {
       ...scheme,
       background: '#e0e0e0',
@@ -337,44 +328,26 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     };
   };
 
-  /* 
-   * 3) Build final color scheme 
-   */
   const getColors = (): ColorScheme => {
     const baseScheme = getBaseScheme();
     return applyColorFilter(baseScheme);
   };
 
-  /* 
-   * 4) Determine text sizes 
-   */
   const getTextSizes = (): TextSizes => {
     return settings.isLargeText ? defaultTextSizes.large : defaultTextSizes.regular;
   };
 
   const colors = getColors();
   const textSizes = getTextSizes();
+  const styles = createStyleSystem(colors, textSizes, settings.isLargeTouchTargets);
 
-  /* 
-   * 5) Create style system 
-   */
-  const styles = createStyleSystem(
-    colors,
-    textSizes,
-    settings.isLargeTouchTargets,
-    settings.isDyslexiaFont
-  );
-
-  /* 
-   * 6) Expose toggles + theme 
-   */
-  const value = {
+  const value: ThemeContextType = {
     ...settings,
     toggleDarkMode: () => toggleSetting('isDarkMode'),
     toggleHighContrast: () => toggleSetting('isHighContrast'),
     toggleLargeText: () => toggleSetting('isLargeText'),
     toggleLargeTouchTargets: () => toggleSetting('isLargeTouchTargets'),
-    toggleDyslexiaFont: () => toggleSetting('isDyslexiaFont'),
+    toggleReduceMotion: () => toggleSetting('isReduceMotion'),
     toggleColorFilter: () => toggleSetting('isColorFilter'),
     colors,
     textSizes,

@@ -277,6 +277,8 @@ export default function AccessibleMediaExample() {
 
         {/* INTERACTIVE DEMO SECTION */}
         <View style={themedStyles.section}>
+         <Text style={themedStyles.sectionTitle}>Demo</Text>
+
           <View style={themedStyles.demoCard}>
             <Image
               source={images[currentImage - 1].uri}

@@ -10,13 +10,16 @@ import {
   AccessibilityInfo,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { LinearGradient } from 'expo-linear-gradient';
+import Slider from '@react-native-community/slider';
 import { ThemeProvider, useTheme } from '../context/ThemeContext';
 
 /* ---------------------------------------------
    1. Custom Drawer Content
 --------------------------------------------- */
 function CustomDrawerContent(props) {
-  const { colors, textSizes } = useTheme();
+  // Now include isDyslexiaFont in the theme consumption
+  const { colors, textSizes, isDyslexiaFont } = useTheme();
   const router = useRouter();
 
   const mainRoutes = [
@@ -29,7 +32,7 @@ function CustomDrawerContent(props) {
     'settings',
   ];
 
-  // Overhauled styles
+  // Overhauled styles with dyslexian font applied to text styles
   const dynamicStyles = StyleSheet.create({
     container: {
       flex: 1,
@@ -55,10 +58,12 @@ function CustomDrawerContent(props) {
       color: colors.surface,
       fontWeight: 'bold',
       marginBottom: 4,
+      fontFamily: isDyslexiaFont ? 'OpenDyslexic-Regular' : 'System',
     },
     version: {
       fontSize: textSizes.small,
       color: colors.surface,
+      fontFamily: isDyslexiaFont ? 'OpenDyslexic-Regular' : 'System',
     },
     drawerContent: {
       flex: 1,
@@ -86,6 +91,7 @@ function CustomDrawerContent(props) {
       color: colors.text,
       marginLeft: 16,
       flex: 1,
+      fontFamily: isDyslexiaFont ? 'OpenDyslexic-Regular' : 'System',
     },
     drawerLabelActive: {
       color: colors.primary,
@@ -208,7 +214,7 @@ function DrawerNavigator() {
         'practices',
         'tools',
         'frameworks-comparison',
-        'accessibility-instruction', // Updated
+        'accessibility-instruction',
         'settings',
       ].includes(route.name);
 
@@ -291,7 +297,6 @@ function DrawerNavigator() {
         }}
       />
 
-      {/* Updated: Framework Comparison & Accessibility Instruction */}
       <Drawer.Screen
         name="frameworks-comparison"
         options={{
@@ -301,15 +306,18 @@ function DrawerNavigator() {
           ),
         }}
       />
+
       <Drawer.Screen
         name="accessibility-instruction"
         options={{
-          drawerLabel: 'Instruction & Community', // Updated
+          drawerLabel: 'Instruction & Community',
           drawerIcon: ({ size, color }) => (
             <Ionicons name="people-outline" size={size} color={color} />
           ),
         }}
       />
+
+
 
       <Drawer.Screen
         name="settings"

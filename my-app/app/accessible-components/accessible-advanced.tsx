@@ -1,29 +1,85 @@
-import React, { useState, useEffect } from 'react';
+// app/accessible-components/accessible-advanced.tsx
+
+import React, { useState, useEffect, useRef } from 'react';
 import {
   View,
   Text,
   StyleSheet,
   TouchableOpacity,
+  Clipboard,
+  Modal,
   AccessibilityInfo,
-  ScrollView,
   Animated,
+  ScrollView,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
+import Slider from '@react-native-community/slider';
 import { useTheme } from '../../context/ThemeContext';
 
 /**
- * A single screen demonstrating:
- * 1) Tabs & Carousels
- * 2) Progress Indicators
- * 3) Alerts & Toasts
- * 4) Sliders / Range Inputs
+ * Reusable component for displaying code snippets.
+ * The entire container is black; "JSX" label and "Copy" button
+ * appear in the same block as the code.
  */
+function CodeSnippet({ snippet, label }: { snippet: string; label: string }) {
+  const [copied, setCopied] = useState(false);
+  const { colors } = useTheme();
+
+  const handleCopy = async () => {
+    try {
+      await Clipboard.setString(snippet);
+      setCopied(true);
+      AccessibilityInfo.announceForAccessibility('Code copied to clipboard');
+      setTimeout(() => setCopied(false), 2000);
+    } catch (err) {
+      console.error('Failed to copy:', err);
+      AccessibilityInfo.announceForAccessibility('Failed to copy code');
+    }
+  };
+
+  return (
+    <View
+      style={styles.snippetContainer}
+      accessible={true}
+      accessibilityLabel={`Source code for ${label}`}
+      accessibilityRole="text"
+    >
+      {/* Header row (JSX label + Copy button) */}
+      <View style={styles.snippetHeader}>
+        <Text style={styles.snippetHeaderText}>JSX</Text>
+        <TouchableOpacity
+          style={styles.copyButton}
+          onPress={handleCopy}
+          accessibilityRole="button"
+          accessibilityLabel={copied ? "Code copied" : "Copy code example"}
+          accessibilityHint="Copies the code example to your clipboard"
+        >
+          <Ionicons
+            name={copied ? "checkmark" : "copy-outline"}
+            size={20}
+            color={copied ? "#28A745" : colors.textSecondary}
+            accessibilityElementsHidden
+          />
+          <Text style={[styles.copyText, copied && styles.copiedText]}>
+            {copied ? "Copied!" : "Copy"}
+          </Text>
+        </TouchableOpacity>
+      </View>
+
+      {/* Actual code text (hidden from screen readers) */}
+      <Text style={styles.codeText} accessibilityElementsHidden>
+        {snippet}
+      </Text>
+    </View>
+  );
+}
+
 export default function AccessibleAdvancedScreen() {
   const { colors, textSizes, isDarkMode } = useTheme();
 
   /********************************************************
-   * 1) TABS & CAROUSELS (Minimal Tab Switcher Demo)
+   * 1) TABS & CAROUSELS
    ********************************************************/
   const [selectedTab, setSelectedTab] = useState(0);
   const tabs = ['Tab One', 'Tab Two', 'Tab Three'];
@@ -48,55 +104,46 @@ const tabs = ['Tab One', 'Tab Two', 'Tab Three'];
 <Text>Current tab: {tabs[selectedTab]}</Text>`;
 
   /********************************************************
-   * 2) PROGRESS INDICATORS (Simple animated bar)
+   * 2) PROGRESS INDICATORS
    ********************************************************/
   const [progress, setProgress] = useState(0);
-  const progressWidth = new Animated.Value(progress);
-
-  useEffect(() => {
-    Animated.timing(progressWidth, {
-      toValue: progress,
-      duration: 300,
-      useNativeDriver: false,
-    }).start();
-  }, [progress]);
+  const progressAnimated = useRef(new Animated.Value(progress)).current;
 
   const progressSnippet = `// Basic progress bar
 const [progress, setProgress] = useState(0);
-const progressWidth = new Animated.Value(progress);
+const progressAnimated = new Animated.Value(progress);
 
 useEffect(() => {
-  Animated.timing(progressWidth, {
+  Animated.timing(progressAnimated, {
     toValue: progress,
     duration: 300,
     useNativeDriver: false,
   }).start();
 }, [progress]);
 
-// In render:
 <Animated.View
   style={{
     height: 10,
     backgroundColor: 'blue',
-    width: progressWidth.interpolate({
+    width: progressAnimated.interpolate({
       inputRange: [0, 100],
       outputRange: ['0%', '100%'],
     }),
   }}
 />`;
 
+  useEffect(() => {
+    Animated.timing(progressAnimated, {
+      toValue: progress,
+      duration: 300,
+      useNativeDriver: false,
+    }).start();
+  }, [progress]);
+
   /********************************************************
-   * 3) ALERTS & TOASTS (Simple ephemeral message)
+   * 3) ALERTS & TOASTS
    ********************************************************/
   const [showToast, setShowToast] = useState(false);
-
-  const showToastMessage = () => {
-    setShowToast(true);
-    AccessibilityInfo.announceForAccessibility('Alert: Something happened');
-    setTimeout(() => {
-      setShowToast(false);
-    }, 2000);
-  };
 
   const alertsSnippet = `// Minimal toast/alert
 const [showToast, setShowToast] = useState(false);
@@ -107,29 +154,40 @@ function showToastMessage() {
   setTimeout(() => setShowToast(false), 2000);
 }
 
-// ...
 {showToast && (
   <View style={{ ... }}>
     <Text>Something happened!</Text>
   </View>
 )}`;
 
+  const showToastMessage = () => {
+    setShowToast(true);
+    AccessibilityInfo.announceForAccessibility('Alert: Something happened');
+    setTimeout(() => setShowToast(false), 2000);
+  };
+
   /********************************************************
-   * 4) SLIDERS / RANGE INPUTS (Minimal example)
+   * 4) SLIDERS / RANGE INPUTS
    ********************************************************/
   const [sliderValue, setSliderValue] = useState(50);
 
-  const sliderSnippet = `// Minimal slider example
-const [sliderValue, setSliderValue] = useState(50);
+  // Use onSlidingComplete to finalize the value, preventing flicker
+  const sliderSnippet = `// Minimal slider example using @react-native-community/slider
+import Slider from '@react-native-community/slider';
 
-// Using @react-native-community/slider or custom:
 <Slider
   minimumValue={0}
   maximumValue={100}
   value={sliderValue}
-  onValueChange={(val) => setSliderValue(val)}
-  accessibilityLabel="Volume slider"
-/>`;
+  onSlidingComplete={(val) => {
+    setSliderValue(val);
+    AccessibilityInfo.announceForAccessibility(\`Slider value set to \${Math.round(val)}\`);
+  }}
+  style={{ width: '100%' }}
+  minimumTrackTintColor={colors.primary}
+  maximumTrackTintColor="#ccc"
+/>
+<Text>Current slider value: {sliderValue}</Text>`;
 
   /********************************************************
    * Theming & Layout
@@ -138,7 +196,6 @@ const [sliderValue, setSliderValue] = useState(50);
     ? [colors.background, '#2c2c2e']
     : ['#e2e2e2', colors.background];
 
-  // Common shadow style
   const cardShadowStyle = {
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 3 },
@@ -147,11 +204,8 @@ const [sliderValue, setSliderValue] = useState(50);
     elevation: 3,
   };
 
-  // Themed + local styles
   const themedStyles = {
-    container: {
-      flex: 1,
-    },
+    container: { flex: 1 },
     heroCard: {
       backgroundColor: colors.surface,
       marginHorizontal: 16,
@@ -176,10 +230,7 @@ const [sliderValue, setSliderValue] = useState(50);
       lineHeight: 24,
       textAlign: 'center',
     },
-    section: {
-      paddingHorizontal: 16,
-      marginTop: 16,
-    },
+    section: { paddingHorizontal: 16, marginTop: 16 },
     demoCard: {
       backgroundColor: colors.surface,
       borderRadius: 16,
@@ -195,51 +246,6 @@ const [sliderValue, setSliderValue] = useState(50);
       fontSize: textSizes.large,
       fontWeight: '600',
       marginBottom: 12,
-    },
-    codeCard: {
-      backgroundColor: '#1c1c1e',
-      borderRadius: 8,
-      overflow: 'hidden',
-      marginTop: 12,
-      ...cardShadowStyle,
-      borderWidth: isDarkMode ? 1 : 0,
-      borderColor: isDarkMode ? '#333' : 'transparent',
-      marginBottom: 16,
-    },
-    codeHeader: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      padding: 8,
-      borderBottomWidth: 1,
-      borderBottomColor: '#333',
-    },
-    codeHeaderText: {
-      fontSize: 14,
-      fontFamily: 'monospace',
-      color: '#999',
-    },
-    codeBody: {
-      padding: 16,
-    },
-    codeText: {
-      fontFamily: 'monospace',
-      fontSize: 14,
-      lineHeight: 20,
-      color: '#fff',
-    },
-    snippetButtonArea: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      gap: 4,
-      padding: 4,
-    },
-    snippetButtonText: {
-      fontSize: 14,
-      color: '#666',
-    },
-    snippetCopiedText: {
-      color: '#28A745',
     },
     progressBarContainer: {
       height: 10,
@@ -257,10 +263,7 @@ const [sliderValue, setSliderValue] = useState(50);
 
   return (
     <LinearGradient colors={gradientColors} style={themedStyles.container}>
-      <ScrollView
-        contentContainerStyle={{ paddingBottom: 24 }}
-        accessibilityRole="scrollview"
-      >
+      <ScrollView contentContainerStyle={{ paddingBottom: 24 }} accessibilityRole="scrollview">
         {/* HERO CARD */}
         <View style={themedStyles.heroCard}>
           <Text style={themedStyles.heroTitle} accessibilityRole="header">
@@ -275,7 +278,6 @@ const [sliderValue, setSliderValue] = useState(50);
         <View style={themedStyles.section}>
           <View style={themedStyles.demoCard}>
             <Text style={themedStyles.sectionTitle}>Tabs &amp; Carousels</Text>
-            {/* Minimal tab example */}
             <View style={{ flexDirection: 'row', marginBottom: 8 }}>
               {tabs.map((tab, idx) => {
                 const isSelected = selectedTab === idx;
@@ -298,31 +300,16 @@ const [sliderValue, setSliderValue] = useState(50);
                       AccessibilityInfo.announceForAccessibility(`${tab} selected`);
                     }}
                   >
-                    <Text
-                      style={{
-                        color: isSelected ? colors.background : colors.text,
-                        fontWeight: '600',
-                      }}
-                    >
+                    <Text style={{ color: isSelected ? colors.background : colors.text, fontWeight: '600' }}>
                       {tab}
                     </Text>
                   </TouchableOpacity>
                 );
               })}
             </View>
-            <Text style={{ color: colors.text }}>
-              Current tab: {tabs[selectedTab]}
-            </Text>
+            <Text style={{ color: colors.text }}>Current tab: {tabs[selectedTab]}</Text>
 
-            {/* Code snippet (NO copying logic) */}
-            <View style={themedStyles.codeCard}>
-              <View style={themedStyles.codeHeader}>
-                <Text style={themedStyles.codeHeaderText}>JSX</Text>
-              </View>
-              <View style={themedStyles.codeBody}>
-                <Text style={themedStyles.codeText}>{tabsSnippet}</Text>
-              </View>
-            </View>
+            <CodeSnippet snippet={tabsSnippet} label="Tabs & Carousels" />
           </View>
         </View>
 
@@ -330,15 +317,16 @@ const [sliderValue, setSliderValue] = useState(50);
         <View style={themedStyles.section}>
           <View style={themedStyles.demoCard}>
             <Text style={themedStyles.sectionTitle}>Progress Indicators</Text>
-            <Text style={{ color: colors.text }}>
-              Current progress: {progress}%
-            </Text>
+            <Text style={{ color: colors.text }}>Current progress: {progress}%</Text>
             <View style={themedStyles.progressBarContainer}>
               <Animated.View
                 style={[
                   themedStyles.progressFill,
                   {
-                    width: `${progress}%`,
+                    width: progressAnimated.interpolate({
+                      inputRange: [0, 100],
+                      outputRange: ['0%', '100%'],
+                    }),
                   },
                 ]}
               />
@@ -363,15 +351,7 @@ const [sliderValue, setSliderValue] = useState(50);
               ))}
             </View>
 
-            {/* Code snippet (NO copying logic) */}
-            <View style={themedStyles.codeCard}>
-              <View style={themedStyles.codeHeader}>
-                <Text style={themedStyles.codeHeaderText}>JSX</Text>
-              </View>
-              <View style={themedStyles.codeBody}>
-                <Text style={themedStyles.codeText}>{progressSnippet}</Text>
-              </View>
-            </View>
+            <CodeSnippet snippet={progressSnippet} label="Progress Indicator" />
           </View>
         </View>
 
@@ -386,33 +366,19 @@ const [sliderValue, setSliderValue] = useState(50);
                 borderRadius: 8,
                 alignItems: 'center',
               }}
-              onPress={() => showToastMessage()}
+              onPress={showToastMessage}
               accessibilityRole="button"
               accessibilityLabel="Show alert message"
             >
-              <Text style={{ color: colors.background, fontWeight: '600' }}>
-                Trigger Alert
-              </Text>
+              <Text style={{ color: colors.background, fontWeight: '600' }}>Trigger Alert</Text>
             </TouchableOpacity>
-
-            {/* Ephemeral alert message */}
             {showToast && (
               <View style={{ marginTop: 8, padding: 8, borderRadius: 8, backgroundColor: '#f33' }}>
-                <Text style={{ color: '#fff', fontWeight: '600' }}>
-                  Something happened!
-                </Text>
+                <Text style={{ color: '#fff', fontWeight: '600' }}>Something happened!</Text>
               </View>
             )}
 
-            {/* Code snippet (NO copying logic) */}
-            <View style={themedStyles.codeCard}>
-              <View style={themedStyles.codeHeader}>
-                <Text style={themedStyles.codeHeaderText}>JSX</Text>
-              </View>
-              <View style={themedStyles.codeBody}>
-                <Text style={themedStyles.codeText}>{alertsSnippet}</Text>
-              </View>
-            </View>
+            <CodeSnippet snippet={alertsSnippet} label="Alerts & Toasts" />
           </View>
         </View>
 
@@ -421,55 +387,84 @@ const [sliderValue, setSliderValue] = useState(50);
           <View style={themedStyles.demoCard}>
             <Text style={themedStyles.sectionTitle}>Sliders &amp; Range Inputs</Text>
             <Text style={{ color: colors.text, marginBottom: 8 }}>
-              (Placeholder example, library needed for a real slider)
-            </Text>
-            <Text style={{ color: colors.text }}>
               Current slider value: {sliderValue}
             </Text>
-            <View style={{ flexDirection: 'row', gap: 8, marginTop: 12 }}>
-              {[0, 25, 50, 75, 100].map((val) => (
-                <TouchableOpacity
-                  key={val}
-                  style={{
-                    backgroundColor: colors.primary,
-                    borderRadius: 8,
-                    paddingHorizontal: 8,
-                    paddingVertical: 4,
-                  }}
-                  onPress={() => {
-                    setSliderValue(val);
-                    AccessibilityInfo.announceForAccessibility(
-                      `Slider value set to ${val}`
-                    );
-                  }}
-                >
-                  <Text style={{ color: colors.background }}>{val}</Text>
-                </TouchableOpacity>
-              ))}
-            </View>
+            <Slider
+              minimumValue={0}
+              maximumValue={100}
+              value={sliderValue}
+              onSlidingComplete={(val) => {
+                setSliderValue(val);
+                AccessibilityInfo.announceForAccessibility(`Slider value set to ${Math.round(val)}`);
+              }}
+              accessibilityLabel="Slider input"
+              style={{ width: '100%', height: 40 }}
+              minimumTrackTintColor={colors.primary}
+              maximumTrackTintColor="#ccc"
+            />
 
-            {/* Code snippet (NO copying logic) */}
-            <View style={themedStyles.codeCard}>
-              <View style={themedStyles.codeHeader}>
-                <Text style={themedStyles.codeHeaderText}>JSX</Text>
-              </View>
-              <View style={themedStyles.codeBody}>
-                <Text style={themedStyles.codeText}>{sliderSnippet}</Text>
-              </View>
-            </View>
+            <CodeSnippet snippet={sliderSnippet} label="Slider / Range Input" />
           </View>
         </View>
 
-        {/* Extra spacing at bottom */}
+        {/* Bottom spacing */}
         <View style={{ height: 48 }} />
       </ScrollView>
     </LinearGradient>
   );
 }
 
-/* -------------------------------------------
-   HIDE ROUTE NAME (if using Expo Router)
---------------------------------------------*/
+/**
+ * By default, the raw route name "accessible-advanced" might appear.
+ * Here, we override it with a custom header or hide it entirely.
+ */
 export const options = {
-  headerTitle: '',
+  // If you want a custom name in the header:
+  headerShown: true,
+  title: 'Loading & Navigation',
+
+  // OR hide the header completely:
+  // headerShown: false,
 };
+
+/* -------------------------------------------
+   LOCAL STYLES
+--------------------------------------------*/
+const styles = StyleSheet.create({
+  snippetContainer: {
+    backgroundColor: '#1c1c1e',
+    borderRadius: 8,
+    marginTop: 12,
+    padding: 12,
+  },
+  snippetHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 8,
+  },
+  snippetHeaderText: {
+    fontSize: 14,
+    fontFamily: 'monospace',
+    color: '#999',
+  },
+  copyButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+    padding: 4,
+  },
+  copyText: {
+    fontSize: 14,
+    color: '#666',
+  },
+  copiedText: {
+    color: '#28A745',
+  },
+  codeText: {
+    color: '#fff',
+    fontFamily: 'monospace',
+    fontSize: 14,
+    lineHeight: 20,
+  },
+});

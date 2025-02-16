@@ -354,6 +354,7 @@ const AccessibleDialog = ({ visible, onClose, title, children }) => {
 
         {/* INTERACTIVE DEMO SECTION */}
         <View style={themedStyles.section}>
+          <Text style={themedStyles.sectionTitle}>Demo</Text>
           <View style={themedStyles.demoCard}>
             <TouchableOpacity
               style={themedStyles.demoButton}
@@ -366,6 +367,8 @@ const AccessibleDialog = ({ visible, onClose, title, children }) => {
             </TouchableOpacity>
           </View>
         </View>
+
+
 
         {/* MODAL DIALOG */}
         <Modal

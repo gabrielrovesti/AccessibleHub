@@ -317,7 +317,7 @@ export default function AccessibleFormExample() {
         <View style={themedStyles.section}>
           <View style={themedStyles.demoCard}>
             <Text style={[styles.sectionTitle, { color: colors.text, marginBottom: 12 }]}>
-              Form Module
+              Demo
             </Text>
 
             {/* Name */}

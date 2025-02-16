@@ -42,6 +42,14 @@ export default function ComponentsLayout() {
           headerBackVisible: false,
         }}
       />
+      <Stack.Screen
+        name="accessible-advanced"
+        options={{
+          title: "Advanced Components",
+          headerShown: false,
+          headerBackVisible: false,
+        }}
+      />
     </Stack>
   );
 }
