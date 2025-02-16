@@ -1,48 +1,60 @@
-import { Stack } from 'expo-router';
+import { Stack, useRouter } from 'expo-router';
+import { Platform, BackHandler } from 'react-native';
+import { useFocusEffect } from '@react-navigation/native';
+import React from 'react';
 
 export default function PracticesLayout() {
+  const router = useRouter();
+
+  useFocusEffect(
+    React.useCallback(() => {
+      const onBackPress = () => {
+        router.replace('/practices');
+        return true;
+      };
+
+      if (Platform.OS === 'android') {
+        BackHandler.addEventListener('hardwareBackPress', onBackPress);
+        return () => BackHandler.removeEventListener('hardwareBackPress', onBackPress);
+      }
+    }, [])
+  );
+
   return (
     <Stack
       screenOptions={{
-        headerShown: true,
-        headerTitleStyle: {
-          fontSize: 18,
-        },
+        headerShown: false,
+        presentation: 'card',
       }}
     >
       <Stack.Screen
         name="semantics"
         options={{
-          title: "Semantic Structure",
-          headerShown: false,
+          title: "Semantic Structure"
         }}
       />
       <Stack.Screen
         name="guidelines"
         options={{
-          title: "WCAG 2.2 Guidelines",
-          headerShown: false,
+          title: "WCAG 2.2 Guidelines"
         }}
       />
       <Stack.Screen
         name="screen-reader"
         options={{
-          title: "Screen Reader Support",
-          headerShown: false,
+          title: "Screen Reader Support"
         }}
       />
       <Stack.Screen
         name="navigation"
         options={{
-          title: "Navigation & Focus",
-          headerShown: false,
+          title: "Navigation & Focus"
         }}
       />
       <Stack.Screen
         name="gestures"
         options={{
-          title: "Gesture Tutorial",
-          headerShown: false,
+          title: "Gesture Tutorial"
         }}
       />
     </Stack>

@@ -355,7 +355,7 @@ const AccessibleDialog = ({ visible, onClose, title, children }) => {
         {/* INTERACTIVE DEMO SECTION */}
         <View style={themedStyles.section}>
           <Text
-            style={[styles.sectionTitle, { color: colors.text }]}
+            style={[themedStyles.sectionTitle, { color: colors.text }]}
             accessibilityRole="header"
             accessibilityLabel="Accessible Dialog Demonstration"
           >
@@ -497,7 +497,7 @@ const AccessibleDialog = ({ visible, onClose, title, children }) => {
               importantForAccessibility="no-hide-descendants"
             >
               <Text style={themedStyles.codeText}>
-                {dialogCodeExample}
+                {codeExample}
               </Text>
             </View>
           </View>

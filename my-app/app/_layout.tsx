@@ -194,19 +194,17 @@ function DrawerNavigator() {
   const { colors } = useTheme();
   const router = useRouter();
 
-  const screenOptions = ({ navigation, route }) => ({
-    headerShown: true,
-    drawerStyle: {
-      backgroundColor: colors.background,
-    },
-    headerStyle: {
-      backgroundColor: colors.surface,
-      elevation: 0,
-      shadowOpacity: 0,
-    },
-    headerTintColor: colors.text,
-    // Remove headerTitle entirely
-    headerTitle: () => null,
+ // In your root _layout.tsx, update the screenOptions:
+
+ const screenOptions = ({ navigation, route }) => ({
+   headerShown: true,
+   headerStyle: {
+     backgroundColor: colors.surface,
+     elevation: 0,
+     shadowOpacity: 0,
+   },
+   headerTintColor: colors.text,
+   headerTitle: () => null,
     headerLeft: () => {
       const isMainRoute = [
         'index',
@@ -218,20 +216,40 @@ function DrawerNavigator() {
         'settings',
       ].includes(route.name);
 
+      // Check specific folder routes
+      const isComponentsRoute = route.name.startsWith('accessible-components/');
+      const isPracticesRoute = route.name.startsWith('practices-screens/');
+
+      if (isComponentsRoute) {
+        return (
+          <TouchableOpacity
+            onPress={() => router.push('/components')}
+            accessibilityRole="button"
+            accessibilityLabel="Return to components list"
+            style={styles.headerButton}
+          >
+            <Ionicons name="arrow-back" size={24} color={colors.text} />
+          </TouchableOpacity>
+        );
+      }
+
+      if (isPracticesRoute) {
+        return (
+          <TouchableOpacity
+            onPress={() => router.push('/practices')}
+            accessibilityRole="button"
+            accessibilityLabel="Return to practices list"
+            style={styles.headerButton}
+          >
+            <Ionicons name="arrow-back" size={24} color={colors.text} />
+          </TouchableOpacity>
+        );
+      }
+
       if (!isMainRoute) {
         return (
           <TouchableOpacity
-            onPress={() => {
-              // For nested routes
-              const parentRoute = route.name.split('/')[0];
-              if (parentRoute === 'practices-screens') {
-                router.push('/practices');
-              } else if (parentRoute === 'accessible-components') {
-                router.push('/components');
-              } else {
-                navigation.goBack();
-              }
-            }}
+            onPress={() => navigation.goBack()}
             accessibilityRole="button"
             accessibilityLabel="Go back"
             style={styles.headerButton}
@@ -252,7 +270,7 @@ function DrawerNavigator() {
         </TouchableOpacity>
       );
     },
-  });
+ });
 
   return (
     <Drawer
