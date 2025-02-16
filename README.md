@@ -159,6 +159,8 @@ my-app/
    npx expo build:android
    # or using EAS
    eas build --platform android
+   # or using Expo locally (note: you need WSL or a Linux terminal to build!)
+   eas build --platform android --profile preview --local
    ```
 
 2. **iOS Build**  
