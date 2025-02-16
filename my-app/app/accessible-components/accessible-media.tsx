@@ -277,7 +277,12 @@ export default function AccessibleMediaExample() {
 
         {/* INTERACTIVE DEMO SECTION */}
         <View style={themedStyles.section}>
-         <Text style={themedStyles.sectionTitle}>Demo</Text>
+         <Text style={themedStyles.sectionTitle}
+         accessibilityRole="header"
+         accessibilityLabel="Accessible Media Demonstration"
+         >
+         Media Demo
+         </Text>
 
           <View style={themedStyles.demoCard}>
             <Image
@@ -347,18 +352,18 @@ export default function AccessibleMediaExample() {
           </View>
         </View>
 
-        {/* IMPLEMENTATION SECTION */}
+        {/* MEDIA IMPLEMENTATION SECTION */}
         <View style={themedStyles.section}>
-          <Text style={themedStyles.sectionTitle}>Implementation</Text>
-          <View style={themedStyles.codeCardContainer}>
-            <View style={themedStyles.codeHeader}>
+          <Text style={themedStyles.sectionTitle}>Code Implementation</Text>
+          <View style={themedStyles.codeCardContainer} accessible={false}>
+            <View style={themedStyles.codeHeader} accessible={false}>
               <Text style={themedStyles.codeHeaderText}>JSX</Text>
               <TouchableOpacity
                 style={themedStyles.copyButton}
                 onPress={handleCopy}
                 accessibilityRole="button"
                 accessibilityLabel={copied ? "Code copied" : "Copy code"}
-                accessibilityHint="Copies the code example to your clipboard"
+                accessibilityHint="Copies the media code example to your clipboard"
               >
                 <Ionicons
                   name={copied ? "checkmark" : "copy-outline"}
@@ -379,6 +384,7 @@ export default function AccessibleMediaExample() {
             </View>
           </View>
         </View>
+
 
         {/* ACCESSIBILITY FEATURES SECTION */}
         <View style={themedStyles.section}>

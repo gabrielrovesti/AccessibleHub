@@ -280,29 +280,66 @@ export default function HomeScreen() {
           </Text>
 
           {/* STATS */}
-          <View style={themedStyles.statsContainer}>
-            <View style={themedStyles.statCard} accessibilityRole="text">
-              <Text style={themedStyles.statNumber}>{accessibilityMetrics.componentCount}</Text>
-              <Text style={themedStyles.statLabel}>Components</Text>
-              <Text style={themedStyles.statDescription}>Ready to Use</Text>
+            <View style={themedStyles.statsContainer}>
+              {/* COMPONENTS STAT */}
+              <View
+                style={themedStyles.statCard}
+                accessible
+                accessibilityRole="text"
+                accessibilityLabel={`${accessibilityMetrics.componentCount} components, ready to use`}
+              >
+                <Text style={themedStyles.statNumber} accessibilityElementsHidden>
+                  {accessibilityMetrics.componentCount}
+                </Text>
+                <Text style={themedStyles.statLabel} accessibilityElementsHidden>
+                  Components
+                </Text>
+                <Text style={themedStyles.statDescription} accessibilityElementsHidden>
+                  Ready to Use
+                </Text>
+              </View>
+
+              <View style={themedStyles.statDivider} importantForAccessibility="no" />
+
+              {/* WCAG STAT */}
+              <View
+                style={themedStyles.statCard}
+                accessible
+                accessibilityRole="text"
+                accessibilityLabel={`${accessibilityMetrics.wcagCompliance}% WCAG 2.2, Level AA`}
+              >
+                <Text style={themedStyles.statNumber} accessibilityElementsHidden>
+                  {accessibilityMetrics.wcagCompliance}%
+                </Text>
+                <Text style={themedStyles.statLabel} accessibilityElementsHidden>
+                  WCAG 2.2
+                </Text>
+                <Text style={themedStyles.statDescription} accessibilityElementsHidden>
+                  Level AA
+                </Text>
+              </View>
+
+              <View style={themedStyles.statDivider} importantForAccessibility="no" />
+
+              {/* SCREEN READER STAT */}
+              <View
+                style={themedStyles.statCard}
+                accessible
+                accessibilityRole="text"
+                accessibilityLabel={`${accessibilityMetrics.testingScore}% screen reader test coverage`}
+              >
+                <Text style={themedStyles.statNumber} accessibilityElementsHidden>
+                  {accessibilityMetrics.testingScore}%
+                </Text>
+                <Text style={themedStyles.statLabel} accessibilityElementsHidden>
+                  Screen Reader
+                </Text>
+                <Text style={themedStyles.statDescription} accessibilityElementsHidden>
+                  Test Coverage
+                </Text>
+              </View>
             </View>
 
-            <View style={themedStyles.statDivider} importantForAccessibility="no" />
-
-            <View style={themedStyles.statCard} accessibilityRole="text">
-              <Text style={themedStyles.statNumber}>{accessibilityMetrics.wcagCompliance}%</Text>
-              <Text style={themedStyles.statLabel}>WCAG 2.2</Text>
-              <Text style={themedStyles.statDescription}>Level AA</Text>
-            </View>
-
-            <View style={themedStyles.statDivider} importantForAccessibility="no" />
-
-            <View style={themedStyles.statCard} accessibilityRole="text">
-              <Text style={themedStyles.statNumber}>{accessibilityMetrics.testingScore}%</Text>
-              <Text style={themedStyles.statLabel}>Screen Reader</Text>
-              <Text style={themedStyles.statDescription}>Test Coverage</Text>
-            </View>
-          </View>
         </View>
 
         {/* QUICK START */}

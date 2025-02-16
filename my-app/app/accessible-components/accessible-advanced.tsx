@@ -17,11 +17,6 @@ import { LinearGradient } from 'expo-linear-gradient';
 import Slider from '@react-native-community/slider';
 import { useTheme } from '../../context/ThemeContext';
 
-/**
- * Reusable component for displaying code snippets.
- * The entire container is black; "JSX" label and "Copy" button
- * appear in the same block as the code.
- */
 function CodeSnippet({ snippet, label }: { snippet: string; label: string }) {
   const [copied, setCopied] = useState(false);
   const { colors } = useTheme();
@@ -45,9 +40,8 @@ function CodeSnippet({ snippet, label }: { snippet: string; label: string }) {
       accessibilityLabel={`Source code for ${label}`}
       accessibilityRole="text"
     >
-      {/* Header row (JSX label + Copy button) */}
       <View style={styles.snippetHeader}>
-        <Text style={styles.snippetHeaderText}>JSX</Text>
+        <Text style={styles.snippetHeaderText}JSX></Text>
         <TouchableOpacity
           style={styles.copyButton}
           onPress={handleCopy}

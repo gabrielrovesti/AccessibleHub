@@ -354,7 +354,13 @@ const AccessibleDialog = ({ visible, onClose, title, children }) => {
 
         {/* INTERACTIVE DEMO SECTION */}
         <View style={themedStyles.section}>
-          <Text style={themedStyles.sectionTitle}>Demo</Text>
+          <Text
+            style={[styles.sectionTitle, { color: colors.text }]}
+            accessibilityRole="header"
+            accessibilityLabel="Accessible Dialog Demonstration"
+          >
+            Dialog Demo
+          </Text>
           <View style={themedStyles.demoCard}>
             <TouchableOpacity
               style={themedStyles.demoButton}
@@ -461,9 +467,9 @@ const AccessibleDialog = ({ visible, onClose, title, children }) => {
 
         {/* IMPLEMENTATION SECTION */}
         <View style={themedStyles.section}>
-          <Text style={themedStyles.sectionTitle}>Implementation</Text>
-          <View style={themedStyles.codeCardContainer}>
-            <View style={themedStyles.codeHeader}>
+          <Text style={themedStyles.sectionTitle}>Code Implementation</Text>
+          <View style={themedStyles.codeCardContainer} accessible={false}>
+            <View style={themedStyles.codeHeader} accessible={false}>
               <Text style={themedStyles.codeHeaderText}>JSX</Text>
               <TouchableOpacity
                 style={themedStyles.copyButton}
@@ -486,16 +492,17 @@ const AccessibleDialog = ({ visible, onClose, title, children }) => {
             </View>
             <View
               style={themedStyles.codeCard}
-              accessible
-              accessibilityRole="text"
-              accessibilityLabel="Dialog component code example with accessibility features."
+              accessible={false}
+              accessibilityElementsHidden
+              importantForAccessibility="no-hide-descendants"
             >
-              <Text style={themedStyles.codeText} accessibilityElementsHidden>
-                {codeExample}
+              <Text style={themedStyles.codeText}>
+                {dialogCodeExample}
               </Text>
             </View>
           </View>
         </View>
+
 
         {/* ACCESSIBILITY FEATURES SECTION */}
         <View style={themedStyles.section}>

@@ -352,127 +352,148 @@ const codeExample = `<View accessibilityRole="form">
           </Text>
         </View>
 
-        {/* 1) INTERACTIVE FORM */}
-        <View style={themedStyles.section}>
-          <View style={themedStyles.demoCard}>
-            <Text style={[styles.sectionTitle, { color: colors.text, marginBottom: 12 }]}>
-              Demo
-            </Text>
+         {/* 1) INTERACTIVE FORM */}
+         <View
+           style={[themedStyles.section, { marginBottom: 24 }]}
+         >
+           <View
+             style={themedStyles.demoCard}
+             accessibilityLabel="Accessible Form Demonstration. Complete all required fields."
+           >
+             <Text
+               style={[
+                 styles.sectionTitle,
+                 { color: colors.text, marginBottom: 12 },
+               ]}
+               accessibilityRole="header"
+             >
+               Form Demo
+             </Text>
 
-            {/* Name */}
-            <Text style={[styles.label, { color: colors.text }]}>Name</Text>
-            <TextInput
-              style={[
-                styles.input,
-                { borderColor: colors.border, color: colors.text },
-              ]}
-              value={formData.name}
-              onChangeText={(text) => setFormData(prev => ({ ...prev, name: text }))}
-              accessibilityLabel="Enter your name"
-              accessibilityHint="Type your full name"
-            />
-            {errors.name && (
-              <View style={styles.errorMessage} accessibilityRole="alert">
-                <Text style={themedStyles.errorText}>{errors.name}</Text>
-              </View>
-            )}
+             {/* Name */}
+             <Text style={[styles.label, { color: colors.text, marginTop: 16 }]}>
+               Name
+             </Text>
+             <TextInput
+               style={[
+                 styles.input,
+                 { borderColor: colors.border, color: colors.text },
+               ]}
+               value={formData.name}
+               onChangeText={(text) => setFormData((prev) => ({ ...prev, name: text }))}
+               accessibilityLabel="Enter your name"
+               accessibilityHint="Type your full name"
+             />
+             {errors.name && (
+               <View style={styles.errorMessage} accessibilityRole="alert">
+                 <Text style={themedStyles.errorText}>{errors.name}</Text>
+               </View>
+             )}
 
-            {/* Email */}
-            <Text style={[styles.label, { color: colors.text }]}>Email</Text>
-            <TextInput
-              style={[
-                styles.input,
-                { borderColor: colors.border, color: colors.text },
-              ]}
-              value={formData.email}
-              onChangeText={(text) => setFormData(prev => ({ ...prev, email: text }))}
-              keyboardType="email-address"
-              textContentType="emailAddress"
-              autoCapitalize="none"
-              accessibilityLabel="Enter your email"
-              accessibilityHint="Type your email address"
-            />
-            {errors.email && (
-              <View style={styles.errorMessage} accessibilityRole="alert">
-                <Text style={themedStyles.errorText}>{errors.email}</Text>
-              </View>
-            )}
+             {/* Email */}
+             <Text style={[styles.label, { color: colors.text, marginTop: 16 }]}>
+               Email
+             </Text>
+             <TextInput
+               style={[
+                 styles.input,
+                 { borderColor: colors.border, color: colors.text },
+               ]}
+               value={formData.email}
+               onChangeText={(text) => setFormData((prev) => ({ ...prev, email: text }))}
+               keyboardType="email-address"
+               textContentType="emailAddress"
+               autoCapitalize="none"
+               accessibilityLabel="Enter your email"
+               accessibilityHint="Type your email address"
+             />
+             {errors.email && (
+               <View style={styles.errorMessage} accessibilityRole="alert">
+                 <Text style={themedStyles.errorText}>{errors.email}</Text>
+               </View>
+             )}
 
-            {/* Gender */}
-            <Text style={[styles.label, { color: colors.text }]}>Gender</Text>
-            <View style={styles.radioGroup}>
-              {['Male', 'Female'].map((option) => (
-                <TouchableOpacity
-                  key={option}
-                  style={styles.radioItem}
-                  onPress={() => setFormData(prev => ({ ...prev, gender: option }))}
-                  accessibilityRole="radio"
-                  accessibilityState={{ checked: formData.gender === option }}
-                  accessibilityLabel={`Select ${option}`}
-                >
-                  <View
-                    style={[
-                      styles.radioButton,
-                      { borderColor: colors.primary },
-                      formData.gender === option && { backgroundColor: colors.primary },
-                    ]}
-                  />
-                  <Text style={[styles.radioLabel, { color: colors.text }]}>
-                    {option}
-                  </Text>
-                </TouchableOpacity>
-              ))}
-            </View>
-            {errors.gender && (
-              <View style={styles.errorMessage} accessibilityRole="alert">
-                <Text style={themedStyles.errorText}>{errors.gender}</Text>
-              </View>
-            )}
+             {/* Gender */}
+             <Text style={[styles.label, { color: colors.text, marginTop: 16 }]}>
+               Gender
+             </Text>
+             <View style={[styles.radioGroup, { marginBottom: 16 }]}>
+               {['Male', 'Female'].map((option) => (
+                 <TouchableOpacity
+                   key={option}
+                   style={styles.radioItem}
+                   onPress={() => setFormData((prev) => ({ ...prev, gender: option }))}
+                   accessibilityRole="radio"
+                   accessibilityState={{ checked: formData.gender === option }}
+                   accessibilityLabel={`Select ${option}`}
+                 >
+                   <View
+                     style={[
+                       styles.radioButton,
+                       { borderColor: colors.primary },
+                       formData.gender === option && { backgroundColor: colors.primary },
+                     ]}
+                   />
+                   <Text style={[styles.radioLabel, { color: colors.text }]}>
+                     {option}
+                   </Text>
+                 </TouchableOpacity>
+               ))}
+             </View>
+             {errors.gender && (
+               <View style={styles.errorMessage} accessibilityRole="alert">
+                 <Text style={themedStyles.errorText}>{errors.gender}</Text>
+               </View>
+             )}
 
-            {/* Preferred Contact Time */}
-            <Text style={[styles.label, { color: colors.text }]}>Preferred Contact Time</Text>
-            <View style={styles.radioGroup}>
-              {['Morning', 'Afternoon', 'Evening'].map((time) => (
-                <TouchableOpacity
-                  key={time}
-                  style={styles.radioItem}
-                  onPress={() => setFormData(prev => ({ ...prev, contactTime: time }))}
-                  accessibilityRole="radio"
-                  accessibilityState={{ checked: formData.contactTime === time }}
-                  accessibilityLabel={`Select ${time}`}
-                >
-                  <View
-                    style={[
-                      styles.radioButton,
-                      { borderColor: colors.primary },
-                      formData.contactTime === time && { backgroundColor: colors.primary },
-                    ]}
-                  />
-                  <Text style={[styles.radioLabel, { color: colors.text }]}>{time}</Text>
-                </TouchableOpacity>
-              ))}
-            </View>
-            {errors.contactTime && (
-              <View style={styles.errorMessage} accessibilityRole="alert">
-                <Text style={themedStyles.errorText}>{errors.contactTime}</Text>
-              </View>
-            )}
+             {/* Preferred Contact Time */}
+             <Text style={[styles.label, { color: colors.text, marginTop: 16 }]}>
+               Preferred Contact Time
+             </Text>
+             <View style={[styles.radioGroup, { marginBottom: 16 }]}>
+               {['Morning', 'Afternoon', 'Evening'].map((time) => (
+                 <TouchableOpacity
+                   key={time}
+                   style={styles.radioItem}
+                   onPress={() => setFormData((prev) => ({ ...prev, contactTime: time }))}
+                   accessibilityRole="radio"
+                   accessibilityState={{ checked: formData.contactTime === time }}
+                   accessibilityLabel={`Select ${time}`}
+                 >
+                   <View
+                     style={[
+                       styles.radioButton,
+                       { borderColor: colors.primary },
+                       formData.contactTime === time && { backgroundColor: colors.primary },
+                     ]}
+                   />
+                   <Text style={[styles.radioLabel, { color: colors.text }]}>{time}</Text>
+                 </TouchableOpacity>
+               ))}
+             </View>
+             {errors.contactTime && (
+               <View style={styles.errorMessage} accessibilityRole="alert">
+                 <Text style={themedStyles.errorText}>{errors.contactTime}</Text>
+               </View>
+             )}
 
-            {/* Birth Date */}
-            <Text style={[styles.label, { color: colors.text }]}>Birth Date</Text>
-            <TouchableOpacity
-              style={styles.dateTimeButton}
-              onPress={() => setShowBirthDatePicker(true)}
-              accessibilityRole="button"
-              accessibilityLabel="Select birth date"
-              accessibilityHint="Opens a date picker"
-            >
-              <Text style={{ color: colors.text }}>
-                {formData.birthDate
-                  ? formData.birthDate.toLocaleDateString()
-                  : 'Tap to select date'}
-              </Text>
-            </TouchableOpacity>
+             {/* Birth Date */}
+             <Text style={[styles.label, { color: colors.text, marginTop: 16 }]}>
+               Birth Date
+             </Text>
+             <TouchableOpacity
+               style={styles.dateTimeButton}
+               onPress={() => setShowBirthDatePicker(true)}
+               accessibilityRole="button"
+               accessibilityLabel="Select birth date"
+               accessibilityHint="Opens a date picker"
+             >
+               <Text style={{ color: colors.text }}>
+                 {formData.birthDate
+                   ? formData.birthDate.toLocaleDateString()
+                   : 'Tap to select date'}
+               </Text>
+             </TouchableOpacity>
             {errors.birthDate && (
               <View style={styles.errorMessage} accessibilityRole="alert">
                 <Text style={themedStyles.errorText}>{errors.birthDate}</Text>
@@ -528,10 +549,10 @@ const codeExample = `<View accessibilityRole="form">
             )}
 
             {/* Communication Preferences */}
-            <Text style={[styles.label, { color: colors.text }]}>
+            <Text style={[styles.label, { color: colors.text, marginTop: 16 }]}>
               Communication Preferences
             </Text>
-            <View style={styles.checkboxGroup}>
+             <View style={[styles.checkboxGroup, { marginBottom: 16 }]}>
               {[
                 { key: 'email', label: 'Email' },
                 { key: 'phone', label: 'Phone' },
@@ -589,7 +610,7 @@ const codeExample = `<View accessibilityRole="form">
               </TouchableOpacity>
             </View>
 
-            {/* If fields incomplete, show short note */}
+            {/* Short note if fields incomplete */}
             {!formDataComplete && (
               <Text style={themedStyles.noteText}>
                 Complete all required fields to proceed
@@ -623,7 +644,7 @@ const codeExample = `<View accessibilityRole="form">
         <View style={themedStyles.section}>
           <View style={themedStyles.demoCard}>
             <Text style={[styles.sectionTitle, { color: colors.text, marginBottom: 12 }]}>
-              Implementation
+               Code Implementation
             </Text>
 
             <View style={themedStyles.codeCardContainer}>

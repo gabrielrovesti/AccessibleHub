@@ -233,21 +233,26 @@ export default function AccessibleButtonExample() {
 
         {/* DEMO SECTION */}
         <View style={themedStyles.section}>
-          <Text style={[styles.sectionTitle, { color: colors.text }]}>
-            Demo
+          <Text
+            style={[styles.sectionTitle, { color: colors.text }]}
+            accessibilityRole="header"
+            accessibilityLabel="Accessible Button Demonstration"
+          >
+            Button Demo
           </Text>
-          <View style={[themedStyles.demoContainer]}>
+          <View style={themedStyles.demoContainer}>
             <DemoButton />
           </View>
         </View>
 
+
         {/* CODE EXAMPLE SECTION */}
         <View style={themedStyles.section}>
           <Text style={[styles.sectionTitle, { color: colors.text }]}>
-            Implementation
+            Code Implementation
           </Text>
-          <View style={themedStyles.codeContainer}>
-            <View style={themedStyles.codeHeader}>
+          <View style={themedStyles.codeContainer} accessible={false}>
+            <View style={themedStyles.codeHeader} accessible={false}>
               <Text style={themedStyles.codeHeaderText}>JSX</Text>
               <TouchableOpacity
                 style={themedStyles.copyButton}
@@ -269,16 +274,17 @@ export default function AccessibleButtonExample() {
             </View>
             <View
               style={themedStyles.codeCard}
-              accessible
-              accessibilityRole="text"
-              accessibilityLabel="Button component code example with accessibility features."
+              accessible={false}
+              accessibilityElementsHidden={true}
+              importantForAccessibility="no-hide-descendants"
             >
-              <Text style={themedStyles.codeText} accessibilityElementsHidden>
+              <Text style={themedStyles.codeText}>
                 {codeExample}
               </Text>
             </View>
           </View>
         </View>
+
 
         {/* ACCESSIBILITY FEATURES SECTION */}
         <View style={themedStyles.section}>
