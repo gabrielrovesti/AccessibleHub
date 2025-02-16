@@ -1,5 +1,3 @@
-// app/accessible-components/accessible-advanced.tsx
-
 import React, { useState, useEffect, useRef } from 'react';
 import {
   View,
@@ -17,7 +15,31 @@ import { LinearGradient } from 'expo-linear-gradient';
 import Slider from '@react-native-community/slider';
 import { useTheme } from '../../context/ThemeContext';
 
-function CodeSnippet({ snippet, label }: { snippet: string; label: string }) {
+// Accessibility features data
+const accessibilityFeatures = [
+  {
+    icon: 'albums-outline',
+    title: 'Tab Navigation',
+    description: 'Proper role and state management for tab controls',
+  },
+  {
+    icon: 'hourglass-outline',
+    title: 'Progress Updates',
+    description: 'Live announcements of progress changes',
+  },
+  {
+    icon: 'notifications-outline',
+    title: 'Alert Notifications',
+    description: 'Immediate feedback for important events',
+  },
+  {
+    icon: 'options-outline',
+    title: 'Slider Controls',
+    description: 'Accessible range inputs with value announcements',
+  },
+];
+
+function CodeSnippet({ snippet, label }) {
   const [copied, setCopied] = useState(false);
   const { colors } = useTheme();
 
@@ -36,32 +58,30 @@ function CodeSnippet({ snippet, label }: { snippet: string; label: string }) {
   return (
     <View
       style={styles.snippetContainer}
-      accessible={true}
+      accessible
       accessibilityLabel={`Source code for ${label}`}
       accessibilityRole="text"
     >
       <View style={styles.snippetHeader}>
-        <Text style={styles.snippetHeaderText}JSX></Text>
+        <Text style={styles.snippetHeaderText}>JSX</Text>
         <TouchableOpacity
           style={styles.copyButton}
           onPress={handleCopy}
           accessibilityRole="button"
-          accessibilityLabel={copied ? "Code copied" : "Copy code example"}
+          accessibilityLabel={copied ? 'Code copied' : 'Copy code example'}
           accessibilityHint="Copies the code example to your clipboard"
         >
           <Ionicons
-            name={copied ? "checkmark" : "copy-outline"}
+            name={copied ? 'checkmark' : 'copy-outline'}
             size={20}
-            color={copied ? "#28A745" : colors.textSecondary}
+            color={copied ? '#28A745' : colors.textSecondary}
             accessibilityElementsHidden
           />
           <Text style={[styles.copyText, copied && styles.copiedText]}>
-            {copied ? "Copied!" : "Copy"}
+            {copied ? 'Copied!' : 'Copy'}
           </Text>
         </TouchableOpacity>
       </View>
-
-      {/* Actual code text (hidden from screen readers) */}
       <Text style={styles.codeText} accessibilityElementsHidden>
         {snippet}
       </Text>
@@ -71,61 +91,15 @@ function CodeSnippet({ snippet, label }: { snippet: string; label: string }) {
 
 export default function AccessibleAdvancedScreen() {
   const { colors, textSizes, isDarkMode } = useTheme();
-
-  /********************************************************
-   * 1) TABS & CAROUSELS
-   ********************************************************/
   const [selectedTab, setSelectedTab] = useState(0);
+  const [progress, setProgress] = useState(0);
+  const [showToast, setShowToast] = useState(false);
+  const [sliderValue, setSliderValue] = useState(50);
+
+  const progressAnimated = useRef(new Animated.Value(progress)).current;
   const tabs = ['Tab One', 'Tab Two', 'Tab Three'];
 
-  const tabsSnippet = `// Minimal Tabs
-const [selectedTab, setSelectedTab] = useState(0);
-const tabs = ['Tab One', 'Tab Two', 'Tab Three'];
-
-<View style={{ flexDirection: 'row' }}>
-  {tabs.map((tab, idx) => (
-    <TouchableOpacity
-      key={idx}
-      accessibilityRole="tab"
-      accessibilityLabel={\`Select \${tab}\`}
-      accessibilityState={{ selected: selectedTab === idx }}
-      onPress={() => setSelectedTab(idx)}
-    >
-      <Text>{tab}</Text>
-    </TouchableOpacity>
-  ))}
-</View>
-<Text>Current tab: {tabs[selectedTab]}</Text>`;
-
-  /********************************************************
-   * 2) PROGRESS INDICATORS
-   ********************************************************/
-  const [progress, setProgress] = useState(0);
-  const progressAnimated = useRef(new Animated.Value(progress)).current;
-
-  const progressSnippet = `// Basic progress bar
-const [progress, setProgress] = useState(0);
-const progressAnimated = new Animated.Value(progress);
-
-useEffect(() => {
-  Animated.timing(progressAnimated, {
-    toValue: progress,
-    duration: 300,
-    useNativeDriver: false,
-  }).start();
-}, [progress]);
-
-<Animated.View
-  style={{
-    height: 10,
-    backgroundColor: 'blue',
-    width: progressAnimated.interpolate({
-      inputRange: [0, 100],
-      outputRange: ['0%', '100%'],
-    }),
-  }}
-/>`;
-
+  // Animate progress
   useEffect(() => {
     Animated.timing(progressAnimated, {
       toValue: progress,
@@ -134,58 +108,12 @@ useEffect(() => {
     }).start();
   }, [progress]);
 
-  /********************************************************
-   * 3) ALERTS & TOASTS
-   ********************************************************/
-  const [showToast, setShowToast] = useState(false);
-
-  const alertsSnippet = `// Minimal toast/alert
-const [showToast, setShowToast] = useState(false);
-
-function showToastMessage() {
-  setShowToast(true);
-  AccessibilityInfo.announceForAccessibility('Alert: Something happened');
-  setTimeout(() => setShowToast(false), 2000);
-}
-
-{showToast && (
-  <View style={{ ... }}>
-    <Text>Something happened!</Text>
-  </View>
-)}`;
-
   const showToastMessage = () => {
     setShowToast(true);
     AccessibilityInfo.announceForAccessibility('Alert: Something happened');
     setTimeout(() => setShowToast(false), 2000);
   };
 
-  /********************************************************
-   * 4) SLIDERS / RANGE INPUTS
-   ********************************************************/
-  const [sliderValue, setSliderValue] = useState(50);
-
-  // Use onSlidingComplete to finalize the value, preventing flicker
-  const sliderSnippet = `// Minimal slider example using @react-native-community/slider
-import Slider from '@react-native-community/slider';
-
-<Slider
-  minimumValue={0}
-  maximumValue={100}
-  value={sliderValue}
-  onSlidingComplete={(val) => {
-    setSliderValue(val);
-    AccessibilityInfo.announceForAccessibility(\`Slider value set to \${Math.round(val)}\`);
-  }}
-  style={{ width: '100%' }}
-  minimumTrackTintColor={colors.primary}
-  maximumTrackTintColor="#ccc"
-/>
-<Text>Current slider value: {sliderValue}</Text>`;
-
-  /********************************************************
-   * Theming & Layout
-   ********************************************************/
   const gradientColors = isDarkMode
     ? [colors.background, '#2c2c2e']
     : ['#e2e2e2', colors.background];
@@ -198,6 +126,7 @@ import Slider from '@react-native-community/slider';
     elevation: 3,
   };
 
+  // Themed style overrides
   const themedStyles = {
     container: { flex: 1 },
     heroCard: {
@@ -241,6 +170,26 @@ import Slider from '@react-native-community/slider';
       fontWeight: '600',
       marginBottom: 12,
     },
+    // Tab styles
+    tabText: {
+      // Always white for selected tab
+      color: '#fff',
+      fontWeight: '600',
+      fontSize: textSizes.medium,
+    },
+    inactiveTabText: {
+      // Dark mode fix: was '#ccc' on '#ccc' => invisible
+      color: isDarkMode ? '#333' : '#666', // ensures visibility on #ccc
+      fontWeight: '600',
+      fontSize: textSizes.medium,
+    },
+    currentTabLabel: {
+      color: colors.text,
+      fontSize: textSizes.large,
+      marginTop: 12,
+      marginBottom: 16,
+    },
+    // Progress
     progressBarContainer: {
       height: 10,
       width: '100%',
@@ -252,6 +201,53 @@ import Slider from '@react-native-community/slider';
     progressFill: {
       height: 10,
       backgroundColor: colors.primary,
+    },
+    // Features section
+    featuresSection: {
+      marginTop: 24,
+      paddingHorizontal: 16,
+    },
+    featuresTitle: {
+      color: colors.text,
+      fontSize: textSizes.large,
+      fontWeight: '600',
+      marginBottom: 16,
+    },
+    featureCard: {
+      backgroundColor: colors.surface,
+      borderRadius: 16,
+      padding: 16,
+      marginBottom: 12,
+      ...cardShadowStyle,
+      borderWidth: isDarkMode ? 1 : 0,
+      borderColor: isDarkMode ? colors.border : 'transparent',
+    },
+    featureRow: {
+      flexDirection: 'row',
+      alignItems: 'flex-start',
+      gap: 12,
+    },
+    featureIconContainer: {
+      width: 40,
+      height: 40,
+      borderRadius: 20,
+      backgroundColor: isDarkMode ? `${colors.primary}20` : '#E8F1FF',
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    featureContent: {
+      flex: 1,
+    },
+    featureTitle: {
+      color: colors.text,
+      fontSize: textSizes.medium,
+      fontWeight: '600',
+      marginBottom: 4,
+    },
+    featureDescription: {
+      color: colors.textSecondary,
+      fontSize: textSizes.small + 1,
+      lineHeight: 20,
     },
   };
 
@@ -268,7 +264,7 @@ import Slider from '@react-native-community/slider';
           </Text>
         </View>
 
-        {/* 1) TABS & CAROUSELS */}
+        {/* TABS & CAROUSELS */}
         <View style={themedStyles.section}>
           <View style={themedStyles.demoCard}>
             <Text style={themedStyles.sectionTitle}>Tabs &amp; Carousels</Text>
@@ -294,20 +290,22 @@ import Slider from '@react-native-community/slider';
                       AccessibilityInfo.announceForAccessibility(`${tab} selected`);
                     }}
                   >
-                    <Text style={{ color: isSelected ? colors.background : colors.text, fontWeight: '600' }}>
+                    <Text style={isSelected ? themedStyles.tabText : themedStyles.inactiveTabText}>
                       {tab}
                     </Text>
                   </TouchableOpacity>
                 );
               })}
             </View>
-            <Text style={{ color: colors.text }}>Current tab: {tabs[selectedTab]}</Text>
+            <Text style={themedStyles.currentTabLabel}>
+              Current tab: {tabs[selectedTab]}
+            </Text>
 
             <CodeSnippet snippet={tabsSnippet} label="Tabs & Carousels" />
           </View>
         </View>
 
-        {/* 2) PROGRESS INDICATORS */}
+        {/* PROGRESS INDICATORS */}
         <View style={themedStyles.section}>
           <View style={themedStyles.demoCard}>
             <Text style={themedStyles.sectionTitle}>Progress Indicators</Text>
@@ -333,23 +331,30 @@ import Slider from '@react-native-community/slider';
                     backgroundColor: colors.primary,
                     borderRadius: 8,
                     paddingHorizontal: 8,
-                    paddingVertical: 4,
+                    paddingVertical: 6,
                   }}
                   onPress={() => {
                     setProgress(val);
                     AccessibilityInfo.announceForAccessibility(`Progress set to ${val}%`);
                   }}
                 >
-                  <Text style={{ color: colors.background }}>{val}%</Text>
+                  <Text
+                    style={{
+                      color: '#fff',             // always white for contrast
+                      fontSize: textSizes.medium,
+                      fontWeight: '600',
+                    }}
+                  >
+                    {val}%
+                  </Text>
                 </TouchableOpacity>
               ))}
             </View>
-
             <CodeSnippet snippet={progressSnippet} label="Progress Indicator" />
           </View>
         </View>
 
-        {/* 3) ALERTS & TOASTS */}
+        {/* ALERTS & TOASTS */}
         <View style={themedStyles.section}>
           <View style={themedStyles.demoCard}>
             <Text style={themedStyles.sectionTitle}>Alerts &amp; Toasts</Text>
@@ -364,19 +369,20 @@ import Slider from '@react-native-community/slider';
               accessibilityRole="button"
               accessibilityLabel="Show alert message"
             >
-              <Text style={{ color: colors.background, fontWeight: '600' }}>Trigger Alert</Text>
+              <Text style={{ color: '#fff', fontWeight: '600', fontSize: textSizes.medium }}>
+                Trigger Alert
+              </Text>
             </TouchableOpacity>
             {showToast && (
               <View style={{ marginTop: 8, padding: 8, borderRadius: 8, backgroundColor: '#f33' }}>
                 <Text style={{ color: '#fff', fontWeight: '600' }}>Something happened!</Text>
               </View>
             )}
-
             <CodeSnippet snippet={alertsSnippet} label="Alerts & Toasts" />
           </View>
         </View>
 
-        {/* 4) SLIDERS / RANGE INPUTS */}
+        {/* SLIDERS / RANGE INPUTS */}
         <View style={themedStyles.section}>
           <View style={themedStyles.demoCard}>
             <Text style={themedStyles.sectionTitle}>Sliders &amp; Range Inputs</Text>
@@ -396,9 +402,36 @@ import Slider from '@react-native-community/slider';
               minimumTrackTintColor={colors.primary}
               maximumTrackTintColor="#ccc"
             />
-
             <CodeSnippet snippet={sliderSnippet} label="Slider / Range Input" />
           </View>
+        </View>
+
+        {/* ACCESSIBILITY FEATURES */}
+        <View style={themedStyles.featuresSection}>
+          <Text style={themedStyles.featuresTitle}>Accessibility Features</Text>
+          {accessibilityFeatures.map((feature, index) => (
+            <View key={index} style={themedStyles.featureCard}>
+              <View style={themedStyles.featureRow}>
+                <View style={themedStyles.featureIconContainer}>
+                  <Ionicons
+                    name={feature.icon}
+                    size={24}
+                    // If you want always dark, replace below with color="#000"
+                    color={isDarkMode ? '#1a75ff' : colors.primary}
+                    accessibilityElementsHidden
+                  />
+                </View>
+                <View style={themedStyles.featureContent}>
+                  <Text style={themedStyles.featureTitle}>
+                    {feature.title}
+                  </Text>
+                  <Text style={themedStyles.featureDescription}>
+                    {feature.description}
+                  </Text>
+                </View>
+              </View>
+            </View>
+          ))}
         </View>
 
         {/* Bottom spacing */}
@@ -408,17 +441,87 @@ import Slider from '@react-native-community/slider';
   );
 }
 
-/**
- * By default, the raw route name "accessible-advanced" might appear.
- * Here, we override it with a custom header or hide it entirely.
- */
+// Code snippets definitions
+const tabsSnippet = `// Minimal Tabs
+const [selectedTab, setSelectedTab] = useState(0);
+const tabs = ['Tab One', 'Tab Two', 'Tab Three'];
+
+<View style={{ flexDirection: 'row' }}>
+  {tabs.map((tab, idx) => (
+    <TouchableOpacity
+      key={idx}
+      accessibilityRole="tab"
+      accessibilityLabel={\`Select \${tab}\`}
+      accessibilityState={{ selected: selectedTab === idx }}
+      onPress={() => setSelectedTab(idx)}
+    >
+      <Text>{tab}</Text>
+    </TouchableOpacity>
+  ))}
+</View>
+<Text>Current tab: {tabs[selectedTab]}</Text>`;
+
+const progressSnippet = `// Basic progress bar
+const [progress, setProgress] = useState(0);
+
+const progressAnimated = new Animated.Value(progress);
+
+useEffect(() => {
+  Animated.timing(progressAnimated, {
+    toValue: progress,
+    duration: 300,
+    useNativeDriver: false,
+  }).start();
+}, [progress]);
+
+<Animated.View
+  style={{
+    height: 10,
+    backgroundColor: 'blue',
+    width: progressAnimated.interpolate({
+      inputRange: [0, 100],
+      outputRange: ['0%', '100%'],
+    }),
+  }}
+/>
+`;
+
+const alertsSnippet = `// Minimal toast/alert
+const [showToast, setShowToast] = useState(false);
+
+function showToastMessage() {
+  setShowToast(true);
+  AccessibilityInfo.announceForAccessibility('Alert: Something happened');
+  setTimeout(() => setShowToast(false), 2000);
+}
+
+{showToast && (
+  <View style={{ ... }}>
+    <Text>Something happened!</Text>
+  </View>
+)}`;
+
+const sliderSnippet = `// Minimal slider example using @react-native-community/slider
+import Slider from '@react-native-community/slider';
+
+<Slider
+  minimumValue={0}
+  maximumValue={100}
+  value={sliderValue}
+  onSlidingComplete={(val) => {
+    setSliderValue(val);
+    AccessibilityInfo.announceForAccessibility(\`Slider value set to \${Math.round(val)}\`);
+  }}
+  style={{ width: '100%' }}
+  minimumTrackTintColor={colors.primary}
+  maximumTrackTintColor="#ccc"
+/>
+<Text>Current slider value: {sliderValue}</Text>`;
+
+// For your route config
 export const options = {
-  // If you want a custom name in the header:
   headerShown: true,
   title: 'Loading & Navigation',
-
-  // OR hide the header completely:
-  // headerShown: false,
 };
 
 /* -------------------------------------------

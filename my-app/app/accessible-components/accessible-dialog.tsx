@@ -280,6 +280,14 @@ const AccessibleDialog = ({ visible, onClose, title, children }) => {
       lineHeight: 24,
       marginBottom: 24,
     },
+  featureIconContainer: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: isDarkMode ? `${colors.primary}20` : '#E8F1FF',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
     dialogActions: {
       flexDirection: 'row',
       justifyContent: 'flex-end',
@@ -531,7 +539,7 @@ const AccessibleDialog = ({ visible, onClose, title, children }) => {
                   <Ionicons
                     name={feature.icon}
                     size={24}
-                    color={colors.primary}
+                    color={isDarkMode ? '#1a75ff' : colors.primary}
                     accessibilityElementsHidden
                     importantForAccessibility="no-hide-descendants"
                   />
@@ -563,14 +571,6 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     gap: 12,
     marginBottom: 12,
-  },
-  featureIconContainer: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: '#E8F1FF',
-    alignItems: 'center',
-    justifyContent: 'center',
   },
   featureContent: {
     flex: 1,

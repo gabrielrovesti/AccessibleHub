@@ -737,14 +737,14 @@ const codeExample = `<View accessibilityRole="form">
                 },
               ].map((feature, idx) => (
                 <View key={idx} style={styles.featureItem} importantForAccessibility="no">
-                  <View style={styles.featureIconContainer}>
-                    <Ionicons
-                      name={feature.icon}
-                      size={24}
-                      color={colors.primary}
-                      accessibilityElementsHidden
-                    />
-                  </View>
+                    <View style={themedStyles.featureIconContainer}>
+                      <Ionicons
+                        name={feature.icon}
+                        size={24}
+                        color={isDarkMode ? '#1a75ff' : colors.primary}
+                        accessibilityElementsHidden
+                      />
+                    </View>
                   <View style={styles.featureContent}>
                     <Text style={[styles.featureTitle, { color: colors.text }]}>
                       {feature.title}

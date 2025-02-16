@@ -64,9 +64,9 @@ export default function AccessibleButtonExample() {
         setTimeout(() => setShowSuccess(false), 2000);
       }}
     >
-      <Text style={[styles.buttonText, { color: colors.background }]}>
-        Submit
-      </Text>
+    <Text style={[styles.buttonText, { color: isDarkMode ? '#000' : '#fff' }]}>
+      Submit
+    </Text>
     </TouchableOpacity>
   );
 

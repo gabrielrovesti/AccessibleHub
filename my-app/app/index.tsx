@@ -209,13 +209,15 @@ export default function HomeScreen() {
       gap: 8,
     },
     tag: {
-      backgroundColor: colors.primaryLight,
+      backgroundColor: isDarkMode ? `${colors.primary}30` : colors.primaryLight,
       paddingHorizontal: 12,
       paddingVertical: 6,
       borderRadius: 12,
+      borderWidth: isDarkMode ? 1 : 0,
+      borderColor: isDarkMode ? colors.primary : 'transparent',
     },
     tagText: {
-      color: colors.primary,
+      color: isDarkMode ? colors.primary : colors.primary,
       fontSize: textSizes.small,
       fontWeight: '600',
     },
@@ -402,11 +404,11 @@ export default function HomeScreen() {
               accessibilityLabel={feature.title}
               accessibilityHint={feature.hint}
             >
-              <View style={themedStyles.featureIconContainer}>
+            <View style={themedStyles.featureIconContainer}>
                 <Ionicons
                   name={feature.icon}
                   size={28}
-                  color={colors.primary}
+                  color={isDarkMode ? '#000000' : colors.primary}
                   accessibilityElementsHidden
                 />
               </View>

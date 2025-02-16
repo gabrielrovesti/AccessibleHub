@@ -12,18 +12,27 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import { ThemeProvider, useTheme } from '../context/ThemeContext';
 
+/* -----------------------------
+   1. Static brand colors
+----------------------------- */
+const brandDarkBlue = '#0057D9'; // Always used for the top header
+const headerTextColor = '#FFFFFF';
+
+const mainRoutes = [
+  'index',
+  'components',
+  'practices',
+  'tools',
+  'frameworks-comparison',
+  'accessibility-instruction',
+];
+
+/* -----------------------------
+   2. Custom Drawer Content
+----------------------------- */
 function CustomDrawerContent({ state, descriptors, navigation }) {
-  const { colors, textSizes, isDyslexiaFont } = useTheme();
+  const { colors, isDarkMode } = useTheme();
   const router = useRouter();
-  const mainRoutes = [
-    'index',
-    'components',
-    'practices',
-    'tools',
-    'frameworks-comparison',
-    'accessibility-instruction',
-    'settings',
-  ];
 
   useEffect(() => {
     AccessibilityInfo.announceForAccessibility('Navigation menu opened');
@@ -34,12 +43,15 @@ function CustomDrawerContent({ state, descriptors, navigation }) {
 
   return (
     <View
-      style={drawerStyles.container}
+      style={[
+        drawerStyles.container,
+        { backgroundColor: colors.background },
+      ]}
       accessibilityRole="menu"
       accessibilityLabel="Main navigation menu"
     >
-      {/* Header */}
-      <View style={drawerStyles.header} importantForAccessibility="no">
+      {/* Header (always brandDarkBlue) */}
+      <View style={drawerStyles.header}>
         <Ionicons
           name="rocket-outline"
           size={48}
@@ -64,7 +76,15 @@ function CustomDrawerContent({ state, descriptors, navigation }) {
                 key={route.key}
                 style={[
                   drawerStyles.drawerItem,
-                  isActive && drawerStyles.drawerItemActive,
+                  {
+                    backgroundColor: colors.surface,
+                    borderColor: colors.border,
+                  },
+                  isActive && {
+                    borderColor: brandDarkBlue,
+                    borderWidth: 2,
+                    backgroundColor: isDarkMode ? '#ffffff22' : '#0000000A',
+                  },
                 ]}
                 onPress={() => {
                   if (route.name === 'index') {
@@ -72,7 +92,9 @@ function CustomDrawerContent({ state, descriptors, navigation }) {
                   } else {
                     router.push(route.name);
                   }
-                  AccessibilityInfo.announceForAccessibility(`Navigating to ${label}`);
+                  AccessibilityInfo.announceForAccessibility(
+                    `Navigating to ${label}`
+                  );
                 }}
                 accessibilityRole="menuitem"
                 accessibilityState={{ selected: isActive }}
@@ -87,14 +109,15 @@ function CustomDrawerContent({ state, descriptors, navigation }) {
                   >
                     {drawerIcon({
                       size: 24,
-                      color: isActive ? '#0057D9' : colors.textSecondary,
+                      color: isActive ? brandDarkBlue : colors.textSecondary,
                     })}
                   </View>
                 )}
                 <Text
                   style={[
                     drawerStyles.drawerLabel,
-                    isActive && drawerStyles.drawerLabelActive,
+                    { color: colors.text },
+                    isActive && { color: brandDarkBlue, fontWeight: 'bold' },
                   ]}
                 >
                   {label}
@@ -107,10 +130,15 @@ function CustomDrawerContent({ state, descriptors, navigation }) {
   );
 }
 
+/* -----------------------------
+   3. Drawer Styles
+----------------------------- */
 const drawerStyles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#fff' },
+  container: {
+    flex: 1,
+  },
   header: {
-    backgroundColor: '#0057D9', // Changed from #6200EE to a blue
+    backgroundColor: brandDarkBlue,
     paddingVertical: 40,
     paddingHorizontal: 16,
     alignItems: 'center',
@@ -124,73 +152,58 @@ const drawerStyles = StyleSheet.create({
   },
   appName: {
     fontSize: 24,
-    color: '#fff',
+    color: '#FFFFFF',
     fontWeight: 'bold',
     marginBottom: 4,
   },
   version: {
     fontSize: 12,
-    color: '#fff',
+    color: '#FFFFFF',
   },
   drawerContent: {
     flex: 1,
     padding: 16,
   },
   drawerItem: {
-    backgroundColor: '#fff',
     marginBottom: 12,
     borderRadius: 8,
     paddingVertical: 14,
     paddingHorizontal: 18,
     minHeight: 56,
     borderWidth: 1,
-    borderColor: '#ccc',
     flexDirection: 'row',
     alignItems: 'center',
-  },
-  drawerItemActive: {
-    backgroundColor: '#D0E7FF', // Lighter blue for active item
-    borderColor: '#0057D9',     // Match the main blue
-    borderWidth: 2,
-  },
-  drawerLabel: {
-    fontSize: 16,
-    color: '#000',
-    marginLeft: 16,
-    flex: 1,
-  },
-  drawerLabelActive: {
-    color: '#0057D9',
-    fontWeight: 'bold',
   },
   drawerIcon: {
     marginRight: 12,
   },
+  drawerLabel: {
+    fontSize: 16,
+    marginLeft: 16,
+    flex: 1,
+  },
 });
 
+/* -----------------------------
+   4. Drawer Navigator
+----------------------------- */
 function DrawerNavigator() {
-  const { colors } = useTheme();
   const router = useRouter();
-  const mainRoutes = [
-    'index',
-    'components',
-    'practices',
-    'tools',
-    'frameworks-comparison',
-    'accessibility-instruction',
-    'settings',
-  ];
 
   const screenOptions = ({ navigation, route }) => {
     const routeName = route.name.toLowerCase();
     const isMainRoute = mainRoutes.includes(route.name);
 
-    // If sub-route of 'components'
+    // Sub-route of 'components'
     if (route.name !== 'components' && routeName.includes('components')) {
       return {
         headerShown: true,
-        headerStyle: { backgroundColor: colors.surface, elevation: 0, shadowOpacity: 0 },
-        headerTintColor: colors.text,
+        headerStyle: {
+          backgroundColor: brandDarkBlue,
+          elevation: 0,
+          shadowOpacity: 0,
+        },
+        headerTintColor: headerTextColor,
         headerTitle: () => null,
         headerLeft: () => (
           <TouchableOpacity
@@ -199,17 +212,33 @@ function DrawerNavigator() {
             accessibilityLabel="Return to components list"
             style={styles.headerButton}
           >
-            <Ionicons name="arrow-back" size={24} color={colors.text} />
+            <Ionicons name="arrow-back" size={24} color={headerTextColor} />
+          </TouchableOpacity>
+        ),
+        // Always show settings on sub-routes too:
+        headerRight: () => (
+          <TouchableOpacity
+            onPress={() => router.push('/settings')}
+            accessibilityRole="button"
+            accessibilityLabel="Open Settings"
+            style={styles.headerButton}
+          >
+            <Ionicons name="ellipsis-vertical" size={24} color={headerTextColor} />
           </TouchableOpacity>
         ),
       };
     }
-    // If sub-route of 'practices'
+
+    // Sub-route of 'practices'
     if (route.name !== 'practices' && routeName.includes('practices')) {
       return {
         headerShown: true,
-        headerStyle: { backgroundColor: colors.surface, elevation: 0, shadowOpacity: 0 },
-        headerTintColor: colors.text,
+        headerStyle: {
+          backgroundColor: brandDarkBlue,
+          elevation: 0,
+          shadowOpacity: 0,
+        },
+        headerTintColor: headerTextColor,
         headerTitle: () => null,
         headerLeft: () => (
           <TouchableOpacity
@@ -218,17 +247,33 @@ function DrawerNavigator() {
             accessibilityLabel="Return to practices list"
             style={styles.headerButton}
           >
-            <Ionicons name="arrow-back" size={24} color={colors.text} />
+            <Ionicons name="arrow-back" size={24} color={headerTextColor} />
+          </TouchableOpacity>
+        ),
+        // Always show settings:
+        headerRight: () => (
+          <TouchableOpacity
+            onPress={() => router.push('/settings')}
+            accessibilityRole="button"
+            accessibilityLabel="Open Settings"
+            style={styles.headerButton}
+          >
+            <Ionicons name="ellipsis-vertical" size={24} color={headerTextColor} />
           </TouchableOpacity>
         ),
       };
     }
-    // If main route
+
+    // Main route
     if (isMainRoute) {
       return {
         headerShown: true,
-        headerStyle: { backgroundColor: colors.surface, elevation: 0, shadowOpacity: 0 },
-        headerTintColor: colors.text,
+        headerStyle: {
+          backgroundColor: brandDarkBlue,
+          elevation: 0,
+          shadowOpacity: 0,
+        },
+        headerTintColor: headerTextColor,
         headerTitle: () => null,
         headerLeft: () => (
           <TouchableOpacity
@@ -237,16 +282,31 @@ function DrawerNavigator() {
             accessibilityLabel="Toggle menu"
             style={styles.headerButton}
           >
-            <Ionicons name="menu-outline" size={24} color={colors.text} />
+            <Ionicons name="menu-outline" size={24} color={headerTextColor} />
+          </TouchableOpacity>
+        ),
+        headerRight: () => (
+          <TouchableOpacity
+            onPress={() => router.push('/settings')}
+            accessibilityRole="button"
+            accessibilityLabel="Open Settings"
+            style={styles.headerButton}
+          >
+            <Ionicons name="ellipsis-vertical" size={24} color={headerTextColor} />
           </TouchableOpacity>
         ),
       };
     }
-    // Otherwise fallback to goBack()
+
+    // Otherwise fallback => still show a back arrow and settings
     return {
       headerShown: true,
-      headerStyle: { backgroundColor: colors.surface, elevation: 0, shadowOpacity: 0 },
-      headerTintColor: colors.text,
+      headerStyle: {
+        backgroundColor: brandDarkBlue,
+        elevation: 0,
+        shadowOpacity: 0,
+      },
+      headerTintColor: headerTextColor,
       headerTitle: () => null,
       headerLeft: () => (
         <TouchableOpacity
@@ -255,7 +315,17 @@ function DrawerNavigator() {
           accessibilityLabel="Go back"
           style={styles.headerButton}
         >
-          <Ionicons name="arrow-back" size={24} color={colors.text} />
+          <Ionicons name="arrow-back" size={24} color={headerTextColor} />
+        </TouchableOpacity>
+      ),
+      headerRight: () => (
+        <TouchableOpacity
+          onPress={() => router.push('/settings')}
+          accessibilityRole="button"
+          accessibilityLabel="Open Settings"
+          style={styles.headerButton}
+        >
+          <Ionicons name="ellipsis-vertical" size={24} color={headerTextColor} />
         </TouchableOpacity>
       ),
     };
@@ -270,55 +340,64 @@ function DrawerNavigator() {
         name="index"
         options={{
           drawerLabel: 'Home',
-          drawerIcon: ({ size, color }) => <Ionicons name="home-outline" size={size} color={color} />,
+          drawerIcon: ({ size, color }) => (
+            <Ionicons name="home-outline" size={size} color={color} />
+          ),
         }}
       />
       <Drawer.Screen
         name="components"
         options={{
           drawerLabel: 'Accessibility Components',
-          drawerIcon: ({ size, color }) => <Ionicons name="cube-outline" size={size} color={color} />,
+          drawerIcon: ({ size, color }) => (
+            <Ionicons name="cube-outline" size={size} color={color} />
+          ),
         }}
       />
       <Drawer.Screen
         name="practices"
         options={{
           drawerLabel: 'Best Practices',
-          drawerIcon: ({ size, color }) => <Ionicons name="book-outline" size={size} color={color} />,
+          drawerIcon: ({ size, color }) => (
+            <Ionicons name="book-outline" size={size} color={color} />
+          ),
         }}
       />
       <Drawer.Screen
         name="tools"
         options={{
           drawerLabel: 'Mobile Accessibility Tools',
-          drawerIcon: ({ size, color }) => <Ionicons name="construct-outline" size={size} color={color} />,
+          drawerIcon: ({ size, color }) => (
+            <Ionicons name="construct-outline" size={size} color={color} />
+          ),
         }}
       />
       <Drawer.Screen
         name="frameworks-comparison"
         options={{
           drawerLabel: 'Framework Comparison',
-          drawerIcon: ({ size, color }) => <Ionicons name="git-compare" size={size} color={color} />,
+          drawerIcon: ({ size, color }) => (
+            <Ionicons name="git-compare" size={size} color={color} />
+          ),
         }}
       />
       <Drawer.Screen
         name="accessibility-instruction"
         options={{
           drawerLabel: 'Instruction & Community',
-          drawerIcon: ({ size, color }) => <Ionicons name="people-outline" size={size} color={color} />,
+          drawerIcon: ({ size, color }) => (
+            <Ionicons name="people-outline" size={size} color={color} />
+          ),
         }}
       />
-      <Drawer.Screen
-        name="settings"
-        options={{
-          drawerLabel: 'Settings',
-          drawerIcon: ({ size, color }) => <Ionicons name="settings-outline" size={size} color={color} />,
-        }}
-      />
+      {/* No drawer item for settings, because we use the three-dots icon */}
     </Drawer>
   );
 }
 
+/* -----------------------------
+   5. App Wrapper & Export
+----------------------------- */
 function AppWrapper({ children }) {
   useEffect(() => {
     if (Platform.OS === 'ios') {
@@ -328,8 +407,13 @@ function AppWrapper({ children }) {
       AccessibilityInfo.announceForAccessibility('AccessibleHub application ready');
     }, 1000);
   }, []);
+
   return (
-    <View style={styles.appContainer} accessibilityRole="application" accessibilityLabel="AccessibleHub application">
+    <View
+      style={styles.appContainer}
+      accessibilityRole="application"
+      accessibilityLabel="AccessibleHub application"
+    >
       {children}
     </View>
   );
