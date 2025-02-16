@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import {
   View,
   Text,
@@ -6,6 +6,12 @@ import {
   ScrollView,
   TouchableOpacity,
   TextInput,
+  AccessibilityInfo,
+  findNodeHandle,
+  NativeSyntheticEvent,
+  LayoutChangeEvent,
+  Platform,
+  Alert,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useTheme } from '../../context/ThemeContext';
@@ -13,18 +19,28 @@ import { LinearGradient } from 'expo-linear-gradient';
 
 export default function LogicalFocusOrderScreen() {
   const { colors, textSizes, isDarkMode } = useTheme();
-  const [focusedElement, setFocusedElement] = useState<string | null>(null);
 
-  const handleElementPress = (elementName: string) => {
-    setFocusedElement(elementName);
+  // Refs to scroll and measure the main content’s position
+  const scrollViewRef = useRef<ScrollView>(null);
+  const mainContentRef = useRef<View>(null);
+
+  const [mainContentY, setMainContentY] = useState(0);
+
+  // Capture the y-offset of the main content after layout
+  const handleMainContentLayout = (e: NativeSyntheticEvent<LayoutChangeEvent>) => {
+    const { y } = e.nativeEvent.layout;
+    setMainContentY(y);
   };
 
-  // Define a gradient background for depth.
+  // A simple state to show we can track text input or pressed items
+  const [feedback, setFeedback] = useState('');
+
+  // 1) Gradient background
   const gradientColors = isDarkMode
     ? [colors.background, '#2c2c2e']
     : ['#e2e2e2', colors.background];
 
-  // Define common shadow style for elevated cards.
+  // 2) Common shadow style
   const cardShadowStyle = {
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 3 },
@@ -33,12 +49,9 @@ export default function LogicalFocusOrderScreen() {
     elevation: 3,
   };
 
-  // Themed and local styles.
+  // 3) Themed + local styles
   const themedStyles = {
-    container: {
-      flex: 1,
-    },
-    // Hero card for the page title and description.
+    container: { flex: 1 },
     heroCard: {
       backgroundColor: colors.surface,
       marginHorizontal: 16,
@@ -49,6 +62,7 @@ export default function LogicalFocusOrderScreen() {
       ...cardShadowStyle,
       borderWidth: isDarkMode ? 1 : 0,
       borderColor: isDarkMode ? colors.border : 'transparent',
+      alignItems: 'center',
     },
     heroTitle: {
       color: colors.text,
@@ -63,88 +77,98 @@ export default function LogicalFocusOrderScreen() {
       lineHeight: 24,
       textAlign: 'center',
     },
+    skipLinkContainer: {
+      alignItems: 'center',
+      marginTop: 16,
+    },
+    skipLinkButton: {
+      backgroundColor: colors.primary,
+      borderRadius: 8,
+      paddingVertical: 8,
+      paddingHorizontal: 16,
+    },
+    skipLinkText: {
+      color: colors.surface,
+      fontSize: textSizes.medium,
+      fontWeight: '600',
+    },
     section: {
       padding: 16,
-      gap: 16,
     },
-    // Instruction card for focus flow best practices.
-    instructionCard: {
+    infoCard: {
       backgroundColor: colors.surface,
       borderRadius: 16,
-      padding: 20,
+      padding: 16,
+      marginBottom: 16,
       ...cardShadowStyle,
       borderWidth: isDarkMode ? 1 : 0,
       borderColor: isDarkMode ? colors.border : 'transparent',
     },
-    instructionTitle: {
+    infoTitle: {
       color: colors.text,
       fontSize: textSizes.large,
       fontWeight: '600',
       marginBottom: 8,
     },
-    instructionText: {
+    infoDescription: {
       color: colors.textSecondary,
       fontSize: textSizes.medium,
       lineHeight: 22,
       marginBottom: 12,
     },
-    // Interactive demo card.
-    demoCard: {
-      backgroundColor: colors.surface,
-      borderRadius: 16,
-      padding: 20,
-      ...cardShadowStyle,
-      borderWidth: isDarkMode ? 1 : 0,
-      borderColor: isDarkMode ? colors.border : 'transparent',
-    },
-    demoTitle: {
-      color: colors.text,
-      fontSize: textSizes.large,
-      fontWeight: '600',
-      marginBottom: 12,
-    },
-    demoDescription: {
-      color: colors.textSecondary,
-      fontSize: textSizes.medium,
-      marginBottom: 16,
-    },
-    // Focusable element styles: button, input, and generic focusable items.
-    focusableElement: {
-      padding: 16,
-      borderRadius: 10,
-      marginBottom: 10,
-      borderWidth: 2,
-      borderColor: focusedElement === 'item' ? colors.primary : colors.border,
-      backgroundColor: focusedElement === 'item' ? colors.primaryLight : colors.surface,
-    },
-    focusInput: {
-      padding: 16,
-      borderRadius: 10,
-      marginBottom: 10,
-      borderWidth: 2,
-      borderColor: focusedElement === 'input' ? colors.primary : colors.border,
-      backgroundColor: focusedElement === 'input' ? colors.primaryLight : colors.surface,
-    },
-    focusButton: {
-      paddingVertical: 12,
-      paddingHorizontal: 24,
+    focusableButton: {
       backgroundColor: colors.primary,
       borderRadius: 8,
-      marginBottom: 10,
+      paddingVertical: 12,
+      paddingHorizontal: 24,
+      alignSelf: 'center', // Center horizontally
+      marginTop: 16,
       alignItems: 'center',
-      borderWidth: focusedElement === 'button' ? 2 : 0,
-      borderColor: focusedElement === 'button' ? colors.primaryLight : colors.primary,
     },
-    focusButtonText: {
+    focusableButtonText: {
       color: colors.surface,
       fontSize: textSizes.medium,
       fontWeight: '600',
     },
+    input: {
+      borderWidth: 1,
+      borderColor: colors.border,
+      borderRadius: 8,
+      padding: 12,
+      color: colors.text,
+      fontSize: textSizes.medium,
+      marginBottom: 12,
+    },
+  };
+
+  // 4) "Skip to main content" logic
+  const skipToMainContent = () => {
+    // 1. Scroll to the main content
+    scrollViewRef.current?.scrollTo({
+      y: mainContentY,
+      animated: true,
+    });
+
+    // 2. After a short delay, set accessibility focus to the main content container
+    setTimeout(() => {
+      if (mainContentRef.current && Platform.OS !== 'web') {
+        const reactTag = findNodeHandle(mainContentRef.current);
+        if (reactTag) {
+          AccessibilityInfo.setAccessibilityFocus(reactTag);
+        }
+      }
+    }, 500);
+  };
+
+  // 5) A dummy “Submit” action for the second button
+  const handleSubmitFeedback = () => {
+    Alert.alert('Feedback Submitted', `Feedback: ${feedback}`);
   };
 
   return (
     <LinearGradient colors={gradientColors} style={themedStyles.container}>
       <ScrollView
+        ref={scrollViewRef}
         contentContainerStyle={{ paddingBottom: 24 }}
         accessibilityRole="scrollview"
         accessibilityLabel="Logical Focus Order Screen"
@@ -155,68 +179,75 @@ export default function LogicalFocusOrderScreen() {
             Logical Focus Order
           </Text>
           <Text style={themedStyles.heroSubtitle}>
-            Master the art of focus navigation to improve user experience and screen reader interaction.
+            Demonstrate skip links and consistent navigation order.
           </Text>
         </View>
 
-        {/* INSTRUCTION CARD */}
+        {/* Skip Link */}
+        <View style={themedStyles.skipLinkContainer}>
+          <TouchableOpacity
+            style={themedStyles.skipLinkButton}
+            accessibilityRole="button"
+            accessibilityLabel="Skip to main content"
+            onPress={skipToMainContent}
+          >
+            <Text style={themedStyles.skipLinkText}>Skip to Main Content</Text>
+          </TouchableOpacity>
+        </View>
+
+        {/* Some filler info before main content */}
         <View style={themedStyles.section}>
-          <View style={themedStyles.instructionCard}>
-            <Text style={themedStyles.instructionTitle}>Focus Flow Best Practices</Text>
-            <Text style={themedStyles.instructionText}>
-              Ensure that focus follows a logical order that matches your visual layout. Avoid keyboard traps, use clear labels, and provide visible focus indicators.
+          <View style={themedStyles.infoCard}>
+            <Text style={themedStyles.infoTitle}>Why Focus Order Matters</Text>
+            <Text style={themedStyles.infoDescription}>
+              Proper focus order helps screen reader and keyboard users navigate without confusion.
+              A skip link allows bypassing repetitive blocks, ensuring more efficient access to primary content.
             </Text>
           </View>
+        </View>
 
-          {/* DEMO CARD */}
-          <View style={themedStyles.demoCard}>
-            <Text style={themedStyles.demoTitle}>Interactive Focus Demo</Text>
-            <Text style={themedStyles.demoDescription}>
-              Tap the items below to see how focus is highlighted.
+        {/* MAIN CONTENT: multiple focusable items */}
+        <View
+          style={[themedStyles.section, { marginTop: 0 }]}
+          onLayout={handleMainContentLayout}
+          ref={mainContentRef}
+          accessibilityRole="summary"
+          accessibilityLabel="Main Content Section"
+        >
+          <View style={themedStyles.infoCard}>
+            <Text style={themedStyles.infoTitle}>Main Content</Text>
+            <Text style={themedStyles.infoDescription}>
+              Below are interactive elements in a logical sequence.
             </Text>
 
-            {/* Focusable Items */}
+            {/* 1) Simple focusable button */}
             <TouchableOpacity
-              style={themedStyles.focusableElement}
-              onPress={() => handleElementPress('item')}
+              style={[themedStyles.focusableButton, { marginBottom: 10 }]}
+              onPress={() => Alert.alert('Button Pressed', 'You pressed the first button!')}
               accessibilityRole="button"
-              accessibilityLabel="Focusable Item 1"
-              accessibilityHint="Double tap to focus this item"
+              accessibilityLabel="Focusable Button 1"
             >
-              <Text style={{ color: colors.text }}>Focusable Item 1</Text>
+              <Text style={themedStyles.focusableButtonText}>Focusable Button 1</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity
-              style={themedStyles.focusableElement}
-              onPress={() => handleElementPress('item')}
-              accessibilityRole="button"
-              accessibilityLabel="Focusable Item 2"
-              accessibilityHint="Double tap to focus this item"
-            >
-              <Text style={{ color: colors.text }}>Focusable Item 2</Text>
-            </TouchableOpacity>
-
-            {/* TextInput */}
+            {/* 2) Text Input */}
             <TextInput
-              style={themedStyles.focusInput}
-              onFocus={() => handleElementPress('input')}
-              onBlur={() => setFocusedElement(null)}
-              placeholder="Tap to focus the input"
+              style={themedStyles.input}
+              placeholder="Enter feedback"
               placeholderTextColor={colors.textSecondary}
-              accessible
-              accessibilityLabel="Input Field"
-              accessibilityHint="Double tap to enter text"
+              value={feedback}
+              onChangeText={setFeedback}
+              accessibilityLabel="Feedback Input"
             />
 
-            {/* Focusable Button */}
+            {/* 3) Another focusable button */}
             <TouchableOpacity
-              style={themedStyles.focusButton}
-              onPress={() => handleElementPress('button')}
+              style={[themedStyles.focusableButton, { marginBottom: 10 }]}
+              onPress={handleSubmitFeedback}
               accessibilityRole="button"
-              accessibilityLabel="Focusable Button"
-              accessibilityHint="Double tap to focus and activate the button"
+              accessibilityLabel="Submit feedback"
             >
-              <Text style={themedStyles.focusButtonText}>Focusable Button</Text>
+              <Text style={themedStyles.focusableButtonText}>Submit Feedback</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -225,8 +256,5 @@ export default function LogicalFocusOrderScreen() {
   );
 }
 
-const styles = StyleSheet.create({
-  // Fallback styles (if needed) can be defined here.
-});
 
 export default LogicalFocusOrderScreen;

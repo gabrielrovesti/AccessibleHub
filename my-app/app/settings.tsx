@@ -18,13 +18,13 @@ export default function SettingsScreen() {
     isHighContrast,
     isLargeText,
     isLargeTouchTargets,
-    isReduceMotion,       // New setting
+    isReduceMotion,
     isColorFilter,
     toggleDarkMode,
     toggleHighContrast,
     toggleLargeText,
     toggleLargeTouchTargets,
-    toggleReduceMotion,   // New toggle
+    toggleReduceMotion,
     toggleColorFilter,
     colors,
     textSizes,
@@ -100,71 +100,63 @@ export default function SettingsScreen() {
   /* -----------------------------------------
      2. Reusable Setting Row
   ----------------------------------------- */
-  const SettingRow = ({
-    icon,
-    title,
-    description,
-    value,
-    onToggle,
-  }: {
-    icon: string;
-    title: string;
-    description: string;
-    value: boolean;
-    onToggle: () => void;
-  }) => (
-    <View
-      style={themedStyles.settingRow}
-      accessible={true}
-      accessibilityLabel={`${title}. ${description}. Switch is ${value ? 'on' : 'off'}.`}
-      accessibilityRole="switch"
-    >
-      <View style={themedStyles.settingIcon}>
-        <Ionicons
-          name={icon}
-          size={24}
-          color={colors.primary}
-          accessibilityElementsHidden
-        />
-      </View>
-      <View style={themedStyles.settingContent}>
-        <Text
-          style={[
-            themedStyles.settingTitle,
-            { fontSize: textSizes.medium },
-          ]}
-        >
-          {title}
-        </Text>
-        <Text
-          style={[
-            themedStyles.settingDescription,
-            { fontSize: textSizes.small },
-          ]}
-        >
-          {description}
-        </Text>
-      </View>
-      <Switch
-        value={value}
-        onValueChange={() => {
-          onToggle();
-          const newValue = !value;
-          const message = `${title} ${newValue ? 'enabled' : 'disabled'}`;
-          AccessibilityInfo.announceForAccessibility(message);
-          if (Platform.OS === 'android') {
-            ToastAndroid.show(message, ToastAndroid.SHORT);
-          } else {
-            console.log(message);
-          }
-        }}
-        trackColor={{ false: '#767577', true: colors.primary }}
-        thumbColor={value ? '#fff' : '#f4f3f4'}
-        accessibilityLabel={title}
-        accessibilityRole="switch"
+const SettingRow = ({
+  icon,
+  title,
+  description,
+  value,
+  onToggle,
+}: {
+  icon: string;
+  title: string;
+  description: string;
+  value: boolean;
+  onToggle: () => void;
+}) => (
+  <View style={themedStyles.settingRow}>
+    <View style={themedStyles.settingIcon}>
+      <Ionicons
+        name={icon}
+        size={24}
+        color={colors.primary}
+        accessibilityElementsHidden
       />
     </View>
-  );
+    <View style={themedStyles.settingContent}>
+      <Text style={[themedStyles.settingTitle, { fontSize: textSizes.medium }]}>
+        {title}
+      </Text>
+      <Text
+        style={[
+          themedStyles.settingDescription,
+          { fontSize: textSizes.small },
+        ]}
+      >
+        {description}
+      </Text>
+    </View>
+    <Switch
+      value={value}
+      onValueChange={() => {
+        onToggle();
+        const newValue = !value;
+        const message = `${title} ${newValue ? 'enabled' : 'disabled'}`;
+        AccessibilityInfo.announceForAccessibility(message);
+        if (Platform.OS === 'android') {
+          ToastAndroid.show(message, ToastAndroid.SHORT);
+        } else {
+          console.log(message);
+        }
+      }}
+      trackColor={{ false: '#767577', true: colors.primary }}
+      thumbColor={value ? '#fff' : '#f4f3f4'}
+      // Combine title, description, and state in one accessibility label
+      accessibilityLabel={`${title}. ${description}. Switch is ${value ? 'on' : 'off'}.`}
+      accessibilityRole="switch"
+    />
+  </View>
+);
+
 
   /* -----------------------------------------
      3. Render Screen

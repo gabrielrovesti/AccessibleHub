@@ -172,23 +172,32 @@ export default function SemanticStructureScreen() {
             </Text>
 
             {/* Example of multiple heading levels */}
-            <View style={themedStyles.codeExample}>
-              <Text style={themedStyles.codeText}>
-{`// Example of multiple heading levels
-<View accessibilityRole="header">
-  <Text accessibilityRole="heading" /* Level 1 equivalent */>
-    Main Title (H1)
-  </Text>
-</View>
+            <View
+              style={themedStyles.codeExample}
+              accessible
+              accessibilityRole="text"
+              accessibilityLabel="Source code of example of multiple heading levels"
+            >
+              <Text
+                style={themedStyles.codeText}
+                accessibilityElementsHidden
+                importantForAccessibility="no-hide-descendants"
+              >
+            {`// Example of multiple heading levels
+            <View accessibilityRole="header">
+              <Text accessibilityRole="heading" /* Level 1 equivalent */>
+                Main Title (H1)
+              </Text>
+            </View>
 
-<View accessibilityRole="main">
-  <Text accessibilityRole="heading" /* Level 2 equivalent */>
-    Section Title (H2)
-  </Text>
-  <Text>
-    Some descriptive content here...
-  </Text>
-</View>`}
+            <View accessibilityRole="main">
+              <Text accessibilityRole="heading" /* Level 2 equivalent */>
+                Section Title (H2)
+              </Text>
+              <Text>
+                Some descriptive content here...
+              </Text>
+            </View>`}
               </Text>
             </View>
           </View>
