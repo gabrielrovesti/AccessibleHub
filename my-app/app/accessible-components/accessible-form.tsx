@@ -42,11 +42,50 @@ export default function AccessibleFormExample() {
   const [copied, setCopied] = useState(false);
 
   // Minimal code snippet for demonstration
-  const codeExample = `<View accessibilityRole="form">
-  {/* Name, Email, Gender, Contact Time, Birth Date, Appointment Time */}
-  {/* Communication Preferences */}
-  {/* Agreement Checkbox */}
-  {/* Submit button (disabled if fields incomplete) */}
+// Update the codeExample in accessible-form.tsx to:
+const codeExample = `<View accessibilityRole="form">
+  {/* Input Field */}
+  <Text style={styles.label}>Name</Text>
+  <TextInput
+    value={formData.name}
+    accessibilityLabel="Enter your name"
+    accessibilityHint="Type your full name"
+    style={styles.input}
+  />
+
+  {/* Radio Group */}
+  <View accessibilityRole="radiogroup">
+    {['Option 1', 'Option 2'].map((option) => (
+      <TouchableOpacity
+        accessibilityRole="radio"
+        accessibilityState={{ checked: selectedOption === option }}
+        accessibilityLabel={\`Select \${option}\`}
+      >
+        <View style={styles.radioButton} />
+        <Text>{option}</Text>
+      </TouchableOpacity>
+    ))}
+  </View>
+
+  {/* Checkbox with Label */}
+  <TouchableOpacity
+    accessibilityRole="checkbox"
+    accessibilityState={{ checked: isChecked }}
+    accessibilityLabel="Accept terms and conditions"
+  >
+    <View style={styles.checkbox} />
+    <Text>I agree to the terms</Text>
+  </TouchableOpacity>
+
+  {/* Submit Button */}
+  <TouchableOpacity
+    accessibilityRole="button"
+    accessibilityLabel="Submit form"
+    accessibilityState={{ disabled: !isValid }}
+    style={styles.submitButton}
+  >
+    <Text>Submit</Text>
+  </TouchableOpacity>
 </View>`;
 
   // Evaluate whether all required fields are filled
@@ -615,9 +654,16 @@ export default function AccessibleFormExample() {
               </View>
 
               {/* Code snippet */}
-              <View style={themedStyles.codeCard} accessible={false} importantForAccessibility="no">
-                <Text style={themedStyles.codeText}>{codeExample}</Text>
-              </View>
+                <View
+                  style={themedStyles.codeCard}
+                  accessible
+                  accessibilityRole="text"
+                  accessibilityLabel="Form component code example with accessibility features."
+                >
+                  <Text style={themedStyles.codeText} accessibilityElementsHidden>
+                    {codeExample}
+                  </Text>
+                </View>
             </View>
           </View>
         </View>

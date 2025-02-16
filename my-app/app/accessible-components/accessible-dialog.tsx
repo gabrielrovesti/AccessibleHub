@@ -484,14 +484,16 @@ const AccessibleDialog = ({ visible, onClose, title, children }) => {
                 </Text>
               </TouchableOpacity>
             </View>
-            <ScrollView
+            <View
               style={themedStyles.codeCard}
-              accessible={false}
-              importantForAccessibility="no"
-              accessibilityElementsHidden
+              accessible
+              accessibilityRole="text"
+              accessibilityLabel="Dialog component code example with accessibility features."
             >
-              <Text style={themedStyles.codeText}>{codeExample}</Text>
-            </ScrollView>
+              <Text style={themedStyles.codeText} accessibilityElementsHidden>
+                {codeExample}
+              </Text>
+            </View>
           </View>
         </View>
 
