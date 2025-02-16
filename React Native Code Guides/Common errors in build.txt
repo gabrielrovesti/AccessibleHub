@@ -1,0 +1,9 @@
+Common errors in build:
+
+Error (Windows): ninja: error: manifest 'build.ninja' still dirty after 100 tries
+
+https://github.com/expo/expo/issues/22444
+https://github.com/mrousavy/react-native-vision-camera/issues/1941
+
+Fix: SYNCING THE TIME MANUALLY / Move project to shorter name (like C:Users) / Custom eas.json worked out with claude
+
