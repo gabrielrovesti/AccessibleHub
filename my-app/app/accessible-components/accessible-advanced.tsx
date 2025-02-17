@@ -392,14 +392,21 @@ export default function AccessibleAdvancedScreen() {
             <Slider
               minimumValue={0}
               maximumValue={100}
+              step={1}
               value={sliderValue}
-              onSlidingComplete={(val) => {
+              onValueChange={(val) => {
                 setSliderValue(val);
-                AccessibilityInfo.announceForAccessibility(`Slider value set to ${Math.round(val)}`);
+                AccessibilityInfo.announceForAccessibility(`Value now ${Math.round(val)}`);
               }}
-              accessibilityLabel="Slider input"
-              style={{ width: '100%', height: 40 }}
-              minimumTrackTintColor={colors.primary}
+              accessibilityLabel="Volume level"
+              accessibilityValue={{
+                min: 0,
+                max: 100,
+                now: sliderValue,
+              }}
+              accessibilityHint="Swipe up or down to adjust volume"
+              style={{ width: '100%' }}
+              minimumTrackTintColor="#2196F3"
               maximumTrackTintColor="#ccc"
             />
             <CodeSnippet snippet={sliderSnippet} label="Slider / Range Input" />
