@@ -20,20 +20,20 @@ export default function AccessibleButtonExample() {
   const { colors, textSizes, isDarkMode } = useTheme();
 
   // 1) Example code snippet
-  const codeExample = `<TouchableOpacity
+const codeExample = `<TouchableOpacity
   accessibilityRole="button"
   accessibilityLabel="Submit form"
   accessibilityHint="Activates form submission"
   style={{
     minHeight: 44,
     paddingHorizontal: 16,
-    backgroundColor: '#007AFF',
+    backgroundColor: colors.primary,
     borderRadius: 8,
     justifyContent: 'center',
     alignItems: 'center',
   }}
 >
-  <Text style={{ color: '#fff' }}>
+  <Text style={{ color: isDarkMode ? colors.surface : colors.background }}>
     Submit
   </Text>
 </TouchableOpacity>`;
@@ -51,24 +51,27 @@ export default function AccessibleButtonExample() {
     }
   };
 
-  // 3) Demo button that triggers success modal
-  const DemoButton = () => (
-    <TouchableOpacity
-      style={[styles.demoButton, { backgroundColor: colors.primary }]}
-      accessibilityRole="button"
-      accessibilityLabel="Submit form"
-      accessibilityHint="Activates form submission"
-      onPress={() => {
-        setShowSuccess(true);
-        AccessibilityInfo.announceForAccessibility('Button pressed successfully');
-        setTimeout(() => setShowSuccess(false), 2000);
-      }}
-    >
-    <Text style={[styles.buttonText, { color: isDarkMode ? '#000' : '#fff' }]}>
+// 3) Demo button that triggers success modal
+const DemoButton = () => (
+  <TouchableOpacity
+    style={[styles.demoButton, { backgroundColor: colors.primary }]}
+    accessibilityRole="button"
+    accessibilityLabel="Submit form"
+    accessibilityHint="Activates form submission"
+    onPress={() => {
+      setShowSuccess(true);
+      AccessibilityInfo.announceForAccessibility('Button pressed successfully');
+      setTimeout(() => setShowSuccess(false), 2000);
+    }}
+  >
+    <Text style={[styles.buttonText, {
+      // Always white text on the primary color button for better contrast
+      color: '#FFFFFF'
+    }]}>
       Submit
     </Text>
-    </TouchableOpacity>
-  );
+  </TouchableOpacity>
+);
 
   // 4) Elevated card style for uniform design
   const cardShadowStyle = {
@@ -391,12 +394,10 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#0057D9', // fallback color
   },
   buttonText: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#FFFFFF',
   },
   featureItem: {
     flexDirection: 'row',

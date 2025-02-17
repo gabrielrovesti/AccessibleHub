@@ -12,12 +12,10 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import { ThemeProvider, useTheme } from '../context/ThemeContext';
 
-/* -----------------------------
-   1. Static brand colors
------------------------------ */
-const brandDarkBlue = '#0057D9'; // Always used for the top header
+// We still keep a white header text color, but remove brandDarkBlue:
 const headerTextColor = '#FFFFFF';
 
+// Only these routes appear in the drawer
 const mainRoutes = [
   'index',
   'components',
@@ -27,9 +25,9 @@ const mainRoutes = [
   'accessibility-instruction',
 ];
 
-/* -----------------------------
-   2. Custom Drawer Content
------------------------------ */
+/* --------------------------------------------
+   1. Custom Drawer Content
+-------------------------------------------- */
 function CustomDrawerContent({ state, descriptors, navigation }) {
   const { colors, isDarkMode } = useTheme();
   const router = useRouter();
@@ -50,16 +48,20 @@ function CustomDrawerContent({ state, descriptors, navigation }) {
       accessibilityRole="menu"
       accessibilityLabel="Main navigation menu"
     >
-      {/* Header (always brandDarkBlue) */}
-      <View style={drawerStyles.header}>
+      {/* Header now uses colors.primary (not brandDarkBlue) */}
+      <View style={[drawerStyles.header, { backgroundColor: colors.primary }]}>
         <Ionicons
           name="rocket-outline"
           size={48}
           color="#FFFFFF"
           style={drawerStyles.appIcon}
         />
-        <Text style={drawerStyles.appName}>AccessibleHub</Text>
-        <Text style={drawerStyles.version}>Version 1.0.0</Text>
+        <Text style={[drawerStyles.appName, { color: '#FFFFFF' }]}>
+          AccessibleHub
+        </Text>
+        <Text style={[drawerStyles.version, { color: '#FFFFFF' }]}>
+          Version 1.0.0
+        </Text>
       </View>
 
       {/* Drawer Items */}
@@ -81,7 +83,7 @@ function CustomDrawerContent({ state, descriptors, navigation }) {
                     borderColor: colors.border,
                   },
                   isActive && {
-                    borderColor: brandDarkBlue,
+                    borderColor: colors.primary,
                     borderWidth: 2,
                     backgroundColor: isDarkMode ? '#ffffff22' : '#0000000A',
                   },
@@ -109,7 +111,7 @@ function CustomDrawerContent({ state, descriptors, navigation }) {
                   >
                     {drawerIcon({
                       size: 24,
-                      color: isActive ? brandDarkBlue : colors.textSecondary,
+                      color: isActive ? colors.primary : colors.textSecondary,
                     })}
                   </View>
                 )}
@@ -117,7 +119,7 @@ function CustomDrawerContent({ state, descriptors, navigation }) {
                   style={[
                     drawerStyles.drawerLabel,
                     { color: colors.text },
-                    isActive && { color: brandDarkBlue, fontWeight: 'bold' },
+                    isActive && { color: colors.primary, fontWeight: 'bold' },
                   ]}
                 >
                   {label}
@@ -130,15 +132,15 @@ function CustomDrawerContent({ state, descriptors, navigation }) {
   );
 }
 
-/* -----------------------------
-   3. Drawer Styles
------------------------------ */
+/* --------------------------------------------
+   2. Drawer Styles
+-------------------------------------------- */
 const drawerStyles = StyleSheet.create({
   container: {
     flex: 1,
   },
   header: {
-    backgroundColor: brandDarkBlue,
+    // backgroundColor: '#0057D9',  // removed
     paddingVertical: 40,
     paddingHorizontal: 16,
     alignItems: 'center',
@@ -152,13 +154,11 @@ const drawerStyles = StyleSheet.create({
   },
   appName: {
     fontSize: 24,
-    color: '#FFFFFF',
     fontWeight: 'bold',
     marginBottom: 4,
   },
   version: {
     fontSize: 12,
-    color: '#FFFFFF',
   },
   drawerContent: {
     flex: 1,
@@ -184,22 +184,49 @@ const drawerStyles = StyleSheet.create({
   },
 });
 
-/* -----------------------------
-   4. Drawer Navigator
------------------------------ */
+/* --------------------------------------------
+   3. Drawer Navigator
+-------------------------------------------- */
 function DrawerNavigator() {
   const router = useRouter();
+  const { colors } = useTheme();
 
   const screenOptions = ({ navigation, route }) => {
     const routeName = route.name.toLowerCase();
     const isMainRoute = mainRoutes.includes(route.name);
+
+    // For settings screen specifically
+    if (route.name === 'settings') {
+      return {
+        headerShown: true,
+        headerStyle: {
+          backgroundColor: colors.primary,
+          elevation: 0,
+          shadowOpacity: 0,
+        },
+        headerTintColor: headerTextColor,
+        headerTitle: () => null,
+        headerLeft: () => (
+          <TouchableOpacity
+            onPress={() => {
+              router.back();
+            }}
+            accessibilityRole="button"
+            accessibilityLabel="Go back"
+            style={styles.headerButton}
+          >
+            <Ionicons name="arrow-back" size={24} color={headerTextColor} />
+          </TouchableOpacity>
+        ),
+      };
+    }
 
     // Sub-route of 'components'
     if (route.name !== 'components' && routeName.includes('components')) {
       return {
         headerShown: true,
         headerStyle: {
-          backgroundColor: brandDarkBlue,
+          backgroundColor: colors.primary,
           elevation: 0,
           shadowOpacity: 0,
         },
@@ -215,7 +242,6 @@ function DrawerNavigator() {
             <Ionicons name="arrow-back" size={24} color={headerTextColor} />
           </TouchableOpacity>
         ),
-        // Always show settings on sub-routes too:
         headerRight: () => (
           <TouchableOpacity
             onPress={() => router.push('/settings')}
@@ -234,7 +260,7 @@ function DrawerNavigator() {
       return {
         headerShown: true,
         headerStyle: {
-          backgroundColor: brandDarkBlue,
+          backgroundColor: colors.primary,
           elevation: 0,
           shadowOpacity: 0,
         },
@@ -250,7 +276,6 @@ function DrawerNavigator() {
             <Ionicons name="arrow-back" size={24} color={headerTextColor} />
           </TouchableOpacity>
         ),
-        // Always show settings:
         headerRight: () => (
           <TouchableOpacity
             onPress={() => router.push('/settings')}
@@ -269,7 +294,7 @@ function DrawerNavigator() {
       return {
         headerShown: true,
         headerStyle: {
-          backgroundColor: brandDarkBlue,
+          backgroundColor: colors.primary,
           elevation: 0,
           shadowOpacity: 0,
         },
@@ -298,11 +323,11 @@ function DrawerNavigator() {
       };
     }
 
-    // Otherwise fallback => still show a back arrow and settings
+    // Otherwise fallback => back arrow and settings
     return {
       headerShown: true,
       headerStyle: {
-        backgroundColor: brandDarkBlue,
+        backgroundColor: colors.primary,
         elevation: 0,
         shadowOpacity: 0,
       },
@@ -390,14 +415,14 @@ function DrawerNavigator() {
           ),
         }}
       />
-      {/* No drawer item for settings, because we use the three-dots icon */}
+      {/* 'settings' is not in the drawer, so we don't add a Drawer.Screen for it */}
     </Drawer>
   );
 }
 
-/* -----------------------------
-   5. App Wrapper & Export
------------------------------ */
+/* --------------------------------------------
+   4. App Wrapper & Export
+-------------------------------------------- */
 function AppWrapper({ children }) {
   useEffect(() => {
     if (Platform.OS === 'ios') {
@@ -429,8 +454,13 @@ export default function AppLayout() {
   );
 }
 
+/* --------------------------------------------
+   5. Layout Styles
+-------------------------------------------- */
 const styles = StyleSheet.create({
-  appContainer: { flex: 1 },
+  appContainer: {
+    flex: 1,
+  },
   headerButton: {
     padding: 8,
     marginLeft: 8,

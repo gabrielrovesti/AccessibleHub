@@ -247,7 +247,6 @@ export default function HomeScreen() {
       lineHeight: 24,
       marginBottom: 20,
     },
-    // Renamed to reflect new approach
     communityButton: {
       backgroundColor: colors.primary,
       paddingVertical: 12,
