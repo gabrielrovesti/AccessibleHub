@@ -525,7 +525,6 @@ import Slider from '@react-native-community/slider';
 />
 <Text>Current slider value: {sliderValue}</Text>`;
 
-// For your route config
 export const options = {
   headerShown: true,
   title: 'Loading & Navigation',

@@ -1,0 +1,3 @@
+- Waiting for hardcoded values to be formalized in Framework Comparison screen 
+- Waiting for supervisor to test the app (this week) and to read thesis (next week)
+- After that, I will continue Chapter 3 of thesis this way and formalize Chapter 4 with tables from paper
