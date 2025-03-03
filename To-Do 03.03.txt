@@ -1,0 +1,53 @@
+Caro Gabriel,
+
+ti avevo promesso di guardare l’app entro la settimana e l’ho fatto.
+
+Per quanto riguarda la parte di accessibilità, ti confermo che abbastanza bene per la parte che hai corretto, ci sarebbe un miglioramento da fare: le immagini di decorazione sarebbe meglio che non fossero raggiungibili con lo screen reader perché giustamente non hanno il testo alternativo, ma in questo modo fanno fare un swipe in più per nulla, quindi diventa una garbage interaction. Se c’è un modo per renderli non raggiungibili (in html sarebbe tabindex=-1 per intenderci) questa sarebbe sicuramente una cosa da mettere anche in tesi. Esempi di queste immagini sono le icone messe vicino ai 4 principi dell’accessibilità, o i segni di spunta sotto.
+
+Un altro errore è nell’Example Dialog, io non sono riuscita a farmi leggere il testo, prova anche tu.
+
+Invece per la parte nuova (ovvero cosa succede quando si copia del codice), i comandi successivi (condividi, etc) non sono raggiungibili dallo screen reader. E’ vero che devo proprio trovare un developer con disabilità visiva, ma credo che proprio noi dovremmo essere i primi a considerarli. Mi pare che anche il codice non venga mai letto.
+
+Non riesco a modificare il valore dello slider con lo screenreader, e allo stesso modo nel tutorial delle gesture su doubletap e long press non succede nulla
+
+ 
+
+Ho anche sentito Dal Maso, e di fatto mi dice che le gesture che usano sono quelle che hai trattato, ce ne sono altre, ma sono comandi utili ma non indispensabili, tipo il doppio tap con 2 dita, tap con 3 o 4 dita, ma dice che sempre di tap parliamo. Sono comunque gesture per comandi particolari, quindi da non usare nelle app per non andare in sovrapposizione, quindi direi che ci siamo.
+
+ 
+
+Invece in generale, ho le seguenti domande:
+
+    I valori in “the ultimate…” in home, sono a caso o hanno una giustificazione?
+    C’è qualche problema di indentazione nel codice che riporti
+    Sulla barra blu, mi chiedo se non aiuterebbe mettere un titolo che abbia una sorta di funzione di breadcrumb. Questo non serve a chi non ci vede, ma a chi ci vede, per orientarsi
+    hai provato i tool di testing che suggerisci?
+    Toglierei Ionic dal framework comparison. I numeri che metti ora sono ancora casuali?
+
+Entro la prossima settimana ti leggo la tesi come promesso.
+
+Ciao,
+
+Ombretta Gaggi
+
+
+
+
+Buongiorno professoressa,
+come sempre in primis la ringrazio per la disponibilità e per il lavoro,
+aspetto senza problemi le sue correzioni per la tesi in base a quando avrà modo.
+
+Avevo notato l'azione dello swipe aggiuntivo, avevo cercato di rendere tutte le immagini non descrivibili, ma in effetti non ho curato la loro non raggiungibilità, cerco di tenerne conto.
+Riguardo al testo del codice, verifico e cerco di sistemare l'indentazione presentata per schermata; nell'ultima implementazione, quando testando su screen reader ho voluto di proposito rendere la lettura del codice un blocco unico, perché pensavo che magari non fosse rilevante leggere tutto il singolo codice per un utente dell'applicazione. Mi trovo a concordare però che se l'applicazione è rivolta ai developers, la lettura del codice, come blocco unico, avrebbe perfettamente senso.
+
+Mi occupo anche della raggiungibilità in merito alla condivisione codice, trovo l'osservazione pertinente per garantire veramente l'accessibilità in ogni sua parte del prodotto finale, la ringrazio. La ringrazio per aver chiesto in merito alle gesture, tengo in questo modo. Dello slider gliene accennavo, vedo se riesco a trovare un modo per renderlo pienamente funzionante. Quando avevo testato le gesture con SR, ero riuscito ad "azionarle" tutte mi ricordo, verifico per rendere il tutto certo.
+
+Attualmente i valori in Home Screen sono calcolati sul numero di componenti matematicamente in modo statico, come avrà modo di vedere anche in tesi nella parte di descrizione codice. Ero infatti incerto sull'effettiva valutazione formale, come anche per lo screen di Framework Comparison.
+La mia idea è la seguente:
+- per i componenti documentare ogni elemento di interfaccia e verificare se le linee guida WCAG (che saranno poi citate nelle singole schermate) sono rispettate oppure no, verificando tutti i criteri rilevanti
+- riguardo ai test con screen reader, definirei un protocollo formale con scenari specifici in maniera tale da garantire un vero score per singole schermate; potrebbe essere utile documentare una parte metrica e poi inserirla sempre parlando di questa schermata in tesi, verificando dispositivi utilizzato e verificando quali issue ci sono (per esempio i punti comuni trattati, descrizioni, gerarchie, codice leggibile, gesture attuabili)
+
+Un'idea similare per formalizzare Frameworks Comparison potrebbe essere descrivere l'implementazione esatta di specifici criteri WCAG e difficoltà di implementazione (in merito a linee di codice e risultati test SR) citando esattamente le fonti in schermata, quindi definire anche qui "custom" dei criteri esatti e poi documentarli opportunamente. Confermo che anche qui i valori sono staticamente assegnati. Avevo tolto già Ionic in una delle ultime versioni compilate, successive all'ultimo invio della release.
+Da diverso tempo per entrambe le schermate sto provando a ragionare al modo migliore per mostrare dei dati pertinenti e le fonti non sono poi molte; credo per lo scopo di tesi queste modalità dovrebbero essere sufficientemente corrette (volevo sapere se anche lei fosse d'accordo, perché secondo me rappresenta il punto fondamentale del link tra linee guida e implementazione pratica).
+
+La ringrazio per l'idea di breadcrumb, potrebbe effettivamente essere una buona idea. In merito ai testing tools presenti ho effettivamente ragionato su dei link generali di consultazione, avrebbe senso però descrivere gli strumenti presenti con un fine pratico mi rendo conto. Magari, parlando di questa schermata poi in tesi, potrei pensare di introdurre lo scopo degli strumenti e dare delle considerazioni pratiche.
