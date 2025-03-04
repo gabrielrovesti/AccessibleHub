@@ -147,24 +147,58 @@ const BREADCRUMB_MAP = {
 /* --------------------------------------------
    1. Header Title Function (using useSegments)
 -------------------------------------------- */
-// NOTA: Questa funzione è un "hook wrapper" – usa useSegments all'inizio
 function renderHeaderTitle(router) {
-  const segments = useSegments(); // Legge il percorso basato sulla struttura dei file
+  const segments = useSegments(); // Legge i segmenti di percorso
   console.log("Current segments:", segments);
 
-  // Se non abbiamo segmenti o solo uno, visualizza il titolo principale
-  if (!segments || segments.length <= 1) {
-    const main = segments && segments[0] ? segments[0] : 'index';
+  // Se non ci sono segmenti o siamo in Home
+  if (!segments || segments.length === 0 || segments[0] === 'index') {
     return (
-      <Text style={styles.mainTitle} accessibilityLabel={TITLE_MAP[main] || main}>
-        {TITLE_MAP[main] || main}
+      <Text
+        style={styles.mainTitle}
+        accessibilityLabel="Home"
+      >
+        Home
       </Text>
     );
   }
 
-  // Se abbiamo più segmenti, significa che siamo in un subscreen.
-  const parent = segments[0]; // ad esempio "components" o "practices"
-  const child = segments[segments.length - 1]; // ad esempio "accessible-button" o "guidelines"
+  // Se abbiamo un solo segmento (top-level screen come 'tools', 'components', ecc.)
+  if (segments.length === 1) {
+    const child = segments[0]; // Esempio: 'tools'
+    const title = TITLE_MAP[child] || child; // Mappa su "Mobile Accessibility Tools"
+    return (
+      <View style={styles.breadcrumbContainer}>
+        <TouchableOpacity
+          onPress={() => router.replace('/')}
+          accessibilityRole="button"
+          accessibilityLabel="Go to Home"
+        >
+          <Text style={[styles.breadcrumbText, { fontWeight: 'normal' }]}>
+            Home
+          </Text>
+        </TouchableOpacity>
+        <Ionicons
+          name="chevron-forward"
+          size={16}
+          color={HEADER_TEXT_COLOR}
+          style={{ marginHorizontal: 4 }}
+          importantForAccessibility="no"
+          accessibilityElementsHidden
+        />
+        <Text
+          style={[styles.breadcrumbText, { fontWeight: 'bold' }]}
+          accessibilityLabel={`Current screen: ${title}`}
+        >
+          {title}
+        </Text>
+      </View>
+    );
+  }
+
+  // Se abbiamo più segmenti (subscreen)
+  const parent = segments[0]; // ad esempio "components"
+  const child = segments[segments.length - 1]; // ad esempio "accessible-button"
   const key = `${parent}/${child}`;
   const mapping = BREADCRUMB_MAP[key] || BREADCRUMB_MAP[child] || {
     parentRoute: parent,

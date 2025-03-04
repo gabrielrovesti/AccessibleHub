@@ -19,10 +19,11 @@ Ho anche sentito Dal Maso, e di fatto mi dice che le gesture che usano sono quel
 Invece in generale, ho le seguenti domande:
 
     I valori in “the ultimate…” in home, sono a caso o hanno una giustificazione?
-    C’è qualche problema di indentazione nel codice che riporti
-    Sulla barra blu, mi chiedo se non aiuterebbe mettere un titolo che abbia una sorta di funzione di breadcrumb. Questo non serve a chi non ci vede, ma a chi ci vede, per orientarsi
-    hai provato i tool di testing che suggerisci?
-    Toglierei Ionic dal framework comparison. I numeri che metti ora sono ancora casuali?
+    C’è qualche problema di indentazione nel codice che riporti 
+    Sulla barra blu, mi chiedo se non aiuterebbe mettere un titolo che abbia una sorta di funzione di breadcrumb. Questo non serve a chi non ci vede, ma a chi ci vede, per orientarsi ✔️
+    hai provato i tool di testing che suggerisci? (da inserire in tesi)
+    Toglierei Ionic dal framework comparison. ✔️
+    I numeri che metti ora sono ancora casuali?
 
 Entro la prossima settimana ti leggo la tesi come promesso.
 
