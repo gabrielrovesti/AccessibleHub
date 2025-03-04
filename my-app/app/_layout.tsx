@@ -155,14 +155,90 @@ const TITLE_MAP = {
   settings: 'Settings',
 };
 
-/* --------------------------------------------
-   1. renderHeaderTitle
--------------------------------------------- */
-/* --------------------------------------------
-   1. renderHeaderTitle
--------------------------------------------- */
+
 function renderHeaderTitle(routeName, router) {
-  // First try the full route name (for paths like "practices-screens/guidelines")
+  console.log("Rendering header title for route:", routeName);
+
+  // Gestione SPECIALE per practices-screens
+  if (routeName === 'practices-screens') {
+    return (
+      <View style={styles.breadcrumbContainer}>
+        <TouchableOpacity
+          onPress={() => router.replace('/practices')}
+          accessibilityRole="button"
+          accessibilityLabel="Go to Best Practices"
+        >
+          <Text style={[styles.breadcrumbText, { fontWeight: 'normal' }]}>
+            Best Practices
+          </Text>
+        </TouchableOpacity>
+
+        <Ionicons
+          name="chevron-forward"
+          size={16}
+          color={HEADER_TEXT_COLOR}
+          style={{ marginHorizontal: 4 }}
+        />
+
+        <Text
+          style={[styles.breadcrumbText, { fontWeight: 'bold' }]}
+          accessibilityLabel="Current screen: Best Practices"
+        >
+          Best Practices
+        </Text>
+      </View>
+    );
+  }
+
+  // Gestione SPECIALE per practices-screens/ sottopagine
+  if (routeName.startsWith('practices-screens/')) {
+    const segments = routeName.split('/');
+    const screenName = segments[segments.length - 1];
+    let title = screenName;
+
+    // Mappa dei titoli
+    const titleMap = {
+      'semantics': 'Semantic Structure',
+      'guidelines': 'WCAG 2.2 Guidelines',
+      'screen-reader': 'Screen Reader Support',
+      'navigation': 'Navigation & Focus',
+      'gestures': 'Gesture Tutorial'
+    };
+
+    if (titleMap[screenName]) {
+      title = titleMap[screenName];
+    }
+
+    return (
+      <View style={styles.breadcrumbContainer}>
+        <TouchableOpacity
+          onPress={() => router.replace('/practices')}
+          accessibilityRole="button"
+          accessibilityLabel="Go to Best Practices"
+        >
+          <Text style={[styles.breadcrumbText, { fontWeight: 'normal' }]}>
+            Best Practices
+          </Text>
+        </TouchableOpacity>
+
+        <Ionicons
+          name="chevron-forward"
+          size={16}
+          color={HEADER_TEXT_COLOR}
+          style={{ marginHorizontal: 4 }}
+        />
+
+        <Text
+          style={[styles.breadcrumbText, { fontWeight: 'bold' }]}
+          accessibilityLabel={`Current screen: ${title}`}
+        >
+          {title}
+        </Text>
+      </View>
+    );
+  }
+
+  // Il resto della logica rimane invariato
   if (BREADCRUMB_MAP[routeName]) {
     const bc = BREADCRUMB_MAP[routeName];
     return (
@@ -473,63 +549,105 @@ const screenOptions = ({ navigation, route }) => {
    }
 
    // Gestione unificata e semplificata dei pulsanti Back
-   const getLeftButton = () => {
-     const routeName = route.name;
-     console.log("Left button for:", routeName);
+  // Modifica da applicare al file _layout.tsx principale
 
-     // Per i percorsi principali -> menu hamburger
-     if (MAIN_ROUTES.includes(routeName)) {
-       return (
-         <TouchableOpacity
-           onPress={() => navigation.toggleDrawer()}
-           accessibilityRole="button"
-           accessibilityLabel="Toggle menu"
-           style={styles.headerButton}
-         >
-           <Ionicons name="menu-outline" size={24} color={HEADER_TEXT_COLOR} />
-         </TouchableOpacity>
-       );
-     }
+  const getLeftButton = () => {
+    const routeName = route.name;
+    console.log("Left button for:", routeName);
 
-     // Indietro specifico per ogni sezione
-     if (routeName.startsWith('accessible-')) {
-       return (
-         <TouchableOpacity
-           onPress={() => navigation.navigate('components')}
-           accessibilityRole="button"
-           accessibilityLabel="Return to Components"
-           style={styles.headerButton}
-         >
-           <Ionicons name="arrow-back" size={24} color={HEADER_TEXT_COLOR} />
-         </TouchableOpacity>
-       );
-     }
+    // Per i percorsi principali -> menu hamburger
+    if (MAIN_ROUTES.includes(routeName)) {
+      return (
+        <TouchableOpacity
+          onPress={() => navigation.toggleDrawer()}
+          accessibilityRole="button"
+          accessibilityLabel="Toggle menu"
+          style={styles.headerButton}
+        >
+          <Ionicons name="menu-outline" size={24} color={HEADER_TEXT_COLOR} />
+        </TouchableOpacity>
+      );
+    }
 
-     if (['semantics', 'guidelines', 'screen-reader', 'navigation', 'gestures'].includes(routeName)) {
-       return (
-         <TouchableOpacity
-           onPress={() => navigation.navigate('practices')}
-           accessibilityRole="button"
-           accessibilityLabel="Return to Best Practices"
-           style={styles.headerButton}
-         >
-           <Ionicons name="arrow-back" size={24} color={HEADER_TEXT_COLOR} />
-         </TouchableOpacity>
-       );
-     }
+    // PUNTO CRITICO: Gestione specifica per practices-screens come route name
+    if (routeName === 'practices-screens') {
+      return (
+        <TouchableOpacity
+          onPress={() => {
+            router.replace('/practices');
+            console.log("Forcing navigation to practices from practices-screens");
+          }}
+          accessibilityRole="button"
+          accessibilityLabel="Return to Best Practices"
+          style={styles.headerButton}
+        >
+          <Ionicons name="arrow-back" size={24} color={HEADER_TEXT_COLOR} />
+        </TouchableOpacity>
+      );
+    }
 
-     // Default back button
-     return (
-       <TouchableOpacity
-         onPress={() => navigation.goBack()}
-         accessibilityRole="button"
-         accessibilityLabel="Go back"
-         style={styles.headerButton}
-       >
-         <Ionicons name="arrow-back" size={24} color={HEADER_TEXT_COLOR} />
-       </TouchableOpacity>
-     );
-   };
+    // PUNTO CRITICO: Gestione sottopagine dentro practices-screens
+    if (routeName.includes('practices-screens/')) {
+      return (
+        <TouchableOpacity
+          onPress={() => {
+            router.replace('/practices');
+            console.log("Forcing navigation to practices from nested practices screen");
+          }}
+          accessibilityRole="button"
+          accessibilityLabel="Return to Best Practices"
+          style={styles.headerButton}
+        >
+          <Ionicons name="arrow-back" size={24} color={HEADER_TEXT_COLOR} />
+        </TouchableOpacity>
+      );
+    }
+
+    // Le altre gestioni rimangono invariate
+    if (routeName.startsWith('accessible-')) {
+      return (
+        <TouchableOpacity
+          onPress={() => {
+            router.replace('/components');
+            console.log("Navigating back to components");
+          }}
+          accessibilityRole="button"
+          accessibilityLabel="Return to Components"
+          style={styles.headerButton}
+        >
+          <Ionicons name="arrow-back" size={24} color={HEADER_TEXT_COLOR} />
+        </TouchableOpacity>
+      );
+    }
+
+    if (['semantics', 'guidelines', 'screen-reader', 'navigation', 'gestures'].includes(routeName)) {
+      return (
+        <TouchableOpacity
+          onPress={() => {
+            router.replace('/practices');
+            console.log("Navigating back to practices from direct child");
+          }}
+          accessibilityRole="button"
+          accessibilityLabel="Return to Best Practices"
+          style={styles.headerButton}
+        >
+          <Ionicons name="arrow-back" size={24} color={HEADER_TEXT_COLOR} />
+        </TouchableOpacity>
+      );
+    }
+
+    // Default back button
+    return (
+      <TouchableOpacity
+        onPress={() => navigation.goBack()}
+        accessibilityRole="button"
+        accessibilityLabel="Go back"
+        style={styles.headerButton}
+      >
+        <Ionicons name="arrow-back" size={24} color={HEADER_TEXT_COLOR} />
+      </TouchableOpacity>
+    );
+  };
 
    return {
      headerShown: true,

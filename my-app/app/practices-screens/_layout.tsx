@@ -17,7 +17,7 @@ export default function PracticesLayout() {
         BackHandler.addEventListener('hardwareBackPress', onBackPress);
         return () => BackHandler.removeEventListener('hardwareBackPress', onBackPress);
       }
-    }, [])
+    }, [router])
   );
 
   return (
