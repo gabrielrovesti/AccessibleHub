@@ -1,5 +1,5 @@
 import { Drawer } from 'expo-router/drawer';
-import { useRouter } from 'expo-router';
+import { useRouter, useSegments } from 'expo-router';
 import React, { useEffect } from 'react';
 import {
   View,
@@ -13,11 +13,10 @@ import { Ionicons } from '@expo/vector-icons';
 import { ThemeProvider, useTheme } from '../context/ThemeContext';
 
 /* --------------------------------------------
-   0. Constants
+   0. Constants & Maps
 -------------------------------------------- */
 const HEADER_TEXT_COLOR = '#FFFFFF';
 
-// Main routes in the drawer
 const MAIN_ROUTES = [
   'index',
   'components',
@@ -27,12 +26,16 @@ const MAIN_ROUTES = [
   'accessibility-instruction',
 ];
 
-/**
- * BREADCRUMB_MAP:
- *  Keys = the **last segment** (e.g. "guidelines", "accessible-button").
- *  Values = metadata: { parentRoute, parentLabel, title }
- */
-// Sostituisci la definizione di BREADCRUMB_MAP nel file _layout.tsx con questa versione ottimizzata
+const TITLE_MAP = {
+  index: 'Home',
+  components: 'Components',
+  practices: 'Best Practices',
+  tools: 'Mobile Accessibility Tools',
+  'frameworks-comparison': 'Framework Comparison',
+  'accessibility-instruction': 'Instruction & Community',
+  settings: 'Settings',
+};
+
 const BREADCRUMB_MAP = {
   // Components sub-screens
   'accessible-button': {
@@ -62,12 +65,12 @@ const BREADCRUMB_MAP = {
   },
 
   // Practices sub-screens
-  'semantics': {
+  semantics: {
     parentRoute: 'practices',
     parentLabel: 'Best Practices',
     title: 'Semantic Structure',
   },
-  'guidelines': {
+  guidelines: {
     parentRoute: 'practices',
     parentLabel: 'Best Practices',
     title: 'WCAG 2.2 Guidelines',
@@ -77,18 +80,18 @@ const BREADCRUMB_MAP = {
     parentLabel: 'Best Practices',
     title: 'Screen Reader Support',
   },
-  'navigation': {
+  navigation: {
     parentRoute: 'practices',
     parentLabel: 'Best Practices',
     title: 'Navigation & Focus',
   },
-  'gestures': {
+  gestures: {
     parentRoute: 'practices',
     parentLabel: 'Best Practices',
     title: 'Gesture Tutorial',
   },
 
-  // Alternative paths per gestire i percorsi completi (segmento iniziale/finale)
+  // Full-path keys (alternative)
   'accessible-components/accessible-button': {
     parentRoute: 'components',
     parentLabel: 'Components',
@@ -141,190 +144,65 @@ const BREADCRUMB_MAP = {
   },
 };
 
-/**
- * TITLE_MAP:
- *  For the main routes or single-route screens like "settings"
- */
-const TITLE_MAP = {
-  index: 'Home',
-  components: 'Components',
-  practices: 'Best Practices',
-  tools: 'Mobile Accessibility Tools',
-  'frameworks-comparison': 'Framework Comparison',
-  'accessibility-instruction': 'Instruction & Community',
-  settings: 'Settings',
-};
+/* --------------------------------------------
+   1. Header Title Function (using useSegments)
+-------------------------------------------- */
+// NOTA: Questa funzione è un "hook wrapper" – usa useSegments all'inizio
+function renderHeaderTitle(router) {
+  const segments = useSegments(); // Legge il percorso basato sulla struttura dei file
+  console.log("Current segments:", segments);
 
-
-function renderHeaderTitle(routeName, router) {
-  console.log("Rendering header title for route:", routeName);
-
-  // Gestione SPECIALE per practices-screens
-  if (routeName === 'practices-screens') {
+  // Se non abbiamo segmenti o solo uno, visualizza il titolo principale
+  if (!segments || segments.length <= 1) {
+    const main = segments && segments[0] ? segments[0] : 'index';
     return (
-      <View style={styles.breadcrumbContainer}>
-        <TouchableOpacity
-          onPress={() => router.replace('/practices')}
-          accessibilityRole="button"
-          accessibilityLabel="Go to Best Practices"
-        >
-          <Text style={[styles.breadcrumbText, { fontWeight: 'normal' }]}>
-            Best Practices
-          </Text>
-        </TouchableOpacity>
-
-        <Ionicons
-          name="chevron-forward"
-          size={16}
-          color={HEADER_TEXT_COLOR}
-          style={{ marginHorizontal: 4 }}
-        />
-
-        <Text
-          style={[styles.breadcrumbText, { fontWeight: 'bold' }]}
-          accessibilityLabel="Current screen: Best Practices"
-        >
-          Best Practices
-        </Text>
-      </View>
-    );
-  }
-
-  // Gestione SPECIALE per practices-screens/ sottopagine
-  if (routeName.startsWith('practices-screens/')) {
-    const segments = routeName.split('/');
-    const screenName = segments[segments.length - 1];
-    let title = screenName;
-
-    // Mappa dei titoli
-    const titleMap = {
-      'semantics': 'Semantic Structure',
-      'guidelines': 'WCAG 2.2 Guidelines',
-      'screen-reader': 'Screen Reader Support',
-      'navigation': 'Navigation & Focus',
-      'gestures': 'Gesture Tutorial'
-    };
-
-    if (titleMap[screenName]) {
-      title = titleMap[screenName];
-    }
-
-    return (
-      <View style={styles.breadcrumbContainer}>
-        <TouchableOpacity
-          onPress={() => router.replace('/practices')}
-          accessibilityRole="button"
-          accessibilityLabel="Go to Best Practices"
-        >
-          <Text style={[styles.breadcrumbText, { fontWeight: 'normal' }]}>
-            Best Practices
-          </Text>
-        </TouchableOpacity>
-
-        <Ionicons
-          name="chevron-forward"
-          size={16}
-          color={HEADER_TEXT_COLOR}
-          style={{ marginHorizontal: 4 }}
-        />
-
-        <Text
-          style={[styles.breadcrumbText, { fontWeight: 'bold' }]}
-          accessibilityLabel={`Current screen: ${title}`}
-        >
-          {title}
-        </Text>
-      </View>
-    );
-  }
-
-  // Il resto della logica rimane invariato
-  if (BREADCRUMB_MAP[routeName]) {
-    const bc = BREADCRUMB_MAP[routeName];
-    return (
-      <View style={styles.breadcrumbContainer}>
-        <TouchableOpacity
-          onPress={() => router.replace(`/${bc.parentRoute}`)}
-          accessibilityRole="button"
-          accessibilityLabel={`Go to ${bc.parentLabel}`}
-        >
-          <Text style={[styles.breadcrumbText, { fontWeight: 'normal' }]}>
-            {bc.parentLabel}
-          </Text>
-        </TouchableOpacity>
-
-        <Ionicons
-          name="chevron-forward"
-          size={16}
-          color={HEADER_TEXT_COLOR}
-          style={{ marginHorizontal: 4 }}
-        />
-
-        <Text
-          style={[styles.breadcrumbText, { fontWeight: 'bold' }]}
-          accessibilityLabel={`Current screen: ${bc.title}`}
-        >
-          {bc.title}
-        </Text>
-      </View>
-    );
-  }
-
-  // Check if it's a main route with a simple title
-  if (TITLE_MAP[routeName]) {
-    return (
-      <Text style={styles.mainTitle} accessibilityLabel={TITLE_MAP[routeName]}>
-        {TITLE_MAP[routeName]}
+      <Text style={styles.mainTitle} accessibilityLabel={TITLE_MAP[main] || main}>
+        {TITLE_MAP[main] || main}
       </Text>
     );
   }
 
-  // Try to parse the path segments
-  const segments = routeName.split('/');
-  const lastSegment = segments[segments.length - 1];
+  // Se abbiamo più segmenti, significa che siamo in un subscreen.
+  const parent = segments[0]; // ad esempio "components" o "practices"
+  const child = segments[segments.length - 1]; // ad esempio "accessible-button" o "guidelines"
+  const key = `${parent}/${child}`;
+  const mapping = BREADCRUMB_MAP[key] || BREADCRUMB_MAP[child] || {
+    parentRoute: parent,
+    parentLabel: TITLE_MAP[parent] || parent,
+    title: child,
+  };
 
-  // Check if last segment is in BREADCRUMB_MAP
-  const bc = BREADCRUMB_MAP[lastSegment];
-  if (bc) {
-    return (
-      <View style={styles.breadcrumbContainer}>
-        <TouchableOpacity
-          onPress={() => router.replace(`/${bc.parentRoute}`)}
-          accessibilityRole="button"
-          accessibilityLabel={`Go to ${bc.parentLabel}`}
-        >
-          <Text style={[styles.breadcrumbText, { fontWeight: 'normal' }]}>
-            {bc.parentLabel}
-          </Text>
-        </TouchableOpacity>
-
-        <Ionicons
-          name="chevron-forward"
-          size={16}
-          color={HEADER_TEXT_COLOR}
-          style={{ marginHorizontal: 4 }}
-        />
-
-        <Text
-          style={[styles.breadcrumbText, { fontWeight: 'bold' }]}
-          accessibilityLabel={`Current screen: ${bc.title}`}
-        >
-          {bc.title}
-        </Text>
-      </View>
-    );
-  }
-
-  // Fallback
   return (
-    <Text style={styles.mainTitle} accessibilityLabel={routeName}>
-      {lastSegment || routeName}
-    </Text>
+    <View style={styles.breadcrumbContainer}>
+      <TouchableOpacity
+        onPress={() => router.replace(`/${mapping.parentRoute}`)}
+        accessibilityRole="button"
+        accessibilityLabel={`Go to ${mapping.parentLabel}`}
+      >
+        <Text style={[styles.breadcrumbText, { fontWeight: 'normal' }]}>
+          {mapping.parentLabel}
+        </Text>
+      </TouchableOpacity>
+      <Ionicons
+        name="chevron-forward"
+        size={16}
+        color={HEADER_TEXT_COLOR}
+        style={{ marginHorizontal: 4 }}
+        importantForAccessibility="no"
+        accessibilityElementsHidden
+      />
+      <Text
+        style={[styles.breadcrumbText, { fontWeight: 'bold' }]}
+        accessibilityLabel={`Current screen: ${mapping.title}`}
+      >
+        {mapping.title}
+      </Text>
+    </View>
   );
 }
 
 /* --------------------------------------------
-   2. Custom Drawer Content
+   2. Custom Drawer Content (invariato)
 -------------------------------------------- */
 function CustomDrawerContent({ state, descriptors }) {
   const { colors, isDarkMode } = useTheme();
@@ -343,14 +221,11 @@ function CustomDrawerContent({ state, descriptors }) {
       accessibilityRole="menu"
       accessibilityLabel="Main navigation menu"
     >
-      {/* Drawer Header */}
       <View style={[drawerStyles.header, { backgroundColor: colors.primary }]}>
         <Ionicons name="rocket-outline" size={48} color="#FFFFFF" style={drawerStyles.appIcon} />
         <Text style={[drawerStyles.appName, { color: '#FFFFFF' }]}>AccessibleHub</Text>
         <Text style={[drawerStyles.version, { color: '#FFFFFF' }]}>Version 1.0.0</Text>
       </View>
-
-      {/* Drawer Items */}
       <View style={drawerStyles.drawerContent}>
         {state.routes
           .filter((route) => MAIN_ROUTES.includes(route.name))
@@ -358,7 +233,6 @@ function CustomDrawerContent({ state, descriptors }) {
             const isActive = state.index === index;
             const { drawerLabel, drawerIcon } = descriptors[route.key].options;
             const label = drawerLabel || route.name;
-
             return (
               <TouchableOpacity
                 key={route.key}
@@ -413,54 +287,6 @@ function CustomDrawerContent({ state, descriptors }) {
   );
 }
 
-const drawerStyles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  header: {
-    paddingVertical: 40,
-    paddingHorizontal: 16,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: 16,
-    borderBottomLeftRadius: 24,
-    borderBottomRightRadius: 24,
-  },
-  appIcon: {
-    marginBottom: 8,
-  },
-  appName: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 4,
-  },
-  version: {
-    fontSize: 12,
-  },
-  drawerContent: {
-    flex: 1,
-    padding: 16,
-  },
-  drawerItem: {
-    marginBottom: 12,
-    borderRadius: 8,
-    paddingVertical: 14,
-    paddingHorizontal: 18,
-    minHeight: 56,
-    borderWidth: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  drawerIcon: {
-    marginRight: 12,
-  },
-  drawerLabel: {
-    fontSize: 16,
-    marginLeft: 16,
-    flex: 1,
-  },
-});
-
 /* --------------------------------------------
    3. Drawer Navigator
 -------------------------------------------- */
@@ -468,209 +294,88 @@ function DrawerNavigator() {
   const router = useRouter();
   const { colors } = useTheme();
 
-const screenOptions = ({ navigation, route }) => {
-  // Funzione che determina il titolo corretto
- const getTitle = () => {
-     const routeName = route.name;
-     console.log("Current route name:", routeName);
+  const screenOptions = ({ navigation, route }) => {
+    return {
+      headerShown: true,
+      headerStyle: {
+        backgroundColor: colors.primary,
+        elevation: 0,
+        shadowOpacity: 0,
+      },
+      headerTintColor: HEADER_TEXT_COLOR,
+      headerTitle: () => renderHeaderTitle(router),
+      headerLeft: () => {
+        const routeName = route.name;
+        console.log("Left button for:", routeName);
 
-     // Titoli delle schermate principali
-     if (TITLE_MAP[routeName]) {
-       return (
-         <Text style={styles.mainTitle}>
-           {TITLE_MAP[routeName]}
-         </Text>
-       );
-     }
+        if (MAIN_ROUTES.includes(routeName)) {
+          return (
+            <TouchableOpacity
+              onPress={() => navigation.toggleDrawer()}
+              accessibilityRole="button"
+              accessibilityLabel="Toggle menu"
+              style={styles.headerButton}
+            >
+              <Ionicons name="menu-outline" size={24} color={HEADER_TEXT_COLOR} />
+            </TouchableOpacity>
+          );
+        }
 
-     // APPROCCIO DIRETTO: ogni schermata viene identificata esplicitamente
-     if (routeName === 'accessible-button') {
-       return createBreadcrumb('Components', 'Button');
-     }
-     if (routeName === 'accessible-form') {
-       return createBreadcrumb('Components', 'Form Controls');
-     }
-     if (routeName === 'accessible-media') {
-       return createBreadcrumb('Components', 'Media Content');
-     }
-     if (routeName === 'accessible-dialog') {
-       return createBreadcrumb('Components', 'Dialog');
-     }
-     if (routeName === 'accessible-advanced') {
-       return createBreadcrumb('Components', 'Advanced Components');
-     }
+        if (routeName === 'accessible-components' || routeName.startsWith('accessible-')) {
+          return (
+            <TouchableOpacity
+              onPress={() => {
+                console.log("Forcing navigation to components");
+                router.replace('/components');
+              }}
+              accessibilityRole="button"
+              accessibilityLabel="Return to Components"
+              style={styles.headerButton}
+            >
+              <Ionicons name="arrow-back" size={24} color={HEADER_TEXT_COLOR} />
+            </TouchableOpacity>
+          );
+        }
 
-     if (routeName === 'semantics') {
-       return createBreadcrumb('Best Practices', 'Semantic Structure');
-     }
-     if (routeName === 'guidelines') {
-       return createBreadcrumb('Best Practices', 'WCAG 2.2 Guidelines');
-     }
-     if (routeName === 'screen-reader') {
-       return createBreadcrumb('Best Practices', 'Screen Reader Support');
-     }
-     if (routeName === 'navigation') {
-       return createBreadcrumb('Best Practices', 'Navigation & Focus');
-     }
-     if (routeName === 'gestures') {
-       return createBreadcrumb('Best Practices', 'Gesture Tutorial');
-     }
+        if (routeName === 'practices-screens' || routeName.startsWith('practices-screens/')) {
+          return (
+            <TouchableOpacity
+              onPress={() => {
+                console.log("Forcing navigation to practices");
+                router.replace('/practices');
+              }}
+              accessibilityRole="button"
+              accessibilityLabel="Return to Best Practices"
+              style={styles.headerButton}
+            >
+              <Ionicons name="arrow-back" size={24} color={HEADER_TEXT_COLOR} />
+            </TouchableOpacity>
+          );
+        }
 
-     // Fallback: nome della route
-     return <Text style={styles.mainTitle}>{routeName}</Text>;
-   };
-
-   // Funzione helper per creare un breadcrumb
-   function createBreadcrumb(parent, current) {
-     const parentRoute = parent === 'Components' ? 'components' : 'practices';
-
-     return (
-       <View style={styles.breadcrumbContainer}>
-         <TouchableOpacity
-           onPress={() => router.push(`/${parentRoute}`)}
-           accessibilityRole="button"
-           accessibilityLabel={`Go to ${parent}`}
-         >
-           <Text style={[styles.breadcrumbText, { fontWeight: 'normal' }]}>
-             {parent}
-           </Text>
-         </TouchableOpacity>
-         <Ionicons
-           name="chevron-forward"
-           size={16}
-           color={HEADER_TEXT_COLOR}
-           style={{ marginHorizontal: 4 }}
-         />
-         <Text style={[styles.breadcrumbText, { fontWeight: 'bold' }]}>
-           {current}
-         </Text>
-       </View>
-     );
-   }
-
-   // Gestione unificata e semplificata dei pulsanti Back
-  // Modifica da applicare al file _layout.tsx principale
-
-  const getLeftButton = () => {
-    const routeName = route.name;
-    console.log("Left button for:", routeName);
-
-    // Per i percorsi principali -> menu hamburger
-    if (MAIN_ROUTES.includes(routeName)) {
-      return (
+        return (
+          <TouchableOpacity
+            onPress={() => navigation.goBack()}
+            accessibilityRole="button"
+            accessibilityLabel="Go back"
+            style={styles.headerButton}
+          >
+            <Ionicons name="arrow-back" size={24} color={HEADER_TEXT_COLOR} />
+          </TouchableOpacity>
+        );
+      },
+      headerRight: () => (
         <TouchableOpacity
-          onPress={() => navigation.toggleDrawer()}
+          onPress={() => router.push('/settings')}
           accessibilityRole="button"
-          accessibilityLabel="Toggle menu"
+          accessibilityLabel="Open Settings"
           style={styles.headerButton}
         >
-          <Ionicons name="menu-outline" size={24} color={HEADER_TEXT_COLOR} />
+          <Ionicons name="ellipsis-vertical" size={24} color={HEADER_TEXT_COLOR} />
         </TouchableOpacity>
-      );
-    }
-
-    // PUNTO CRITICO: Gestione specifica per practices-screens come route name
-    if (routeName === 'practices-screens') {
-      return (
-        <TouchableOpacity
-          onPress={() => {
-            router.replace('/practices');
-            console.log("Forcing navigation to practices from practices-screens");
-          }}
-          accessibilityRole="button"
-          accessibilityLabel="Return to Best Practices"
-          style={styles.headerButton}
-        >
-          <Ionicons name="arrow-back" size={24} color={HEADER_TEXT_COLOR} />
-        </TouchableOpacity>
-      );
-    }
-
-    // PUNTO CRITICO: Gestione sottopagine dentro practices-screens
-    if (routeName.includes('practices-screens/')) {
-      return (
-        <TouchableOpacity
-          onPress={() => {
-            router.replace('/practices');
-            console.log("Forcing navigation to practices from nested practices screen");
-          }}
-          accessibilityRole="button"
-          accessibilityLabel="Return to Best Practices"
-          style={styles.headerButton}
-        >
-          <Ionicons name="arrow-back" size={24} color={HEADER_TEXT_COLOR} />
-        </TouchableOpacity>
-      );
-    }
-
-    // Le altre gestioni rimangono invariate
-    if (routeName.startsWith('accessible-')) {
-      return (
-        <TouchableOpacity
-          onPress={() => {
-            router.replace('/components');
-            console.log("Navigating back to components");
-          }}
-          accessibilityRole="button"
-          accessibilityLabel="Return to Components"
-          style={styles.headerButton}
-        >
-          <Ionicons name="arrow-back" size={24} color={HEADER_TEXT_COLOR} />
-        </TouchableOpacity>
-      );
-    }
-
-    if (['semantics', 'guidelines', 'screen-reader', 'navigation', 'gestures'].includes(routeName)) {
-      return (
-        <TouchableOpacity
-          onPress={() => {
-            router.replace('/practices');
-            console.log("Navigating back to practices from direct child");
-          }}
-          accessibilityRole="button"
-          accessibilityLabel="Return to Best Practices"
-          style={styles.headerButton}
-        >
-          <Ionicons name="arrow-back" size={24} color={HEADER_TEXT_COLOR} />
-        </TouchableOpacity>
-      );
-    }
-
-    // Default back button
-    return (
-      <TouchableOpacity
-        onPress={() => navigation.goBack()}
-        accessibilityRole="button"
-        accessibilityLabel="Go back"
-        style={styles.headerButton}
-      >
-        <Ionicons name="arrow-back" size={24} color={HEADER_TEXT_COLOR} />
-      </TouchableOpacity>
-    );
+      ),
+    };
   };
-
-   return {
-     headerShown: true,
-     headerStyle: {
-       backgroundColor: colors.primary,
-       elevation: 0,
-       shadowOpacity: 0,
-     },
-     headerTintColor: HEADER_TEXT_COLOR,
-     headerTitle: getTitle,
-     headerLeft: getLeftButton,
-     headerRight: () => (
-       <TouchableOpacity
-         onPress={() => router.push('/settings')}
-         accessibilityRole="button"
-         accessibilityLabel="Open Settings"
-         style={styles.headerButton}
-       >
-         <Ionicons name="ellipsis-vertical" size={24} color={HEADER_TEXT_COLOR} />
-       </TouchableOpacity>
-     ),
-   };
- };
 
   return (
     <Drawer
@@ -731,7 +436,6 @@ const screenOptions = ({ navigation, route }) => {
           ),
         }}
       />
-      {/* 'settings' is not in the drawer */}
     </Drawer>
   );
 }
@@ -750,11 +454,7 @@ function AppWrapper({ children }) {
   }, []);
 
   return (
-    <View
-      style={styles.appContainer}
-      accessibilityRole="application"
-      accessibilityLabel="AccessibleHub application"
-    >
+    <View style={styles.appContainer} accessibilityRole="application" accessibilityLabel="AccessibleHub application">
       {children}
     </View>
   );
@@ -774,9 +474,7 @@ export default function AppLayout() {
    5. Styles
 -------------------------------------------- */
 const styles = StyleSheet.create({
-  appContainer: {
-    flex: 1,
-  },
+  appContainer: { flex: 1 },
   headerButton: {
     padding: 8,
     marginLeft: 8,
@@ -798,4 +496,33 @@ const styles = StyleSheet.create({
     color: HEADER_TEXT_COLOR,
     fontSize: 14,
   },
+});
+
+const drawerStyles = StyleSheet.create({
+  container: { flex: 1 },
+  header: {
+    paddingVertical: 40,
+    paddingHorizontal: 16,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 16,
+    borderBottomLeftRadius: 24,
+    borderBottomRightRadius: 24,
+  },
+  appIcon: { marginBottom: 8 },
+  appName: { fontSize: 24, fontWeight: 'bold', marginBottom: 4 },
+  version: { fontSize: 12 },
+  drawerContent: { flex: 1, padding: 16 },
+  drawerItem: {
+    marginBottom: 12,
+    borderRadius: 8,
+    paddingVertical: 14,
+    paddingHorizontal: 18,
+    minHeight: 56,
+    borderWidth: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  drawerIcon: { marginRight: 12 },
+  drawerLabel: { fontSize: 16, marginLeft: 16, flex: 1 },
 });
