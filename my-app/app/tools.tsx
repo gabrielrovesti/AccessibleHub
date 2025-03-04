@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -7,384 +7,381 @@ import {
   TouchableOpacity,
   Linking,
   AccessibilityInfo,
-  Platform
+  Platform,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useTheme } from '../context/ThemeContext';
 import { LinearGradient } from 'expo-linear-gradient';
 
-const TOOL_LINKS = {
-  'accessibility-inspector': 'https://docs.expo.dev/debugging/tools/#accessibility-inspector',
-  'contrast-analyzer': 'https://developer.android.com/studio/debug/dev-options#drawing',
-  'talkback': 'https://support.google.com/accessibility/android/answer/6283677',
-  'voiceover': 'https://support.apple.com/guide/iphone/turn-on-and-practice-voiceover-iph3e2e415f/ios',
-  'checklist': 'https://developer.android.com/guide/topics/ui/accessibility/testing'
+/**
+ * Map of official documentation links for each tool.
+ */
+const TOOL_LINKS: Record<string, string> = {
+  talkback: 'https://support.google.com/accessibility/android/answer/6283677',
+  voiceover: 'https://support.apple.com/guide/iphone/turn-on-and-practice-voiceover-iph3e2e415f/ios',
+  inspector: 'https://docs.expo.dev/debugging/tools/#accessibility-inspector',
+  contrast: 'https://webaim.org/resources/contrastchecker/',
+  testing: 'https://developer.android.com/guide/topics/ui/accessibility/testing',
+  scanner: 'https://support.google.com/accessibility/android/answer/7101858',
+  linter: 'https://github.com/microsoft/accessibility-insights-web', // example link
 };
 
+/**
+ * Data for each tool, enriched with a brief "Practical Usage" explanation.
+ */
+const TOOLS_DATA = [
+  {
+    id: 'talkback',
+    section: 'Screen Readers',
+    title: 'TalkBack (Android)',
+    description: "Native Android screen reader. Essential gestures:",
+    icon: 'phone-portrait-outline',
+    features: [
+      'Single tap: Select an element',
+      'Double tap: Activate selected element',
+      'Swipe right/left: Navigate between elements',
+    ],
+    practicalUsage:
+      "TalkBack allows you to test navigation and interactions for users with visual impairments, ensuring every component has clear labels and hints.",
+    link: TOOL_LINKS.talkback,
+    badge: 'Built-in',
+  },
+  {
+    id: 'voiceover',
+    section: 'Screen Readers',
+    title: 'VoiceOver (iOS)',
+    description: "Native iOS screen reader. Key gestures:",
+    icon: 'logo-apple',
+    features: [
+      'Single tap: Select and read aloud',
+      'Double tap: Activate an element',
+      'Three-finger swipe: Scroll content',
+    ],
+    practicalUsage:
+      "VoiceOver helps verify the accessibility of your interface for blind users, ensuring a logical and well-structured navigation experience.",
+    link: TOOL_LINKS.voiceover,
+    badge: 'Built-in',
+  },
+  {
+    id: 'inspector',
+    section: 'Development Tools',
+    title: 'Accessibility Inspector',
+    description: 'Built-in tool for inspecting accessibility properties:',
+    icon: 'code-working-outline',
+    features: [
+      'Check labels and hints',
+      'Review navigation order',
+      'Test screen reader announcements',
+    ],
+    practicalUsage:
+      "The Accessibility Inspector assists in identifying errors and refining component hierarchies, thereby improving the semantic structure of your app.",
+    link: TOOL_LINKS.inspector,
+  },
+  {
+    id: 'contrast',
+    section: 'Development Tools',
+    title: 'Contrast Analyzer',
+    description: 'Tool to verify color contrast ratios according to WCAG guidelines:',
+    icon: 'color-palette-outline',
+    features: [
+      'Assess text contrast',
+      'Verify UI component contrast',
+      'Support for WCAG 2.2 standards',
+    ],
+    practicalUsage:
+      "The Contrast Analyzer is essential for ensuring text readability, helping you choose color combinations that meet standards for users with low vision.",
+    link: TOOL_LINKS.contrast,
+  },
+  {
+    id: 'linter',
+    section: 'Development Tools',
+    title: 'Accessibility Linter',
+    description: 'Static analysis tool to detect accessibility issues in code:',
+    icon: 'bug-outline',
+    features: [
+      'Detect missing accessibility labels',
+      'Highlight potential navigation order issues',
+      'Ensure adherence to WCAG guidelines',
+    ],
+    practicalUsage:
+      "Integrate an accessibility linter into your workflow to catch issues early and maintain high-quality, accessible code.",
+    link: TOOL_LINKS.linter,
+  },
+  {
+    id: 'testing',
+    section: 'Testing Checklist',
+    title: 'Automated Testing',
+    description: 'Automated checks for accessibility:',
+    icon: 'checkbox-outline',
+    features: [
+      'Run accessibility linters',
+      'Verify component properties and state',
+      'Check navigation order',
+      'Test color contrast',
+    ],
+    practicalUsage:
+      "Automated testing ensures that code changes do not compromise accessibility, automating repetitive checks and reducing the risk of issues.",
+    link: TOOL_LINKS.testing,
+  },
+  {
+    id: 'scanner',
+    section: 'Testing Checklist',
+    title: 'Accessibility Scanner (Android)',
+    description: 'An app for scanning accessibility issues on Android devices:',
+    icon: 'search-outline',
+    features: [
+      'Identify potential accessibility improvements',
+      'Provide recommendations based on WCAG',
+      'Easy to use on any Android device',
+    ],
+    practicalUsage:
+      "Use Accessibility Scanner to run quick tests on your Android builds, ensuring that all UI components meet accessibility standards and receive actionable recommendations.",
+    link: TOOL_LINKS.scanner,
+  },
+];
+
+/**
+ * Mobile Accessibility Tools Screen with card-based layout and practical usage details.
+ */
 export default function TestingToolsScreen() {
   const { colors, textSizes, isDarkMode } = useTheme();
+  const [expanded, setExpanded] = useState<string | null>(null);
 
-  /*
-   * 1) Gradient background
-   *    Light mode: slightly darker gray → background
-   *    Dark mode: background → #2c2c2e
-   */
   const gradientColors = isDarkMode
     ? [colors.background, '#2c2c2e']
     : ['#e2e2e2', colors.background];
 
-  /*
-   * 2) Tools data
-   */
-  const tools = [
-    {
-      id: 'talkback',
-      section: 'Screen Readers',
-      title: 'TalkBack (Android)',
-      description: "Android's built-in screen reader. Essential gestures:",
-      icon: 'phone-portrait-outline',
-      iconBg: '#E8F1FF',
-      iconColor: '#0055CC',
-      features: [
-        'Single tap: Select item',
-        'Double tap: Activate selected item',
-        'Swipe right/left: Next/previous item'
-      ],
-      link: true,
-      badge: 'Built-in'
-    },
-    {
-      id: 'voiceover',
-      section: 'Screen Readers',
-      title: 'VoiceOver (iOS)',
-      description: "iOS's integrated screen reader. Key gestures:",
-      icon: 'logo-apple',
-      iconBg: '#F0F0F0',
-      iconColor: '#333',
-      features: [
-        'Single tap: Select and speak',
-        'Double tap: Activate item',
-        'Three finger swipe: Scroll'
-      ],
-      link: true,
-      badge: 'Built-in'
-    },
-    {
-      id: 'accessibility-inspector',
-      section: 'Development Tools',
-      title: 'Accessibility Inspector',
-      description: 'Built-in tool to inspect accessibility properties:',
-      icon: 'code-working-outline',
-      iconBg: '#FFF4E6',
-      iconColor: '#FF8C00',
-      features: [
-        'Verify accessibility labels and hints',
-        'Check navigation order',
-        'Test screen reader announcements'
-      ],
-      link: true
-    },
-    {
-      id: 'contrast-analyzer',
-      section: 'Development Tools',
-      title: 'Contrast Analyzer',
-      description: 'Verify color contrast ratios for WCAG guidelines:',
-      icon: 'color-palette-outline',
-      iconBg: '#E6F4FF',
-      iconColor: '#0066CC',
-      features: [
-        'Check text contrast ratios',
-        'Verify UI component contrast',
-        'Support for WCAG 2.2 standards'
-      ],
-      link: true
-    },
-    {
-      id: 'checklist',
-      section: 'Testing Checklist',
-      title: 'Automated Testing',
-      icon: 'checkbox-outline',
-      iconBg: '#E8FFE6',
-      iconColor: '#28A745',
-      description: 'Essential checks for accessibility testing:',
-      features: [
-        'Run accessibility linter',
-        'Verify accessibility props',
-        'Check navigation order',
-        'Test color contrast'
-      ],
-      link: true
-    }
-  ];
-
-  /*
-   * 3) Attempt to open external link
-   */
-  const handleToolPress = async (toolId: string, toolName: string) => {
-    const url = TOOL_LINKS[toolId];
-    if (url && (await Linking.canOpenURL(url))) {
-      try {
-        await Linking.openURL(url);
-        AccessibilityInfo.announceForAccessibility(`Opening documentation for ${toolName}`);
-      } catch (error) {
-        AccessibilityInfo.announceForAccessibility('Failed to open documentation');
-      }
-    }
-  };
-
-  /*
-   * 4) Group tools by their "section"
-   */
-  const groupedTools = tools.reduce((acc, tool) => {
+  // Group tools by their section (e.g., Screen Readers, Development Tools, Testing Checklist)
+  const groupedTools = TOOLS_DATA.reduce((acc, tool) => {
     if (!acc[tool.section]) {
       acc[tool.section] = [];
     }
     acc[tool.section].push(tool);
     return acc;
-  }, {} as Record<string, typeof tools>);
+  }, {} as Record<string, typeof TOOLS_DATA>);
 
-  /*
-   * 5) Themed + local styles
+  /**
+   * Handle opening the official documentation link.
    */
-  const themedStyles = {
-    container: {
-      flex: 1,
-    },
-    /* Hero card for the screen title/description */
-    heroCard: {
-      backgroundColor: colors.surface,
-      marginHorizontal: 16,
-      marginTop: 16,
-      paddingVertical: 24,
-      paddingHorizontal: 16,
-      borderRadius: 16,
-      shadowColor: '#000',
-      shadowOffset: { width: 0, height: 4 },
-      shadowOpacity: isDarkMode ? 0.3 : 0.15,
-      shadowRadius: 6,
-      elevation: 4,
-      borderWidth: isDarkMode ? 1 : 0,
-      borderColor: isDarkMode ? colors.border : 'transparent',
-    },
-    heroTitle: {
-      color: colors.text,
-      fontSize: textSizes.xlarge,
-      fontWeight: 'bold',
-      marginBottom: 8,
-    },
-    heroSubtitle: {
-      color: colors.textSecondary,
-      fontSize: textSizes.medium,
-      lineHeight: 24,
-    },
-    section: {
-      padding: 16,
-    },
-    sectionTitle: {
-      color: colors.text,
-      fontSize: textSizes.large,
-      fontWeight: '600',
-      marginBottom: 16,
-    },
-    /* Tools card */
-    toolCard: {
-      backgroundColor: colors.surface,
-      borderRadius: 16,
-      padding: 16,
-      marginBottom: 16,
-      shadowColor: '#000',
-      shadowOffset: { width: 0, height: 3 },
-      shadowOpacity: isDarkMode ? 0.3 : 0.1,
-      shadowRadius: 4,
-      elevation: 2,
-      minHeight: 44,
-      borderWidth: isDarkMode ? 1 : 0,
-      borderColor: isDarkMode ? colors.border : 'transparent',
-    },
-    interactiveCard: {
-      ...Platform.select({
-        ios: {
-          shadowColor: '#000',
-          shadowOffset: { width: 0, height: 2 },
-          shadowOpacity: 0.1,
-          shadowRadius: 4,
-        },
-        android: {
-          elevation: 4,
-        },
-      }),
-    },
-    toolHeader: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      marginBottom: 12,
-    },
-    iconContainer: {
-      width: 44,
-      height: 44,
-      borderRadius: 12,
-      alignItems: 'center',
-      justifyContent: 'center',
-      marginRight: 12,
-    },
-    titleContainer: {
-      flex: 1,
-      flexDirection: 'row',
-      alignItems: 'center',
-      gap: 8,
-    },
-    toolTitle: {
-      fontSize: textSizes.large,
-      fontWeight: '600',
-      flexShrink: 1,
-      color: colors.text,
-    },
-    badge: {
-      paddingHorizontal: 8,
-      paddingVertical: 4,
-      borderRadius: 12,
-      backgroundColor: isDarkMode ? colors.surface : '#E8F1FF',
-    },
-    badgeText: {
-      fontSize: textSizes.small,
-      fontWeight: '500',
-      color: isDarkMode ? colors.primary : '#0055CC',
-    },
-    linkIcon: {
-      marginLeft: 8,
-    },
-    toolDescription: {
-      fontSize: textSizes.small + 1,
-      lineHeight: 20,
-      marginBottom: 12,
-      color: colors.textSecondary,
-    },
-    featureList: {
-      gap: 8,
-    },
-    featureItem: {
-      fontSize: textSizes.small + 1,
-      lineHeight: 20,
-      paddingLeft: 8,
-      color: colors.textSecondary,
-    },
+  const handleOpenLink = async (toolId: string, toolTitle: string) => {
+    const url = TOOL_LINKS[toolId];
+    if (url && (await Linking.canOpenURL(url))) {
+      try {
+        await Linking.openURL(url);
+        AccessibilityInfo.announceForAccessibility(`Opening documentation for ${toolTitle}`);
+      } catch {
+        AccessibilityInfo.announceForAccessibility('Failed to open documentation');
+      }
+    }
   };
 
-  /*
-   * 6) Render a single tool card
+  /**
+   * Toggle the expansion state of a card.
+   */
+  const toggleExpand = (toolId: string) => {
+    setExpanded((prev) => (prev === toolId ? null : toolId));
+  };
+
+  /**
+   * Render a single tool card.
    */
   const renderToolCard = (tool: any) => {
-    const CardComponent = tool.link ? TouchableOpacity : View;
-    const cardProps = tool.link
-      ? {
-          onPress: () => handleToolPress(tool.id, tool.title),
-          accessibilityRole: 'button' as const,
-          accessibilityLabel: `${tool.title}. ${tool.description}`,
-          accessibilityHint: 'Double tap to open documentation',
-          style: [
-            themedStyles.toolCard,
-            tool.link && themedStyles.interactiveCard,
-          ],
-        }
-      : {
-          accessibilityRole: 'text' as const,
-          style: [themedStyles.toolCard],
-        };
+    const isOpen = expanded === tool.id;
 
     return (
-      <CardComponent key={tool.id} {...cardProps}>
-        {/* Header with icon + title + optional badge + link icon */}
-        <View style={themedStyles.toolHeader}>
-          <View
-            style={[
-              themedStyles.iconContainer,
-              { backgroundColor: tool.iconBg },
-            ]}
-            importantForAccessibility="no"
-          >
-            <Ionicons
-              name={tool.icon}
-              size={24}
-              color={tool.iconColor}
-              accessibilityElementsHidden
-            />
+      <View
+        key={tool.id}
+        style={[
+          styles.toolCard,
+          {
+            backgroundColor: colors.surface,
+            borderColor: isDarkMode ? colors.border : 'transparent',
+            shadowColor: '#000',
+          },
+        ]}
+        accessibilityRole="button"
+        accessibilityLabel={`${tool.title}. Double tap to ${isOpen ? 'collapse' : 'expand'} details and practical usage.`}
+      >
+        <TouchableOpacity onPress={() => toggleExpand(tool.id)} style={styles.cardHeader}>
+          <View style={[styles.iconContainer, { backgroundColor: isDarkMode ? '#333' : '#f0f0f0' }]} importantForAccessibility="no">
+            <Ionicons name={tool.icon} size={24} color={colors.primary} accessibilityElementsHidden />
           </View>
+          <Text style={[styles.cardTitle, { color: colors.text, fontSize: textSizes.medium }]}>{tool.title}</Text>
+          {tool.badge && (
+            <View style={styles.badge} importantForAccessibility="no">
+              <Text style={styles.badgeText}>{tool.badge}</Text>
+            </View>
+          )}
+          <Ionicons name={isOpen ? 'chevron-up' : 'chevron-down'} size={20} color={colors.textSecondary} style={{ marginLeft: 'auto' }} accessibilityElementsHidden />
+        </TouchableOpacity>
 
-          <View style={themedStyles.titleContainer}>
-            <Text style={themedStyles.toolTitle}>{tool.title}</Text>
-            {tool.badge && (
-              <View style={themedStyles.badge} importantForAccessibility="no">
-                <Text style={themedStyles.badgeText}>{tool.badge}</Text>
-              </View>
+        {isOpen && (
+          <View style={styles.cardBody}>
+            <Text style={[styles.toolDescription, { color: colors.textSecondary, fontSize: textSizes.small + 1 }]}>{tool.description}</Text>
+            <View role="list">
+              {tool.features.map((feature: string, idx: number) => (
+                <Text key={idx} style={[styles.featureItem, { color: colors.textSecondary, fontSize: textSizes.small + 1 }]} role="listitem">
+                  • {feature}
+                </Text>
+              ))}
+            </View>
+            {/* Practical Usage Section */}
+            <View style={styles.practicalSection}>
+              <Text style={[styles.practicalHeader, { color: colors.primary, fontSize: textSizes.small + 1 }]}>
+                Practical Usage:
+              </Text>
+              <Text style={[styles.practicalUsage, { color: colors.textSecondary, fontSize: textSizes.small }]}>
+                {tool.practicalUsage}
+              </Text>
+            </View>
+            {tool.link && (
+              <TouchableOpacity
+                onPress={() => handleOpenLink(tool.id, tool.title)}
+                style={styles.docLink}
+                accessibilityRole="link"
+                accessibilityLabel={`Open official documentation for ${tool.title}`}
+                accessibilityHint="Opens browser"
+              >
+                <Ionicons name="open-outline" size={18} color={colors.primary} style={{ marginRight: 4 }} accessibilityElementsHidden />
+                <Text style={{ color: colors.primary, fontWeight: '600' }}>Documentation</Text>
+              </TouchableOpacity>
             )}
           </View>
-
-          {tool.link && (
-            <Ionicons
-              name="open-outline"
-              size={20}
-              color={colors.primary}
-              style={themedStyles.linkIcon}
-              accessibilityElementsHidden
-            />
-          )}
-        </View>
-
-        {/* Description */}
-        <Text style={themedStyles.toolDescription}>{tool.description}</Text>
-
-        {/* Features */}
-        <View style={themedStyles.featureList}>
-          {tool.features.map((feature: string, index: number) => (
-            <Text key={index} style={themedStyles.featureItem}>
-              • {feature}
-            </Text>
-          ))}
-        </View>
-      </CardComponent>
+        )}
+      </View>
     );
   };
 
-  /*
-   * 7) Render each section (e.g., "Screen Readers", "Development Tools")
+  /**
+   * Render each section (e.g., Screen Readers, Development Tools, Testing Checklist).
    */
-  const renderSection = (sectionTitle: string, sectionTools: any[]) => (
-    <View key={sectionTitle} style={themedStyles.section}>
-      <Text style={themedStyles.sectionTitle} accessibilityRole="header">
-        {sectionTitle}
-      </Text>
-      {sectionTools.map((tool) => renderToolCard(tool))}
-    </View>
-  );
+  const renderSection = (sectionTitle: string, toolsList: any[]) => {
+    return (
+      <View key={sectionTitle} style={styles.section}>
+        <Text style={[styles.sectionTitle, { color: colors.text, fontSize: textSizes.large }]} accessibilityRole="header">
+          {sectionTitle}
+        </Text>
+        <View role="list">
+          {toolsList.map((tool) => renderToolCard(tool))}
+        </View>
+      </View>
+    );
+  };
 
-  /*
-   * 8) Render screen
-   */
   return (
-    <LinearGradient
-      colors={gradientColors}
-      style={themedStyles.container}
-    >
-      <ScrollView
-        contentContainerStyle={{ paddingBottom: 24 }}
-        accessibilityRole="scrollview"
-        accessibilityLabel="Testing Tools Screen"
-      >
-        {/* HERO CARD */}
-        <View style={themedStyles.heroCard}>
-          <Text style={themedStyles.heroTitle} accessibilityRole="header">
-            Testing Tools
+    <LinearGradient colors={gradientColors} style={{ flex: 1 }}>
+      <ScrollView contentContainerStyle={styles.scrollContainer} accessibilityRole="scrollview" accessibilityLabel="Mobile Accessibility Tools Screen">
+        {/* Introductory Hero Card */}
+        <View style={[styles.heroCard, { backgroundColor: colors.surface, borderColor: isDarkMode ? colors.border : 'transparent', shadowColor: '#000' }]}>
+          <Text style={[styles.heroTitle, { color: colors.text, fontSize: textSizes.xlarge }]} accessibilityRole="header">
+            Mobile Accessibility Tools
           </Text>
-          <Text style={themedStyles.heroSubtitle}>
-            Essential tools for testing accessibility in your mobile applications
+          <Text style={[styles.heroSubtitle, { color: colors.textSecondary, fontSize: textSizes.medium }]}>
+            Explore essential tools for testing and improving the accessibility of your mobile apps.
           </Text>
         </View>
 
-        {/* Sections (Screen Readers, Development Tools, Testing Checklist, etc.) */}
-        {Object.entries(groupedTools).map(([section, sectionTools]) =>
-          renderSection(section, sectionTools)
-        )}
+        {/* Render grouped sections */}
+        {Object.entries(groupedTools).map(([section, items]) => renderSection(section, items))}
       </ScrollView>
     </LinearGradient>
   );
 }
+
+const styles = StyleSheet.create({
+  scrollContainer: {
+    paddingBottom: 24,
+    paddingHorizontal: 16,
+  },
+  heroCard: {
+    marginVertical: 16,
+    padding: 16,
+    borderRadius: 12,
+    borderWidth: 1,
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 2,
+  },
+  heroTitle: {
+    fontWeight: 'bold',
+    marginBottom: 8,
+  },
+  heroSubtitle: {
+    lineHeight: 22,
+  },
+  section: {
+    marginBottom: 24,
+  },
+  sectionTitle: {
+    fontWeight: '600',
+    marginBottom: 12,
+  },
+  toolCard: {
+    borderWidth: 1,
+    borderRadius: 12,
+    marginBottom: 12,
+    padding: 8,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.06,
+    shadowRadius: 3,
+    elevation: 1,
+  },
+  cardHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  iconContainer: {
+    width: 40,
+    height: 40,
+    borderRadius: 8,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 12,
+  },
+  cardTitle: {
+    fontWeight: '600',
+    flexShrink: 1,
+  },
+  badge: {
+    marginLeft: 8,
+    backgroundColor: '#E8F1FF',
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+    borderRadius: 10,
+  },
+  badgeText: {
+    fontSize: 12,
+    color: '#0055CC',
+    fontWeight: '500',
+  },
+  cardBody: {
+    marginTop: 8,
+    paddingLeft: 52,
+  },
+  toolDescription: {
+    marginBottom: 8,
+  },
+  featureItem: {
+    marginBottom: 4,
+    paddingLeft: 8,
+  },
+  docLink: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 8,
+  },
+  practicalSection: {
+    marginTop: 12,
+    padding: 8,
+    backgroundColor: '#F9F9F9',
+    borderRadius: 8,
+  },
+  practicalHeader: {
+    fontWeight: 'bold',
+    marginBottom: 4,
+  },
+  practicalUsage: {
+    lineHeight: 20,
+  },
+});

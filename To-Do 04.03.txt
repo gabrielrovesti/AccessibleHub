@@ -10,14 +10,18 @@ Invece per la parte nuova (ovvero cosa succede quando si copia del codice), i co
 
 Non riesco a modificare il valore dello slider con lo screenreader, e allo stesso modo nel tutorial delle gesture su doubletap e long press non succede nulla
 
+ 
+
 Ho anche sentito Dal Maso, e di fatto mi dice che le gesture che usano sono quelle che hai trattato, ce ne sono altre, ma sono comandi utili ma non indispensabili, tipo il doppio tap con 2 dita, tap con 3 o 4 dita, ma dice che sempre di tap parliamo. Sono comunque gesture per comandi particolari, quindi da non usare nelle app per non andare in sovrapposizione, quindi direi che ci siamo.
+
+ 
 
 Invece in generale, ho le seguenti domande:
 
     I valori in “the ultimate…” in home, sono a caso o hanno una giustificazione?
     C’è qualche problema di indentazione nel codice che riporti 
     Sulla barra blu, mi chiedo se non aiuterebbe mettere un titolo che abbia una sorta di funzione di breadcrumb. Questo non serve a chi non ci vede, ma a chi ci vede, per orientarsi ✔️
-    hai provato i tool di testing che suggerisci? (da inserire in tesi - buono il codice) ✔️
+    hai provato i tool di testing che suggerisci? (da inserire in tesi)
     Toglierei Ionic dal framework comparison. ✔️
     I numeri che metti ora sono ancora casuali?
 

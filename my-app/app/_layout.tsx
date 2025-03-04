@@ -325,8 +325,10 @@ function CustomDrawerContent({ state, descriptors }) {
    3. Drawer Navigator
 -------------------------------------------- */
 function DrawerNavigator() {
-  const router = useRouter();
+ const router = useRouter();
   const { colors } = useTheme();
+  const segments = useSegments(); // Hook at top level
+  const currentRoute = segments && segments.length > 0 ? segments[0] : '';
 
   const screenOptions = ({ navigation, route }) => {
     return {
@@ -340,9 +342,10 @@ function DrawerNavigator() {
       headerTitle: () => renderHeaderTitle(router),
       headerLeft: () => {
         const routeName = route.name;
-        console.log("Left button for:", routeName);
+        console.log('Left button for:', routeName);
 
         if (MAIN_ROUTES.includes(routeName)) {
+          // Top-level route → open drawer
           return (
             <TouchableOpacity
               onPress={() => navigation.toggleDrawer()}
@@ -355,11 +358,12 @@ function DrawerNavigator() {
           );
         }
 
+        // Various conditions for "accessible-components", "practices-screens", etc.
         if (routeName === 'accessible-components' || routeName.startsWith('accessible-')) {
           return (
             <TouchableOpacity
               onPress={() => {
-                console.log("Forcing navigation to components");
+                console.log('Forcing navigation to components');
                 router.replace('/components');
               }}
               accessibilityRole="button"
@@ -375,7 +379,7 @@ function DrawerNavigator() {
           return (
             <TouchableOpacity
               onPress={() => {
-                console.log("Forcing navigation to practices");
+                console.log('Forcing navigation to practices');
                 router.replace('/practices');
               }}
               accessibilityRole="button"
@@ -387,6 +391,28 @@ function DrawerNavigator() {
           );
         }
 
+        // For settings with param "prev"
+        if (routeName === 'settings') {
+          const prevRoute = route.params?.prev;
+          return (
+            <TouchableOpacity
+              onPress={() => {
+                if (prevRoute) {
+                  router.replace(`/${prevRoute}`);
+                } else {
+                  router.back();
+                }
+              }}
+              accessibilityRole="button"
+              accessibilityLabel="Go back"
+              style={styles.headerButton}
+            >
+              <Ionicons name="arrow-back" size={24} color={HEADER_TEXT_COLOR} />
+            </TouchableOpacity>
+          );
+        }
+
+        // Default goBack
         return (
           <TouchableOpacity
             onPress={() => navigation.goBack()}
@@ -400,7 +426,13 @@ function DrawerNavigator() {
       },
       headerRight: () => (
         <TouchableOpacity
-          onPress={() => router.push('/settings')}
+          onPress={() => {
+            // Pass currentRoute as 'prev' param
+            router.push({
+              pathname: '/settings',
+              params: { prev: currentRoute },
+            });
+          }}
           accessibilityRole="button"
           accessibilityLabel="Open Settings"
           style={styles.headerButton}
