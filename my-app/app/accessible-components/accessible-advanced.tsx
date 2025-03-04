@@ -1,15 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  Clipboard,
-  Modal,
-  AccessibilityInfo,
-  Animated,
-  ScrollView,
-} from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Clipboard, Modal, AccessibilityInfo, Animated, ScrollView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import Slider from '@react-native-community/slider';
@@ -75,14 +65,13 @@ function CodeSnippet({ snippet, label }) {
             name={copied ? 'checkmark' : 'copy-outline'}
             size={20}
             color={copied ? '#28A745' : colors.textSecondary}
-            accessibilityElementsHidden
           />
           <Text style={[styles.copyText, copied && styles.copiedText]}>
             {copied ? 'Copied!' : 'Copy'}
           </Text>
         </TouchableOpacity>
       </View>
-      <Text style={styles.codeText} accessibilityElementsHidden>
+      <Text style={styles.codeText}>
         {snippet}
       </Text>
     </View>
@@ -268,7 +257,10 @@ export default function AccessibleAdvancedScreen() {
         <View style={themedStyles.section}>
           <View style={themedStyles.demoCard}>
             <Text style={themedStyles.sectionTitle}>Tabs &amp; Carousels</Text>
-            <View style={{ flexDirection: 'row', marginBottom: 8 }}>
+            <View style={{ flexDirection: 'row', marginBottom: 8 }}
+              accessibilityRole="tablist"
+              accessibilityLabel="Navigation tabs"
+            >
               {tabs.map((tab, idx) => {
                 const isSelected = selectedTab === idx;
                 return (
@@ -310,7 +302,16 @@ export default function AccessibleAdvancedScreen() {
           <View style={themedStyles.demoCard}>
             <Text style={themedStyles.sectionTitle}>Progress Indicators</Text>
             <Text style={{ color: colors.text }}>Current progress: {progress}%</Text>
-            <View style={themedStyles.progressBarContainer}>
+            <View
+              style={themedStyles.progressBarContainer}
+              accessibilityRole="progressbar"
+              accessibilityLabel="Progress indicator"
+              accessibilityValue={{
+                min: 0,
+                max: 100,
+                now: progress
+              }}
+            >
               <Animated.View
                 style={[
                   themedStyles.progressFill,
@@ -321,6 +322,7 @@ export default function AccessibleAdvancedScreen() {
                     }),
                   },
                 ]}
+                importantForAccessibility="no"
               />
             </View>
             <View style={{ flexDirection: 'row', gap: 8, marginTop: 12 }}>
@@ -374,7 +376,11 @@ export default function AccessibleAdvancedScreen() {
               </Text>
             </TouchableOpacity>
             {showToast && (
-              <View style={{ marginTop: 8, padding: 8, borderRadius: 8, backgroundColor: '#f33' }}>
+              <View
+                style={{ marginTop: 8, padding: 8, borderRadius: 8, backgroundColor: '#f33' }}
+                accessibilityRole="alert"
+                accessibilityLiveRegion="assertive"
+              >
                 <Text style={{ color: '#fff', fontWeight: '600' }}>Something happened!</Text>
               </View>
             )}
@@ -394,18 +400,24 @@ export default function AccessibleAdvancedScreen() {
               maximumValue={100}
               step={1}
               value={sliderValue}
+              // Questa è la parte che causa il problema - modifichiamo:
               onValueChange={(val) => {
+                // Aggiorna il valore visivamente ma non annunciare durante il trascinamento
                 setSliderValue(val);
-                AccessibilityInfo.announceForAccessibility(`Value now ${Math.round(val)}`);
               }}
+              // Annuncia solo quando l'utente ha finito di trascinare
+              onSlidingComplete={(val) => {
+                AccessibilityInfo.announceForAccessibility(`Value set to ${Math.round(val)}`);
+              }}
+              accessibilityRole="adjustable"
               accessibilityLabel="Volume level"
               accessibilityValue={{
                 min: 0,
                 max: 100,
                 now: sliderValue,
               }}
-              accessibilityHint="Swipe up or down to adjust volume"
-              style={{ width: '100%' }}
+              accessibilityHint="Adjust value using swipe gestures when focused"
+              style={{ width: '100%', height: 40 }}
               minimumTrackTintColor="#2196F3"
               maximumTrackTintColor="#ccc"
             />
@@ -425,7 +437,6 @@ export default function AccessibleAdvancedScreen() {
                     size={24}
                     // If you want always dark, replace below with color="#000"
                     color={isDarkMode ? '#1a75ff' : colors.primary}
-                    accessibilityElementsHidden
                   />
                 </View>
                 <View style={themedStyles.featureContent}>
@@ -453,7 +464,7 @@ const tabsSnippet = `// Minimal Tabs
 const [selectedTab, setSelectedTab] = useState(0);
 const tabs = ['Tab One', 'Tab Two', 'Tab Three'];
 
-<View style={{ flexDirection: 'row' }}>
+<View style={{ flexDirection: 'row' }} accessibilityRole="tablist">
   {tabs.map((tab, idx) => (
     <TouchableOpacity
       key={idx}
@@ -508,7 +519,8 @@ function showToastMessage() {
   </View>
 )}`;
 
-const sliderSnippet = `// Minimal slider example using @react-native-community/slider
+const sliderSnippet = `
+// Minimal slider
 import Slider from '@react-native-community/slider';
 
 <Slider
@@ -520,9 +532,10 @@ import Slider from '@react-native-community/slider';
     AccessibilityInfo.announceForAccessibility(\`Slider value set to \${Math.round(val)}\`);
   }}
   style={{ width: '100%' }}
-  minimumTrackTintColor={colors.primary}
-  maximumTrackTintColor="#ccc"
+  accessibilityRole="adjustable"
+  accessibilityHint="Adjust value using swipe gestures when focused"
 />
+
 <Text>Current slider value: {sliderValue}</Text>`;
 
 export const options = {

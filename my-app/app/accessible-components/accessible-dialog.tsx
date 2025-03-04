@@ -1,14 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  TouchableOpacity,
-  Modal,
-  Clipboard,
-  AccessibilityInfo,
-} from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Modal, Clipboard, AccessibilityInfo } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useTheme } from '../../context/ThemeContext';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -20,14 +11,21 @@ export default function AccessibleDialogExample() {
 
   const { colors, textSizes, isDarkMode } = useTheme();
   const dialogRef = useRef(null);
+  const openButtonRef = useRef(null);
 
   // Announce dialog opening and set focus on content.
-  useEffect(() => {
-    if (showDialog) {
-      AccessibilityInfo.announceForAccessibility('Example dialog opened');
-      dialogRef.current?.focus();
-    }
-  }, [showDialog]);
+    useEffect(() => {
+      if (showDialog) {
+        AccessibilityInfo.announceForAccessibility('Example dialog opened');
+        // Breve timeout per assicurarsi che la dialog sia completamente renderizzata
+        setTimeout(() => {
+          dialogRef.current?.focus();
+        }, 100);
+      } else {
+        // Ritorna il focus al pulsante di apertura quando la dialog si chiude
+        openButtonRef.current?.focus();
+      }
+    }, [showDialog]);
 
   // Close the dialog (from Cancel or close icon).
   const handleClose = () => {
@@ -371,6 +369,7 @@ const AccessibleDialog = ({ visible, onClose, title, children }) => {
           </Text>
           <View style={themedStyles.demoCard}>
             <TouchableOpacity
+              ref={openButtonRef}
               style={themedStyles.demoButton}
               onPress={() => setShowDialog(true)}
               accessibilityRole="button"
@@ -392,6 +391,7 @@ const AccessibleDialog = ({ visible, onClose, title, children }) => {
           onRequestClose={handleClose}
           accessibilityViewIsModal
           accessibilityRole="dialog"
+          accessibilityLiveRegion="polite"
         >
           <View style={themedStyles.overlay}>
             <View
@@ -500,9 +500,9 @@ const AccessibleDialog = ({ visible, onClose, title, children }) => {
             </View>
             <View
               style={themedStyles.codeCard}
-              accessible={false}
-              accessibilityElementsHidden
-              importantForAccessibility="no-hide-descendants"
+              accessible={true}
+              accessibilityRole="text"
+              accessibilityLabel="Dialog implementation code example"
             >
               <Text style={themedStyles.codeText}>
                 {codeExample}

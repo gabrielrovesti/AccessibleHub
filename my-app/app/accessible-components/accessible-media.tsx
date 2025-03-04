@@ -1,14 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  TouchableOpacity,
-  Image,
-  Clipboard,
-  AccessibilityInfo,
-} from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Image, Clipboard, AccessibilityInfo, Dimensions } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useTheme } from '../../context/ThemeContext';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -18,6 +9,13 @@ export default function AccessibleMediaExample() {
   const [currentImage, setCurrentImage] = useState(1);
   const [copied, setCopied] = useState(false);
   const { colors, textSizes, isDarkMode } = useTheme();
+
+  // Ottieni le dimensioni dello schermo
+  const { width: screenWidth } = Dimensions.get('window');
+
+  // Calcola dimensioni responsive dell'immagine
+  const imageWidth = screenWidth * 0.85; // 85% della larghezza schermo
+  const imageHeight = imageWidth * 0.67; // Mantiene aspect ratio 3:2
 
   const images = [
     {
@@ -131,6 +129,8 @@ export default function AccessibleMediaExample() {
       height: 200,
       borderRadius: 8,
       marginBottom: 12,
+      resizeMode: 'cover', // Assicura che l'immagine si adatti correttamente
+      alignSelf: 'center', // Centra l'immagine orizzontalmente
     },
   featureIconContainer: {
     width: 40,
@@ -363,8 +363,8 @@ export default function AccessibleMediaExample() {
         {/* MEDIA IMPLEMENTATION SECTION */}
         <View style={themedStyles.section}>
           <Text style={themedStyles.sectionTitle}>Code Implementation</Text>
-          <View style={themedStyles.codeCardContainer} accessible={false}>
-            <View style={themedStyles.codeHeader} accessible={false}>
+          <View style={themedStyles.codeCardContainer} accessible={true} accessibilityRole="text">
+            <View style={themedStyles.codeHeader}>
               <Text style={themedStyles.codeHeaderText}>JSX</Text>
               <TouchableOpacity
                 style={themedStyles.copyButton}
@@ -378,15 +378,19 @@ export default function AccessibleMediaExample() {
                   size={20}
                   color={copied ? "#28A745" : colors.textSecondary}
                   accessibilityElementsHidden={true}
-                  importantForAccessibility="no-hide-descendants"
                 />
                 <Text style={[themedStyles.copyText, copied && themedStyles.copiedText]}>
                   {copied ? "Copied!" : "Copy"}
                 </Text>
               </TouchableOpacity>
             </View>
-            <View style={themedStyles.codeCard} accessible={false} importantForAccessibility="no">
-              <Text style={themedStyles.codeText} accessibilityElementsHidden>
+            <View
+              style={themedStyles.codeCard}
+              accessible={true}
+              accessibilityRole="text"
+              accessibilityLabel="Image implementation code"
+            >
+              <Text style={themedStyles.codeText}>
                 {codeExample}
               </Text>
             </View>

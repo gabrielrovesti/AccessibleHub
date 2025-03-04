@@ -149,7 +149,6 @@ const BREADCRUMB_MAP = {
 -------------------------------------------- */
 function renderHeaderTitle(router) {
   const segments = useSegments(); // Legge i segmenti di percorso
-  console.log("Current segments:", segments);
 
   // Se non ci sono segmenti o siamo in Home
   if (!segments || segments.length === 0 || segments[0] === 'index') {
@@ -342,7 +341,6 @@ function DrawerNavigator() {
       headerTitle: () => renderHeaderTitle(router),
       headerLeft: () => {
         const routeName = route.name;
-        console.log('Left button for:', routeName);
 
         if (MAIN_ROUTES.includes(routeName)) {
           // Top-level route → open drawer
@@ -363,7 +361,6 @@ function DrawerNavigator() {
           return (
             <TouchableOpacity
               onPress={() => {
-                console.log('Forcing navigation to components');
                 router.replace('/components');
               }}
               accessibilityRole="button"
@@ -379,7 +376,6 @@ function DrawerNavigator() {
           return (
             <TouchableOpacity
               onPress={() => {
-                console.log('Forcing navigation to practices');
                 router.replace('/practices');
               }}
               accessibilityRole="button"

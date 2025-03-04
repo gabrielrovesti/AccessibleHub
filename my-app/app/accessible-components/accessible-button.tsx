@@ -1,14 +1,5 @@
 import React, { useState } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  TouchableOpacity,
-  Clipboard,
-  Modal,
-  AccessibilityInfo,
-} from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Clipboard, Modal, AccessibilityInfo } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useTheme } from '../../context/ThemeContext';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -254,38 +245,38 @@ const DemoButton = () => (
           <Text style={[styles.sectionTitle, { color: colors.text }]}>
             Code Implementation
           </Text>
-          <View style={themedStyles.codeContainer} accessible={false}>
-            <View style={themedStyles.codeHeader} accessible={false}>
-              <Text style={themedStyles.codeHeaderText}>JSX</Text>
-              <TouchableOpacity
-                style={themedStyles.copyButton}
-                onPress={handleCopy}
-                accessibilityRole="button"
-                accessibilityLabel={copied ? "Code copied" : "Copy code example"}
-                accessibilityHint="Copies the code example to your clipboard"
+            <View style={themedStyles.codeContainer} accessible={true} accessibilityRole="text">
+              <View style={themedStyles.codeHeader}>
+                <Text style={themedStyles.codeHeaderText}>JSX</Text>
+                <TouchableOpacity
+                  style={themedStyles.copyButton}
+                  onPress={handleCopy}
+                  accessibilityRole="button"
+                  accessibilityLabel={copied ? "Code copied" : "Copy code example"}
+                  accessibilityHint="Copies the code example to your clipboard"
+                >
+                  <Ionicons
+                    name={copied ? "checkmark" : "copy-outline"}
+                    size={20}
+                    color={copied ? "#28A745" : colors.textSecondary}
+                    accessibilityElementsHidden
+                  />
+                  <Text style={[themedStyles.copyText, copied && themedStyles.copiedText]}>
+                    {copied ? "Copied!" : "Copy"}
+                  </Text>
+                </TouchableOpacity>
+              </View>
+              <View
+                style={themedStyles.codeCard}
+                accessible={true}
+                accessibilityRole="text"
+                accessibilityLabel="Button implementation code"
               >
-                <Ionicons
-                  name={copied ? "checkmark" : "copy-outline"}
-                  size={20}
-                  color={copied ? "#28A745" : colors.textSecondary}
-                  accessibilityElementsHidden
-                />
-                <Text style={[themedStyles.copyText, copied && themedStyles.copiedText]}>
-                  {copied ? "Copied!" : "Copy"}
+                <Text style={themedStyles.codeText}>
+                  {codeExample}
                 </Text>
-              </TouchableOpacity>
+              </View>
             </View>
-            <View
-              style={themedStyles.codeCard}
-              accessible={false}
-              accessibilityElementsHidden={true}
-              importantForAccessibility="no-hide-descendants"
-            >
-              <Text style={themedStyles.codeText}>
-                {codeExample}
-              </Text>
-            </View>
-          </View>
         </View>
 
 

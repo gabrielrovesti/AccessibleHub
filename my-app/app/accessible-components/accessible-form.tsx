@@ -1,16 +1,5 @@
 import React, { useState } from 'react';
-import {
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  StyleSheet,
-  ScrollView,
-  Modal,
-  AccessibilityInfo,
-  Clipboard,
-  Platform
-} from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, Modal, AccessibilityInfo, Clipboard, Platform } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { useTheme } from '../../context/ThemeContext';
@@ -42,8 +31,7 @@ export default function AccessibleFormExample() {
   const [copied, setCopied] = useState(false);
 
   // Minimal code snippet for demonstration
-// Update the codeExample in accessible-form.tsx to:
-const codeExample = `<View accessibilityRole="form">
+  const codeExample = `<View accessibilityRole="form">
   {/* Input Field */}
   <Text style={styles.label}>Name</Text>
   <TextInput
@@ -674,14 +662,14 @@ const codeExample = `<View accessibilityRole="form">
                 </TouchableOpacity>
               </View>
 
-              {/* Code snippet */}
+                {/* Code snippet */}
                 <View
                   style={themedStyles.codeCard}
                   accessible
                   accessibilityRole="text"
                   accessibilityLabel="Form component code example with accessibility features."
                 >
-                  <Text style={themedStyles.codeText} accessibilityElementsHidden>
+                  <Text style={themedStyles.codeText}>
                     {codeExample}
                   </Text>
                 </View>
