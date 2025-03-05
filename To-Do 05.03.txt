@@ -1,33 +1,27 @@
-Caro Gabriel,
+Per quanto riguarda la parte di accessibilità, ti confermo che abbastanza bene per la parte che hai corretto, ci sarebbe un miglioramento da fare: le immagini di decorazione sarebbe meglio che non fossero raggiungibili con lo screen reader perché giustamente non hanno il testo alternativo, ma in questo modo fanno fare un swipe in più per nulla, quindi diventa una garbage interaction. Se c’è un modo per renderli non raggiungibili (in html sarebbe tabindex=-1 per intenderci) questa sarebbe sicuramente una cosa da mettere anche in tesi. Esempi di queste immagini sono le icone messe vicino ai 4 principi dell’accessibilità, o i segni di spunta sotto. (dovrebbe essere stato sistemato ovunque) ✔️
 
-ti avevo promesso di guardare l’app entro la settimana e l’ho fatto.
+Un altro errore è nell’Example Dialog, io non sono riuscita a farmi leggere il testo, prova anche tu. (da provare) ✔️
 
-Per quanto riguarda la parte di accessibilità, ti confermo che abbastanza bene per la parte che hai corretto, ci sarebbe un miglioramento da fare: le immagini di decorazione sarebbe meglio che non fossero raggiungibili con lo screen reader perché giustamente non hanno il testo alternativo, ma in questo modo fanno fare un swipe in più per nulla, quindi diventa una garbage interaction. Se c’è un modo per renderli non raggiungibili (in html sarebbe tabindex=-1 per intenderci) questa sarebbe sicuramente una cosa da mettere anche in tesi. Esempi di queste immagini sono le icone messe vicino ai 4 principi dell’accessibilità, o i segni di spunta sotto.
+Invece per la parte nuova (ovvero cosa succede quando si copia del codice), i comandi successivi (condividi, etc) non sono raggiungibili dallo screen reader. E’ vero che devo proprio trovare un developer con disabilità visiva, ma credo che proprio noi dovremmo essere i primi a considerarli. Mi pare che anche il codice non venga mai letto. (dovrebbe essere stato risolto - da verificare) ✔️
 
-Un altro errore è nell’Example Dialog, io non sono riuscita a farmi leggere il testo, prova anche tu.
+Non riesco a modificare il valore dello slider con lo screenreader, e allo stesso modo nel tutorial delle gesture su doubletap e long press non succede nulla (dovrebbe essere stato risolto - da verificare) ✔️
 
-Invece per la parte nuova (ovvero cosa succede quando si copia del codice), i comandi successivi (condividi, etc) non sono raggiungibili dallo screen reader. E’ vero che devo proprio trovare un developer con disabilità visiva, ma credo che proprio noi dovremmo essere i primi a considerarli. Mi pare che anche il codice non venga mai letto.
-
-Non riesco a modificare il valore dello slider con lo screenreader, e allo stesso modo nel tutorial delle gesture su doubletap e long press non succede nulla
-
-Ho anche sentito Dal Maso, e di fatto mi dice che le gesture che usano sono quelle che hai trattato, ce ne sono altre, ma sono comandi utili ma non indispensabili, tipo il doppio tap con 2 dita, tap con 3 o 4 dita, ma dice che sempre di tap parliamo. Sono comunque gesture per comandi particolari, quindi da non usare nelle app per non andare in sovrapposizione, quindi direi che ci siamo.
+Ho anche sentito Dal Maso, e di fatto mi dice che le gesture che usano sono quelle che hai trattato, ce ne sono altre, ma sono comandi utili ma non indispensabili, tipo il doppio tap con 2 dita, tap con 3 o 4 dita, ma dice che sempre di tap parliamo. Sono comunque gesture per comandi particolari, quindi da non usare nelle app per non andare in sovrapposizione, quindi direi che ci siamo. ✔️
 
 Invece in generale, ho le seguenti domande:
 
-    I valori in “the ultimate…” in home, sono a caso o hanno una giustificazione?
-    C’è qualche problema di indentazione nel codice che riporti 
+    I valori in “the ultimate…” in home, sono a caso o hanno una giustificazione? (da sistemare con prompt)
+    C’è qualche problema di indentazione nel codice che riporti (da verificare a mano tra device e virtual device)
     Sulla barra blu, mi chiedo se non aiuterebbe mettere un titolo che abbia una sorta di funzione di breadcrumb. Questo non serve a chi non ci vede, ma a chi ci vede, per orientarsi ✔️
     hai provato i tool di testing che suggerisci? (da inserire in tesi - buono il codice) ✔️
     Toglierei Ionic dal framework comparison. ✔️
-    I numeri che metti ora sono ancora casuali?
+    I numeri che metti ora sono ancora casuali? (da sistemare con prompt)
 
 Entro la prossima settimana ti leggo la tesi come promesso.
 
 Ciao,
 
 Ombretta Gaggi
-
-
 
 
 Buongiorno professoressa,

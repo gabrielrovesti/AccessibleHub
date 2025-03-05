@@ -1,14 +1,5 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  Switch,
-  AccessibilityInfo,
-  ToastAndroid,
-  Platform,
-} from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Switch, AccessibilityInfo, ToastAndroid, Platform, Vibration } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useTheme } from '../context/ThemeContext';
 
@@ -145,6 +136,7 @@ const SettingRow = ({
         AccessibilityInfo.announceForAccessibility(message);
         if (Platform.OS === 'android') {
           ToastAndroid.show(message, ToastAndroid.SHORT);
+          Vibration.vibrate(50);
         } else {
           console.log(message);
         }
@@ -154,6 +146,7 @@ const SettingRow = ({
       // Combine title, description, and state in one accessibility label
       accessibilityLabel={`${title}. ${description}. Switch is ${value ? 'on' : 'off'}.`}
       accessibilityRole="switch"
+      accessibilityHint="Double tap to toggle setting"
     />
   </View>
 );

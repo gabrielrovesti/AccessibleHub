@@ -44,17 +44,7 @@ export default function AccessibleDialogExample() {
   };
 
   // Example code snippet
-  const codeExample = `// Accessible Dialog Implementation
-const AccessibleDialog = ({ visible, onClose, title, children }) => {
-  const closeRef = useRef(null);
-  const contentRef = useRef(null);
-
-  useEffect(() => {
-    if (visible) {
-      // Focus first element when dialog opens
-      contentRef.current?.focus();
-    }
-  }, [visible]);
+  const codeExample = `const AccessibleDialog = ({ visible, onClose, title, children }) => {
 
   return (
     <Modal
@@ -62,35 +52,37 @@ const AccessibleDialog = ({ visible, onClose, title, children }) => {
       transparent
       animationType="fade"
       onRequestClose={onClose}
-      accessibilityViewIsModal={true}
-      accessibilityLiveRegion="polite"
+      accessibilityViewIsModal=
+      {true}
+      accessibilityLiveRegion=
+      "polite"
     >
-      <View style={styles.overlay}>
+      <View>
         <View
           style={styles.dialog}
-          accessibilityRole="alert"
-          accessibilityLabel={title}
+          accessibilityRole=
+          "alert"
+          accessibilityLabel=
+          {title}
           ref={contentRef}
         >
-          <View style={styles.header}>
-            <Text style={styles.title} accessibilityRole="header">
-              {title}
-            </Text>
+          <View>
             <TouchableOpacity
               ref={closeRef}
               onPress={onClose}
-              accessibilityLabel="Close dialog"
-              accessibilityRole="button"
+             accessibilityRole=
+              "button"
+             accessibilityLabel=
+            "Close"
             >
-              <Ionicons name="close" size={24} />
             </TouchableOpacity>
           </View>
           {children}
-          <View style={styles.actions}>
+          <View>
             <TouchableOpacity
               onPress={onClose}
-              accessibilityRole="button"
-              style={styles.button}
+              accessibilityRole=
+              "button"
             >
               <Text>Close</Text>
             </TouchableOpacity>
@@ -130,216 +122,233 @@ const AccessibleDialog = ({ visible, onClose, title, children }) => {
 
   // Themed + local style overrides
   const themedStyles = {
-    container: {
-      flex: 1,
-    },
-    heroCard: {
-      backgroundColor: colors.surface,
-      marginHorizontal: 16,
-      marginTop: 16,
-      paddingVertical: 24,
-      paddingHorizontal: 16,
-      borderRadius: 16,
-      ...cardShadowStyle,
-      borderWidth: isDarkMode ? 1 : 0,
-      borderColor: isDarkMode ? colors.border : 'transparent',
-    },
-    heroTitle: {
-      color: colors.text,
-      fontSize: textSizes.xlarge,
-      fontWeight: 'bold',
-      textAlign: 'center',
-      marginBottom: 8,
-    },
-    heroSubtitle: {
-      color: colors.textSecondary,
-      fontSize: textSizes.medium,
-      lineHeight: 24,
-      textAlign: 'center',
-    },
-    section: {
-      paddingHorizontal: 16,
-      marginTop: 16,
-    },
-    demoCard: {
-      backgroundColor: colors.surface,
-      borderRadius: 16,
-      padding: 20,
-      ...cardShadowStyle,
-      borderWidth: isDarkMode ? 1 : 0,
-      borderColor: isDarkMode ? colors.border : 'transparent',
-      marginHorizontal: 16,
-    },
-    demoButton: {
-      backgroundColor: colors.primary,
-      paddingVertical: 12,
-      paddingHorizontal: 24,
-      borderRadius: 8,
-      minHeight: 44,
-      alignItems: 'center',
-    },
-    demoButtonText: {
-      color: colors.background,
-      fontSize: textSizes.medium,
-      fontWeight: '600',
-    },
-    codeCardContainer: {
-      backgroundColor: '#1c1c1e',
-      borderRadius: 8,
-      overflow: 'hidden',
-      marginTop: 16,
-      ...cardShadowStyle,
-      borderWidth: isDarkMode ? 1 : 0,
-      borderColor: isDarkMode ? '#333' : 'transparent',
-      marginHorizontal: 16,
-    },
-    codeHeader: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      padding: 8,
-      borderBottomWidth: 1,
-      borderBottomColor: '#333',
-    },
-    codeHeaderText: {
-      fontSize: 14,
-      fontFamily: 'monospace',
-      color: '#999',
-    },
-    copyButton: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      gap: 4,
-      padding: 4,
-    },
-    copyText: {
-      fontSize: 14,
-      color: '#666',
-    },
-    copiedText: {
-      color: '#28A745',
-    },
-    codeCard: {
-      padding: 16,
-      maxHeight: 400,
-    },
-    codeText: {
-      fontFamily: 'monospace',
-      fontSize: 14,
-      lineHeight: 20,
-      color: '#fff',
-    },
-    featuresCard: {
-      backgroundColor: colors.surface,
-      borderRadius: 16,
-      padding: 16,
-      marginTop: 16,
-      ...cardShadowStyle,
-      borderWidth: isDarkMode ? 1 : 0,
-      borderColor: isDarkMode ? colors.border : 'transparent',
-      marginHorizontal: 16,
-    },
-    sectionTitle: {
-      color: colors.text,
-      fontSize: textSizes.large,
-      fontWeight: '600',
-      marginBottom: 12,
-    },
-    overlay: {
-      flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center',
-      backgroundColor: isDarkMode ? 'rgba(0, 0, 0, 0.7)' : 'rgba(0, 0, 0, 0.5)',
-    },
-    dialogContainer: {
-      backgroundColor: colors.surface,
-      borderRadius: 16,
-      width: '90%',
-      maxWidth: 400,
-      padding: 24,
-      ...cardShadowStyle,
-      borderWidth: isDarkMode ? 1 : 0,
-      borderColor: isDarkMode ? colors.border : 'transparent',
-    },
-    dialogHeader: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      marginBottom: 16,
-    },
-    dialogTitle: {
-      color: colors.text,
-      fontSize: textSizes.large,
-      fontWeight: 'bold',
-    },
-    dialogContent: {
-      color: colors.text,
-      fontSize: textSizes.medium,
-      lineHeight: 24,
-      marginBottom: 24,
-    },
+  container: {
+    flex: 1,
+  },
+  heroCard: {
+    backgroundColor: colors.surface,
+    marginHorizontal: 16,
+    marginTop: 16,
+    paddingVertical: 24,
+    paddingHorizontal: 16,
+    borderRadius: 16,
+    ...cardShadowStyle,
+    borderWidth: isDarkMode ? 1 : 0,
+    borderColor: isDarkMode ? colors.border : 'transparent',
+  },
+  heroTitle: {
+    color: colors.text,
+    fontSize: textSizes.xlarge,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginBottom: 8,
+  },
+  heroSubtitle: {
+    color: colors.textSecondary,
+    fontSize: textSizes.medium,
+    lineHeight: 24,
+    textAlign: 'center',
+  },
+  section: {
+    paddingHorizontal: 16,
+    marginTop: 16,
+  },
+  demoCard: {
+    backgroundColor: colors.surface,
+    borderRadius: 16,
+    padding: 20,
+    ...cardShadowStyle,
+    borderWidth: isDarkMode ? 1 : 0,
+    borderColor: isDarkMode ? colors.border : 'transparent',
+    marginHorizontal: 16,
+  },
+  demoButton: {
+    backgroundColor: colors.primary,
+    paddingVertical: 12,
+    paddingHorizontal: 24,
+    borderRadius: 8,
+    minHeight: 44,
+    alignItems: 'center',
+  },
+  demoButtonText: {
+    color: colors.background,
+    fontSize: textSizes.medium,
+    fontWeight: '600',
+  },
+  codeCardContainer: {
+    backgroundColor: '#1c1c1e',
+    borderRadius: 8,
+    overflow: 'scroll', // allow full code viewing
+    marginTop: 16,
+    ...cardShadowStyle,
+    borderWidth: isDarkMode ? 1 : 0,
+    borderColor: isDarkMode ? '#333' : 'transparent',
+    marginHorizontal: 16,
+  },
+  codeHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: 8,
+    borderBottomWidth: 1,
+    borderBottomColor: '#333',
+  },
+  codeHeaderText: {
+    fontSize: 14,
+    fontFamily: 'monospace',
+    color: '#999',
+  },
+  copyButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+    padding: 4,
+  },
+  copyText: {
+    fontSize: 14,
+    color: '#666',
+  },
+  copiedText: {
+    color: '#28A745',
+  },
+  codeCard: {
+    padding: 24, // increased padding for extended code view
+    // Removed maxHeight to show full snippet
+  },
+  codeText: {
+    fontFamily: 'monospace',
+    fontSize: 15, // slightly larger font for advanced style
+    lineHeight: 22,
+    color: '#fff',
+  },
+  featuresCard: {
+    backgroundColor: colors.surface,
+    borderRadius: 16,
+    padding: 24, // increased padding to match advanced style
+    marginTop: 16,
+    ...cardShadowStyle,
+    borderWidth: isDarkMode ? 1 : 0,
+    borderColor: isDarkMode ? colors.border : 'transparent',
+    marginHorizontal: 16,
+  },
+  sectionTitle: {
+    color: colors.text,
+    fontSize: textSizes.large,
+    fontWeight: '600',
+    marginBottom: 12,
+  },
+  // --- Integrated Dialog Styles ---
+  overlay: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: isDarkMode ? 'rgba(0,0,0,0.7)' : 'rgba(0,0,0,0.5)',
+  },
+  dialogContainer: {
+    backgroundColor: colors.surface,
+    borderRadius: 16,
+    width: '90%',
+    maxWidth: 400,
+    padding: 24,
+    ...cardShadowStyle,
+    borderWidth: isDarkMode ? 1 : 0,
+    borderColor: isDarkMode ? colors.border : 'transparent',
+  },
+  dialogHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 16,
+  },
+  dialogTitle: {
+    color: colors.text,
+    fontSize: textSizes.large,
+    fontWeight: 'bold',
+  },
+  dialogContent: {
+    color: colors.text,
+    fontSize: textSizes.medium,
+    lineHeight: 24,
+    marginBottom: 24,
+  },
+  dialogActions: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    gap: 12,
+  },
+  dialogButton: {
+    paddingVertical: 10,
+    paddingHorizontal: 16,
+    borderRadius: 8,
+    minWidth: 80,
+    alignItems: 'center',
+  },
+  dialogSecondaryButton: {
+    backgroundColor: isDarkMode ? colors.surface : '#f2f2f2',
+  },
+  dialogSecondaryButtonText: {
+    color: colors.text,
+    fontSize: textSizes.medium,
+    fontWeight: '600',
+  },
+  dialogPrimaryButton: {
+    backgroundColor: colors.primary,
+  },
+  dialogButtonText: {
+    color: colors.background,
+    fontSize: textSizes.medium,
+    fontWeight: '600',
+  },
+  // --- Preserve Success Styles as originally defined ---
+  successContainer: {
+    backgroundColor: colors.surface,
+    borderRadius: 16,
+    padding: 24,
+    alignItems: 'center',
+    width: '80%',
+    maxWidth: 300,
+    ...cardShadowStyle,
+    borderWidth: isDarkMode ? 1 : 0,
+    borderColor: isDarkMode ? colors.border : 'transparent',
+  },
+  successTitle: {
+    color: '#28A745',
+    fontSize: textSizes.large,
+    fontWeight: 'bold',
+    marginTop: 8,
+    marginBottom: 8,
+  },
+  successMessage: {
+    color: colors.text,
+    fontSize: textSizes.medium,
+    textAlign: 'center',
+    lineHeight: 24,
+  },
+  // --- Features Section Updated for Advanced Style ---
   featureIconContainer: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
+    width: 48, // increased from 40
+    height: 48,
+    borderRadius: 24,
     backgroundColor: isDarkMode ? `${colors.primary}20` : '#E8F1FF',
     alignItems: 'center',
     justifyContent: 'center',
   },
-    dialogActions: {
-      flexDirection: 'row',
-      justifyContent: 'flex-end',
-      gap: 12,
-    },
-    dialogButton: {
-      paddingVertical: 10,
-      paddingHorizontal: 16,
-      borderRadius: 8,
-      minWidth: 80,
-      alignItems: 'center',
-    },
-    dialogSecondaryButton: {
-      backgroundColor: isDarkMode ? colors.surface : '#f2f2f2',
-    },
-    dialogSecondaryButtonText: {
-      color: colors.text,
-      fontSize: textSizes.medium,
-      fontWeight: '600',
-    },
-    dialogPrimaryButton: {
-      backgroundColor: colors.primary,
-    },
-    dialogButtonText: {
-      color: colors.background,
-      fontSize: textSizes.medium,
-      fontWeight: '600',
-    },
-    // Success feedback container
-    successContainer: {
-      backgroundColor: colors.surface,
-      borderRadius: 16,
-      padding: 24,
-      alignItems: 'center',
-      width: '80%',
-      maxWidth: 300,
-      ...cardShadowStyle,
-      borderWidth: isDarkMode ? 1 : 0,
-      borderColor: isDarkMode ? colors.border : 'transparent',
-    },
-    successTitle: {
-      color: '#28A745',
-      fontSize: textSizes.large,
-      fontWeight: 'bold',
-      marginTop: 8,
-      marginBottom: 8,
-    },
-    successMessage: {
-      color: colors.text,
-      fontSize: textSizes.medium,
-      textAlign: 'center',
-      lineHeight: 24,
-    },
-  };
+  featureContent: {
+    flex: 1,
+  },
+  featureTitle: {
+    color: colors.text,
+    fontSize: textSizes.large, // larger font size for advanced look
+    fontWeight: '700', // increased weight
+    marginBottom: 6,
+  },
+  featureDescription: {
+    color: colors.textSecondary,
+    fontSize: textSizes.medium, // increased to medium size
+    lineHeight: 24,
+  },
+};
+
 
   return (
     <LinearGradient colors={gradientColors} style={themedStyles.container}>

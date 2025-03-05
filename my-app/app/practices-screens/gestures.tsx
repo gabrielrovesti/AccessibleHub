@@ -1,11 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {
-  View,
-  Text,
-  ScrollView,
-  TouchableOpacity,
-  AccessibilityInfo,
-} from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, AccessibilityInfo, Platform, UIManager, findNodeHandle } from 'react-native';
 import { useTheme } from '../../context/ThemeContext';
 import { LinearGradient } from 'expo-linear-gradient';
 
@@ -15,7 +9,20 @@ export default function GesturesTutorialScreen() {
   const [showDoubleTapSuccess, setShowDoubleTapSuccess] = useState(false);
   const [showLongPressSuccess, setShowLongPressSuccess] = useState(false);
   const [lastTap, setLastTap] = useState(0);
+  const doubleTapButtonRef = React.useRef(null);
   const DOUBLE_TAP_DELAY = 300; // milliseconds
+
+  const setAccessibilityFocus = (ref) => {
+    if (ref && ref.current) {
+      // Per Android
+      if (Platform.OS === 'android') {
+        UIManager.sendAccessibilityEvent(
+          findNodeHandle(ref.current),
+          UIManager.AccessibilityEventTypes.typeViewFocused
+        );
+      }
+    }
+  };
 
   // Check if a screen reader is enabled
   const [screenReaderEnabled, setScreenReaderEnabled] = useState(false);
@@ -36,25 +43,37 @@ export default function GesturesTutorialScreen() {
     setTimeout(() => setShowSingleTapSuccess(false), 1500);
   };
 
-  // Double tap handler (using timing)
-  const handleDoubleTap = () => {
-    const now = Date.now();
-    if (lastTap && now - lastTap < DOUBLE_TAP_DELAY) {
-      setShowDoubleTapSuccess(true);
-      AccessibilityInfo.announceForAccessibility('Double tap gesture completed successfully');
-      setTimeout(() => setShowDoubleTapSuccess(false), 1500);
-      setLastTap(0); // reset
-    } else {
-      setLastTap(now);
-    }
-  };
+// Double tap handler modificato
+const handleDoubleTap = () => {
+  if (screenReaderEnabled) {
+    // Se lo screen reader è attivo, mostra subito il successo
+    setShowDoubleTapSuccess(true);
+    AccessibilityInfo.announceForAccessibility('Double tap gesture completed successfully with screen reader');
+    setTimeout(() => setShowDoubleTapSuccess(false), 1500);
+    return;
+  }
 
-  // Long press handler
-  const handleLongPress = () => {
-    setShowLongPressSuccess(true);
-    AccessibilityInfo.announceForAccessibility('Long press gesture completed successfully');
-    setTimeout(() => setShowLongPressSuccess(false), 1500);
-  };
+  // Comportamento standard (senza screen reader)
+  const now = Date.now();
+  if (lastTap && now - lastTap < DOUBLE_TAP_DELAY) {
+    setShowDoubleTapSuccess(true);
+    AccessibilityInfo.announceForAccessibility('Double tap gesture completed successfully');
+    setTimeout(() => setShowDoubleTapSuccess(false), 1500);
+    setLastTap(0); // reset
+  } else {
+    setLastTap(now);
+  }
+};
+
+// Long press handler modificato
+const handleLongPress = () => {
+  setShowLongPressSuccess(true);
+  const message = screenReaderEnabled
+    ? 'Long press gesture completed successfully with screen reader'
+    : 'Long press gesture completed successfully';
+  AccessibilityInfo.announceForAccessibility(message);
+  setTimeout(() => setShowLongPressSuccess(false), 1500);
+};
 
   // Theming and styling
   const gradientColors = isDarkMode
@@ -174,7 +193,7 @@ export default function GesturesTutorialScreen() {
               <Text style={themedStyles.practiceButtonText}>Tap me!</Text>
             </TouchableOpacity>
             {showSingleTapSuccess && (
-              <Text style={themedStyles.feedbackText}>Single tap successful!</Text>
+              <Text style={themedStyles.feedbackText} accessibilityLiveRegion="polite">Single tap successful!</Text>
             )}
             <Text style={themedStyles.infoText}>
               For screen readers, double tap activates the item.
@@ -189,15 +208,27 @@ export default function GesturesTutorialScreen() {
               onPress={handleDoubleTap}
               accessibilityRole="button"
               accessibilityLabel="Practice double tap"
-              accessibilityHint="Double tap quickly to activate"
+              accessibilityHint={screenReaderEnabled ?
+                "Tap to simulate double tap gesture" :
+                "Double tap quickly to activate"}
+              accessibilityActions={[
+                { name: 'activate', label: 'Activate double tap' }
+              ]}
+              onAccessibilityAction={(event) => {
+                if (event.nativeEvent.actionName === 'activate') {
+                  handleDoubleTap();
+                }
+              }}
             >
               <Text style={themedStyles.practiceButtonText}>Double Tap me!</Text>
             </TouchableOpacity>
             {showDoubleTapSuccess && (
-              <Text style={themedStyles.feedbackText}>Double tap successful!</Text>
+              <Text style={themedStyles.feedbackText} accessibilityLiveRegion="polite">Double tap successful!</Text>
             )}
             <Text style={themedStyles.infoText}>
-              Tap twice quickly (if using a screen reader, double tap will activate).
+              {screenReaderEnabled
+                ? "With screen reader: Tap once to simulate double tap. The activate action is also available."
+                : "Tap twice quickly (if using a screen reader, double tap will activate)."}
             </Text>
           </View>
 
@@ -210,14 +241,30 @@ export default function GesturesTutorialScreen() {
               accessibilityRole="button"
               accessibilityLabel="Practice long press"
               accessibilityHint="Press and hold to activate"
+              accessibilityActions={[
+                { name: 'activate', label: 'Activate long press' },
+                { name: 'longpress', label: 'Simulate long press' }
+              ]}
+              onAccessibilityAction={(event) => {
+                if (event.nativeEvent.actionName === 'activate' ||
+                    event.nativeEvent.actionName === 'longpress') {
+                  handleLongPress();
+                }
+              }}
+              accessibilityState={{
+                disabled: false,
+                busy: showLongPressSuccess
+              }}
             >
               <Text style={themedStyles.practiceButtonText}>Long Press me!</Text>
             </TouchableOpacity>
             {showLongPressSuccess && (
-              <Text style={themedStyles.feedbackText}>Long press successful!</Text>
+              <Text style={themedStyles.feedbackText} accessibilityLiveRegion="polite">Long press successful!</Text>
             )}
             <Text style={themedStyles.infoText}>
-              Press and hold the button.  Note: In screen readers, long press might not be available. Instead, select the item and simulate the press with double tapping.
+              {screenReaderEnabled
+                ? "With screen reader: Use the activate or longpress action to simulate a long press."
+                : "Press and hold the button. In screen readers, use the custom actions to simulate long press."}
             </Text>
           </View>
         </View>

@@ -66,6 +66,11 @@ export default function AccessibilityInstructionScreen() {
     }
   };
 
+  const handleCommunityPress = () => {
+      Linking.openURL("https://www.a11yproject.com/");
+      AccessibilityInfo.announceForAccessibility("Navigating to A11y Project");
+  };
+
   /* -----------------------------------------------------
      Themed Styles – Unified with other screens
   ----------------------------------------------------- */
@@ -179,6 +184,49 @@ export default function AccessibilityInstructionScreen() {
       fontWeight: '600',
       color: colors.primary,
     },
+    // Community Card styles
+    communityCard: {
+      backgroundColor: colors.surface,
+      borderRadius: 16,
+      padding: 20,
+      marginHorizontal: 16,
+      marginVertical: 16,
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 4 },
+      shadowOpacity: isDarkMode ? 0.3 : 0.15,
+      shadowRadius: 6,
+      elevation: 4,
+      borderWidth: isDarkMode ? 1 : 0,
+      borderColor: isDarkMode ? colors.border : 'transparent',
+      alignItems: 'center',
+    },
+    communityTitle: {
+      fontSize: textSizes.xlarge,
+      fontWeight: 'bold',
+      color: colors.text,
+      marginBottom: 8,
+      textAlign: 'center',
+    },
+    communitySubtitle: {
+      fontSize: textSizes.medium,
+      color: colors.textSecondary,
+      textAlign: 'center',
+      marginBottom: 16,
+    },
+    communityButton: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      backgroundColor: colors.primary,
+      paddingHorizontal: 16,
+      paddingVertical: 10,
+      borderRadius: 8,
+    },
+    communityButtonText: {
+      fontSize: textSizes.medium,
+      fontWeight: '600',
+      color: colors.surface,
+      marginLeft: 8,
+    },
   };
 
   // Render each module card
@@ -225,6 +273,27 @@ export default function AccessibilityInstructionScreen() {
     </TouchableOpacity>
   );
 
+  // Render the Community Card
+  const renderCommunityCard = () => (
+    <TouchableOpacity
+      style={themedStyles.communityCard}
+      onPress={handleCommunityPress}
+      accessibilityRole="button"
+      accessibilityLabel="Join our Community. Share your success story and join discussions with other accessibility enthusiasts."
+      accessibilityHint="Double tap to navigate to the Community page"
+    >
+      <Ionicons name="chatbubble-ellipses-outline" size={48} color={colors.primary} accessibilityElementsHidden={true} />
+      <Text style={themedStyles.communityTitle}>Community Corner</Text>
+      <Text style={themedStyles.communitySubtitle}>
+        Connect, share your success story, and discuss best practices with fellow developers.
+      </Text>
+      <View style={themedStyles.communityButton}>
+        <Ionicons name="people-outline" size={20} color={colors.surface} accessibilityElementsHidden={true} />
+        <Text style={themedStyles.communityButtonText}>Join Now</Text>
+      </View>
+    </TouchableOpacity>
+  );
+
   return (
     <LinearGradient colors={gradientColors} style={themedStyles.container}>
       <ScrollView
@@ -238,7 +307,7 @@ export default function AccessibilityInstructionScreen() {
             Accessibility Instruction & Community
           </Text>
           <Text style={themedStyles.heroSubtitle}>
-            Explore in-depth articles, best practices, and community success stories to master accessibility in mobile development.
+            Explore in-depth articles, best practices, and success stories to master accessibility in mobile development.
           </Text>
         </View>
 
@@ -246,6 +315,9 @@ export default function AccessibilityInstructionScreen() {
         <View style={themedStyles.section}>
           {InstructionData.map((module) => renderModuleCard(module))}
         </View>
+
+        {/* COMMUNITY CARD */}
+        {renderCommunityCard()}
       </ScrollView>
     </LinearGradient>
   );

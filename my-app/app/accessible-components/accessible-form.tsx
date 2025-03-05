@@ -32,24 +32,31 @@ export default function AccessibleFormExample() {
 
   // Minimal code snippet for demonstration
   const codeExample = `<View accessibilityRole="form">
+
   {/* Input Field */}
   <Text style={styles.label}>Name</Text>
   <TextInput
     value={formData.name}
-    accessibilityLabel="Enter your name"
-    accessibilityHint="Type your full name"
-    style={styles.input}
+    accessibilityLabel="Enter name"
+    accessibilityHint="Type full
+    name"
   />
 
   {/* Radio Group */}
   <View accessibilityRole="radiogroup">
     {['Option 1', 'Option 2'].map((option) => (
       <TouchableOpacity
+        key={option}
+
         accessibilityRole="radio"
-        accessibilityState={{ checked: selectedOption === option }}
-        accessibilityLabel={\`Select \${option}\`}
-      >
-        <View style={styles.radioButton} />
+        accessibilityState =
+        {{ checked: selectedOption
+        === option }}
+        accessibilityLabel =
+        {\`Select \${option}\`}>
+
+        <View
+        style={styles.radioButton}/>
         <Text>{option}</Text>
       </TouchableOpacity>
     ))}
@@ -58,23 +65,28 @@ export default function AccessibleFormExample() {
   {/* Checkbox with Label */}
   <TouchableOpacity
     accessibilityRole="checkbox"
-    accessibilityState={{ checked: isChecked }}
-    accessibilityLabel="Accept terms and conditions"
+    accessibilityState={{ checked:
+    isChecked }}
+    accessibilityLabel="Accept terms
+    and conditions"
   >
     <View style={styles.checkbox} />
-    <Text>I agree to the terms</Text>
+    <Text>Agree to terms</Text>
   </TouchableOpacity>
 
   {/* Submit Button */}
   <TouchableOpacity
     accessibilityRole="button"
     accessibilityLabel="Submit form"
-    accessibilityState={{ disabled: !isValid }}
-    style={styles.submitButton}
+    accessibilityState =
+    {{ disabled: !isValid }}
   >
     <Text>Submit</Text>
   </TouchableOpacity>
+
 </View>`;
+
+
 
   // Evaluate whether all required fields are filled
   const formDataComplete =

@@ -218,7 +218,7 @@ const DemoButton = () => (
         {/* HERO CARD */}
         <View style={themedStyles.heroCard}>
           <Text style={themedStyles.heroTitle} accessibilityRole="header">
-            Accessible Button
+            Buttons & Touchables - Interactive Example
           </Text>
           <Text style={themedStyles.heroSubtitle}>
             Learn how to implement an accessible, properly labeled button with minimal touch target and role/hint.

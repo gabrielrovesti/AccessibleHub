@@ -1,14 +1,7 @@
 import { Drawer } from 'expo-router/drawer';
 import { useRouter, useSegments } from 'expo-router';
 import React, { useEffect } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  Platform,
-  AccessibilityInfo,
-} from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Platform, AccessibilityInfo } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { ThemeProvider, useTheme } from '../context/ThemeContext';
 
@@ -172,6 +165,14 @@ function renderHeaderTitle(router) {
           onPress={() => router.replace('/')}
           accessibilityRole="button"
           accessibilityLabel="Go to Home"
+          style={{
+            padding: 8,
+            minWidth: 40,
+            minHeight: 44,
+            justifyContent: 'center',
+            backgroundColor: 'rgba(255, 255, 255, 0.1)',
+            borderRadius: 4
+          }}
         >
           <Text style={[styles.breadcrumbText, { fontWeight: 'normal' }]}>
             Home
@@ -186,7 +187,7 @@ function renderHeaderTitle(router) {
           accessibilityElementsHidden
         />
         <Text
-          style={[styles.breadcrumbText, { fontWeight: 'bold' }]}
+          style={[styles.breadcrumbText, { fontWeight: 'bold', textDecorationLine: 'underline'}]}
           accessibilityLabel={`Current screen: ${title}`}
         >
           {title}
@@ -211,6 +212,14 @@ function renderHeaderTitle(router) {
         onPress={() => router.replace(`/${mapping.parentRoute}`)}
         accessibilityRole="button"
         accessibilityLabel={`Go to ${mapping.parentLabel}`}
+      style={{
+        padding: 8,
+        minWidth: 40,
+        minHeight: 44,
+        justifyContent: 'center',
+        backgroundColor: 'rgba(255, 255, 255, 0.1)',
+        borderRadius: 4
+      }}
       >
         <Text style={[styles.breadcrumbText, { fontWeight: 'normal' }]}>
           {mapping.parentLabel}
@@ -225,7 +234,7 @@ function renderHeaderTitle(router) {
         accessibilityElementsHidden
       />
       <Text
-        style={[styles.breadcrumbText, { fontWeight: 'bold' }]}
+        style={[styles.breadcrumbText, { fontWeight: 'bold', textDecorationLine: 'underline'}]}
         accessibilityLabel={`Current screen: ${mapping.title}`}
       >
         {mapping.title}
@@ -291,6 +300,20 @@ function CustomDrawerContent({ state, descriptors }) {
                 accessibilityLabel={label}
                 accessibilityHint={`Double tap to navigate to ${label} screen`}
               >
+                {isActive && (
+                  <View
+                    style={{
+                      position: 'absolute',
+                      left: 0, right: 0, top: 0, bottom: 0,
+                      borderWidth: 2, // Aumenta lo spessore
+                      borderColor: colors.primary,
+                      borderRadius: 8,
+                      backgroundColor: 'transparent'
+                    }}
+                    importantForAccessibility="no"
+                    accessibilityElementsHidden
+                  />
+                )}
                 {drawerIcon && (
                   <View
                     style={drawerStyles.drawerIcon}
