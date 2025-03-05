@@ -184,6 +184,7 @@ export default function WCAGGuidelinesScreen() {
                     size={28}
                     color="#0055CC"
                     accessibilityElementsHidden={true}
+                    importantForAccessibility="no-hide-descendants"
                   />
                 </View>
                 <Text style={themedStyles.cardTitle}>{guideline.title}</Text>
@@ -204,6 +205,7 @@ export default function WCAGGuidelinesScreen() {
                       color="#28A745"
                       style={themedStyles.checkIcon}
                       accessibilityElementsHidden={true}
+                      importantForAccessibility="no-hide-descendants"
                     />
                     <Text style={themedStyles.checkItemText}>{item}</Text>
                   </View>

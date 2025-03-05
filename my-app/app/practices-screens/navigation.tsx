@@ -1,18 +1,5 @@
 import React, { useState, useRef } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  TouchableOpacity,
-  TextInput,
-  AccessibilityInfo,
-  findNodeHandle,
-  NativeSyntheticEvent,
-  LayoutChangeEvent,
-  Platform,
-  Alert,
-} from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, TextInput, AccessibilityInfo, findNodeHandle, NativeSyntheticEvent, LayoutChangeEvent, Platform, Alert } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useTheme } from '../../context/ThemeContext';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -255,6 +242,3 @@ export default function LogicalFocusOrderScreen() {
     </LinearGradient>
   );
 }
-
-
-export default LogicalFocusOrderScreen;

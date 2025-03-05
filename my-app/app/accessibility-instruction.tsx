@@ -217,6 +217,7 @@ export default function AccessibilityInstructionScreen() {
               size={20}
               color={colors.primary}
               accessibilityElementsHidden={true}
+              importantForAccessibility="no-hide-descendants"
             />
           </View>
         </View>
@@ -255,5 +256,3 @@ const styles = StyleSheet.create({
     flex: 1,
   },
 });
-
-export default AccessibilityInstructionScreen;

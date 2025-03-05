@@ -65,6 +65,8 @@ function CodeSnippet({ snippet, label }) {
             name={copied ? 'checkmark' : 'copy-outline'}
             size={20}
             color={copied ? '#28A745' : colors.textSecondary}
+            accessibilityElementsHidden={true}
+            importantForAccessibility="no-hide-descendants"
           />
           <Text style={[styles.copyText, copied && styles.copiedText]}>
             {copied ? 'Copied!' : 'Copy'}
@@ -339,6 +341,8 @@ export default function AccessibleAdvancedScreen() {
                     setProgress(val);
                     AccessibilityInfo.announceForAccessibility(`Progress set to ${val}%`);
                   }}
+                accessibilityRole="button"
+                accessibilityLabel={`Set progress to ${val} percent`}
                 >
                   <Text
                     style={{
@@ -380,6 +384,7 @@ export default function AccessibleAdvancedScreen() {
                 style={{ marginTop: 8, padding: 8, borderRadius: 8, backgroundColor: '#f33' }}
                 accessibilityRole="alert"
                 accessibilityLiveRegion="assertive"
+                accessible={true}
               >
                 <Text style={{ color: '#fff', fontWeight: '600' }}>Something happened!</Text>
               </View>
@@ -400,14 +405,15 @@ export default function AccessibleAdvancedScreen() {
               maximumValue={100}
               step={1}
               value={sliderValue}
-              // Questa è la parte che causa il problema - modifichiamo:
+              // Aggiorna il valore silenziosamente durante il trascinamento
               onValueChange={(val) => {
-                // Aggiorna il valore visivamente ma non annunciare durante il trascinamento
                 setSliderValue(val);
+                // Rimuoviamo gli annunci da qui - annunceremo solo quando l'utente rilascia
               }}
               // Annuncia solo quando l'utente ha finito di trascinare
               onSlidingComplete={(val) => {
-                AccessibilityInfo.announceForAccessibility(`Value set to ${Math.round(val)}`);
+                setSliderValue(val);
+                AccessibilityInfo.announceForAccessibility(`Slider value set to ${Math.round(val)}`);
               }}
               accessibilityRole="adjustable"
               accessibilityLabel="Volume level"
@@ -437,6 +443,8 @@ export default function AccessibleAdvancedScreen() {
                     size={24}
                     // If you want always dark, replace below with color="#000"
                     color={isDarkMode ? '#1a75ff' : colors.primary}
+                    accessibilityElementsHidden={true}
+                    importantForAccessibility="no-hide-descendants"
                   />
                 </View>
                 <View style={themedStyles.featureContent}>

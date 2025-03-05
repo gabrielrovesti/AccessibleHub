@@ -362,6 +362,7 @@ export default function HomeScreen() {
             size={32}
             color={colors.primary}
             accessibilityElementsHidden
+            importantForAccessibility="no"
           />
         </TouchableOpacity>
 

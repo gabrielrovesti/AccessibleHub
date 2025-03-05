@@ -1,14 +1,5 @@
 import React, { useState } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  TouchableOpacity,
-  Linking,
-  AccessibilityInfo,
-  Platform,
-} from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Linking, AccessibilityInfo, Platform } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useTheme } from '../context/ThemeContext';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -204,15 +195,15 @@ export default function TestingToolsScreen() {
       >
         <TouchableOpacity onPress={() => toggleExpand(tool.id)} style={styles.cardHeader}>
           <View style={[styles.iconContainer, { backgroundColor: isDarkMode ? '#333' : '#f0f0f0' }]} importantForAccessibility="no">
-            <Ionicons name={tool.icon} size={24} color={colors.primary} accessibilityElementsHidden />
+            <Ionicons name={tool.icon} size={24} color={colors.primary} accessibilityElementsHidden  importantForAccessibility="no-hide-descendants"/>
           </View>
           <Text style={[styles.cardTitle, { color: colors.text, fontSize: textSizes.medium }]}>{tool.title}</Text>
           {tool.badge && (
-            <View style={styles.badge} importantForAccessibility="no">
+            <View style={styles.badge} importantForAccessibility="no" accessibilityElementsHidden={true}>
               <Text style={styles.badgeText}>{tool.badge}</Text>
             </View>
           )}
-          <Ionicons name={isOpen ? 'chevron-up' : 'chevron-down'} size={20} color={colors.textSecondary} style={{ marginLeft: 'auto' }} accessibilityElementsHidden />
+          <Ionicons name={isOpen ? 'chevron-up' : 'chevron-down'} size={20} color={colors.textSecondary} style={{ marginLeft: 'auto' }} accessibilityElementsHidden importantForAccessibility="no-hide-descendants"/>
         </TouchableOpacity>
 
         {isOpen && (
@@ -242,7 +233,7 @@ export default function TestingToolsScreen() {
                 accessibilityLabel={`Open official documentation for ${tool.title}`}
                 accessibilityHint="Opens browser"
               >
-                <Ionicons name="open-outline" size={18} color={colors.primary} style={{ marginRight: 4 }} accessibilityElementsHidden />
+                <Ionicons name="open-outline" size={18} color={colors.primary} style={{ marginRight: 4 }} accessibilityElementsHidden importantForAccessibility="no-hide-descendants"/>
                 <Text style={{ color: colors.primary, fontWeight: '600' }}>Documentation</Text>
               </TouchableOpacity>
             )}

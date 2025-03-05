@@ -120,6 +120,7 @@ const SettingRow = ({
         size={24}
         color={colors.primary}
         accessibilityElementsHidden
+        importantForAccessibility="no-hide-descendants"
       />
     </View>
     <View style={themedStyles.settingContent}>
@@ -179,7 +180,7 @@ const SettingRow = ({
             value={isDarkMode}
             onToggle={toggleDarkMode}
           />
-          <View style={themedStyles.divider} />
+          <View style={themedStyles.divider} importantForAccessibility="no" accessibilityElementsHidden={true}/>
           <SettingRow
             icon="contrast-outline"
             title="High Contrast Mode"
@@ -203,7 +204,7 @@ const SettingRow = ({
             value={isLargeText}
             onToggle={toggleLargeText}
           />
-          <View style={themedStyles.divider} />
+          <View style={themedStyles.divider} importantForAccessibility="no" accessibilityElementsHidden={true}/>
           <SettingRow
             icon="pause-outline"
             title="Reduce Motion"
@@ -227,7 +228,7 @@ const SettingRow = ({
             value={isColorFilter}
             onToggle={toggleColorFilter}
           />
-          <View style={themedStyles.divider} />
+          <View style={themedStyles.divider} importantForAccessibility="no" accessibilityElementsHidden={true}/>
           <SettingRow
             icon="resize-outline"
             title="Large Touch Targets"

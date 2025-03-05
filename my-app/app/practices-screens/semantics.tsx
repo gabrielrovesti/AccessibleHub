@@ -162,7 +162,7 @@ export default function SemanticStructureScreen() {
           <View style={themedStyles.card}>
             <View style={themedStyles.cardHeader}>
               <View style={themedStyles.iconContainer}>
-                <Ionicons name="layers-outline" size={24} color={colors.primary} />
+                <Ionicons name="layers-outline" size={24} color={colors.primary} accessibilityElementsHidden={true} importantForAccessibility="no-hide-descendants"/>
               </View>
               <Text style={themedStyles.cardTitle}>Content Hierarchy</Text>
             </View>
@@ -206,7 +206,7 @@ export default function SemanticStructureScreen() {
           <View style={themedStyles.card}>
             <View style={themedStyles.cardHeader}>
               <View style={themedStyles.iconContainer}>
-                <Ionicons name="list-outline" size={24} color={colors.primary} />
+                <Ionicons name="list-outline" size={24} color={colors.primary} accessibilityElementsHidden={true} importantForAccessibility="no-hide-descendants"/>
               </View>
               <Text style={themedStyles.cardTitle}>Navigation & Skip Links</Text>
             </View>
@@ -238,7 +238,7 @@ export default function SemanticStructureScreen() {
           <View style={themedStyles.card}>
             <View style={themedStyles.cardHeader}>
               <View style={themedStyles.iconContainer}>
-                <Ionicons name="apps-outline" size={24} color={colors.primary} />
+                <Ionicons name="apps-outline" size={24} color={colors.primary} accessibilityElementsHidden={true} importantForAccessibility="no-hide-descendants"/>
               </View>
               <Text style={themedStyles.cardTitle}>Landmarks & ARIA Roles</Text>
             </View>
@@ -253,6 +253,8 @@ export default function SemanticStructureScreen() {
                   size={20}
                   color="#28A745"
                   style={{ marginTop: 3 }}
+                  accessibilityElementsHidden={true}
+                  importantForAccessibility="no-hide-descendants"
                 />
                 <Text style={themedStyles.bulletText}>
                   Use <Text style={{ fontWeight: 'bold' }}>accessibilityRole="navigation"</Text> for top-level nav
@@ -264,6 +266,8 @@ export default function SemanticStructureScreen() {
                   size={20}
                   color="#28A745"
                   style={{ marginTop: 3 }}
+                  accessibilityElementsHidden={true}
+                  importantForAccessibility="no-hide-descendants"
                 />
                 <Text style={themedStyles.bulletText}>
                   Provide <Text style={{ fontWeight: 'bold' }}>accessibilityRole="complementary"</Text> for sidebars
@@ -275,6 +279,8 @@ export default function SemanticStructureScreen() {
                   size={20}
                   color="#28A745"
                   style={{ marginTop: 3 }}
+                  accessibilityElementsHidden={true}
+                  importantForAccessibility="no-hide-descendants"
                 />
                 <Text style={themedStyles.bulletText}>
                   Mark footers with <Text style={{ fontWeight: 'bold' }}>accessibilityRole="contentinfo"</Text>
@@ -287,7 +293,7 @@ export default function SemanticStructureScreen() {
           <View style={themedStyles.card}>
             <View style={themedStyles.cardHeader}>
               <View style={themedStyles.iconContainer}>
-                <Ionicons name="bookmark-outline" size={24} color={colors.primary} />
+                <Ionicons name="bookmark-outline" size={24} color={colors.primary} accessibilityElementsHidden={true} importantForAccessibility="no-hide-descendants"/>
               </View>
               <Text style={themedStyles.cardTitle}>Resources & Next Steps</Text>
             </View>
@@ -301,6 +307,8 @@ export default function SemanticStructureScreen() {
                   size={20}
                   color={colors.primary}
                   style={{ marginTop: 3 }}
+                  accessibilityElementsHidden={true}
+                  importantForAccessibility="no-hide-descendants"
                 />
                 <Text style={themedStyles.bulletText}>
                   W3C WAI: <Text style={{ textDecorationLine: 'underline' }}>https://www.w3.org/WAI/</Text>
@@ -312,6 +320,8 @@ export default function SemanticStructureScreen() {
                   size={20}
                   color={colors.primary}
                   style={{ marginTop: 3 }}
+                  accessibilityElementsHidden={true}
+                  importantForAccessibility="no-hide-descendants"
                 />
                 <Text style={themedStyles.bulletText}>
                   ARIA Roles: <Text style={{ textDecorationLine: 'underline' }}>https://www.w3.org/TR/wai-aria-1.2/</Text>

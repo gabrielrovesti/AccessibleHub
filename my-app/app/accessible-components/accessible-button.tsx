@@ -293,6 +293,7 @@ const DemoButton = () => (
                 size={24}
                 color={colors.primary}
                 accessibilityElementsHidden
+                importantForAccessibility="no-hide-descendants"
               />
               <View style={styles.featureContent}>
                 <Text style={[styles.featureTitle, { color: colors.text }]}>
@@ -311,6 +312,7 @@ const DemoButton = () => (
                 size={24}
                 color={colors.primary}
                 accessibilityElementsHidden
+                importantForAccessibility="no-hide-descendants"
               />
               <View style={styles.featureContent}>
                 <Text style={[styles.featureTitle, { color: colors.text }]}>
@@ -329,6 +331,7 @@ const DemoButton = () => (
                 size={24}
                 color={colors.primary}
                 accessibilityElementsHidden
+                importantForAccessibility="no-hide-descendants"
               />
               <View style={styles.featureContent}>
                 <Text style={[styles.featureTitle, { color: colors.text }]}>
@@ -359,6 +362,7 @@ const DemoButton = () => (
                   size={48}
                   color={colors.primary}
                   accessibilityElementsHidden
+                  importantForAccessibility="no-hide-descendants"
                 />
               </View>
               <Text style={themedStyles.successText}>

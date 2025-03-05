@@ -1,12 +1,5 @@
 import React, { useState } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  TouchableOpacity,
-  Platform
-} from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Platform } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useTheme } from '../../context/ThemeContext';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -252,6 +245,8 @@ export default function ScreenReaderSupportScreen() {
                 size={24}
                 color={activeSection === 'ios' ? colors.background : colors.text}
                 style={themedStyles.platformIcon}
+                accessibilityElementsHidden={true}
+                importantForAccessibility="no-hide-descendants"
               />
               <Text
                 style={[
@@ -278,6 +273,8 @@ export default function ScreenReaderSupportScreen() {
                 size={24}
                 color={activeSection === 'android' ? colors.background : colors.text}
                 style={themedStyles.platformIcon}
+                accessibilityElementsHidden={true}
+                importantForAccessibility="no-hide-descendants"
               />
               <Text
                 style={[
@@ -306,6 +303,8 @@ export default function ScreenReaderSupportScreen() {
                       name="hand-left-outline"
                       size={24}
                       color={colors.primary}
+                      accessibilityElementsHidden={true}
+                      importantForAccessibility="no-hide-descendants"
                     />
                     <Text style={themedStyles.gestureName}>{item.gesture}</Text>
                   </View>
@@ -325,7 +324,7 @@ export default function ScreenReaderSupportScreen() {
           {/* Card 1: Semantic Structure */}
           <View style={themedStyles.guideCard}>
             <View style={themedStyles.guideHeader}>
-              <Ionicons name="code-working-outline" size={24} color={colors.primary} />
+              <Ionicons name="code-working-outline" size={24} color={colors.primary} accessibilityElementsHidden={true} importantForAccessibility="no-hide-descendants"/>
               <Text style={themedStyles.guideTitle}>Semantic Structure</Text>
             </View>
             <View>
@@ -338,7 +337,7 @@ export default function ScreenReaderSupportScreen() {
                 accessibilityLabel="View semantic structure code examples"
               >
                 <Text style={themedStyles.learnMoreText}>View Code Examples</Text>
-                <Ionicons name="arrow-forward" size={16} color={colors.primary} />
+                <Ionicons name="arrow-forward" size={16} color={colors.primary} accessibilityElementsHidden={true} importantForAccessibility="no-hide-descendants"/>
               </TouchableOpacity>
             </View>
           </View>
@@ -346,7 +345,7 @@ export default function ScreenReaderSupportScreen() {
           {/* Card 2: Content Descriptions */}
           <View style={themedStyles.guideCard}>
             <View style={themedStyles.guideHeader}>
-              <Ionicons name="text-outline" size={24} color={colors.primary} />
+              <Ionicons name="text-outline" size={24} color={colors.primary} accessibilityElementsHidden={true} importantForAccessibility="no-hide-descendants"/>
               <Text style={themedStyles.guideTitle}>Content Descriptions</Text>
             </View>
             <View>
@@ -359,7 +358,7 @@ export default function ScreenReaderSupportScreen() {
                 accessibilityLabel="View content description guidelines"
               >
                 <Text style={themedStyles.learnMoreText}>View Guidelines</Text>
-                <Ionicons name="arrow-forward" size={16} color={colors.primary} />
+                <Ionicons name="arrow-forward" size={16} color={colors.primary} accessibilityElementsHidden={true} importantForAccessibility="no-hide-descendants"/>
               </TouchableOpacity>
             </View>
           </View>
@@ -367,7 +366,7 @@ export default function ScreenReaderSupportScreen() {
           {/* Card 3: Interactive Elements */}
           <View style={themedStyles.guideCard}>
             <View style={themedStyles.guideHeader}>
-              <Ionicons name="options-outline" size={24} color={colors.primary} />
+              <Ionicons name="options-outline" size={24} color={colors.primary} accessibilityElementsHidden={true} importantForAccessibility="no-hide-descendants"/>
               <Text style={themedStyles.guideTitle}>Interactive Elements</Text>
             </View>
             <View>
@@ -380,7 +379,7 @@ export default function ScreenReaderSupportScreen() {
                 accessibilityLabel="View interactive elements examples"
               >
                 <Text style={themedStyles.learnMoreText}>View Examples</Text>
-                <Ionicons name="arrow-forward" size={16} color={colors.primary} />
+                <Ionicons name="arrow-forward" size={16} color={colors.primary} accessibilityElementsHidden={true} importantForAccessibility="no-hide-descendants"/>
               </TouchableOpacity>
             </View>
           </View>
@@ -399,7 +398,7 @@ export default function ScreenReaderSupportScreen() {
               'Validate custom actions work correctly',
             ].map((checkItem, idx) => (
               <View key={idx} style={themedStyles.checklistItem}>
-                <Ionicons name="checkmark-circle" size={24} color="#28A745" />
+                <Ionicons name="checkmark-circle" size={24} color="#28A745" accessibilityElementsHidden={true} importantForAccessibility="no-hide-descendants"/>
                 <Text style={themedStyles.checklistText}>{checkItem}</Text>
               </View>
             ))}

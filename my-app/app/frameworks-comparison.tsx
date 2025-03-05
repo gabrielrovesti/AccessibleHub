@@ -1,13 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  TouchableOpacity,
-  AccessibilityInfo,
-  Platform,
-} from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, AccessibilityInfo, Platform } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useTheme } from '../context/ThemeContext';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -1088,6 +1080,7 @@ export default function FrameworkComparisonScreen() {
               size={18}
               color={active ? colors.primary : colors.textSecondary}
               accessibilityElementsHidden
+              importantForAccessibility="no-hide-descendants"
             />
             <Text
               style={[
@@ -1121,7 +1114,7 @@ export default function FrameworkComparisonScreen() {
         {/* Quick Stats */}
         <View style={themedStyles.quickStats}>
           <View style={themedStyles.statItem}>
-            <Ionicons name="code-slash" size={24} color={colors.primary} />
+            <Ionicons name="code-slash" size={24} color={colors.primary} importantForAccessibility="no-hide-descendants"/>
             <Text style={themedStyles.statLabel}>Language</Text>
             <Text style={themedStyles.statValue}>{fw.development.language}</Text>
           </View>
@@ -1161,6 +1154,7 @@ export default function FrameworkComparisonScreen() {
                 size={24}
                 color={isDarkMode ? colors.text : '#000'}
                 accessibilityElementsHidden
+                importantForAccessibility="no-hide-descendants"
               />
               <Text style={themedStyles.platformText}>{sr.ios}</Text>
             </View>
@@ -1189,6 +1183,7 @@ export default function FrameworkComparisonScreen() {
                   size={20}
                   color="#28A745"
                   accessibilityElementsHidden
+                  importantForAccessibility="no-hide-descendants"
                 />
                 <Text style={themedStyles.featureText}>{feature}</Text>
               </View>
@@ -1209,6 +1204,7 @@ export default function FrameworkComparisonScreen() {
                   size={20}
                   color="#28A745"
                   accessibilityElementsHidden
+                  importantForAccessibility="no-hide-descendants"
                 />
                 <Text style={themedStyles.featureText}>{feature}</Text>
               </View>

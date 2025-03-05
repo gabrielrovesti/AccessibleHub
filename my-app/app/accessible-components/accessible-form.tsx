@@ -665,9 +665,9 @@ export default function AccessibleFormExample() {
                 {/* Code snippet */}
                 <View
                   style={themedStyles.codeCard}
-                  accessible
+                  accessible={true}
                   accessibilityRole="text"
-                  accessibilityLabel="Form component code example with accessibility features."
+                  accessibilityLabel="Code example for accessible form implementation"
                 >
                   <Text style={themedStyles.codeText}>
                     {codeExample}
@@ -731,6 +731,7 @@ export default function AccessibleFormExample() {
                         size={24}
                         color={isDarkMode ? '#1a75ff' : colors.primary}
                         accessibilityElementsHidden
+                        importantForAccessibility="no-hide-descendants"
                       />
                     </View>
                   <View style={styles.featureContent}>
@@ -752,7 +753,8 @@ export default function AccessibleFormExample() {
           visible={showSuccessModal}
           transparent
           animationType="fade"
-          accessibilityViewIsModal
+          accessibilityViewIsModal={true}
+          accessibilityLiveRegion="polite"
         >
           <View
             style={[
@@ -764,8 +766,11 @@ export default function AccessibleFormExample() {
               },
             ]}
           >
-            <View style={themedStyles.successModalContainer}>
-              <Ionicons name="checkmark-circle" size={48} color="#28A745" accessibilityElementsHidden />
+            <View
+            style={themedStyles.successModalContainer}
+            accessibilityLabel="Form submitted successfully"
+            >
+              <Ionicons name="checkmark-circle" size={48} color="#28A745" accessibilityElementsHidden={true} importantForAccessibility="no-hide-descendants"/>
               <Text style={themedStyles.successTitle}>Success!</Text>
               <Text style={themedStyles.successMessage}>
                 Your form has been submitted successfully.

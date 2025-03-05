@@ -229,6 +229,7 @@ export default function BestPracticesScreen() {
                     size={16}
                     color={colors.textSecondary}
                     accessibilityElementsHidden
+                    importantForAccessibility="no-hide-descendants"
                   />
                   <Text style={themedStyles.featureText}>Success Criteria</Text>
                 </View>
@@ -250,6 +251,7 @@ export default function BestPracticesScreen() {
               color={colors.textSecondary}
               style={themedStyles.chevron}
               accessibilityElementsHidden
+              importantForAccessibility="no-hide-descendants"
             />
           </TouchableOpacity>
 
@@ -317,6 +319,7 @@ export default function BestPracticesScreen() {
               color={colors.textSecondary}
               style={themedStyles.chevron}
               accessibilityElementsHidden
+              importantForAccessibility="no-hide-descendants"
             />
           </TouchableOpacity>
 
@@ -384,6 +387,7 @@ export default function BestPracticesScreen() {
               color={colors.textSecondary}
               style={themedStyles.chevron}
               accessibilityElementsHidden
+              importantForAccessibility="no-hide-descendants"
             />
           </TouchableOpacity>
 
@@ -451,6 +455,7 @@ export default function BestPracticesScreen() {
               color={colors.textSecondary}
               style={themedStyles.chevron}
               accessibilityElementsHidden
+              importantForAccessibility="no-hide-descendants"
             />
           </TouchableOpacity>
 
@@ -518,6 +523,7 @@ export default function BestPracticesScreen() {
               color={colors.textSecondary}
               style={themedStyles.chevron}
               accessibilityElementsHidden
+              importantForAccessibility="no-hide-descendants"
             />
           </TouchableOpacity>
         </View>
