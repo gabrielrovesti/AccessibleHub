@@ -162,24 +162,51 @@ const DemoButton = () => (
       fontSize: 14,
       lineHeight: 20,
     },
-    featuresContainer: {
+    featuresSection: {
+      marginTop: 24,
+      paddingHorizontal: 16,
+    },
+    featuresTitle: {
+      color: colors.text,
+      fontSize: textSizes.large,
+      fontWeight: '600',
+      marginBottom: 16,
+    },
+    featureCard: {
       backgroundColor: colors.surface,
-      borderRadius: 12,
-      padding: 20,
+      borderRadius: 16,
+      padding: 16,
+      marginBottom: 12,
       ...cardShadowStyle,
       borderWidth: isDarkMode ? 1 : 0,
       borderColor: isDarkMode ? colors.border : 'transparent',
-      marginTop: 16,
     },
-    featureItem: {
+    featureRow: {
       flexDirection: 'row',
       alignItems: 'flex-start',
       gap: 12,
-      marginBottom: 16,
-      flexWrap: 'wrap',
+    },
+    featureIconContainer: {
+      width: 40,
+      height: 40,
+      borderRadius: 20,
+      backgroundColor: isDarkMode ? `${colors.primary}20` : '#E8F1FF',
+      alignItems: 'center',
+      justifyContent: 'center',
     },
     featureContent: {
       flex: 1,
+    },
+    featureTitle: {
+      color: colors.text,
+      fontSize: textSizes.medium,
+      fontWeight: '600',
+      marginBottom: 4,
+    },
+    featureDescription: {
+      color: colors.textSecondary,
+      fontSize: textSizes.small + 1,
+      lineHeight: 20,
     },
     modalOverlay: {
       flex: 1,
@@ -281,68 +308,49 @@ const DemoButton = () => (
 
 
         {/* ACCESSIBILITY FEATURES SECTION */}
-        <View style={themedStyles.section}>
-          <Text style={[styles.sectionTitle, { color: colors.text }]}>
+        <View style={themedStyles.featuresSection}>
+          <Text style={themedStyles.featuresTitle}>
             Accessibility Features
           </Text>
-          <View style={themedStyles.featuresContainer}>
-            {/* Feature 1 */}
-            <View style={styles.featureItem} importantForAccessibility="no">
-              <Ionicons
-                name="resize"
-                size={24}
-                color={colors.primary}
-                accessibilityElementsHidden
-                importantForAccessibility="no-hide-descendants"
-              />
-              <View style={styles.featureContent}>
-                <Text style={[styles.featureTitle, { color: colors.text }]}>
-                  Minimum Touch Target
-                </Text>
-                <Text style={[styles.featureDescription, { color: colors.textSecondary }]}>
-                  44x44 points ensures the button is easy to tap
-                </Text>
+          {[
+            {
+              icon: 'resize',
+              title: 'Minimum Touch Target',
+              description: '44x44 points ensures the button is easy to tap'
+            },
+            {
+              icon: 'text',
+              title: 'Screen Reader Label',
+              description: 'Clear description announces the button\'s purpose'
+            },
+            {
+              icon: 'information-circle',
+              title: 'Action Hint',
+              description: 'Additional context about what happens on activation'
+            }
+          ].map((feature, index) => (
+            <View key={index} style={themedStyles.featureCard}>
+              <View style={themedStyles.featureRow}>
+                <View style={themedStyles.featureIconContainer}>
+                  <Ionicons
+                    name={feature.icon}
+                    size={24}
+                    color={isDarkMode ? '#1a75ff' : colors.primary}
+                    accessibilityElementsHidden={true}
+                    importantForAccessibility="no-hide-descendants"
+                  />
+                </View>
+                <View style={themedStyles.featureContent}>
+                  <Text style={themedStyles.featureTitle}>
+                    {feature.title}
+                  </Text>
+                  <Text style={themedStyles.featureDescription}>
+                    {feature.description}
+                  </Text>
+                </View>
               </View>
             </View>
-
-            {/* Feature 2 */}
-            <View style={styles.featureItem} importantForAccessibility="no">
-              <Ionicons
-                name="text"
-                size={24}
-                color={colors.primary}
-                accessibilityElementsHidden
-                importantForAccessibility="no-hide-descendants"
-              />
-              <View style={styles.featureContent}>
-                <Text style={[styles.featureTitle, { color: colors.text }]}>
-                  Screen Reader Label
-                </Text>
-                <Text style={[styles.featureDescription, { color: colors.textSecondary }]}>
-                  Clear description announces the button's purpose
-                </Text>
-              </View>
-            </View>
-
-            {/* Feature 3 */}
-            <View style={styles.featureItem} importantForAccessibility="no">
-              <Ionicons
-                name="information-circle"
-                size={24}
-                color={colors.primary}
-                accessibilityElementsHidden
-                importantForAccessibility="no-hide-descendants"
-              />
-              <View style={styles.featureContent}>
-                <Text style={[styles.featureTitle, { color: colors.text }]}>
-                  Action Hint
-                </Text>
-                <Text style={[styles.featureDescription, { color: colors.textSecondary }]}>
-                  Additional context about what happens on activation
-                </Text>
-              </View>
-            </View>
-          </View>
+          ))}
         </View>
 
         {/* SUCCESS MODAL */}
@@ -393,26 +401,5 @@ const styles = StyleSheet.create({
   buttonText: {
     fontSize: 16,
     fontWeight: '600',
-  },
-  featureItem: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    gap: 12,
-    marginBottom: 16,
-    flexWrap: 'wrap',
-  },
-  featureContent: {
-    flex: 1,
-  },
-  featureTitle: {
-    fontSize: 16,
-    fontWeight: '600',
-    flexShrink: 1,
-  },
-  featureDescription: {
-    fontSize: 14,
-    lineHeight: 20,
-    flexShrink: 1,
-    flexWrap: 'wrap',
   },
 });

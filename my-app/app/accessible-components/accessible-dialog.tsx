@@ -325,28 +325,52 @@ export default function AccessibleDialogExample() {
     lineHeight: 24,
   },
   // --- Features Section Updated for Advanced Style ---
-  featureIconContainer: {
-    width: 48, // increased from 40
-    height: 48,
-    borderRadius: 24,
-    backgroundColor: isDarkMode ? `${colors.primary}20` : '#E8F1FF',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  featureContent: {
-    flex: 1,
-  },
+    featuresSection: {
+      marginTop: 24,
+      paddingHorizontal: 16,
+    },
+    featuresTitle: {
+      color: colors.text,
+      fontSize: textSizes.large,
+      fontWeight: '600',
+      marginBottom: 16,
+    },
+    featureCard: {
+      backgroundColor: colors.surface,
+      borderRadius: 16,
+      padding: 16,
+      marginBottom: 12,
+      ...cardShadowStyle,
+      borderWidth: isDarkMode ? 1 : 0,
+      borderColor: isDarkMode ? colors.border : 'transparent',
+    },
+    featureRow: {
+      flexDirection: 'row',
+      alignItems: 'flex-start',
+      gap: 12,
+    },
+    featureContent: {
+        flex: 1,
+    },
   featureTitle: {
     color: colors.text,
-    fontSize: textSizes.large, // larger font size for advanced look
-    fontWeight: '700', // increased weight
+    fontSize: textSizes.large,
+    fontWeight: '700',
     marginBottom: 6,
   },
   featureDescription: {
     color: colors.textSecondary,
-    fontSize: textSizes.medium, // increased to medium size
+    fontSize: textSizes.medium,
     lineHeight: 24,
   },
+    featureIconContainer: {
+      width: 48,
+      height: 48,
+      borderRadius: 24,
+      backgroundColor: isDarkMode ? `${colors.primary}20` : '#E8F1FF',
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
 };
 
 
@@ -522,75 +546,50 @@ export default function AccessibleDialogExample() {
 
 
         {/* ACCESSIBILITY FEATURES SECTION */}
-        <View style={themedStyles.section}>
-          <Text style={themedStyles.sectionTitle}>Accessibility Features</Text>
-          <View style={themedStyles.featuresCard}>
-            {[
-              {
-                icon: 'scan-outline',
-                title: 'Focus Management',
-                description:
-                  'Proper focus trapping and restoration when the dialog opens and closes',
-              },
-              {
-                icon: 'keypad-outline',
-                title: 'Keyboard Navigation',
-                description: 'Full keyboard support including escape key to close the dialog',
-              },
-              {
-                icon: 'megaphone-outline',
-                title: 'Screen Reader Support',
-                description: 'Proper ARIA roles and live region announcements',
-              },
-            ].map((feature, idx) => (
-              <View key={idx} style={styles.featureItem} importantForAccessibility="no">
-                <View style={styles.featureIconContainer}>
+        <View style={themedStyles.featuresSection}>
+          <Text style={themedStyles.featuresTitle}>Accessibility Features</Text>
+          {[
+            {
+              icon: 'scan-outline',
+              title: 'Focus Management',
+              description:
+                'Proper focus trapping and restoration when the dialog opens and closes',
+            },
+            {
+              icon: 'keypad-outline',
+              title: 'Keyboard Navigation',
+              description: 'Full keyboard support including escape key to close the dialog',
+            },
+            {
+              icon: 'megaphone-outline',
+              title: 'Screen Reader Support',
+              description: 'Proper ARIA roles and live region announcements',
+            },
+          ].map((feature, index) => (
+            <View key={index} style={themedStyles.featureCard}>
+              <View style={themedStyles.featureRow}>
+                <View style={themedStyles.featureIconContainer}>
                   <Ionicons
                     name={feature.icon}
                     size={24}
                     color={isDarkMode ? '#1a75ff' : colors.primary}
-                    accessibilityElementsHidden
+                    accessibilityElementsHidden={true}
                     importantForAccessibility="no-hide-descendants"
                   />
                 </View>
-                <View style={styles.featureContent}>
-                  <Text style={[styles.featureTitle, { color: colors.text }]}>
+                <View style={themedStyles.featureContent}>
+                  <Text style={themedStyles.featureTitle}>
                     {feature.title}
                   </Text>
-                  <Text style={[styles.featureDescription, { color: colors.textSecondary }]}>
+                  <Text style={themedStyles.featureDescription}>
                     {feature.description}
                   </Text>
                 </View>
               </View>
-            ))}
-          </View>
+            </View>
+          ))}
         </View>
       </ScrollView>
     </LinearGradient>
   );
 }
-
-/* ------------------------------------------
-   LOCAL STYLES
-   Themed overrides exist in themedStyles above
--------------------------------------------*/
-const styles = StyleSheet.create({
-  featureItem: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    gap: 12,
-    marginBottom: 12,
-  },
-  featureContent: {
-    flex: 1,
-  },
-  featureTitle: {
-    fontSize: 16,
-    fontWeight: '600',
-    marginBottom: 4,
-  },
-  featureDescription: {
-    fontSize: 14,
-    lineHeight: 20,
-  },
-});

@@ -13,23 +13,33 @@ export default function AccessibleMediaExample() {
   // Ottieni le dimensioni dello schermo
   const { width: screenWidth } = Dimensions.get('window');
 
-  // Calcola dimensioni responsive dell'immagine
-  const imageWidth = screenWidth * 0.85; // 85% della larghezza schermo
-  const imageHeight = imageWidth * 0.67; // Mantiene aspect ratio 3:2
+  const calculateImageSize = () => {
+    // Usa il 75% della larghezza dello schermo ma con un massimo di 300px
+    const maxWidth = Math.min(screenWidth * 0.75, 300);
+
+    // Per immagini quadrate (512x512 o 256x256)
+    // Manteniamo la stessa dimensione per larghezza e altezza
+    return {
+      width: maxWidth,
+      height: maxWidth,
+    };
+  };
+
+  const imageSize = calculateImageSize();
 
   const images = [
     {
-      uri: require('../../assets/images/placeholder1.png'),
+      uri: require('../../assets/images/interface.png'),
       alt: "A placeholder image (first example)",
       role: "Interface example",
     },
     {
-      uri: require('../../assets/images/placeholder2.png'),
+      uri: require('../../assets/images/navigation.png'),
       alt: "A placeholder image (second example)",
       role: "Navigation example",
     },
     {
-      uri: require('../../assets/images/placeholder3.png'),
+      uri: require('../../assets/images/controls.png'),
       alt: "A placeholder image (third example)",
       role: "Controls example",
     },
@@ -125,21 +135,59 @@ export default function AccessibleMediaExample() {
       marginHorizontal: 16,
     },
     demoImage: {
-      width: 300,
-      height: 200,
+      width: imageSize.width,
+      height: imageSize.height,
       borderRadius: 8,
       marginBottom: 12,
-      resizeMode: 'cover', // Assicura che l'immagine si adatti correttamente
-      alignSelf: 'center', // Centra l'immagine orizzontalmente
+      resizeMode: 'contain',
+      alignSelf: 'center',
     },
-  featureIconContainer: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: isDarkMode ? `${colors.primary}20` : '#E8F1FF',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
+featuresSection: {
+  marginTop: 24,
+  paddingHorizontal: 16,
+},
+featuresTitle: {
+  color: colors.text,
+  fontSize: textSizes.large,
+  fontWeight: '600',
+  marginBottom: 16,
+},
+featureCard: {
+  backgroundColor: colors.surface,
+  borderRadius: 16,
+  padding: 16,
+  marginBottom: 12,
+  ...cardShadowStyle,
+  borderWidth: isDarkMode ? 1 : 0,
+  borderColor: isDarkMode ? colors.border : 'transparent',
+},
+featureRow: {
+  flexDirection: 'row',
+  alignItems: 'flex-start',
+  gap: 12,
+},
+featureIconContainer: {
+  width: 40,
+  height: 40,
+  borderRadius: 20,
+  backgroundColor: isDarkMode ? `${colors.primary}20` : '#E8F1FF',
+  alignItems: 'center',
+  justifyContent: 'center',
+},
+featureContent: {
+  flex: 1,
+},
+featureTitle: {
+  color: colors.text,
+  fontSize: textSizes.medium,
+  fontWeight: '600',
+  marginBottom: 4,
+},
+featureDescription: {
+  color: colors.textSecondary,
+  fontSize: textSizes.small + 1,
+  lineHeight: 20,
+},
     controls: {
       flexDirection: 'row',
       justifyContent: 'space-between',
@@ -220,16 +268,6 @@ export default function AccessibleMediaExample() {
       fontSize: 14,
       lineHeight: 20,
       color: '#fff',
-    },
-    featuresCard: {
-      backgroundColor: colors.surface,
-      borderRadius: 16,
-      padding: 16,
-      marginTop: 16,
-      ...cardShadowStyle,
-      borderWidth: isDarkMode ? 1 : 0,
-      borderColor: isDarkMode ? colors.border : 'transparent',
-      marginHorizontal: 16,
     },
     sectionTitle: {
       color: colors.text,
@@ -399,77 +437,49 @@ export default function AccessibleMediaExample() {
 
 
         {/* ACCESSIBILITY FEATURES SECTION */}
-        <View style={themedStyles.section}>
-          <Text style={themedStyles.sectionTitle}>Accessibility Features</Text>
-          <View style={themedStyles.featuresCard}>
-            {[
-              {
-                icon: 'text-outline',
-                title: 'Alternative Text',
-                description: 'Descriptive text that conveys the content and function of the image',
-              },
-              {
-                icon: 'megaphone-outline',
-                title: 'Role Announcement',
-                description: 'Screen readers announce the element as an image',
-              },
-              {
-                icon: 'hand-left-outline',
-                title: 'Touch Target',
-                description: 'Interactive images should have adequate touch targets',
-              },
-            ].map((feature, idx) => (
-              <View key={idx} style={styles.featureItem} importantForAccessibility="no">
+        <View style={themedStyles.featuresSection}>
+          <Text style={themedStyles.featuresTitle}>Accessibility Features</Text>
+          {[
+            {
+              icon: 'text-outline',
+              title: 'Alternative Text',
+              description: 'Descriptive text that conveys the content and function of the image',
+            },
+            {
+              icon: 'megaphone-outline',
+              title: 'Role Announcement',
+              description: 'Screen readers announce the element as an image',
+            },
+            {
+              icon: 'hand-left-outline',
+              title: 'Touch Target',
+              description: 'Interactive images should have adequate touch targets',
+            },
+          ].map((feature, index) => (
+            <View key={index} style={themedStyles.featureCard}>
+              <View style={themedStyles.featureRow}>
                 <View style={themedStyles.featureIconContainer}>
                   <Ionicons
                     name={feature.icon}
                     size={24}
                     color={isDarkMode ? '#1a75ff' : colors.primary}
-                    accessibilityElementsHidden
+                    accessibilityElementsHidden={true}
                     importantForAccessibility="no-hide-descendants"
                   />
                 </View>
-                <View style={styles.featureContent}>
-                  <Text style={[styles.featureTitle, { color: colors.text }]}>{feature.title}</Text>
-                  <Text style={[styles.featureDescription, { color: colors.textSecondary }]}>
+                <View style={themedStyles.featureContent}>
+                  <Text style={themedStyles.featureTitle}>
+                    {feature.title}
+                  </Text>
+                  <Text style={themedStyles.featureDescription}>
                     {feature.description}
                   </Text>
                 </View>
               </View>
-            ))}
-          </View>
+            </View>
+          ))}
         </View>
       </ScrollView>
     </LinearGradient>
   );
 }
-
-// Local styling for container sections, feature items, etc.
-const styles = StyleSheet.create({
-  featureItem: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    gap: 12,
-    marginBottom: 12,
-  },
-  featureContent: {
-    flex: 1,
-  },
-  featureTitle: {
-    fontSize: 16,
-    fontWeight: '600',
-    marginBottom: 4,
-  },
-  featureDescription: {
-    fontSize: 14,
-    lineHeight: 20,
-  },
-  controlButton: {
-    padding: 8,
-  },
-  altTextButton: {
-    paddingVertical: 8,
-    paddingHorizontal: 16,
-    borderRadius: 8,
-  },
-});

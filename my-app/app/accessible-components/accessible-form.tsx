@@ -302,6 +302,52 @@ export default function AccessibleFormExample() {
       marginTop: 8,
       fontStyle: 'italic',
     },
+    featuresSection: {
+      marginTop: 24,
+      paddingHorizontal: 16,
+    },
+    featuresTitle: {
+      color: colors.text,
+      fontSize: textSizes.large,
+      fontWeight: '600',
+      marginBottom: 16,
+    },
+    featureCard: {
+      backgroundColor: colors.surface,
+      borderRadius: 16,
+      padding: 16,
+      marginBottom: 12,
+      ...cardShadowStyle,
+      borderWidth: isDarkMode ? 1 : 0,
+      borderColor: isDarkMode ? colors.border : 'transparent',
+    },
+    featureRow: {
+      flexDirection: 'row',
+      alignItems: 'flex-start',
+      gap: 12,
+    },
+    featureIconContainer: {
+      width: 40,
+      height: 40,
+      borderRadius: 20,
+      backgroundColor: isDarkMode ? `${colors.primary}20` : '#E8F1FF',
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    featureContent: {
+      flex: 1,
+    },
+    featureTitle: {
+      color: colors.text,
+      fontSize: textSizes.medium,
+      fontWeight: '600',
+      marginBottom: 4,
+    },
+    featureDescription: {
+      color: colors.textSecondary,
+      fontSize: textSizes.small + 1,
+      lineHeight: 20,
+    },
   };
 
   // 2) Handlers for Date/Time pickers
@@ -690,74 +736,62 @@ export default function AccessibleFormExample() {
         </View>
 
         {/* 3) ACCESSIBILITY FEATURES CARD */}
-        <View style={themedStyles.section}>
-          <View style={themedStyles.demoCard}>
-            <Text style={[styles.sectionTitle, { color: colors.text, marginBottom: 12 }]}>
-              Accessibility Features
-            </Text>
-
-            {/* Features List */}
-            <View style={styles.featuresList}>
-              {[
-                {
-                  icon: 'text-outline',
-                  title: 'Input Labels',
-                  description:
-                    'Clear, descriptive labels that properly associate with form controls',
-                },
-                {
-                  icon: 'information-circle-outline',
-                  title: 'Semantic Roles',
-                  description:
-                    'Proper role assignments for form controls (radio, checkbox, button)',
-                },
-                {
-                  icon: 'alert-circle-outline',
-                  title: 'Error States',
-                  description:
-                    'Clear error messages and validation feedback for screen readers',
-                },
-                {
-                  icon: 'hand-left-outline',
-                  title: 'Touch Targets',
-                  description:
-                    'Adequate sizing for interactive elements (minimum 44x44 points)',
-                },
-                {
-                  icon: 'sync-outline',
-                  title: 'State Management',
-                  description:
-                    'Proper announcements for selection controls and submit button',
-                },
-                {
-                  icon: 'calendar-outline',
-                  title: 'Date/Time Pickers',
-                  description:
-                    'Integration with native pickers, with announced changes for screen readers',
-                },
-              ].map((feature, idx) => (
-                <View key={idx} style={styles.featureItem} importantForAccessibility="no">
-                    <View style={themedStyles.featureIconContainer}>
-                      <Ionicons
-                        name={feature.icon}
-                        size={24}
-                        color={isDarkMode ? '#1a75ff' : colors.primary}
-                        accessibilityElementsHidden
-                        importantForAccessibility="no-hide-descendants"
-                      />
-                    </View>
-                  <View style={styles.featureContent}>
-                    <Text style={[styles.featureTitle, { color: colors.text }]}>
-                      {feature.title}
-                    </Text>
-                    <Text style={[styles.featureDescription, { color: colors.textSecondary }]}>
-                      {feature.description}
-                    </Text>
-                  </View>
+        <View style={themedStyles.featuresSection}>
+          <Text style={themedStyles.featuresTitle}>Accessibility Features</Text>
+          {[
+            {
+              icon: 'text-outline',
+              title: 'Input Labels',
+              description: 'Clear, descriptive labels that properly associate with form controls',
+            },
+            {
+              icon: 'information-circle-outline',
+              title: 'Semantic Roles',
+              description: 'Proper role assignments for form controls (radio, checkbox, button)',
+            },
+            {
+              icon: 'alert-circle-outline',
+              title: 'Error States',
+              description: 'Clear error messages and validation feedback for screen readers',
+            },
+            {
+              icon: 'hand-left-outline',
+              title: 'Touch Targets',
+              description: 'Adequate sizing for interactive elements (minimum 44x44 points)',
+            },
+            {
+              icon: 'sync-outline',
+              title: 'State Management',
+              description: 'Proper announcements for selection controls and submit button',
+            },
+            {
+              icon: 'calendar-outline',
+              title: 'Date/Time Pickers',
+              description: 'Integration with native pickers, with announced changes for screen readers',
+            },
+          ].map((feature, index) => (
+            <View key={index} style={themedStyles.featureCard}>
+              <View style={themedStyles.featureRow}>
+                <View style={themedStyles.featureIconContainer}>
+                  <Ionicons
+                    name={feature.icon}
+                    size={24}
+                    color={isDarkMode ? '#1a75ff' : colors.primary}
+                    accessibilityElementsHidden={true}
+                    importantForAccessibility="no-hide-descendants"
+                  />
                 </View>
-              ))}
+                <View style={themedStyles.featureContent}>
+                  <Text style={themedStyles.featureTitle}>
+                    {feature.title}
+                  </Text>
+                  <Text style={themedStyles.featureDescription}>
+                    {feature.description}
+                  </Text>
+                </View>
+              </View>
             </View>
-          </View>
+          ))}
         </View>
 
         {/* SUCCESS MODAL */}
@@ -796,8 +830,7 @@ export default function AccessibleFormExample() {
 }
 
 /* ---------------------------------------
-   LOCAL STYLES (some overridden by
-   themedStyles)
+   LOCAL STYLES per elementi form-specifici
 ----------------------------------------*/
 const styles = StyleSheet.create({
   container: {
@@ -890,34 +923,6 @@ const styles = StyleSheet.create({
   submitButtonText: {
     fontSize: 16,
     fontWeight: '600',
-  },
-  featuresList: {
-    gap: 16,
-  },
-  featureItem: {
-    flexDirection: 'row',
-    gap: 12,
-    alignItems: 'flex-start',
-  },
-  featureIconContainer: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: '#E8F1FF',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  featureContent: {
-    flex: 1,
-  },
-  featureTitle: {
-    fontSize: 16,
-    fontWeight: '600',
-    marginBottom: 4,
-  },
-  featureDescription: {
-    fontSize: 14,
-    lineHeight: 20,
   },
   modalOverlay: {
     flex: 1,

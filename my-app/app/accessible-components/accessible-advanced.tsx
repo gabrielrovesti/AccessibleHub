@@ -468,8 +468,7 @@ export default function AccessibleAdvancedScreen() {
 }
 
 // Code snippets definitions
-const tabsSnippet = `// Minimal Tabs
-const [selectedTab, setSelectedTab] = useState(0);
+const tabsSnippet = `const [selectedTab, setSelectedTab] = useState(0);
 const tabs = ['Tab One', 'Tab Two', 'Tab Three'];
 
 <View style={{ flexDirection: 'row' }} accessibilityRole="tablist">
@@ -487,8 +486,7 @@ const tabs = ['Tab One', 'Tab Two', 'Tab Three'];
 </View>
 <Text>Current tab: {tabs[selectedTab]}</Text>`;
 
-const progressSnippet = `// Basic progress bar
-const [progress, setProgress] = useState(0);
+const progressSnippet = `const [progress, setProgress] = useState(0);
 
 const progressAnimated = new Animated.Value(progress);
 
@@ -512,8 +510,7 @@ useEffect(() => {
 />
 `;
 
-const alertsSnippet = `// Minimal toast/alert
-const [showToast, setShowToast] = useState(false);
+const alertsSnippet = `const [showToast, setShowToast] = useState(false);
 
 function showToastMessage() {
   setShowToast(true);
@@ -527,9 +524,7 @@ function showToastMessage() {
   </View>
 )}`;
 
-const sliderSnippet = `
-// Minimal slider
-import Slider from '@react-native-community/slider';
+const sliderSnippet = `import Slider from '@react-native-community/slider';
 
 <Slider
   minimumValue={0}
@@ -539,7 +534,6 @@ import Slider from '@react-native-community/slider';
     setSliderValue(val);
     AccessibilityInfo.announceForAccessibility(\`Slider value set to \${Math.round(val)}\`);
   }}
-  style={{ width: '100%' }}
   accessibilityRole="adjustable"
   accessibilityHint="Adjust value using swipe gestures when focused"
 />
