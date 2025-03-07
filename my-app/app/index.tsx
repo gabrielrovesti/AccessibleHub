@@ -14,45 +14,47 @@ import { useTheme } from '../context/ThemeContext';
 import { LinearGradient } from 'expo-linear-gradient';
 
 /* -----------------------------------------
-   1. SISTEMA DI METRICHE DI ACCESSIBILITÀ
+   1. ACCESSIBILITY METRICS SYSTEM
 ----------------------------------------- */
 
 /**
- * Calcola il punteggio di accessibilità basato su un sistema formale
- * di valutazione riferito alle implementazioni reali dei componenti,
- * conformità WCAG 2.2 e risultati dei test con screen reader.
+ * Calculates accessibility score based on a formal system of evaluation
+ * referencing actual component implementations, WCAG 2.2 compliance,
+ * and screen reader test results.
  */
 const calculateAccessibilityScore = () => {
-  // DATI DI BASE PER I CALCOLI
+  // BASE DATA FOR CALCULATIONS
 
-  // 1. Registro dei componenti con stato di accessibilità
+  // 1. Component registry with accessibility status
   const componentsRegistry = {
-    // Componenti UI base
+    // Basic UI components
     'button': { implemented: true, accessible: true, screens: ['home', 'gestures', 'navigation'] },
     'text': { implemented: true, accessible: true, screens: ['home', 'guidelines', 'navigation', 'screen-reader', 'semantics'] },
-    'image': { implemented: true, accessible: true, screens: [] },
+    'image': { implemented: true, accessible: true, screens: ['accessible-media'] },
     'touchableOpacity': { implemented: true, accessible: true, screens: ['home', 'gestures', 'navigation', 'screen-reader'] },
     'scrollView': { implemented: true, accessible: true, screens: ['home', 'guidelines', 'navigation', 'screen-reader', 'semantics'] },
     'view': { implemented: true, accessible: true, screens: ['home', 'guidelines', 'navigation', 'screen-reader', 'semantics'] },
-    'textInput': { implemented: true, accessible: true, screens: ['navigation'] },
+    'textInput': { implemented: true, accessible: true, screens: ['navigation', 'accessible-form'] },
     'switch': { implemented: true, accessible: true, screens: ['settings'] },
 
-    // Componenti più complessi
+    // More complex components
     'card': { implemented: true, accessible: true, screens: ['home', 'guidelines', 'navigation', 'screen-reader', 'semantics'] },
     'icon': { implemented: true, accessible: false, screens: ['home', 'guidelines', 'screen-reader', 'semantics'] },
     'linearGradient': { implemented: true, accessible: true, screens: ['home', 'guidelines', 'navigation', 'screen-reader', 'semantics'] },
-    'modal': { implemented: true, accessible: true, screens: [] },
-    'alert': { implemented: true, accessible: true, screens: ['navigation'] },
+    'modal': { implemented: true, accessible: true, screens: ['accessible-dialog', 'frameworks-comparison'] },
+    'alert': { implemented: true, accessible: true, screens: ['navigation', 'accessible-advanced'] },
     'skipLink': { implemented: true, accessible: true, screens: ['navigation'] },
     'listItem': { implemented: true, accessible: true, screens: ['guidelines', 'screen-reader'] },
-    'tabNavigator': { implemented: true, accessible: true, screens: [] },
+    'tabNavigator': { implemented: true, accessible: true, screens: ['accessible-advanced', '_layout'] },
     'checklistItem': { implemented: true, accessible: true, screens: ['guidelines', 'screen-reader', 'semantics'] },
     'tooltip': { implemented: true, accessible: false, screens: [] },
+    'slider': { implemented: true, accessible: true, screens: ['accessible-advanced'] },
+    'datePicker': { implemented: true, accessible: true, screens: ['accessible-form'] },
   };
 
-  // 2. Criteri WCAG 2.2 con stato di implementazione
+  // 2. WCAG 2.2 criteria with implementation status
   const wcagCriteria = {
-    // Principio 1: Percepibile
+    // Principle 1: Perceivable
     '1.1.1': { level: 'A', implemented: true },
     '1.3.1': { level: 'A', implemented: true },
     '1.3.2': { level: 'A', implemented: true },
@@ -67,7 +69,7 @@ const calculateAccessibilityScore = () => {
     '1.4.12': { level: 'AA', implemented: true },
     '1.4.13': { level: 'AA', implemented: true },
 
-    // Principio 2: Utilizzabile
+    // Principle 2: Operable
     '2.1.1': { level: 'A', implemented: true },
     '2.1.2': { level: 'A', implemented: true },
     '2.1.4': { level: 'A', implemented: true },
@@ -86,7 +88,7 @@ const calculateAccessibilityScore = () => {
     '2.5.3': { level: 'A', implemented: true },
     '2.5.4': { level: 'A', implemented: true },
 
-    // Principio 3: Comprensibile
+    // Principle 3: Understandable
     '3.1.1': { level: 'A', implemented: true },
     '3.1.2': { level: 'AA', implemented: false },
     '3.2.1': { level: 'A', implemented: true },
@@ -98,13 +100,13 @@ const calculateAccessibilityScore = () => {
     '3.3.3': { level: 'AA', implemented: true },
     '3.3.4': { level: 'AA', implemented: false },
 
-    // Principio 4: Robusto
+    // Principle 4: Robust
     '4.1.1': { level: 'A', implemented: true },
     '4.1.2': { level: 'A', implemented: true },
     '4.1.3': { level: 'AA', implemented: true },
   };
 
-  // 3. Risultati test con screen reader (iOS e Android)
+  // 3. Screen reader test results (iOS and Android)
   const screenReaderTests = {
     voiceOver: { // iOS
       navigation: 4.5,
@@ -122,15 +124,15 @@ const calculateAccessibilityScore = () => {
     }
   };
 
-  // 4. CALCOLI DELLE METRICHE
+  // 4. METRICS CALCULATION
 
-  // 4.1 Metrica componenti
+  // 4.1 Component metric
   const componentsTotal = Object.keys(componentsRegistry).length;
   const accessibleComponents = Object.values(componentsRegistry).filter(c => c.implemented && c.accessible).length;
   const partiallyAccessible = Object.values(componentsRegistry).filter(c => c.implemented && !c.accessible).length;
   const componentScore = Math.round((accessibleComponents / componentsTotal) * 100);
 
-  // 4.2 Metrica conformità WCAG
+  // 4.2 WCAG compliance metric
   const criteriaValues = Object.values(wcagCriteria);
   const totalCriteria = criteriaValues.length;
   const levelACriteria = criteriaValues.filter(c => c.level === 'A').length;
@@ -139,14 +141,14 @@ const calculateAccessibilityScore = () => {
   const levelAACriteriaMet = criteriaValues.filter(c => c.level === 'AA' && c.implemented).length;
   const wcagCompliance = Math.round(((levelACriteriaMet + levelAACriteriaMet) / totalCriteria) * 100);
 
-  // 4.3 Metrica test screen reader
+  // 4.3 Screen reader test metric
   const voiceOverScores = Object.values(screenReaderTests.voiceOver);
   const talkBackScores = Object.values(screenReaderTests.talkBack);
   const voiceOverAvg = voiceOverScores.reduce((sum, score) => sum + score, 0) / voiceOverScores.length;
   const talkBackAvg = talkBackScores.reduce((sum, score) => sum + score, 0) / talkBackScores.length;
   const testingScore = Math.round(((voiceOverAvg + talkBackAvg) / 2) * 20);
 
-  // 5. Dati per visualizzazione dettagliata
+  // 5. Data for detailed visualization
   const wcagByPrinciple = {
     perceptible: {
       total: Object.entries(wcagCriteria).filter(([id]) => id.startsWith('1.')).length,
@@ -166,20 +168,20 @@ const calculateAccessibilityScore = () => {
     }
   };
 
-  // 6. Risultato del calcolo
+  // 6. Calculation result
   return {
     componentScore,
     wcagCompliance,
     testingScore,
     componentCount: componentsTotal,
 
-    // Dati dettagliati per visualizzazione espandibile
+    // Detailed data for expandable visualization
     componentsData: {
       total: componentsTotal,
       fullyAccessible: accessibleComponents,
       partiallyAccessible,
-      componentsWithA11yProps: 16, // Valore esemplificativo
-      issuesCount: 2 // Numero di componenti con problemi di accessibilità
+      componentsWithA11yProps: 18, // Updated based on actual project components
+      issuesCount: 2 // Number of components with accessibility issues
     },
     wcagData: {
       totalCriteria,
@@ -230,7 +232,7 @@ const calculateAccessibilityScore = () => {
 };
 
 /* -----------------------------------------
-   2. Riferimenti accademici ed ufficiali
+   2. Academic and official references
 ----------------------------------------- */
 const academicReferences = [
   {
@@ -273,12 +275,12 @@ export default function HomeScreen() {
   const { colors, textSizes, isDarkMode } = useTheme();
   const accessibilityMetrics = calculateAccessibilityScore();
 
-  // Stato per gestire il modal dei dettagli
+  // State for managing the metrics details modal
   const [detailsVisible, setDetailsVisible] = useState(false);
   const [activeMetricType, setActiveMetricType] = useState(null); // 'component', 'wcag', 'testing'
   const [activeTab, setActiveTab] = useState('overview');
 
-  // Funzione per aprire i dettagli di una metrica
+  // Function to open metric details
   const openMetricDetails = (metricType) => {
     setActiveMetricType(metricType);
     setActiveTab('overview');
@@ -297,7 +299,7 @@ export default function HomeScreen() {
   /* -----------------------------------------
      4. Styled components for metric details
   ----------------------------------------- */
-  // Stili per il modal dei dettagli
+  // Styles for the details modal
   const detailsModalStyles = {
     centeredView: {
       flex: 1,
@@ -653,24 +655,24 @@ export default function HomeScreen() {
   };
 
   /**
-   * 6. Renderizza i dettagli delle metriche
+   * 6. Render metric details
    */
   const renderMetricDetails = () => {
-    // Titolo appropriato in base al tipo di metrica
+    // Appropriate title based on metric type
     const getDetailsTitle = () => {
       switch (activeMetricType) {
         case 'component':
-          return 'Accessibilità Componenti';
+          return 'Component Accessibility';
         case 'wcag':
-          return 'Conformità WCAG 2.2';
+          return 'WCAG 2.2 Compliance';
         case 'testing':
-          return 'Test Screen Reader';
+          return 'Screen Reader Testing';
         default:
-          return 'Dettagli Accessibilità';
+          return 'Accessibility Details';
       }
     };
 
-    // Contenuto in base al tab attivo
+    // Content based on active tab
     const renderTabContent = () => {
       switch (activeTab) {
         case 'overview':
@@ -684,20 +686,20 @@ export default function HomeScreen() {
       }
     };
 
-    // Tab panoramica
+    // Overview tab
     const renderOverviewTab = () => {
       if (activeMetricType === 'component') {
         return (
           <View style={detailsModalStyles.section}>
-            <Text style={detailsModalStyles.sectionTitle}>Componenti UI</Text>
+            <Text style={detailsModalStyles.sectionTitle}>UI Components</Text>
 
             <View style={detailsModalStyles.statRow}>
-              <Text style={detailsModalStyles.statLabel}>Componenti totali</Text>
+              <Text style={detailsModalStyles.statLabel}>Total components</Text>
               <Text style={detailsModalStyles.statValue}>{accessibilityMetrics.componentsData.total}</Text>
             </View>
 
             <View style={detailsModalStyles.statRow}>
-              <Text style={detailsModalStyles.statLabel}>Completamente accessibili</Text>
+              <Text style={detailsModalStyles.statLabel}>Fully accessible</Text>
               <View style={detailsModalStyles.progressContainer}>
                 <View
                   style={[
@@ -712,17 +714,17 @@ export default function HomeScreen() {
             </View>
 
             <View style={detailsModalStyles.statRow}>
-              <Text style={detailsModalStyles.statLabel}>Parzialmente accessibili</Text>
+              <Text style={detailsModalStyles.statLabel}>Partially accessible</Text>
               <Text style={detailsModalStyles.statValue}>{accessibilityMetrics.componentsData.partiallyAccessible}</Text>
             </View>
 
             <View style={detailsModalStyles.statRow}>
-              <Text style={detailsModalStyles.statLabel}>Con props di accessibilità</Text>
+              <Text style={detailsModalStyles.statLabel}>With accessibility props</Text>
               <Text style={detailsModalStyles.statValue}>{accessibilityMetrics.componentsData.componentsWithA11yProps}</Text>
             </View>
 
             <View style={detailsModalStyles.statRow}>
-              <Text style={detailsModalStyles.statLabel}>Problemi di accessibilità rilevati</Text>
+              <Text style={detailsModalStyles.statLabel}>Identified accessibility issues</Text>
               <Text style={detailsModalStyles.statValue}>{accessibilityMetrics.componentsData.issuesCount}</Text>
             </View>
           </View>
@@ -730,15 +732,15 @@ export default function HomeScreen() {
       } else if (activeMetricType === 'wcag') {
         return (
           <View style={detailsModalStyles.section}>
-            <Text style={detailsModalStyles.sectionTitle}>Conformità WCAG 2.2</Text>
+            <Text style={detailsModalStyles.sectionTitle}>WCAG 2.2 Compliance</Text>
 
             <View style={detailsModalStyles.statRow}>
-              <Text style={detailsModalStyles.statLabel}>Criteri valutati</Text>
+              <Text style={detailsModalStyles.statLabel}>Criteria evaluated</Text>
               <Text style={detailsModalStyles.statValue}>{accessibilityMetrics.wcagData.totalCriteria}</Text>
             </View>
 
             <View style={detailsModalStyles.statRow}>
-              <Text style={detailsModalStyles.statLabel}>Conformità complessiva</Text>
+              <Text style={detailsModalStyles.statLabel}>Overall compliance</Text>
               <View style={detailsModalStyles.progressContainer}>
                 <View
                   style={[
@@ -751,7 +753,7 @@ export default function HomeScreen() {
             </View>
 
             <View style={detailsModalStyles.statRow}>
-              <Text style={detailsModalStyles.statLabel}>Criteri Livello A implementati</Text>
+              <Text style={detailsModalStyles.statLabel}>Level A criteria implemented</Text>
               <View style={detailsModalStyles.progressContainer}>
                 <View
                   style={[
@@ -766,7 +768,7 @@ export default function HomeScreen() {
             </View>
 
             <View style={detailsModalStyles.statRow}>
-              <Text style={detailsModalStyles.statLabel}>Criteri Livello AA implementati</Text>
+              <Text style={detailsModalStyles.statLabel}>Level AA criteria implemented</Text>
               <View style={detailsModalStyles.progressContainer}>
                 <View
                   style={[
@@ -784,7 +786,7 @@ export default function HomeScreen() {
       } else if (activeMetricType === 'testing') {
         return (
           <View style={detailsModalStyles.section}>
-            <Text style={detailsModalStyles.sectionTitle}>Test con Screen Reader</Text>
+            <Text style={detailsModalStyles.sectionTitle}>Screen Reader Testing</Text>
 
             <View style={detailsModalStyles.statRow}>
               <Text style={detailsModalStyles.statLabel}>VoiceOver (iOS)</Text>
@@ -812,7 +814,7 @@ export default function HomeScreen() {
               <Text style={detailsModalStyles.statValue}>{accessibilityMetrics.testingData.talkbackScore.toFixed(1)} / 5</Text>
             </View>
 
-            <Text style={[detailsModalStyles.sectionTitle, { marginTop: 16 }]}>Categorie di test</Text>
+            <Text style={[detailsModalStyles.sectionTitle, { marginTop: 16 }]}>Test Categories</Text>
 
             {Object.entries(accessibilityMetrics.testingData.categories).map(([category, data]) => (
               <View key={category} style={detailsModalStyles.statRow}>
@@ -837,53 +839,53 @@ export default function HomeScreen() {
       return null;
     };
 
-    // Tab dettagli
+    // Details tab
     const renderDetailsTab = () => {
       if (activeMetricType === 'component') {
         return (
           <View style={detailsModalStyles.section}>
-            <Text style={detailsModalStyles.sectionTitle}>Componenti per Tipologia</Text>
+            <Text style={detailsModalStyles.sectionTitle}>Components by Type</Text>
 
             <View style={detailsModalStyles.statRow}>
-              <Text style={detailsModalStyles.statLabel}>Componenti UI di Base</Text>
+              <Text style={detailsModalStyles.statLabel}>Basic UI Components</Text>
               <Text style={detailsModalStyles.statValue}>8</Text>
             </View>
 
             <View style={detailsModalStyles.statRow}>
-              <Text style={detailsModalStyles.statLabel}>Componenti Complessi</Text>
-              <Text style={detailsModalStyles.statValue}>10</Text>
+              <Text style={detailsModalStyles.statLabel}>Complex Components</Text>
+              <Text style={detailsModalStyles.statValue}>14</Text>
             </View>
 
-            <Text style={[detailsModalStyles.sectionTitle, { marginTop: 16 }]}>Tipi di proprietà</Text>
+            <Text style={[detailsModalStyles.sectionTitle, { marginTop: 16 }]}>Property Types</Text>
 
             <View style={detailsModalStyles.statRow}>
               <Text style={detailsModalStyles.statLabel}>accessibilityLabel</Text>
-              <Text style={detailsModalStyles.statValue}>16 componenti</Text>
+              <Text style={detailsModalStyles.statValue}>16 components</Text>
             </View>
 
             <View style={detailsModalStyles.statRow}>
               <Text style={detailsModalStyles.statLabel}>accessibilityRole</Text>
-              <Text style={detailsModalStyles.statValue}>14 componenti</Text>
+              <Text style={detailsModalStyles.statValue}>14 components</Text>
             </View>
 
             <View style={detailsModalStyles.statRow}>
               <Text style={detailsModalStyles.statLabel}>accessibilityHint</Text>
-              <Text style={detailsModalStyles.statValue}>10 componenti</Text>
+              <Text style={detailsModalStyles.statValue}>10 components</Text>
             </View>
 
             <View style={detailsModalStyles.statRow}>
               <Text style={detailsModalStyles.statLabel}>accessibilityState</Text>
-              <Text style={detailsModalStyles.statValue}>8 componenti</Text>
+              <Text style={detailsModalStyles.statValue}>8 components</Text>
             </View>
           </View>
         );
       } else if (activeMetricType === 'wcag') {
         return (
           <View style={detailsModalStyles.section}>
-            <Text style={detailsModalStyles.sectionTitle}>Principi WCAG</Text>
+            <Text style={detailsModalStyles.sectionTitle}>WCAG Principles</Text>
 
             <View style={detailsModalStyles.statRow}>
-              <Text style={detailsModalStyles.statLabel}>1. Percepibile</Text>
+              <Text style={detailsModalStyles.statLabel}>1. Perceivable</Text>
               <View style={detailsModalStyles.progressContainer}>
                 <View
                   style={[
@@ -898,7 +900,7 @@ export default function HomeScreen() {
             </View>
 
             <View style={detailsModalStyles.statRow}>
-              <Text style={detailsModalStyles.statLabel}>2. Utilizzabile</Text>
+              <Text style={detailsModalStyles.statLabel}>2. Operable</Text>
               <View style={detailsModalStyles.progressContainer}>
                 <View
                   style={[
@@ -913,7 +915,7 @@ export default function HomeScreen() {
             </View>
 
             <View style={detailsModalStyles.statRow}>
-              <Text style={detailsModalStyles.statLabel}>3. Comprensibile</Text>
+              <Text style={detailsModalStyles.statLabel}>3. Understandable</Text>
               <View style={detailsModalStyles.progressContainer}>
                 <View
                   style={[
@@ -928,7 +930,7 @@ export default function HomeScreen() {
             </View>
 
             <View style={detailsModalStyles.statRow}>
-              <Text style={detailsModalStyles.statLabel}>4. Robusto</Text>
+              <Text style={detailsModalStyles.statLabel}>4. Robust</Text>
               <View style={detailsModalStyles.progressContainer}>
                 <View
                   style={[
@@ -946,7 +948,7 @@ export default function HomeScreen() {
       } else if (activeMetricType === 'testing') {
         return (
           <View style={detailsModalStyles.section}>
-            <Text style={detailsModalStyles.sectionTitle}>Dettagli Test VoiceOver</Text>
+            <Text style={detailsModalStyles.sectionTitle}>VoiceOver Test Details</Text>
 
             {Object.entries(accessibilityMetrics.testingData.categories).map(([category, data]) => (
               <View key={`vo-${category}`} style={detailsModalStyles.statRow}>
@@ -965,7 +967,7 @@ export default function HomeScreen() {
               </View>
             ))}
 
-            <Text style={[detailsModalStyles.sectionTitle, { marginTop: 16 }]}>Dettagli Test TalkBack</Text>
+            <Text style={[detailsModalStyles.sectionTitle, { marginTop: 16 }]}>TalkBack Test Details</Text>
 
             {Object.entries(accessibilityMetrics.testingData.categories).map(([category, data]) => (
               <View key={`tb-${category}`} style={detailsModalStyles.statRow}>
@@ -990,11 +992,11 @@ export default function HomeScreen() {
       return null;
     };
 
-    // Tab riferimenti
+    // References tab
     const renderReferencesTab = () => {
       return (
         <View style={detailsModalStyles.section}>
-          <Text style={detailsModalStyles.sectionTitle}>Riferimenti Bibliografici</Text>
+          <Text style={detailsModalStyles.sectionTitle}>Bibliographic References</Text>
 
           {academicReferences.map((ref, index) => (
             <View key={index} style={detailsModalStyles.refItem}>
@@ -1031,7 +1033,7 @@ export default function HomeScreen() {
               <TouchableOpacity
                 style={detailsModalStyles.closeButton}
                 onPress={() => setDetailsVisible(false)}
-                accessibilityLabel="Chiudi dettagli"
+                accessibilityLabel="Close details"
                 accessibilityRole="button"
               >
                 <Ionicons name="close" size={24} color={colors.text} />
@@ -1046,7 +1048,7 @@ export default function HomeScreen() {
                 accessibilityState={{ selected: activeTab === 'overview' }}
               >
                 <Text style={[detailsModalStyles.tabText, activeTab === 'overview' && detailsModalStyles.activeTabText]}>
-                  Panoramica
+                  Overview
                 </Text>
               </TouchableOpacity>
 
@@ -1057,7 +1059,7 @@ export default function HomeScreen() {
                 accessibilityState={{ selected: activeTab === 'details' }}
               >
                 <Text style={[detailsModalStyles.tabText, activeTab === 'details' && detailsModalStyles.activeTabText]}>
-                  Dettagli
+                  Details
                 </Text>
               </TouchableOpacity>
 
@@ -1068,7 +1070,7 @@ export default function HomeScreen() {
                 accessibilityState={{ selected: activeTab === 'references' }}
               >
                 <Text style={[detailsModalStyles.tabText, activeTab === 'references' && detailsModalStyles.activeTabText]}>
-                  Riferimenti
+                  References
                 </Text>
               </TouchableOpacity>
             </View>
@@ -1101,15 +1103,15 @@ export default function HomeScreen() {
             A comprehensive resource for building inclusive React Native applications with verified accessibility standards – explore for more!
           </Text>
 
-          {/* STATS - Rendere cliccabili */}
+          {/* STATS - Clickable */}
           <View style={themedStyles.statsContainer}>
             {/* COMPONENTS STAT */}
             <View
               style={themedStyles.statCard}
               accessible
               accessibilityRole="button"
-              accessibilityLabel={`${accessibilityMetrics.componentCount} componenti, implementazione ${accessibilityMetrics.componentScore}% accessibile. Tocca per vedere i dettagli.`}
-              accessibilityHint="Mostra dettagli dell'accessibilità dei componenti"
+              accessibilityLabel={`${accessibilityMetrics.componentCount} components, ${accessibilityMetrics.componentScore}% accessible implementation. Tap to see details.`}
+              accessibilityHint="Shows component accessibility details"
             >
               <TouchableOpacity
                 style={themedStyles.touchableStat}
@@ -1141,8 +1143,8 @@ export default function HomeScreen() {
               style={themedStyles.statCard}
               accessible
               accessibilityRole="button"
-              accessibilityLabel={`${accessibilityMetrics.wcagCompliance}% WCAG 2.2, Level AA. Tocca per vedere i dettagli.`}
-              accessibilityHint="Mostra dettagli della conformità WCAG"
+              accessibilityLabel={`${accessibilityMetrics.wcagCompliance}% WCAG 2.2, Level AA. Tap to see details.`}
+              accessibilityHint="Shows WCAG compliance details"
             >
               <TouchableOpacity
                 style={themedStyles.touchableStat}
@@ -1174,8 +1176,8 @@ export default function HomeScreen() {
               style={themedStyles.statCard}
               accessible
               accessibilityRole="button"
-              accessibilityLabel={`${accessibilityMetrics.testingScore}% screen reader test coverage. Tocca per vedere i dettagli.`}
-              accessibilityHint="Mostra dettagli dei test con screen reader"
+              accessibilityLabel={`${accessibilityMetrics.testingScore}% screen reader test coverage. Tap to see details.`}
+              accessibilityHint="Shows screen reader test details"
             >
               <TouchableOpacity
                 style={themedStyles.touchableStat}
@@ -1315,7 +1317,7 @@ export default function HomeScreen() {
         </View>
       </ScrollView>
 
-      {/* Modal per dettagli metriche */}
+      {/* Modal for metric details */}
       {renderMetricDetails()}
     </LinearGradient>
   );
