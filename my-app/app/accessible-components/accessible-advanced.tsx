@@ -86,6 +86,8 @@ export default function AccessibleAdvancedScreen() {
   const [progress, setProgress] = useState(0);
   const [showToast, setShowToast] = useState(false);
   const [sliderValue, setSliderValue] = useState(50);
+  const [screenReaderEnabled, setScreenReaderEnabled] = useState(false);
+  const lastAnnouncedValue = useRef(sliderValue);
 
   const progressAnimated = useRef(new Animated.Value(progress)).current;
   const tabs = ['Tab One', 'Tab Two', 'Tab Three'];
@@ -98,6 +100,29 @@ export default function AccessibleAdvancedScreen() {
       useNativeDriver: false,
     }).start();
   }, [progress]);
+
+  useEffect(() => {
+    let isMounted = true;
+
+    const checkScreenReader = async () => {
+      const isEnabled = await AccessibilityInfo.isScreenReaderEnabled();
+      if (isMounted) {
+        setScreenReaderEnabled(isEnabled);
+      }
+    };
+
+    checkScreenReader();
+
+    const listener = AccessibilityInfo.addEventListener(
+      'screenReaderChanged',
+      checkScreenReader
+    );
+
+    return () => {
+      isMounted = false;
+      listener.remove();
+    };
+  }, []);
 
   const showToastMessage = () => {
     setShowToast(true);
@@ -405,28 +430,46 @@ export default function AccessibleAdvancedScreen() {
               maximumValue={100}
               step={1}
               value={sliderValue}
-              // Aggiorna il valore silenziosamente durante il trascinamento
-              onValueChange={(val) => {
-                setSliderValue(val);
-                // Rimuoviamo gli annunci da qui - annunceremo solo quando l'utente rilascia
-              }}
-              // Annuncia solo quando l'utente ha finito di trascinare
+              // Aggiornamento del valore al termine del drag per evitare oscillazioni indesiderate
               onSlidingComplete={(val) => {
-                setSliderValue(val);
-                AccessibilityInfo.announceForAccessibility(`Slider value set to ${Math.round(val)}`);
+                const newValue = Math.round(val);
+                setSliderValue(newValue);
+                if (Math.abs(lastAnnouncedValue.current - newValue) >= 5) {
+                  AccessibilityInfo.announceForAccessibility(`Slider value set to ${newValue}`);
+                  lastAnnouncedValue.current = newValue;
+                }
               }}
+              // Proprietà per l'accessibilità
               accessibilityRole="adjustable"
               accessibilityLabel="Volume level"
-              accessibilityValue={{
-                min: 0,
-                max: 100,
-                now: sliderValue,
+              accessibilityHint="Swipe up or down to adjust the slider value"
+              accessibilityValue={{ min: 0, max: 100, now: sliderValue }}
+              // Definizione delle azioni per incrementare o decrementare il valore
+              accessibilityActions={[
+                { name: 'increment', label: 'Increase value' },
+                { name: 'decrement', label: 'Decrease value' },
+              ]}
+              onAccessibilityAction={(event) => {
+                let newValue = sliderValue;
+                switch (event.nativeEvent.actionName) {
+                  case 'increment':
+                    newValue = Math.min(100, sliderValue + 5);
+                    break;
+                  case 'decrement':
+                    newValue = Math.max(0, sliderValue - 5);
+                    break;
+                }
+                if (newValue !== sliderValue) {
+                  setSliderValue(newValue);
+                  lastAnnouncedValue.current = newValue;
+                  AccessibilityInfo.announceForAccessibility(`Slider value set to ${newValue}`);
+                }
               }}
-              accessibilityHint="Adjust value using swipe gestures when focused"
               style={{ width: '100%', height: 40 }}
               minimumTrackTintColor="#2196F3"
               maximumTrackTintColor="#ccc"
             />
+
             <CodeSnippet snippet={sliderSnippet} label="Slider / Range Input" />
           </View>
         </View>
