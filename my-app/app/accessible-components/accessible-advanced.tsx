@@ -418,59 +418,135 @@ export default function AccessibleAdvancedScreen() {
           </View>
         </View>
 
-        {/* SLIDERS / RANGE INPUTS */}
+        {/* SLIDERS / RANGE INPUTS - With Accessible Controls */}
         <View style={themedStyles.section}>
           <View style={themedStyles.demoCard}>
             <Text style={themedStyles.sectionTitle}>Sliders &amp; Range Inputs</Text>
-            <Text style={{ color: colors.text, marginBottom: 8 }}>
-              Current slider value: {sliderValue}
-            </Text>
-            <View accessible={true} accessibilityLabel="Volume slider control">
+
+            {/* Main accessible container */}
+            <View
+              accessible={true}
+              accessibilityLabel={`Slider control, current value ${sliderValue} percent`}
+              style={{ marginVertical: 12 }}
+            >
+              {/* Button Controls for TalkBack */}
+              <View style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                marginBottom: 14
+              }}>
+                <TouchableOpacity
+                  style={{
+                    padding: 10,
+                    backgroundColor: colors.primary,
+                    borderRadius: 25,
+                    width: 50,
+                    height: 50,
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                  }}
+                  onPress={() => {
+                    const newValue = Math.max(0, sliderValue - 5);
+                    setSliderValue(newValue);
+                    lastAnnouncedValue.current = newValue;
+                    AccessibilityInfo.announceForAccessibility(`Value set to ${newValue} percent`);
+                  }}
+                  accessibilityRole="button"
+                  accessibilityLabel="Decrease value"
+                  accessibilityHint="Decreases slider value by 5 percent"
+                >
+                  <Ionicons name="remove" size={24} color="#fff" />
+                </TouchableOpacity>
+
+                <Text style={{
+                  color: colors.text,
+                  fontSize: textSizes.large,
+                  fontWeight: 'bold'
+                }}>
+                  {sliderValue}%
+                </Text>
+
+                <TouchableOpacity
+                  style={{
+                    padding: 10,
+                    backgroundColor: colors.primary,
+                    borderRadius: 25,
+                    width: 50,
+                    height: 50,
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                  }}
+                  onPress={() => {
+                    const newValue = Math.min(100, sliderValue + 5);
+                    setSliderValue(newValue);
+                    lastAnnouncedValue.current = newValue;
+                    AccessibilityInfo.announceForAccessibility(`Value set to ${newValue} percent`);
+                  }}
+                  accessibilityRole="button"
+                  accessibilityLabel="Increase value"
+                  accessibilityHint="Increases slider value by 5 percent"
+                >
+                  <Ionicons name="add" size={24} color="#fff" />
+                </TouchableOpacity>
+              </View>
+
+              {/* Preset buttons for quick values */}
+              <View style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                marginBottom: 16
+              }}>
+                {[0, 25, 50, 75, 100].map(value => (
+                  <TouchableOpacity
+                    key={value}
+                    style={{
+                      backgroundColor: sliderValue === value ? colors.primary : colors.primary + '30',
+                      paddingVertical: 6,
+                      paddingHorizontal: 12,
+                      borderRadius: 16,
+                    }}
+                    onPress={() => {
+                      setSliderValue(value);
+                      lastAnnouncedValue.current = value;
+                      AccessibilityInfo.announceForAccessibility(`Value set to ${value} percent`);
+                    }}
+                    accessibilityRole="button"
+                    accessibilityLabel={`Set value to ${value} percent`}
+                    accessibilityState={{ selected: sliderValue === value }}
+                  >
+                    <Text style={{
+                      color: sliderValue === value ? '#fff' : colors.text,
+                      fontWeight: 'bold'
+                    }}>
+                      {value}%
+                    </Text>
+                  </TouchableOpacity>
+                ))}
+              </View>
+
+              {/* Visual Slider (for non-screen reader users) */}
               <Slider
-                focusable={true}
-                accessible={true}
+                value={sliderValue}
                 minimumValue={0}
                 maximumValue={100}
                 step={1}
-                value={sliderValue}
                 onSlidingComplete={(val) => {
                   const newValue = Math.round(val);
                   setSliderValue(newValue);
                   if (Math.abs(lastAnnouncedValue.current - newValue) >= 5) {
-                    AccessibilityInfo.announceForAccessibility(`Slider value set to ${newValue}`);
+                    AccessibilityInfo.announceForAccessibility(`Value set to ${newValue} percent`);
                     lastAnnouncedValue.current = newValue;
-                  }
-                }}
-                accessibilityRole="adjustable"
-                accessibilityLabel="Volume level"
-                accessibilityHint="Swipe up or down to adjust the slider value"
-                accessibilityValue={{ min: 0, max: 100, now: sliderValue }}
-                accessibilityActions={[
-                  { name: 'increment', label: 'Increase value' },
-                  { name: 'decrement', label: 'Decrease value' },
-                ]}
-                onAccessibilityAction={(event) => {
-                  let newValue = sliderValue;
-                  switch (event.nativeEvent.actionName) {
-                    case 'increment':
-                      newValue = Math.min(100, sliderValue + 5);
-                      break;
-                    case 'decrement':
-                      newValue = Math.max(0, sliderValue - 5);
-                      break;
-                  }
-                  if (newValue !== sliderValue) {
-                    setSliderValue(newValue);
-                    lastAnnouncedValue.current = newValue;
-                    AccessibilityInfo.announceForAccessibility(`Slider value set to ${newValue}`);
                   }
                 }}
                 style={{ width: '100%', height: 40 }}
                 minimumTrackTintColor="#2196F3"
                 maximumTrackTintColor="#ccc"
-                hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+                // Hide from TalkBack but keep for visual users
+                importantForAccessibility="no-hide-descendants"
               />
             </View>
+
             <CodeSnippet snippet={sliderSnippet} label="Slider / Range Input" />
           </View>
         </View>
@@ -568,21 +644,52 @@ function showToastMessage() {
   </View>
 )}`;
 
-const sliderSnippet = `import Slider from '@react-native-community/slider';
+const sliderSnippet = `<View
+  accessible={true}
+  accessibilityLabel={\`Slider control, current value \${sliderValue} percent\`}
+>
 
-<Slider
-  minimumValue={0}
-  maximumValue={100}
-  value={sliderValue}
-  onSlidingComplete={(val) => {
-    setSliderValue(val);
-    AccessibilityInfo.announceForAccessibility(\`Slider value set to \${Math.round(val)}\`);
-  }}
-  accessibilityRole="adjustable"
-  accessibilityHint="Adjust value using swipe gestures when focused"
-/>
+{/* Button Controls for Screen Reader Users */}
 
-<Text>Current slider value: {sliderValue}</Text>`;
+<View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+    <TouchableOpacity
+      onPress={() => {
+        const newValue = Math.max(0, sliderValue - 5);
+        setSliderValue(newValue);
+        AccessibilityInfo.announceForAccessibility(\`Value set to \${newValue} percent\`);
+      }}
+      accessibilityRole="button"
+      accessibilityLabel="Decrease value"
+    >
+      <Ionicons name="remove" size={24} color="#2196F3" />
+    </TouchableOpacity>
+    <Text>{sliderValue}%</Text>
+  </View>
+
+  {/* Preset buttons for quick access to common values */}
+
+<View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+{[0, 25, 50, 75, 100].map(value => (
+  <TouchableOpacity
+    key={value}
+    onPress={() => {
+      setSliderValue(value);
+      AccessibilityInfo.announceForAccessibility(\`Value set to \${value} percent\`);}}
+    accessibilityRole="button"
+    accessibilityLabel={\`Set value to \${value}\`}    accessibilityState={{ selected: sliderValue === value }}
+  >
+        <Text>{value}%</Text>
+      </TouchableOpacity>
+    ))}
+  </View>
+
+  {/* Visual Slider (hidden from screen readers) */}
+  <Slider
+    value={sliderValue}
+    onSlidingComplete={(val) => setSliderValue(Math.round(val))}
+    importantForAccessibility="no-hide-descendants"
+  />
+</View>`;
 
 export const options = {
   headerShown: true,
