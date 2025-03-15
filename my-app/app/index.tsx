@@ -393,12 +393,14 @@ export default function HomeScreen() {
       paddingBottom: 8,
       borderBottomWidth: 1,
       borderBottomColor: colors.border,
+      flexWrap: 'wrap',
     },
     tab: {
-      paddingVertical: 8,
-      paddingHorizontal: 16,
-      marginRight: 8,
-      borderRadius: 16,
+        paddingVertical: 8,
+        paddingHorizontal: 14,
+        marginRight: 4,
+        marginBottom: 4,
+        borderRadius: 16,
     },
     activeTab: {
       backgroundColor: colors.primaryLight,
@@ -648,7 +650,7 @@ export default function HomeScreen() {
     },
     detailsIcon: {
       marginTop: 4,
-      opacity: 0.6,
+      opacity: isDarkMode ? 0.9 : 0.6,
     },
     quickStartCard: {
       backgroundColor: colors.surface,
@@ -1404,50 +1406,27 @@ export default function HomeScreen() {
               </TouchableOpacity>
             </View>
 
-            <View style={detailsModalStyles.tabsContainer}>
-              <TouchableOpacity
-                style={[detailsModalStyles.tab, activeTab === 'overview' && detailsModalStyles.activeTab]}
-                onPress={() => setActiveTab('overview')}
-                accessibilityRole="tab"
-                accessibilityState={{ selected: activeTab === 'overview' }}
-              >
-                <Text style={[detailsModalStyles.tabText, activeTab === 'overview' && detailsModalStyles.activeTabText]}>
-                  Overview
-                </Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                style={[detailsModalStyles.tab, activeTab === 'details' && detailsModalStyles.activeTab]}
-                onPress={() => setActiveTab('details')}
-                accessibilityRole="tab"
-                accessibilityState={{ selected: activeTab === 'details' }}
-              >
-                <Text style={[detailsModalStyles.tabText, activeTab === 'details' && detailsModalStyles.activeTabText]}>
-                  Details
-                </Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                style={[detailsModalStyles.tab, activeTab === 'methodology' && detailsModalStyles.activeTab]}
-                onPress={() => setActiveTab('methodology')}
-                accessibilityRole="tab"
-                accessibilityState={{ selected: activeTab === 'methodology' }}
-              >
-                <Text style={[detailsModalStyles.tabText, activeTab === 'methodology' && detailsModalStyles.activeTabText]}>
-                  Methodology
-                </Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                style={[detailsModalStyles.tab, activeTab === 'references' && detailsModalStyles.activeTab]}
-                onPress={() => setActiveTab('references')}
-                accessibilityRole="tab"
-                accessibilityState={{ selected: activeTab === 'references' }}
-              >
-                <Text style={[detailsModalStyles.tabText, activeTab === 'references' && detailsModalStyles.activeTabText]}>
-                  References
-                </Text>
-              </TouchableOpacity>
+            <View
+              style={detailsModalStyles.tabsContainer}
+              accessibilityRole="tablist"
+              importantForAccessibility="yes"
+              accessible={true}
+              accessibilityLabel="Detail tabs"
+            >
+              {['overview', 'details', 'methodology', 'references'].map((tab) => (
+                <TouchableOpacity
+                  key={tab}
+                  style={[detailsModalStyles.tab, activeTab === tab && detailsModalStyles.activeTab]}
+                  onPress={() => setActiveTab(tab)}
+                  accessibilityRole="tab"
+                  accessibilityState={{ selected: activeTab === tab }}
+                  accessible={true}
+                >
+                  <Text style={[detailsModalStyles.tabText, activeTab === tab && detailsModalStyles.activeTabText]}>
+                    {tab.charAt(0).toUpperCase() + tab.slice(1)}
+                  </Text>
+                </TouchableOpacity>
+              ))}
             </View>
 
             <ScrollView contentContainerStyle={detailsModalStyles.content}>
@@ -1483,14 +1462,14 @@ export default function HomeScreen() {
             {/* COMPONENTS STAT */}
             <View
               style={themedStyles.statCard}
-              accessible
-              accessibilityRole="button"
-              accessibilityLabel={`${accessibilityMetrics.componentCount} components, ${accessibilityMetrics.componentScore}% accessible implementation. Tap to see details.`}
-              accessibilityHint="Shows component accessibility details"
             >
               <TouchableOpacity
                 style={themedStyles.touchableStat}
                 onPress={() => openMetricDetails('component')}
+                accessible
+                accessibilityRole="button"
+                accessibilityLabel={`${accessibilityMetrics.componentCount} components, ${accessibilityMetrics.componentScore}% accessible implementation. Tap to see details.`}
+                accessibilityHint="Shows component accessibility details"
               >
                 <Text style={themedStyles.statNumber} accessibilityElementsHidden>
                   {accessibilityMetrics.componentCount}
@@ -1504,9 +1483,15 @@ export default function HomeScreen() {
                 <Ionicons
                   name="information-circle-outline"
                   size={16}
-                  color={colors.primary}
-                  style={themedStyles.detailsIcon}
-                  accessibilityElementsHidden
+                  color={isDarkMode ? "#ffffff" : colors.primary}
+                  style={[
+                    themedStyles.detailsIcon,
+                    isDarkMode && {
+                      backgroundColor: colors.primary + "40",
+                      borderRadius: 8,
+                      padding: 2
+                    }
+                  ]}
                 />
               </TouchableOpacity>
             </View>
@@ -1516,14 +1501,14 @@ export default function HomeScreen() {
             {/* WCAG STAT */}
             <View
               style={themedStyles.statCard}
-              accessible
-              accessibilityRole="button"
-              accessibilityLabel={`${accessibilityMetrics.wcagCompliance}% WCAG 2.2, Level AA. Tap to see details.`}
-              accessibilityHint="Shows WCAG compliance details"
             >
               <TouchableOpacity
                 style={themedStyles.touchableStat}
                 onPress={() => openMetricDetails('wcag')}
+                accessible
+                accessibilityRole="button"
+                accessibilityLabel={`${accessibilityMetrics.wcagCompliance}% WCAG 2.2, Level AA. Tap to see details.`}
+                accessibilityHint="Shows WCAG compliance details"
               >
                 <Text style={themedStyles.statNumber} accessibilityElementsHidden>
                   {accessibilityMetrics.wcagCompliance}%
@@ -1537,9 +1522,15 @@ export default function HomeScreen() {
                 <Ionicons
                   name="information-circle-outline"
                   size={16}
-                  color={colors.primary}
-                  style={themedStyles.detailsIcon}
-                  accessibilityElementsHidden
+                  color={isDarkMode ? "#ffffff" : colors.primary}
+                  style={[
+                    themedStyles.detailsIcon,
+                    isDarkMode && {
+                      backgroundColor: colors.primary + "40",
+                      borderRadius: 8,
+                      padding: 2
+                    }
+                  ]}
                 />
               </TouchableOpacity>
             </View>
@@ -1549,14 +1540,14 @@ export default function HomeScreen() {
             {/* SCREEN READER STAT */}
             <View
               style={themedStyles.statCard}
-              accessible
-              accessibilityRole="button"
-              accessibilityLabel={`${accessibilityMetrics.testingScore}% screen reader test coverage. Tap to see details.`}
-              accessibilityHint="Shows screen reader test details"
             >
               <TouchableOpacity
                 style={themedStyles.touchableStat}
                 onPress={() => openMetricDetails('testing')}
+                accessible
+                accessibilityRole="button"
+                accessibilityLabel={`${accessibilityMetrics.testingScore}% screen reader test coverage. Tap to see details.`}
+                accessibilityHint="Shows screen reader test details"
               >
                 <Text style={themedStyles.statNumber} accessibilityElementsHidden>
                   {accessibilityMetrics.testingScore}%
@@ -1570,9 +1561,15 @@ export default function HomeScreen() {
                 <Ionicons
                   name="information-circle-outline"
                   size={16}
-                  color={colors.primary}
-                  style={themedStyles.detailsIcon}
-                  accessibilityElementsHidden
+                  color={isDarkMode ? "#ffffff" : colors.primary}
+                  style={[
+                    themedStyles.detailsIcon,
+                    isDarkMode && {
+                      backgroundColor: colors.primary + "40",
+                      borderRadius: 8,
+                      padding: 2
+                    }
+                  ]}
                 />
               </TouchableOpacity>
             </View>

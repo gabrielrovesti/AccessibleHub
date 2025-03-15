@@ -425,51 +425,52 @@ export default function AccessibleAdvancedScreen() {
             <Text style={{ color: colors.text, marginBottom: 8 }}>
               Current slider value: {sliderValue}
             </Text>
-            <Slider
-              minimumValue={0}
-              maximumValue={100}
-              step={1}
-              value={sliderValue}
-              // Aggiornamento del valore al termine del drag per evitare oscillazioni indesiderate
-              onSlidingComplete={(val) => {
-                const newValue = Math.round(val);
-                setSliderValue(newValue);
-                if (Math.abs(lastAnnouncedValue.current - newValue) >= 5) {
-                  AccessibilityInfo.announceForAccessibility(`Slider value set to ${newValue}`);
-                  lastAnnouncedValue.current = newValue;
-                }
-              }}
-              // Proprietà per l'accessibilità
-              accessibilityRole="adjustable"
-              accessibilityLabel="Volume level"
-              accessibilityHint="Swipe up or down to adjust the slider value"
-              accessibilityValue={{ min: 0, max: 100, now: sliderValue }}
-              // Definizione delle azioni per incrementare o decrementare il valore
-              accessibilityActions={[
-                { name: 'increment', label: 'Increase value' },
-                { name: 'decrement', label: 'Decrease value' },
-              ]}
-              onAccessibilityAction={(event) => {
-                let newValue = sliderValue;
-                switch (event.nativeEvent.actionName) {
-                  case 'increment':
-                    newValue = Math.min(100, sliderValue + 5);
-                    break;
-                  case 'decrement':
-                    newValue = Math.max(0, sliderValue - 5);
-                    break;
-                }
-                if (newValue !== sliderValue) {
+            <View accessible={true} accessibilityLabel="Volume slider control">
+              <Slider
+                focusable={true}
+                accessible={true}
+                minimumValue={0}
+                maximumValue={100}
+                step={1}
+                value={sliderValue}
+                onSlidingComplete={(val) => {
+                  const newValue = Math.round(val);
                   setSliderValue(newValue);
-                  lastAnnouncedValue.current = newValue;
-                  AccessibilityInfo.announceForAccessibility(`Slider value set to ${newValue}`);
-                }
-              }}
-              style={{ width: '100%', height: 40 }}
-              minimumTrackTintColor="#2196F3"
-              maximumTrackTintColor="#ccc"
-            />
-
+                  if (Math.abs(lastAnnouncedValue.current - newValue) >= 5) {
+                    AccessibilityInfo.announceForAccessibility(`Slider value set to ${newValue}`);
+                    lastAnnouncedValue.current = newValue;
+                  }
+                }}
+                accessibilityRole="adjustable"
+                accessibilityLabel="Volume level"
+                accessibilityHint="Swipe up or down to adjust the slider value"
+                accessibilityValue={{ min: 0, max: 100, now: sliderValue }}
+                accessibilityActions={[
+                  { name: 'increment', label: 'Increase value' },
+                  { name: 'decrement', label: 'Decrease value' },
+                ]}
+                onAccessibilityAction={(event) => {
+                  let newValue = sliderValue;
+                  switch (event.nativeEvent.actionName) {
+                    case 'increment':
+                      newValue = Math.min(100, sliderValue + 5);
+                      break;
+                    case 'decrement':
+                      newValue = Math.max(0, sliderValue - 5);
+                      break;
+                  }
+                  if (newValue !== sliderValue) {
+                    setSliderValue(newValue);
+                    lastAnnouncedValue.current = newValue;
+                    AccessibilityInfo.announceForAccessibility(`Slider value set to ${newValue}`);
+                  }
+                }}
+                style={{ width: '100%', height: 40 }}
+                minimumTrackTintColor="#2196F3"
+                maximumTrackTintColor="#ccc"
+                hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+              />
+            </View>
             <CodeSnippet snippet={sliderSnippet} label="Slider / Range Input" />
           </View>
         </View>
