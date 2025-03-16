@@ -4,6 +4,7 @@ import React, { useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Platform, AccessibilityInfo } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { ThemeProvider, useTheme } from '../context/ThemeContext';
+import { LinearGradient } from 'expo-linear-gradient';
 
 /* --------------------------------------------
    0. Constants & Maps
@@ -263,11 +264,15 @@ function CustomDrawerContent({ state, descriptors }) {
       accessibilityRole="menu"
       accessibilityLabel="Main navigation menu"
     >
-      <View style={[drawerStyles.header, { backgroundColor: colors.primary }]}>
-        <Ionicons name="rocket-outline" size={48} color="#FFFFFF" style={drawerStyles.appIcon} />
+      <LinearGradient
+        colors={['#1867e8', '#0043a8']}
+        style={drawerStyles.header}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 1 }}
+      >
+        <Ionicons name="rocket-outline" size={56} color="#FFFFFF" style={drawerStyles.appIcon} />
         <Text style={[drawerStyles.appName, { color: '#FFFFFF' }]}>AccessibleHub</Text>
-        <Text style={[drawerStyles.version, { color: '#FFFFFF' }]}>Version 1.0.0</Text>
-      </View>
+      </LinearGradient>
       <View style={drawerStyles.drawerContent}>
         {state.routes
           .filter((route) => MAIN_ROUTES.includes(route.name))
@@ -277,15 +282,20 @@ function CustomDrawerContent({ state, descriptors }) {
             const label = drawerLabel || route.name;
             return (
               <TouchableOpacity
-                key={route.key}
-                style={[
-                  drawerStyles.drawerItem,
-                  { backgroundColor: colors.surface, borderColor: colors.border },
-                  isActive && {
-                    borderColor: colors.primary,
-                    borderWidth: 2,
-                    backgroundColor: isDarkMode ? '#ffffff22' : '#0000000A',
-                  },
+                  key={route.key}
+                  style={[
+                    drawerStyles.drawerItem,
+                    { backgroundColor: colors.surface, borderColor: 'transparent' },
+                    isActive && {
+                      borderColor: colors.primary,
+                      borderWidth: 1.5,
+                      backgroundColor: isDarkMode ? '#ffffff16' : '#0055ff10',
+                      shadowColor: colors.primary,
+                      shadowOffset: { width: 0, height: 0 },
+                      shadowOpacity: 0.2,
+                      shadowRadius: 3,
+                      elevation: 2,
+                    },
                 ]}
                 onPress={() => {
                   if (route.name === 'index') {
@@ -300,20 +310,20 @@ function CustomDrawerContent({ state, descriptors }) {
                 accessibilityLabel={label}
                 accessibilityHint={`Double tap to navigate to ${label} screen`}
               >
-                {isActive && (
-                  <View
-                    style={{
-                      position: 'absolute',
-                      left: 0, right: 0, top: 0, bottom: 0,
-                      borderWidth: 2, // Aumenta lo spessore
-                      borderColor: colors.primary,
-                      borderRadius: 8,
-                      backgroundColor: 'transparent'
-                    }}
-                    importantForAccessibility="no"
-                    accessibilityElementsHidden
-                  />
-                )}
+              {isActive && (
+                <View
+                  style={{
+                    position: 'absolute',
+                    left: 0, right: 0, top: 0, bottom: 0,
+                    borderLeftWidth: 4,
+                    borderColor: colors.primary,
+                    borderRadius: 12,
+                    backgroundColor: 'transparent'
+                  }}
+                  importantForAccessibility="no"
+                  accessibilityElementsHidden
+                />
+              )}
                 {drawerIcon && (
                   <View
                     style={drawerStyles.drawerIcon}
@@ -338,6 +348,15 @@ function CustomDrawerContent({ state, descriptors }) {
               </TouchableOpacity>
             );
           })}
+      </View>
+      <View
+        style={drawerStyles.footer}
+        importantForAccessibility="no"
+        accessibilityElementsHidden={true}
+      >
+        <Text style={[drawerStyles.footerText, { color: colors.textSecondary }]}>
+          Made with ❤️ by Gabriel Rovesti
+        </Text>
       </View>
     </View>
   );
@@ -585,29 +604,50 @@ const styles = StyleSheet.create({
 
 const drawerStyles = StyleSheet.create({
   container: { flex: 1 },
-  header: {
-    paddingVertical: 40,
-    paddingHorizontal: 16,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: 16,
-    borderBottomLeftRadius: 24,
-    borderBottomRightRadius: 24,
-  },
-  appIcon: { marginBottom: 8 },
-  appName: { fontSize: 24, fontWeight: 'bold', marginBottom: 4 },
+header: {
+  paddingVertical: 42,
+  paddingHorizontal: 16,
+  alignItems: 'center',
+  justifyContent: 'center',
+  marginBottom: 16,
+  borderBottomLeftRadius: 24,
+  borderBottomRightRadius: 24,
+  elevation: 4,
+  shadowColor: '#000',
+  shadowOffset: { width: 0, height: 2 },
+  shadowOpacity: 0.2,
+  shadowRadius: 4,
+},
+appIcon: { marginBottom: 12 },
+appName: { fontSize: 26, fontWeight: 'bold' },
   version: { fontSize: 12 },
   drawerContent: { flex: 1, padding: 16 },
-  drawerItem: {
-    marginBottom: 12,
-    borderRadius: 8,
-    paddingVertical: 14,
-    paddingHorizontal: 18,
-    minHeight: 56,
-    borderWidth: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
+drawerItem: {
+  marginBottom: 12,
+  borderRadius: 12,
+  paddingVertical: 14,
+  paddingHorizontal: 18,
+  minHeight: 56,
+  borderWidth: 1,
+  flexDirection: 'row',
+  alignItems: 'center',
+  elevation: 1,
+  shadowColor: '#000',
+  shadowOffset: { width: 0, height: 1 },
+  shadowOpacity: 0.1,
+  shadowRadius: 2,
+},
   drawerIcon: { marginRight: 12 },
   drawerLabel: { fontSize: 16, marginLeft: 16, flex: 1 },
+  footer: {
+    padding: 16,
+    paddingBottom: 24,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  footerText: {
+    fontSize: 12,
+    fontStyle: 'italic',
+    opacity: 0.7,
+  },
 });

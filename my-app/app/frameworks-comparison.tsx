@@ -14,24 +14,37 @@ import { SafeAreaView } from 'react-native-safe-area-context';
  * Used to document the scientific approach to evaluation
  */
 const methodologyInfo = {
-  version: "1.0.0",
-  lastUpdated: "2024-02-26",
+  version: "1.1.0",
+  lastUpdated: "2025-03-15",
   metrics: {
     accessibility: {
       description: "How well the framework supports creating accessible applications",
-      testMethod: "Combined analysis of official documentation, practical testing with screen readers (VoiceOver iOS 16, TalkBack Android 7+), and WCAG 2.2 compliance verification",
+      testMethod: "Combined analysis of official documentation, practical testing with screen readers (VoiceOver iOS 16, TalkBack Android 13), and WCAG 2.2 compliance verification",
+      formula: "accessibilityScore = screenReaders*0.3 + semantics*0.3 + gestures*0.2 + focus*0.2",
       sources: [
         "Official framework documentation",
         "Perinello & Gaggi (2024), 'Accessibility of Mobile User Interfaces using Flutter and React Native', CCNC 2024",
-        "Manual testing of implemented components with assistive technologies"
+        "Manual testing of implemented components with assistive technologies on iPhone 13 (iOS 16.5) and Pixel 6 (Android 13)"
+      ]
+    },
+    implementation: {
+      description: "Implementation complexity for accessibility features",
+      testMethod: "Static code analysis, lines of code measurement, and complexity assessment",
+      formula: "implementationScore = 5 - (totalLinesOfCode / 10)",
+      sources: [
+        "WCAG 2.2 implementation examples",
+        "Static code analysis",
+        "Expert assessment of implementation complexity"
       ]
     },
     performance: {
       description: "Runtime performance metrics for mobile applications",
       testMethod: "Benchmark tests on identical hardware (iPhone 13, Pixel 6) with standardized test applications",
+      formula: "performanceScore = (5-startupTime*2)*0.3 + memoryScore*0.3 + (5-bundleSize/2)*0.4",
       sources: [
-        "Mobile Frameworks Performance Benchmark 2023",
-        "JS Framework Benchmark tests adapted for mobile environments"
+        "Mobile Frameworks Performance Benchmark 2024",
+        "Real-world application measurements",
+        "Production bundle size analysis"
       ]
     }
   }
@@ -94,7 +107,7 @@ const frameworkData = {
         ios: 'Full VoiceOver support with native bridge',
         android: 'Complete TalkBack integration',
         rating: 4.5,
-        ratingJustification: 'Based on manual testing with VoiceOver (iOS 16) and TalkBack (Android 7+) showing good compatibility with minor limitations in complex custom components',
+        ratingJustification: 'Based on manual testing with VoiceOver (iOS 16) and TalkBack (Android 13) showing good compatibility with minor limitations in complex custom components',
         source: 'perinello-gaggi-2024'
       },
       semantics: {
@@ -182,7 +195,7 @@ const frameworkData = {
         ios: 'Native VoiceOver support',
         android: 'Full TalkBack integration',
         rating: 4.5,
-        ratingJustification: 'Based on manual testing with VoiceOver (iOS 16) and TalkBack (Android 7+) showing good compatibility with occasional semantic tree issues',
+        ratingJustification: 'Based on manual testing with VoiceOver (iOS 16) and TalkBack (Android 13) showing good compatibility with occasional semantic tree issues',
         source: 'perinello-gaggi-2024'
       },
       semantics: {
@@ -263,22 +276,41 @@ const frameworkData = {
 /* --------------------------------------------
    2) FORMAL METRICS CALCULATION
 -------------------------------------------- */
+/**
+ * Calculates accessibility metrics based on WCAG criteria implementation
+ * and empirical testing with screen readers.
+ * Implements the methodology from Perinello & Gaggi (2024)
+ */
 function calculateMetrics(framework) {
   if (!framework) return { accessibility: 0, performance: 0 };
 
-  // Accessibility Score - weighted based on impact for users with disabilities
+  // Accessibility Score - weighted based on user research and impact
+  // Each component is weighted according to its importance for accessibility
   const a11y = framework.accessibility;
-  const screenReaders = a11y.screenReaders?.rating ?? 0;    // Weight 0.3 - Primary method for blind users
-  const semantics = a11y.semantics?.rating ?? 0;            // Weight 0.3 - Critical for content understanding
-  const gestures = a11y.gestures?.rating ?? 0;              // Weight 0.2 - Important for alternative interactions
-  const focus = a11y.focusManagement?.rating ?? 0;          // Weight 0.2 - Essential for keyboard navigation
 
+  // Screen Reader Compatibility (30%) - Critical for blind users
+  // Based on VoiceOver and TalkBack empirical testing
+  const screenReaders = a11y.screenReaders?.rating ?? 0;
+
+  // Semantic Properties Support (30%) - Essential for content understanding
+  // Based on availability and implementation of semantic attributes
+  const semantics = a11y.semantics?.rating ?? 0;
+
+  // Gesture Support (20%) - Important for alternative interactions
+  // Based on touch, swipe and custom gesture handler support
+  const gestures = a11y.gestures?.rating ?? 0;
+
+  // Focus Management (20%) - Essential for keyboard navigation
+  // Based on focus traversal, trapping and navigation support
+  const focus = a11y.focusManagement?.rating ?? 0;
+
+  // Weighted calculation of overall accessibility score (0-5 scale)
   const accessibilityScore = Number(
     (
-      screenReaders * 0.3 +
-      semantics * 0.3 +
-      gestures * 0.2 +
-      focus * 0.2
+      screenReaders * 0.3 +  // Critical for screen reader users
+      semantics * 0.3 +      // Essential for all AT compatibility
+      gestures * 0.2 +       // Important for touch-based interactions
+      focus * 0.2            // Crucial for keyboard/switch users
     ).toFixed(1)
   );
 
@@ -310,32 +342,34 @@ function calculateMetrics(framework) {
   const bundleSizeRange = perf.bundleSize.split('-');
   const bundleSizeMin = parseFloat(bundleSizeRange[0]) || 0;
 
+  // Performance score calculation with weighted factors
   const performanceScore = Number(
     (
-      // Startup time (faster is better)
-      -0.3 * startupTimeNum +
-      // Memory usage (less is better)
-      0.3 * memoryScore +
-      // Bundle size (smaller is better)
-      -0.4 * (bundleSizeMin / 10) +
-      // Normalization constant
-      5
+      // Startup time (30%) - faster is better
+      (5 - startupTimeNum * 2) * 0.3 +
+      // Memory usage (30%) - less is better
+      memoryScore * 0.3 +
+      // Bundle size (40%) - smaller is better
+      (5 - bundleSizeMin / 2) * 0.4
     ).toFixed(1)
   );
 
-  // Developer Experience Score - based on implementation scores
+  // Qualitative Complexity Assessment
+  // Maps complexity ratings to numeric scores
   const implementationScores = [
     impl?.headingElements?.implementationComplexity,
     impl?.languageDeclaration?.implementationComplexity,
     impl?.textAbbreviations?.implementationComplexity
   ];
 
+  // Converts qualitative complexity to quantitative scores (5=best, 1=worst)
   const complexityMap = {
-    "Low": 5,
-    "Medium": 3,
-    "High": 1
+    "Low": 5,    // Easy implementation
+    "Medium": 3, // Moderate complexity
+    "High": 1    // Complex implementation
   };
 
+  // Calculate average complexity score
   const avgComplexity = implementationScores
     .map(complexity => complexityMap[complexity] || 0)
     .reduce((sum, score) => sum + score, 0) / implementationScores.length;
@@ -485,6 +519,10 @@ export default function FrameworkComparisonScreen() {
   const [detailType, setDetailType] = useState(null); // 'methodology', 'implementation', 'references'
   const [activeDetailTab, setActiveDetailTab] = useState('overview');
 
+  // State for widget info modal
+  const [widgetInfoVisible, setWidgetInfoVisible] = useState(false);
+  const [activeWidget, setActiveWidget] = useState(null); // 'language', 'learning', 'accessibility', etc.
+
   const { colors, textSizes, isDarkMode } = useTheme();
 
   // Generate comparison data
@@ -512,6 +550,33 @@ export default function FrameworkComparisonScreen() {
        }`
     );
   }, [selectedFramework, selectedCategory]);
+
+  // Function to handle widget click
+  const handleWidgetClick = (widgetType) => {
+    if (activeWidget === widgetType && widgetInfoVisible) {
+      // Se è già aperto, chiudilo
+      setWidgetInfoVisible(false);
+      setActiveWidget(null);
+    } else {
+      // Altrimenti, apri con il nuovo widget
+      setActiveWidget(widgetType);
+      setWidgetInfoVisible(true);
+      setActiveBannerTab('overview'); // Reset tab to overview
+
+      // Announce per screen reader
+      const widgetName =
+        widgetType === 'language' ? 'Language' :
+        widgetType === 'learning' ? 'Learning Curve' :
+        widgetType === 'hotReload' ? 'Hot Reload' :
+        widgetType === 'accessibility' ? 'Accessibility' :
+        widgetType === 'implementation' ? 'Implementation' :
+        widgetType === 'implementationDetail' ? 'Implementation Detail' : 'Widget';
+
+      AccessibilityInfo.announceForAccessibility(
+        `${widgetName} information dialog opened`
+      );
+    }
+  };
 
   // Show details in a modal
   const showDetails = (type) => {
@@ -809,7 +874,7 @@ export default function FrameworkComparisonScreen() {
       borderWidth: isDarkMode ? 1 : 0,
       borderColor: isDarkMode ? colors.border : 'transparent',
     },
-developmentCard: {
+    developmentCard: {
       backgroundColor: colors.surface,
       borderRadius: 16,
       padding: 20,
@@ -1335,12 +1400,51 @@ developmentCard: {
     },
   };
 
+  // Styles for icon visibility in Dark Mode
+  const themedIconStyles = {
+    infoIcon: {
+      marginTop: 4,
+      color: isDarkMode ? colors.primary : colors.primary, // Assicurati che il colore sia visibile in entrambi i temi
+      opacity: isDarkMode ? 0.9 : 0.6, // Aumenta l'opacità in dark mode per maggiore contrasto
+    },
+    infoIconAbsolute: {
+      position: 'absolute',
+      top: 16,
+      right: 16,
+      color: isDarkMode ? colors.primary : colors.primary,
+      opacity: isDarkMode ? 0.9 : 0.6,
+    }
+  };
+
+  // Update contrast for dark mode
+  if (isDarkMode) {
+    // Increase contrast for text and interactive elements in dark mode
+    themedStyles.statValue = {
+      ...themedStyles.statValue,
+      color: colors.text,
+      fontWeight: '700', // Più bold per migliore leggibilità
+    };
+
+    themedStyles.cardTitle = {
+      ...themedStyles.cardTitle,
+      color: colors.text,
+      opacity: 1, // Massima opacità per i titoli
+    };
+
+    // Ensure icons in containers have sufficient contrast
+    themedStyles.statItem = {
+      ...themedStyles.statItem,
+      borderColor: colors.border,
+      borderWidth: 1, // Bordo più definito in dark mode
+    };
+  }
+
   /* --------------------------------------------
      5.1) RENDER METHODOLOGY BANNER CONTENT
   -------------------------------------------- */
   const renderBannerContent = () => {
     if (activeBannerTab === 'overview') {
-      if (activeStat === 'language') {
+      if (activeWidget === 'language') {
         return (
           <View>
             <Text style={themedStyles.bannerText}>
@@ -1360,7 +1464,7 @@ developmentCard: {
             </View>
           </View>
         );
-      } else if (activeStat === 'learning') {
+      } else if (activeWidget === 'learning') {
         return (
           <View>
             <Text style={themedStyles.bannerText}>
@@ -1375,7 +1479,7 @@ developmentCard: {
             </View>
           </View>
         );
-      } else if (activeStat === 'hotReload') {
+      } else if (activeWidget === 'hotReload') {
         return (
           <View>
             <Text style={themedStyles.bannerText}>
@@ -1390,7 +1494,7 @@ developmentCard: {
             </View>
           </View>
         );
-      } else if (activeStat === 'accessibility') {
+      } else if (activeWidget === 'accessibility') {
         return (
           <View>
             <Text style={themedStyles.bannerText}>
@@ -1400,11 +1504,11 @@ developmentCard: {
 
             <View style={themedStyles.methodDataRow}>
               <Text style={themedStyles.methodDataLabel}>Test Devices:</Text>
-              <Text style={themedStyles.methodDataValue}>iPhone 13 (iOS 16.5), Pixel 7 (Android 14)</Text>
+              <Text style={themedStyles.methodDataValue}>iPhone 13 (iOS 16.5), Pixel 6 (Android 13)</Text>
             </View>
           </View>
         );
-      } else if (activeStat === 'implementation') {
+      } else if (activeWidget === 'implementation') {
         return (
           <View>
             <Text style={themedStyles.bannerText}>
@@ -1419,7 +1523,7 @@ developmentCard: {
             </View>
           </View>
         );
-      } else if (activeStat === 'implementationDetail') {
+      } else if (activeWidget === 'implementationDetail') {
         // Implementation detail-specific content
         const fw = frameworkData[selectedFramework];
         return (
@@ -1444,7 +1548,7 @@ developmentCard: {
       }
     } else if (activeBannerTab === 'calculation') {
       // Calculation tab content
-      if (activeStat === 'accessibility') {
+      if (activeWidget === 'accessibility') {
         return (
           <View>
             <Text style={themedStyles.bannerText}>
@@ -1466,7 +1570,7 @@ developmentCard: {
             </Text>
           </View>
         );
-      } else if (activeStat === 'implementation' || activeStat === 'implementationDetail') {
+      } else if (activeWidget === 'implementation' || activeWidget === 'implementationDetail') {
         return (
           <View>
             <Text style={themedStyles.bannerText}>
@@ -1699,7 +1803,7 @@ developmentCard: {
               <Text style={themedStyles.detailValue}>Weight: 30%</Text>
             </View>
             <View style={themedStyles.detailRow}>
-<Text style={themedStyles.detailLabel}>Gesture Handling</Text>
+              <Text style={themedStyles.detailLabel}>Gesture Handling</Text>
               <Text style={themedStyles.detailValue}>Weight: 20%</Text>
             </View>
             <View style={themedStyles.detailRow}>
@@ -1825,11 +1929,17 @@ developmentCard: {
         transparent={true}
         visible={detailsVisible}
         onRequestClose={() => setDetailsVisible(false)}
+        accessibilityViewIsModal={true}
       >
         <View style={themedStyles.centeredView}>
           <View style={themedStyles.modalView}>
             <View style={themedStyles.modalHeader}>
-              <Text style={themedStyles.modalTitle}>{getModalTitle()}</Text>
+              <Text
+                style={themedStyles.modalTitle}
+                accessibilityRole="header"
+              >
+                {getModalTitle()}
+              </Text>
               <TouchableOpacity
                 style={themedStyles.closeButton}
                 onPress={() => setDetailsVisible(false)}
@@ -1889,34 +1999,145 @@ developmentCard: {
   };
 
   /* --------------------------------------------
-     7) RENDER RATING BAR
+     7) RENDER WIDGET INFO MODAL
   -------------------------------------------- */
-  const renderRatingBar = (rating, label = '') => {
-    const numericRating = Number(rating) || 0;
-    const filledWidth = Math.min(100, Math.max(0, (numericRating / 5) * 100));
+  const renderWidgetInfoModal = () => {
+    if (!widgetInfoVisible || !activeWidget) return null;
+
+    const getModalTitle = () => {
+      switch (activeWidget) {
+        case 'language': return 'Language Information';
+        case 'learning': return 'Learning Curve Assessment';
+        case 'hotReload': return 'Hot Reload Capability';
+        case 'accessibility': return 'Accessibility Score Methodology';
+        case 'implementation': return 'Implementation Analysis';
+        case 'implementationDetail': return 'Implementation Detail';
+        default: return 'Information';
+      }
+    };
 
     return (
-      <View
-        style={themedStyles.ratingContainer}
-        accessible
-        accessibilityRole="progressbar"
-        accessibilityLabel={`${label}: ${numericRating.toFixed(1)} out of 5`}
+      <Modal
+        animationType="fade"
+        transparent={true}
+        visible={widgetInfoVisible}
+        onRequestClose={() => {
+          setWidgetInfoVisible(false);
+          setActiveWidget(null);
+        }}
+        accessibilityViewIsModal={true}
       >
-        <View style={themedStyles.ratingBar}>
-          <View
-            style={[
-              themedStyles.ratingFilled,
-              { width: `${Math.round(filledWidth)}%` },
-            ]}
-          />
+        <View style={themedStyles.centeredView}>
+          <View style={[themedStyles.modalView, { maxHeight: '60%' }]}>
+            <View style={themedStyles.modalHeader}>
+              <Text
+                style={themedStyles.modalTitle}
+                accessibilityRole="header"
+              >
+                {getModalTitle()}
+              </Text>
+              <TouchableOpacity
+                style={themedStyles.closeButton}
+                onPress={() => {
+                  setWidgetInfoVisible(false);
+                  setActiveWidget(null);
+                }}
+                accessibilityLabel="Close information dialog"
+                accessibilityRole="button"
+                accessibilityHint="Closes the current information dialog"
+              >
+                <Ionicons name="close" size={24} color={colors.text} />
+              </TouchableOpacity>
+            </View>
+
+            <ScrollView
+              contentContainerStyle={themedStyles.modalContent}
+              showsVerticalScrollIndicator={true}
+              accessibilityRole="scrollview"
+            >
+              <View style={themedStyles.tabsContainer}>
+                <TouchableOpacity
+                  style={[themedStyles.tab, activeBannerTab === 'overview' && themedStyles.activeTab]}
+                  onPress={() => setActiveBannerTab('overview')}
+                  accessibilityRole="tab"
+                  accessibilityState={{ selected: activeBannerTab === 'overview' }}
+                >
+                  <Text style={[themedStyles.tabText, activeBannerTab === 'overview' && themedStyles.activeTabText]}>
+                    Methodology
+                  </Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={[themedStyles.tab, activeBannerTab === 'calculation' && themedStyles.activeTab]}
+                  onPress={() => setActiveBannerTab('calculation')}
+                  accessibilityRole="tab"
+                  accessibilityState={{ selected: activeBannerTab === 'calculation' }}
+                >
+                  <Text style={[themedStyles.tabText, activeBannerTab === 'calculation' && themedStyles.activeTabText]}>
+                    Calculation
+                  </Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={[themedStyles.tab, activeBannerTab === 'references' && themedStyles.activeTab]}
+                  onPress={() => setActiveBannerTab('references')}
+                  accessibilityRole="tab"
+                  accessibilityState={{ selected: activeBannerTab === 'references' }}
+                >
+                  <Text style={[themedStyles.tabText, activeBannerTab === 'references' && themedStyles.activeTabText]}>
+                    References
+                  </Text>
+                </TouchableOpacity>
+              </View>
+
+              <View
+                style={themedStyles.bannerContent}
+                accessibilityLiveRegion="polite"
+                importantForAccessibility="yes"
+              >
+                {renderBannerContent()}
+              </View>
+            </ScrollView>
+          </View>
         </View>
-        <Text style={themedStyles.ratingText}>{numericRating.toFixed(1)}</Text>
-      </View>
+      </Modal>
     );
   };
 
   /* --------------------------------------------
-     8) HANDLERS
+     8) RENDER RATING BAR
+  -------------------------------------------- */
+const renderRatingBar = (rating, label = '') => {
+  const numericRating = Number(rating) || 0;
+
+  const filledWidth = Math.floor(Math.min(100, Math.max(0, (numericRating / 5) * 100)));
+
+  return (
+    <View
+      style={themedStyles.ratingContainer}
+      accessible
+      accessibilityRole="progressbar"
+      accessibilityLabel={`${label}: ${numericRating.toFixed(1)} out of 5`}
+      accessibilityValue={{
+        min: 0,
+        max: 5,
+        now: Math.round(numericRating),
+        text: `${numericRating.toFixed(1)} out of 5`
+      }}
+    >
+      <View style={themedStyles.ratingBar}>
+        <View
+          style={[
+            themedStyles.ratingFilled,
+            { width: `${filledWidth}%` },
+          ]}
+        />
+      </View>
+      <Text style={themedStyles.ratingText}>{numericRating.toFixed(1)}</Text>
+    </View>
+  );
+};
+
+  /* --------------------------------------------
+     9) HANDLERS
   -------------------------------------------- */
   const handleCategoryChange = (catId) => {
     setSelectedCategory(catId);
@@ -1938,7 +2159,7 @@ developmentCard: {
   };
 
   /* --------------------------------------------
-     9) RENDER UI PIECES
+     10) RENDER UI PIECES
   -------------------------------------------- */
   const renderFrameworkSelection = () => (
     <View style={themedStyles.frameworkSelection}>
@@ -1997,8 +2218,8 @@ developmentCard: {
               name={cat.icon}
               size={18}
               color={active ? colors.primary : colors.textSecondary}
-              accessibilityElementsHidden
               importantForAccessibility="no-hide-descendants"
+              accessibilityElementsHidden={true}
             />
             <Text
               style={[
@@ -2014,345 +2235,241 @@ developmentCard: {
     </ScrollView>
   );
 
- /*
-  * 9A) Overview Section
-  */
- const renderOverviewSection = () => {
-   const fw = frameworkData[selectedFramework];
-   return (
-     <View style={themedStyles.section}>
-       {/* Info Card */}
-       <View style={themedStyles.infoCard}>
-         <Text style={themedStyles.frameworkName}>{fw.name}</Text>
-         <Text style={themedStyles.companyName}>by {fw.company}</Text>
-         <Text style={themedStyles.version}>Version {fw.version}</Text>
-         <Text style={themedStyles.description}>{fw.description}</Text>
-       </View>
+  /*
+   * 10A) Overview Section
+   */
+  const renderOverviewSection = () => {
+    const fw = frameworkData[selectedFramework];
+    return (
+      <View style={themedStyles.section}>
+        {/* Info Card */}
+        <View style={themedStyles.infoCard}>
+          <Text style={themedStyles.frameworkName}>{fw.name}</Text>
+          <Text style={themedStyles.companyName}>by {fw.company}</Text>
+          <Text style={themedStyles.version}>Version {fw.version}</Text>
+          <Text style={themedStyles.description}>{fw.description}</Text>
+        </View>
 
-       {/* Quick Stats with methodology inline banners */}
-       <View style={themedStyles.quickStats}>
-         <TouchableOpacity
-           style={themedStyles.statItem}
-           onPress={() => setActiveStat(activeStat === 'language' ? null : 'language')}
-           accessibilityRole="button"
-           accessibilityLabel={`Language: ${fw.development.language}. Tap to view methodology details.`}
-         >
-           <Ionicons name="code-slash" size={24} color={colors.primary} importantForAccessibility="no-hide-descendants"/>
-           <Text style={themedStyles.statLabel}>Language</Text>
-           <Text style={themedStyles.statValue}>{fw.development.language}</Text>
-           <Ionicons
-             name="information-circle-outline"
-             size={16}
-             color={colors.primary}
-             style={{ marginTop: 4, opacity: 0.6 }}
-             accessibilityElementsHidden
-           />
-         </TouchableOpacity>
-
-         <TouchableOpacity
-           style={themedStyles.statItem}
-           onPress={() => setActiveStat(activeStat === 'learning' ? null : 'learning')}
-           accessibilityRole="button"
-           accessibilityLabel={`Learning Curve: ${fw.development.learning}. Tap to view methodology details.`}
-         >
-           <Ionicons name="trending-up" size={24} color={colors.primary} />
-           <Text style={themedStyles.statLabel}>Learning Curve</Text>
-           <Text style={themedStyles.statValue}>{fw.development.learning}</Text>
-           <Ionicons
-             name="information-circle-outline"
-             size={16}
-             color={colors.primary}
-             style={{ marginTop: 4, opacity: 0.6 }}
-             accessibilityElementsHidden
-           />
-         </TouchableOpacity>
-
-         <TouchableOpacity
-           style={themedStyles.statItem}
-           onPress={() => setActiveStat(activeStat === 'hotReload' ? null : 'hotReload')}
-           accessibilityRole="button"
-           accessibilityLabel={`Hot Reload: ${fw.development.hot ? 'Yes' : 'No'}. Tap to view methodology details.`}
-         >
-           <Ionicons name="flash" size={24} color={colors.primary} />
-           <Text style={themedStyles.statLabel}>Hot Reload</Text>
-           <Text style={themedStyles.statValue}>{fw.development.hot ? 'Yes' : 'No'}</Text>
-           <Ionicons
-             name="information-circle-outline"
-             size={16}
-             color={colors.primary}
-             style={{ marginTop: 4, opacity: 0.6 }}
-             accessibilityElementsHidden
-           />
-         </TouchableOpacity>
-       </View>
-
-       {/* Methodology Banner - displayed when a stat is selected */}
-        {activeStat && (
-          <View
-            style={themedStyles.methodologyBanner}
-            accessible={true}
-            accessibilityLabel={`${activeStat === 'language' ? 'Language' :
-                                 activeStat === 'learning' ? 'Learning Curve' :
-                                 activeStat === 'hotReload' ? 'Hot Reload' :
-                                 'Metric'} Methodology Details`}
+        {/* Quick Stats with methodology inline banners */}
+        <View style={themedStyles.quickStats}>
+          <TouchableOpacity
+            style={themedStyles.statItem}
+            onPress={() => handleWidgetClick('language')}
+            accessibilityRole="button"
+            accessibilityLabel={`Language: ${fw.development.language}. Tap to view methodology details.`}
           >
-            <View style={themedStyles.bannerHeader}>
-              <Text style={themedStyles.bannerTitle}>
-                {activeStat === 'language' ? 'Language Methodology' :
-                 activeStat === 'learning' ? 'Learning Curve Assessment' :
-                 activeStat === 'hotReload' ? 'Hot Reload Evaluation' :
-                 'Metric Methodology'}
-              </Text>
-              <TouchableOpacity
-                onPress={() => setActiveStat(null)}
-                accessibilityLabel="Close methodology details"
-                accessibilityRole="button"
-                accessibilityHint="Dismisses the methodology information panel"
-              >
-                <Ionicons name="close" size={20} color={colors.text} />
-              </TouchableOpacity>
-            </View>
+            <Ionicons
+              name="code-slash"
+              size={24}
+              color={colors.primary}
+              importantForAccessibility="no-hide-descendants"
+              accessibilityElementsHidden={true}
+            />
+            <Text style={themedStyles.statLabel}>Language</Text>
+            <Text style={themedStyles.statValue}>{fw.development.language}</Text>
+            <Ionicons
+              name="information-circle-outline"
+              size={16}
+              style={themedIconStyles.infoIcon}
+              importantForAccessibility="no-hide-descendants"
+              accessibilityElementsHidden={true}
+            />
+          </TouchableOpacity>
 
-            <ScrollView
-              horizontal
-              showsHorizontalScrollIndicator={false}
-              accessibilityRole="tablist"
-            >
-              <View style={themedStyles.bannerTabs}>
-                <TouchableOpacity
-                  style={[
-                    themedStyles.bannerTab,
-                    activeBannerTab === 'overview' && themedStyles.activeBannerTab
-                  ]}
-                  onPress={() => setActiveBannerTab('overview')}
-                  accessibilityRole="tab"
-                  accessibilityState={{ selected: activeBannerTab === 'overview' }}
-                  accessibilityLabel="Methodology tab"
-                  accessibilityHint="Shows methodology information"
-                >
-                  <Text style={[
-                    themedStyles.bannerTabText,
-                    activeBannerTab === 'overview' && themedStyles.activeBannerTabText
-                  ]}>Methodology</Text>
-                </TouchableOpacity>
-             </View>
-           </ScrollView>
+          <TouchableOpacity
+            style={themedStyles.statItem}
+            onPress={() => handleWidgetClick('learning')}
+            accessibilityRole="button"
+            accessibilityLabel={`Learning Curve: ${fw.development.learning}. Tap to view methodology details.`}
+          >
+            <Ionicons
+              name="trending-up"
+              size={24}
+              color={colors.primary}
+              importantForAccessibility="no-hide-descendants"
+              accessibilityElementsHidden={true}
+            />
+            <Text style={themedStyles.statLabel}>Learning Curve</Text>
+            <Text style={themedStyles.statValue}>{fw.development.learning}</Text>
+            <Ionicons
+              name="information-circle-outline"
+              size={16}
+              style={themedIconStyles.infoIcon}
+              importantForAccessibility="no-hide-descendants"
+              accessibilityElementsHidden={true}
+            />
+          </TouchableOpacity>
 
-           <View
-            style={themedStyles.bannerContent}
-            accessibilityLiveRegion="polite"
-            importantForAccessibility="yes"
-           >
-             {renderBannerContent()}
-           </View>
-         </View>
-       )}
-     </View>
-   );
- };
-
- /*
-  * 9B) Accessibility Section
-  */
- const renderAccessibilitySection = () => {
-   const fw = frameworkData[selectedFramework];
-   const sr = fw.accessibility.screenReaders;
-   const sem = fw.accessibility.semantics;
-   const focus = fw.accessibility.focusManagement;
-
-   return (
-     <View style={themedStyles.section}>
-       {/* Screen Reader Support */}
-       <TouchableOpacity
-         style={themedStyles.accessibilityCard}
-         onPress={() => setActiveStat(activeStat === 'accessibility' ? null : 'accessibility')}
-         accessibilityRole="button"
-         accessibilityLabel="Screen Reader Support. Tap for methodology details."
-       >
-         <Text style={themedStyles.cardTitle}>Screen Reader Support</Text>
-         <View style={styles.platformSupport}>
-           <View style={styles.platformItem}>
-             <Ionicons
-               name="logo-apple"
-               size={24}
-               color={isDarkMode ? colors.text : '#000'}
-               accessibilityElementsHidden
-               importantForAccessibility="no-hide-descendants"
-             />
-             <Text style={themedStyles.platformText}>{sr.ios}</Text>
-           </View>
-           <View style={styles.platformItem}>
-             <Ionicons
-               name="logo-android"
-               size={24}
-               color={isDarkMode ? colors.text : '#3DDC84'}
-               accessibilityElementsHidden
-             />
-             <Text style={themedStyles.platformText}>{sr.android}</Text>
-           </View>
-         </View>
-         {renderRatingBar(sr.rating, 'Screen Reader Support')}
-         <Ionicons
-           name="information-circle-outline"
-           size={16}
-           color={colors.primary}
-           style={{ position: 'absolute', top: 20, right: 20, opacity: 0.6 }}
-           accessibilityElementsHidden
-         />
-       </TouchableOpacity>
-
-       {/* Semantic Support */}
-       <TouchableOpacity
-         style={themedStyles.accessibilityCard}
-         onPress={() => setActiveStat(activeStat === 'implementation' ? null : 'implementation')}
-         accessibilityRole="button"
-         accessibilityLabel="Semantic Support. Tap for implementation details."
-       >
-         <Text style={themedStyles.cardTitle}>Semantic Support</Text>
-         <Text style={themedStyles.platformText}>{sem.support}</Text>
-         <View style={styles.featureList}>
-           {sem.features.map((feature, idx) => (
-             <View key={idx} style={styles.featureItem} accessibilityRole="text">
-               <Ionicons
-                 name="checkmark-circle"
-                 size={20}
-                 color="#28A745"
-                 accessibilityElementsHidden
-                 importantForAccessibility="no-hide-descendants"
-               />
-               <Text style={themedStyles.featureText}>{feature}</Text>
-             </View>
-           ))}
-         </View>
-         {renderRatingBar(sem.rating, 'Semantic Support')}
-         <Ionicons
-           name="information-circle-outline"
-           size={16}
-           color={colors.primary}
-           style={{ position: 'absolute', top: 20, right: 20, opacity: 0.6 }}
-           accessibilityElementsHidden
-         />
-       </TouchableOpacity>
-
-       {/* Add methodology banner at the end of this section too */}
-       {activeStat && (activeStat === 'accessibility' || activeStat === 'implementation') && (
-         <View
-           style={themedStyles.methodologyBanner}
-           accessible={true}
-           accessibilityLabel={`${activeStat === 'accessibility' ? 'Accessibility Assessment' : 'Implementation Analysis'}`}
-         >
-           <View style={themedStyles.bannerHeader}>
-             <Text style={themedStyles.bannerTitle}>
-               {activeStat === 'accessibility' ? 'Accessibility Assessment' : 'Implementation Analysis'}
-             </Text>
-             <TouchableOpacity
-               onPress={() => setActiveStat(null)}
-               accessibilityLabel="Close methodology details"
-               accessibilityRole="button"
-             >
-               <Ionicons name="close" size={20} color={colors.text} />
-             </TouchableOpacity>
-           </View>
-
-           <ScrollView
-             horizontal
-             showsHorizontalScrollIndicator={false}
-             accessibilityRole="tablist"
-           >
-             <View style={themedStyles.bannerTabs}>
-               <TouchableOpacity
-                 style={[
-                   themedStyles.bannerTab,
-                   activeBannerTab === 'overview' && themedStyles.activeBannerTab
-                 ]}
-                 onPress={() => setActiveBannerTab('overview')}
-                 accessibilityRole="tab"
-                 accessibilityState={{ selected: activeBannerTab === 'overview' }}
-               >
-                 <Text style={[
-                   themedStyles.bannerTabText,
-                   activeBannerTab === 'overview' && themedStyles.activeBannerTabText
-                 ]}>Methodology</Text>
-               </TouchableOpacity>
-               <TouchableOpacity
-                 style={[
-                   themedStyles.bannerTab,
-                   activeBannerTab === 'calculation' && themedStyles.activeBannerTab
-                 ]}
-                 onPress={() => setActiveBannerTab('calculation')}
-                 accessibilityRole="tab"
-                 accessibilityState={{ selected: activeBannerTab === 'calculation' }}
-               >
-                 <Text style={[
-                   themedStyles.bannerTabText,
-                   activeBannerTab === 'calculation' && themedStyles.activeBannerTabText
-                 ]}>Calculation</Text>
-               </TouchableOpacity>
-               <TouchableOpacity
-                 style={[
-                   themedStyles.bannerTab,
-                   activeBannerTab === 'references' && themedStyles.activeBannerTab
-                 ]}
-                 onPress={() => setActiveBannerTab('references')}
-                 accessibilityRole="tab"
-                 accessibilityState={{ selected: activeBannerTab === 'references' }}
-               >
-                 <Text style={[
-                   themedStyles.bannerTabText,
-                   activeBannerTab === 'references' && themedStyles.activeBannerTabText
-                 ]}>References</Text>
-               </TouchableOpacity>
-             </View>
-           </ScrollView>
-
-           <View
-             style={themedStyles.bannerContent}
-             accessibilityLiveRegion="polite"
-             importantForAccessibility="yes"
-           >
-             {renderBannerContent()}
-           </View>
-         </View>
-       )}
-
-       {/* Focus Management section */}
-       <TouchableOpacity
-         style={themedStyles.accessibilityCard}
-         onPress={() => setActiveStat(activeStat === 'implementation' ? null : 'implementation')}
-         accessibilityRole="button"
-         accessibilityLabel="Focus Management. Tap for implementation details."
-       >
-         <Text style={themedStyles.cardTitle}>Focus Management</Text>
-         <Text style={themedStyles.platformText}>{focus.support}</Text>
-         <View style={styles.featureList}>
-           {focus.features.map((feature, idx) => (
-             <View key={idx} style={styles.featureItem} accessibilityRole="text">
-               <Ionicons
-                 name="checkmark-circle"
-                 size={20}
-                 color="#28A745"
-                 accessibilityElementsHidden
-                 importantForAccessibility="no-hide-descendants"
-               />
-               <Text style={themedStyles.featureText}>{feature}</Text>
-             </View>
-           ))}
-         </View>
-         {renderRatingBar(focus.rating, 'Focus Management')}
-         <Ionicons
-           name="information-circle-outline"
-           size={16}
-           color={colors.primary}
-           style={{ position: 'absolute', top: 20, right: 20, opacity: 0.6 }}
-           accessibilityElementsHidden
-         />
-       </TouchableOpacity>
-     </View>
-   );
- };
+          <TouchableOpacity
+            style={themedStyles.statItem}
+            onPress={() => handleWidgetClick('hotReload')}
+            accessibilityRole="button"
+            accessibilityLabel={`Hot Reload: ${fw.development.hot ? 'Yes' : 'No'}. Tap to view methodology details.`}
+          >
+            <Ionicons
+              name="flash"
+              size={24}
+              color={colors.primary}
+              importantForAccessibility="no-hide-descendants"
+              accessibilityElementsHidden={true}
+            />
+            <Text style={themedStyles.statLabel}>Hot Reload</Text>
+            <Text style={themedStyles.statValue}>{fw.development.hot ? 'Yes' : 'No'}</Text>
+            <Ionicons
+              name="information-circle-outline"
+              size={16}
+              style={themedIconStyles.infoIcon}
+              importantForAccessibility="no-hide-descendants"
+              accessibilityElementsHidden={true}
+            />
+          </TouchableOpacity>
+        </View>
+      </View>
+    );
+  };
 
   /*
-   * 9C) Implementation Section - Features specific implementation details for the selected framework
+   * 10B) Accessibility Section
+   */
+const renderAccessibilitySection = () => {
+  const fw = frameworkData[selectedFramework];
+  const sr = fw.accessibility.screenReaders;
+  const sem = fw.accessibility.semantics;
+  const focus = fw.accessibility.focusManagement;
+
+  // Assicuriamoci che tutti i rating siano numeri validi
+  const screenReaderRating = Number(sr.rating) || 0;
+  const semanticsRating = Number(sem.rating) || 0;
+  const focusRating = Number(focus.rating) || 0;
+
+  return (
+    <View style={themedStyles.section}>
+      {/* Screen Reader Support */}
+      <TouchableOpacity
+        style={themedStyles.accessibilityCard}
+        onPress={() => handleWidgetClick('accessibility')}
+        accessibilityRole="button"
+        accessibilityLabel="Screen Reader Support. Tap for methodology details."
+      >
+        <Text
+          style={themedStyles.cardTitle}
+          accessibilityRole="header"
+        >
+          Screen Reader Support
+        </Text>
+        <View style={styles.platformSupport}>
+          <View style={styles.platformItem}>
+            <Ionicons
+              name="logo-apple"
+              size={24}
+              color={isDarkMode ? colors.text : '#000'}
+              importantForAccessibility="no-hide-descendants"
+              accessibilityElementsHidden={true}
+            />
+            <Text style={themedStyles.platformText}>{sr.ios}</Text>
+          </View>
+          <View style={styles.platformItem}>
+            <Ionicons
+              name="logo-android"
+              size={24}
+              color={isDarkMode ? colors.text : '#3DDC84'}
+              importantForAccessibility="no-hide-descendants"
+              accessibilityElementsHidden={true}
+            />
+            <Text style={themedStyles.platformText}>{sr.android}</Text>
+          </View>
+        </View>
+        {renderRatingBar(screenReaderRating, 'Screen Reader Support')}
+        <Ionicons
+          name="information-circle-outline"
+          size={16}
+          style={themedIconStyles.infoIconAbsolute}
+          importantForAccessibility="no-hide-descendants"
+          accessibilityElementsHidden={true}
+        />
+      </TouchableOpacity>
+
+      {/* Semantic Support */}
+      <TouchableOpacity
+        style={themedStyles.accessibilityCard}
+        onPress={() => handleWidgetClick('implementation')}
+        accessibilityRole="button"
+        accessibilityLabel="Semantic Support. Tap for implementation details."
+      >
+        <Text
+          style={themedStyles.cardTitle}
+          accessibilityRole="header"
+        >
+          Semantic Support
+        </Text>
+        <Text style={themedStyles.platformText}>{sem.support}</Text>
+        <View style={styles.featureList}>
+          {sem.features.map((feature, idx) => (
+            <View key={idx} style={styles.featureItem} accessibilityRole="text">
+              <Ionicons
+                name="checkmark-circle"
+                size={20}
+                color="#28A745"
+                importantForAccessibility="no-hide-descendants"
+                accessibilityElementsHidden={true}
+              />
+              <Text style={themedStyles.featureText}>{feature}</Text>
+            </View>
+          ))}
+        </View>
+        {renderRatingBar(semanticsRating, 'Semantic Support')}
+        <Ionicons
+          name="information-circle-outline"
+          size={16}
+          style={themedIconStyles.infoIconAbsolute}
+          importantForAccessibility="no-hide-descendants"
+          accessibilityElementsHidden={true}
+        />
+      </TouchableOpacity>
+
+      {/* Focus Management section */}
+      <TouchableOpacity
+        style={themedStyles.accessibilityCard}
+        onPress={() => handleWidgetClick('implementation')}
+        accessibilityRole="button"
+        accessibilityLabel="Focus Management. Tap for implementation details."
+      >
+        <Text
+          style={themedStyles.cardTitle}
+          accessibilityRole="header"
+        >
+          Focus Management
+        </Text>
+        <Text style={themedStyles.platformText}>{focus.support}</Text>
+        <View style={styles.featureList}>
+          {focus.features.map((feature, idx) => (
+            <View key={idx} style={styles.featureItem} accessibilityRole="text">
+              <Ionicons
+                name="checkmark-circle"
+                size={20}
+                color="#28A745"
+                importantForAccessibility="no-hide-descendants"
+                accessibilityElementsHidden={true}
+              />
+              <Text style={themedStyles.featureText}>{feature}</Text>
+            </View>
+          ))}
+        </View>
+        {renderRatingBar(focusRating, 'Focus Management')}
+        <Ionicons
+          name="information-circle-outline"
+          size={16}
+          style={themedIconStyles.infoIconAbsolute}
+          importantForAccessibility="no-hide-descendants"
+          accessibilityElementsHidden={true}
+        />
+      </TouchableOpacity>
+    </View>
+  );
+};
+
+  /*
+   * 10C) Implementation Section - Features specific implementation details for the selected framework
    */
   const renderImplementationSection = () => {
     const fw = frameworkData[selectedFramework];
@@ -2403,7 +2520,7 @@ developmentCard: {
 
     return (
       <View style={themedStyles.section}>
-        <Text style={themedStyles.sectionHeader}>Implementation Details</Text>
+        <Text style={themedStyles.sectionHeader} accessibilityRole="header">Implementation Details</Text>
         <Text style={themedStyles.description}>
           Analysis of accessibility implementation requirements for {fw.name}
         </Text>
@@ -2411,18 +2528,18 @@ developmentCard: {
         {/* Overview Card */}
         <TouchableOpacity
           style={themedStyles.summaryCard}
-          onPress={() => setActiveStat(activeStat === 'implementationDetail' ? null : 'implementationDetail')}
+          onPress={() => handleWidgetClick('implementationDetail')}
           accessibilityRole="button"
           accessibilityLabel={`${fw.name} implementation overview. Tap for details.`}
         >
           <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-            <Text style={themedStyles.summaryTitle}>Implementation Overview</Text>
+            <Text style={themedStyles.summaryTitle} accessibilityRole="header">Implementation Overview</Text>
             <Ionicons
               name="information-circle-outline"
               size={16}
-              color={colors.primary}
-              style={{ opacity: 0.6 }}
-              accessibilityElementsHidden
+              style={themedIconStyles.infoIcon}
+              importantForAccessibility="no-hide-descendants"
+              accessibilityElementsHidden={true}
             />
           </View>
 
@@ -2453,7 +2570,7 @@ developmentCard: {
         {/* Implementation Features Details */}
         <View style={themedStyles.implementationFeature}>
           <View style={themedStyles.implementationFeatureHeader}>
-<Text style={themedStyles.implementationFeatureTitle}>Heading Elements</Text>
+            <Text style={themedStyles.implementationFeatureTitle} accessibilityRole="header">Heading Elements</Text>
             <Text style={themedStyles.implementationFeatureWcag}>WCAG: 1.3.1, 2.4.6</Text>
           </View>
 
@@ -2498,7 +2615,7 @@ developmentCard: {
 
         <View style={themedStyles.implementationFeature}>
           <View style={themedStyles.implementationFeatureHeader}>
-            <Text style={themedStyles.implementationFeatureTitle}>Language Declaration</Text>
+            <Text style={themedStyles.implementationFeatureTitle} accessibilityRole="header">Language Declaration</Text>
             <Text style={themedStyles.implementationFeatureWcag}>WCAG: 3.1.1, 3.1.2</Text>
           </View>
 
@@ -2543,7 +2660,7 @@ developmentCard: {
 
         <View style={themedStyles.implementationFeature}>
           <View style={themedStyles.implementationFeatureHeader}>
-            <Text style={themedStyles.implementationFeatureTitle}>Text Abbreviations</Text>
+            <Text style={themedStyles.implementationFeatureTitle} accessibilityRole="header">Text Abbreviations</Text>
             <Text style={themedStyles.implementationFeatureWcag}>WCAG: 3.1.4</Text>
           </View>
 
@@ -2586,78 +2703,12 @@ developmentCard: {
           </View>
         </View>
 
-        {/* Banner for implementation detail info */}
-        {activeStat === 'implementationDetail' && (
-          <View
-            style={themedStyles.methodologyBanner}
-            accessible={true}
-            accessibilityLabel={`${fw.name} implementation details`}
-          >
-            <View style={themedStyles.bannerHeader}>
-              <Text style={themedStyles.bannerTitle}>
-                {fw.name} Implementation Analysis
-              </Text>
-              <TouchableOpacity
-                onPress={() => setActiveStat(null)}
-                accessibilityLabel="Close implementation details"
-                accessibilityRole="button"
-              >
-                <Ionicons name="close" size={20} color={colors.text} />
-              </TouchableOpacity>
-            </View>
-
-            <ScrollView
-              horizontal
-              showsHorizontalScrollIndicator={false}
-              accessibilityRole="tablist"
-            >
-              <View style={themedStyles.bannerTabs}>
-                <TouchableOpacity
-                  style={[
-                    themedStyles.bannerTab,
-                    activeBannerTab === 'overview' && themedStyles.activeBannerTab
-                  ]}
-                  onPress={() => setActiveBannerTab('overview')}
-                  accessibilityRole="tab"
-                  accessibilityState={{ selected: activeBannerTab === 'overview' }}
-                >
-                  <Text style={[
-                    themedStyles.bannerTabText,
-                    activeBannerTab === 'overview' && themedStyles.activeBannerTabText
-                  ]}>Methodology</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={[
-                    themedStyles.bannerTab,
-                    activeBannerTab === 'calculation' && themedStyles.activeBannerTab
-                  ]}
-                  onPress={() => setActiveBannerTab('calculation')}
-                  accessibilityRole="tab"
-                  accessibilityState={{ selected: activeBannerTab === 'calculation' }}
-                >
-                  <Text style={[
-                    themedStyles.bannerTabText,
-                    activeBannerTab === 'calculation' && themedStyles.activeBannerTabText
-                  ]}>Calculation</Text>
-                </TouchableOpacity>
-              </View>
-            </ScrollView>
-
-            <View
-              style={themedStyles.bannerContent}
-              accessibilityLiveRegion="polite"
-              importantForAccessibility="yes"
-            >
-              {renderBannerContent()}
-            </View>
-          </View>
-        )}
-
         <View style={themedStyles.sourceNote}>
           <TouchableOpacity
             onPress={() => showDetails('references')}
             accessibilityRole="button"
             accessibilityLabel="View reference details"
+            accessibilityHint="Opens a modal with academic references"
           >
             <Text style={themedStyles.sourceText}>
               Source: Perinello & Gaggi (2024), CCNC
@@ -2666,7 +2717,8 @@ developmentCard: {
                 size={12}
                 color={colors.textSecondary}
                 style={{ marginLeft: 4, opacity: 0.8 }}
-                accessibilityElementsHidden
+                importantForAccessibility="no-hide-descendants"
+                accessibilityElementsHidden={true}
               />
             </Text>
           </TouchableOpacity>
@@ -2676,12 +2728,12 @@ developmentCard: {
   };
 
   /*
-   * 9D) Methodology Section
+   * 10D) Methodology Section
    */
   const renderMethodologySection = () => {
     return (
       <View style={themedStyles.section}>
-        <Text style={themedStyles.sectionHeader}>Research Methodology</Text>
+        <Text style={themedStyles.sectionHeader} accessibilityRole="header">Research Methodology</Text>
         <Text style={themedStyles.description}>
           This comparison is based on empirical testing and analysis of official documentation.
         </Text>
@@ -2691,15 +2743,16 @@ developmentCard: {
           onPress={() => showDetails('methodology')}
           accessibilityRole="button"
           accessibilityLabel="Accessibility Testing Methodology. Tap for more details."
+          accessibilityHint="Opens a modal with detailed methodology information"
         >
           <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-            <Text style={themedStyles.methodologyTitle}>Accessibility Testing Methodology</Text>
+            <Text style={themedStyles.methodologyTitle} accessibilityRole="header">Accessibility Testing Methodology</Text>
             <Ionicons
               name="information-circle-outline"
               size={16}
-              color={colors.primary}
-              style={{ opacity: 0.6 }}
-              accessibilityElementsHidden
+              style={themedIconStyles.infoIcon}
+              importantForAccessibility="no-hide-descendants"
+              accessibilityElementsHidden={true}
             />
           </View>
           <Text style={themedStyles.methodologyDescription}>
@@ -2717,15 +2770,16 @@ developmentCard: {
           onPress={() => showDetails('implementation')}
           accessibilityRole="button"
           accessibilityLabel="Implementation Complexity Analysis. Tap for more details."
+          accessibilityHint="Opens a modal with implementation complexity details"
         >
           <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-            <Text style={themedStyles.methodologyTitle}>Implementation Complexity Analysis</Text>
+            <Text style={themedStyles.methodologyTitle} accessibilityRole="header">Implementation Complexity Analysis</Text>
             <Ionicons
               name="information-circle-outline"
               size={16}
-              color={colors.primary}
-              style={{ opacity: 0.6 }}
-              accessibilityElementsHidden
+              style={themedIconStyles.infoIcon}
+              importantForAccessibility="no-hide-descendants"
+              accessibilityElementsHidden={true}
             />
           </View>
           <Text style={themedStyles.methodologyDescription}>
@@ -2734,7 +2788,7 @@ developmentCard: {
           <Text style={themedStyles.sourceItem}>• Lines of code (LOC) required for implementation</Text>
           <Text style={themedStyles.sourceItem}>• Qualitative complexity assessment (Low/Medium/High)</Text>
           <Text style={themedStyles.sourceItem}>• Required knowledge of framework-specific concepts</Text>
-          <Text style={themedStyles.sourceItem}>• Testing on real devices with iOS 16 (VoiceOver) and Android 7+ (TalkBack)</Text>
+          <Text style={themedStyles.sourceItem}>• Testing on real devices with iOS 16 (VoiceOver) and Android 13 (TalkBack)</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
@@ -2742,15 +2796,16 @@ developmentCard: {
           onPress={() => showDetails('references')}
           accessibilityRole="button"
           accessibilityLabel="Academic References. Tap to view references."
+          accessibilityHint="Opens a modal with academic references"
         >
           <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-            <Text style={themedStyles.methodologyTitle}>Academic References</Text>
+            <Text style={themedStyles.methodologyTitle} accessibilityRole="header">Academic References</Text>
             <Ionicons
               name="information-circle-outline"
               size={16}
-              color={colors.primary}
-              style={{ opacity: 0.6 }}
-              accessibilityElementsHidden
+              style={themedIconStyles.infoIcon}
+              importantForAccessibility="no-hide-descendants"
+              accessibilityElementsHidden={true}
             />
           </View>
           <Text style={themedStyles.methodologyDescription}>
@@ -2765,7 +2820,7 @@ developmentCard: {
   };
 
   /*
-   * 10) MAIN CONTENT SWITCH
+   * 11) MAIN CONTENT SWITCH
    */
   const renderContent = () => {
     switch (selectedCategory) {
@@ -2812,15 +2867,18 @@ developmentCard: {
           {renderContent()}
         </ScrollView>
 
-        {/* Modal for details */}
+        {/* Modal for detailed information */}
         {renderDetailsModal()}
+
+        {/* Modal for widget information */}
+        {renderWidgetInfoModal()}
       </LinearGradient>
     </SafeAreaView>
   );
 }
 
 /* --------------------------------------------
-   11) BASE STYLES
+   12) BASE STYLES
 -------------------------------------------- */
 const styles = StyleSheet.create({
   container: {
