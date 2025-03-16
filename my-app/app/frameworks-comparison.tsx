@@ -6,12 +6,12 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 /* ----------------------------------------------------------------------
-  1) SISTEMA FORMALE DI VALUTAZIONE DEI FRAMEWORK
+  1) FORMAL SYSTEM FOR FRAMEWORK EVALUATION
 ---------------------------------------------------------------------- */
 
 /**
- * Informazioni metodologiche di confronto tra framework
- * Utilizzato per documentare l'approccio scientifico alla valutazione
+ * Methodological information for framework comparison
+ * Used to document the scientific approach to evaluation
  */
 const methodologyInfo = {
   version: "1.0.0",
@@ -38,8 +38,8 @@ const methodologyInfo = {
 };
 
 /**
- * Riferimenti accademici e documentazione ufficiale
- * Utilizzati per supportare le valutazioni con fonti verificabili
+ * Academic references and official documentation
+ * Used to support evaluations with verifiable sources
  */
 const dataSources = {
   "perinello-gaggi-2024": {
@@ -79,8 +79,8 @@ const dataSources = {
 };
 
 /**
- * Dati sui framework con metriche verificate e citazioni
- * Ogni aspetto è supportato da fonti e giustificazioni
+ * Framework data with verified metrics and citations
+ * Each aspect is supported by sources and justifications
  */
 const frameworkData = {
   'react-native': {
@@ -261,17 +261,17 @@ const frameworkData = {
 };
 
 /* --------------------------------------------
-   2) CALCOLO FORMALE DELLE METRICHE
+   2) FORMAL METRICS CALCULATION
 -------------------------------------------- */
 function calculateMetrics(framework) {
   if (!framework) return { accessibility: 0, performance: 0 };
 
-  // Accessibility Score - peso basato sull'impatto per utenti con disabilità
+  // Accessibility Score - weighted based on impact for users with disabilities
   const a11y = framework.accessibility;
-  const screenReaders = a11y.screenReaders?.rating ?? 0;    // Peso 0.3 - Metodo primario per utenti non vedenti
-  const semantics = a11y.semantics?.rating ?? 0;            // Peso 0.3 - Critico per comprensione contenuti
-  const gestures = a11y.gestures?.rating ?? 0;              // Peso 0.2 - Importante per interazioni alternative
-  const focus = a11y.focusManagement?.rating ?? 0;          // Peso 0.2 - Essenziale per navigazione da tastiera
+  const screenReaders = a11y.screenReaders?.rating ?? 0;    // Weight 0.3 - Primary method for blind users
+  const semantics = a11y.semantics?.rating ?? 0;            // Weight 0.3 - Critical for content understanding
+  const gestures = a11y.gestures?.rating ?? 0;              // Weight 0.2 - Important for alternative interactions
+  const focus = a11y.focusManagement?.rating ?? 0;          // Weight 0.2 - Essential for keyboard navigation
 
   const accessibilityScore = Number(
     (
@@ -282,21 +282,21 @@ function calculateMetrics(framework) {
     ).toFixed(1)
   );
 
-  // Implementation Complexity Score - normalizzato su scala 0-5
-  // (valore minore è migliore = meno codice richiesto)
+  // Implementation Complexity Score - normalized to 0-5 scale
+  // (lower value is better = less code required)
   const impl = a11y.implementation;
   const headingComplexity = impl?.headingElements?.linesOfCode ?? 0;
   const languageComplexity = impl?.languageDeclaration?.linesOfCode ?? 0;
   const abbreviationComplexity = impl?.textAbbreviations?.linesOfCode ?? 0;
 
-  // Linee di codice totali necessarie per l'implementazione dell'accessibilità
+  // Total lines of code needed for accessibility implementation
   const totalLinesOfCode = headingComplexity + languageComplexity + abbreviationComplexity;
 
-  // Scala da 0-5 dove valore minore è migliore (meno codice è meglio)
-  // LOC max attesi circa 50, quindi normalizzato a scala 0-5 dove 5 è migliore (meno codice)
+  // Scale from 0-5 where lower value is better (less code is better)
+  // Expected max LOC around 50, so normalized to 0-5 scale where 5 is better (less code)
   const implementationScore = Math.max(0, Math.min(5, 5 - (totalLinesOfCode / 10)));
 
-  // Performance Score - normalizzato da dati benchmark
+  // Performance Score - normalized from benchmark data
   const perf = framework.performance;
   const startupTimeStr = perf.startupTime;
   const startupTimeNum = parseFloat(startupTimeStr) || 0;
@@ -312,18 +312,18 @@ function calculateMetrics(framework) {
 
   const performanceScore = Number(
     (
-      // Startup time (più veloce è meglio)
+      // Startup time (faster is better)
       -0.3 * startupTimeNum +
-      // Memory usage (meno è meglio)
+      // Memory usage (less is better)
       0.3 * memoryScore +
-      // Bundle size (più piccolo è meglio)
+      // Bundle size (smaller is better)
       -0.4 * (bundleSizeMin / 10) +
-      // Costante di normalizzazione
+      // Normalization constant
       5
     ).toFixed(1)
   );
 
-  // Developer Experience Score - basato sui punteggi di implementazione
+  // Developer Experience Score - based on implementation scores
   const implementationScores = [
     impl?.headingElements?.implementationComplexity,
     impl?.languageDeclaration?.implementationComplexity,
@@ -340,7 +340,7 @@ function calculateMetrics(framework) {
     .map(complexity => complexityMap[complexity] || 0)
     .reduce((sum, score) => sum + score, 0) / implementationScores.length;
 
-  // Limita a [0, 5] per assicurare punteggi validi
+  // Limit to [0, 5] to ensure valid scores
   return {
     accessibility: Math.max(0, Math.min(5, accessibilityScore)),
     performance: Math.max(0, Math.min(5, performanceScore)),
@@ -350,17 +350,17 @@ function calculateMetrics(framework) {
 }
 
 /* --------------------------------------------
-   3) GENERAZIONE DATI DI CONFRONTO
+   3) COMPARISON DATA GENERATION
 -------------------------------------------- */
 function generateComparisonTable() {
   const reactNativeData = frameworkData['react-native'];
   const flutterData = frameworkData['flutter'];
 
-  // Calcola le metriche
+  // Calculate metrics
   const reactNativeMetrics = calculateMetrics(reactNativeData);
   const flutterMetrics = calculateMetrics(flutterData);
 
-  // Confronto dettagliato per funzionalità di accessibilità
+  // Detailed comparison for accessibility features
   const accessibilityComparison = {
     headingElements: {
       title: "Heading Elements",
@@ -412,7 +412,7 @@ function generateComparisonTable() {
     }
   };
 
-  // Genera statistiche riassuntive
+  // Generate summary statistics
   const summaryData = {
     totalLOC: {
       reactNative: Object.values(accessibilityComparison)
@@ -442,7 +442,7 @@ function generateComparisonTable() {
     }
   };
 
-  // Aggiungi dettagli per debug e approfondimento
+  // Add details for debugging and deeper analysis
   const detailedAnalysis = {
     reactNative: {
       screenReader: reactNativeData.accessibility.screenReaders,
@@ -477,25 +477,24 @@ function generateComparisonTable() {
 export default function FrameworkComparisonScreen() {
   const [selectedCategory, setSelectedCategory] = useState('overview');
   const [selectedFramework, setSelectedFramework] = useState('react-native');
-  const [showMethodology, setShowMethodology] = useState(false);
   const [activeStat, setActiveStat] = useState(null); // 'language', 'learning', 'hotReload', etc.
   const [activeBannerTab, setActiveBannerTab] = useState('overview'); // 'overview', 'calculation', 'references'
 
-  // Stato per il modal di dettaglio
+  // State for detail modal
   const [detailsVisible, setDetailsVisible] = useState(false);
   const [detailType, setDetailType] = useState(null); // 'methodology', 'implementation', 'references'
   const [activeDetailTab, setActiveDetailTab] = useState('overview');
 
   const { colors, textSizes, isDarkMode } = useTheme();
 
-  // Genera i dati di confronto
+  // Generate comparison data
   const comparisonData = generateComparisonTable();
 
-  // Categorie di visualizzazione
+  // Display categories
   const categories = [
     { id: 'overview', label: 'Overview', icon: 'information-circle' },
     { id: 'accessibility', label: 'Accessibility', icon: 'eye' },
-    { id: 'comparison', label: 'Implementation', icon: 'code-slash' },
+    { id: 'implementation', label: 'Implementation', icon: 'code-slash' },
     { id: 'methodology', label: 'Methodology', icon: 'book' },
   ];
 
@@ -514,7 +513,7 @@ export default function FrameworkComparisonScreen() {
     );
   }, [selectedFramework, selectedCategory]);
 
-  // Mostra i dettagli in un modal
+  // Show details in a modal
   const showDetails = (type) => {
     setDetailType(type);
     setActiveDetailTab('overview');
@@ -810,7 +809,7 @@ export default function FrameworkComparisonScreen() {
       borderWidth: isDarkMode ? 1 : 0,
       borderColor: isDarkMode ? colors.border : 'transparent',
     },
-    developmentCard: {
+developmentCard: {
       backgroundColor: colors.surface,
       borderRadius: 16,
       padding: 20,
@@ -1039,7 +1038,7 @@ export default function FrameworkComparisonScreen() {
       alignItems: 'center',
       justifyContent: 'center',
     },
-    // Stili per modal dettagli
+    // Styles for details modal
     centeredView: {
       flex: 1,
       justifyContent: 'center',
@@ -1223,6 +1222,9 @@ export default function FrameworkComparisonScreen() {
       color: colors.textSecondary,
       fontSize: textSizes.small,
     },
+    activeBannerTabText: {
+      color: colors.primary,
+    },
     bannerContent: {
       paddingVertical: 8,
     },
@@ -1264,6 +1266,72 @@ export default function FrameworkComparisonScreen() {
       paddingBottom: 8,
       borderBottomWidth: 1,
       borderBottomColor: colors.border + '30',
+    },
+    implementationBanner: {
+      backgroundColor: colors.surface,
+      borderRadius: 16,
+      marginTop: 16,
+      marginBottom: 16,
+      padding: 16,
+      borderWidth: 1,
+      borderColor: colors.border,
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: isDarkMode ? 0.3 : 0.1,
+      shadowRadius: 4,
+      elevation: 2,
+    },
+    codeExample: {
+      backgroundColor: isDarkMode ? '#1a1a1a' : '#f6f8fa',
+      padding: 12,
+      borderRadius: 8,
+      marginVertical: 8,
+    },
+    codeExampleTitle: {
+      color: colors.text,
+      fontSize: textSizes.small + 1,
+      fontWeight: '600',
+      marginBottom: 8,
+    },
+    implementationFeature: {
+      padding: 12,
+      backgroundColor: colors.surface,
+      borderRadius: 12,
+      marginBottom: 12,
+      borderWidth: 1,
+      borderColor: colors.border + '60',
+    },
+    implementationFeatureHeader: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      marginBottom: 8,
+    },
+    implementationFeatureTitle: {
+      fontSize: textSizes.medium,
+      fontWeight: '600',
+      color: colors.text,
+    },
+    implementationFeatureWcag: {
+      fontSize: textSizes.small,
+      color: colors.primary,
+      fontWeight: '500',
+    },
+    implementationDetails: {
+      marginTop: 8,
+    },
+    implementationDetail: {
+      flexDirection: 'row',
+      marginBottom: 6,
+    },
+    implementationDetailLabel: {
+      fontSize: textSizes.small,
+      color: colors.textSecondary,
+      width: 100,
+    },
+    implementationDetailValue: {
+      fontSize: textSizes.small,
+      color: colors.text,
+      flex: 1,
     },
   };
 
@@ -1351,6 +1419,28 @@ export default function FrameworkComparisonScreen() {
             </View>
           </View>
         );
+      } else if (activeStat === 'implementationDetail') {
+        // Implementation detail-specific content
+        const fw = frameworkData[selectedFramework];
+        return (
+          <View>
+            <Text style={themedStyles.bannerText}>
+              This shows implementation details for {fw.name} accessibility features.
+              The complexity and lines of code metrics highlight efficiency differences
+              between frameworks.
+            </Text>
+
+            <View style={themedStyles.methodDataRow}>
+              <Text style={themedStyles.methodDataLabel}>Framework:</Text>
+              <Text style={themedStyles.methodDataValue}>{fw.name} {fw.version}</Text>
+            </View>
+
+            <View style={themedStyles.methodDataRow}>
+              <Text style={themedStyles.methodDataLabel}>Analysis Method:</Text>
+              <Text style={themedStyles.methodDataValue}>Static code analysis, empirical testing</Text>
+            </View>
+          </View>
+        );
       }
     } else if (activeBannerTab === 'calculation') {
       // Calculation tab content
@@ -1376,7 +1466,7 @@ export default function FrameworkComparisonScreen() {
             </Text>
           </View>
         );
-      } else if (activeStat === 'implementation') {
+      } else if (activeStat === 'implementation' || activeStat === 'implementationDetail') {
         return (
           <View>
             <Text style={themedStyles.bannerText}>
@@ -1391,6 +1481,10 @@ export default function FrameworkComparisonScreen() {
     Math.max(0, Math.min(5, 5 - (totalLinesOfCode / 10)))`}
               </Text>
             </View>
+
+            <Text style={themedStyles.bannerText}>
+              Framework-specific implementation examples are evaluated using standardized test cases based on WCAG 2.2 requirements.
+            </Text>
           </View>
         );
       } else {
@@ -1412,7 +1506,7 @@ export default function FrameworkComparisonScreen() {
       // References tab
       return (
         <View>
-          <Text style={themedStyles.bannerSubtitle}>Key References</Text>
+          <Text style={themedStyles.bannerSubtext}>Key References</Text>
           {Object.values(comparisonData.sources)
             .filter(s => s.type === 'research')
             .slice(0, 2)
@@ -1426,13 +1520,15 @@ export default function FrameworkComparisonScreen() {
         </View>
       );
     }
+
+    return null;
   };
 
   /* --------------------------------------------
-     6) RENDER MODAL PER DETTAGLI
+     6) RENDER DETAILS MODAL
   -------------------------------------------- */
   const renderDetailsModal = () => {
-    // Titolo appropriato in base al tipo di dettaglio
+    // Appropriate title based on detail type
     const getModalTitle = () => {
       switch (detailType) {
         case 'methodology':
@@ -1446,7 +1542,7 @@ export default function FrameworkComparisonScreen() {
       }
     };
 
-    // Contenuto in base al tab attivo
+    // Content based on active tab
     const renderTabContent = () => {
       switch (activeDetailTab) {
         case 'overview':
@@ -1460,7 +1556,7 @@ export default function FrameworkComparisonScreen() {
       }
     };
 
-    // Tab panoramica
+    // Overview tab
     const renderOverviewTab = () => {
       if (detailType === 'methodology') {
         return (
@@ -1578,7 +1674,7 @@ export default function FrameworkComparisonScreen() {
       return null;
     };
 
-    // Tab dettagli
+    // Details tab
     const renderDetailsTab = () => {
       if (detailType === 'methodology') {
         return (
@@ -1603,7 +1699,7 @@ export default function FrameworkComparisonScreen() {
               <Text style={themedStyles.detailValue}>Weight: 30%</Text>
             </View>
             <View style={themedStyles.detailRow}>
-              <Text style={themedStyles.detailLabel}>Gesture Handling</Text>
+<Text style={themedStyles.detailLabel}>Gesture Handling</Text>
               <Text style={themedStyles.detailValue}>Weight: 20%</Text>
             </View>
             <View style={themedStyles.detailRow}>
@@ -1693,7 +1789,7 @@ export default function FrameworkComparisonScreen() {
       return null;
     };
 
-    // Tab riferimenti
+    // References tab
     const renderReferencesTab = () => {
       return (
         <View style={themedStyles.detailSection}>
@@ -1737,7 +1833,7 @@ export default function FrameworkComparisonScreen() {
               <TouchableOpacity
                 style={themedStyles.closeButton}
                 onPress={() => setDetailsVisible(false)}
-                accessibilityLabel="Chiudi dettagli"
+                accessibilityLabel="Close details"
                 accessibilityRole="button"
               >
                 <Ionicons name="close" size={24} color={colors.text} />
@@ -1780,9 +1876,9 @@ export default function FrameworkComparisonScreen() {
             </View>
 
             <ScrollView
-            contentContainerStyle={themedStyles.modalContent}
-            showsHorizontalScrollIndicator={false}
-            accessibilityRole="tablist"
+              contentContainerStyle={themedStyles.modalContent}
+              showsVerticalScrollIndicator={true}
+              accessibilityRole="scrollview"
             >
               {renderTabContent()}
             </ScrollView>
@@ -1995,7 +2091,6 @@ export default function FrameworkComparisonScreen() {
           <View
             style={themedStyles.methodologyBanner}
             accessible={true}
-            accessibilityRole="dialog"
             accessibilityLabel={`${activeStat === 'language' ? 'Language' :
                                  activeStat === 'learning' ? 'Learning Curve' :
                                  activeStat === 'hotReload' ? 'Hot Reload' :
@@ -2035,16 +2130,18 @@ export default function FrameworkComparisonScreen() {
                   accessibilityLabel="Methodology tab"
                   accessibilityHint="Shows methodology information"
                 >
-                  <Text style={themedStyles.bannerTabText}>Methodology</Text>
+                  <Text style={[
+                    themedStyles.bannerTabText,
+                    activeBannerTab === 'overview' && themedStyles.activeBannerTabText
+                  ]}>Methodology</Text>
                 </TouchableOpacity>
              </View>
            </ScrollView>
 
            <View
-           style={themedStyles.bannerContent}
-           accessibilityLiveRegion="polite"
-           accessibilityRole="tabpanel"
-           accessibleViewIsModal={false}
+            style={themedStyles.bannerContent}
+            accessibilityLiveRegion="polite"
+            importantForAccessibility="yes"
            >
              {renderBannerContent()}
            </View>
@@ -2139,7 +2236,11 @@ export default function FrameworkComparisonScreen() {
 
        {/* Add methodology banner at the end of this section too */}
        {activeStat && (activeStat === 'accessibility' || activeStat === 'implementation') && (
-         <View style={themedStyles.methodologyBanner}>
+         <View
+           style={themedStyles.methodologyBanner}
+           accessible={true}
+           accessibilityLabel={`${activeStat === 'accessibility' ? 'Accessibility Assessment' : 'Implementation Analysis'}`}
+         >
            <View style={themedStyles.bannerHeader}>
              <Text style={themedStyles.bannerTitle}>
                {activeStat === 'accessibility' ? 'Accessibility Assessment' : 'Implementation Analysis'}
@@ -2147,16 +2248,17 @@ export default function FrameworkComparisonScreen() {
              <TouchableOpacity
                onPress={() => setActiveStat(null)}
                accessibilityLabel="Close methodology details"
+               accessibilityRole="button"
              >
                <Ionicons name="close" size={20} color={colors.text} />
              </TouchableOpacity>
            </View>
 
-            <ScrollView
-            contentContainerStyle={themedStyles.modalContent}
-            showsHorizontalScrollIndicator={false}
-            accessibilityRole="tablist"
-            >
+           <ScrollView
+             horizontal
+             showsHorizontalScrollIndicator={false}
+             accessibilityRole="tablist"
+           >
              <View style={themedStyles.bannerTabs}>
                <TouchableOpacity
                  style={[
@@ -2164,8 +2266,13 @@ export default function FrameworkComparisonScreen() {
                    activeBannerTab === 'overview' && themedStyles.activeBannerTab
                  ]}
                  onPress={() => setActiveBannerTab('overview')}
+                 accessibilityRole="tab"
+                 accessibilityState={{ selected: activeBannerTab === 'overview' }}
                >
-                 <Text style={themedStyles.bannerTabText}>Methodology</Text>
+                 <Text style={[
+                   themedStyles.bannerTabText,
+                   activeBannerTab === 'overview' && themedStyles.activeBannerTabText
+                 ]}>Methodology</Text>
                </TouchableOpacity>
                <TouchableOpacity
                  style={[
@@ -2173,8 +2280,13 @@ export default function FrameworkComparisonScreen() {
                    activeBannerTab === 'calculation' && themedStyles.activeBannerTab
                  ]}
                  onPress={() => setActiveBannerTab('calculation')}
+                 accessibilityRole="tab"
+                 accessibilityState={{ selected: activeBannerTab === 'calculation' }}
                >
-                 <Text style={themedStyles.bannerTabText}>Calculation</Text>
+                 <Text style={[
+                   themedStyles.bannerTabText,
+                   activeBannerTab === 'calculation' && themedStyles.activeBannerTabText
+                 ]}>Calculation</Text>
                </TouchableOpacity>
                <TouchableOpacity
                  style={[
@@ -2182,24 +2294,28 @@ export default function FrameworkComparisonScreen() {
                    activeBannerTab === 'references' && themedStyles.activeBannerTab
                  ]}
                  onPress={() => setActiveBannerTab('references')}
+                 accessibilityRole="tab"
+                 accessibilityState={{ selected: activeBannerTab === 'references' }}
                >
-                 <Text style={themedStyles.bannerTabText}>References</Text>
+                 <Text style={[
+                   themedStyles.bannerTabText,
+                   activeBannerTab === 'references' && themedStyles.activeBannerTabText
+                 ]}>References</Text>
                </TouchableOpacity>
              </View>
            </ScrollView>
 
-            <View
-              style={themedStyles.bannerContent}
-              accessibilityLiveRegion="polite"
-              accessibilityRole="tabpanel"
-              accessibilityViewIsModal={false}
-            >
+           <View
+             style={themedStyles.bannerContent}
+             accessibilityLiveRegion="polite"
+             importantForAccessibility="yes"
+           >
              {renderBannerContent()}
            </View>
          </View>
        )}
 
-       {/* Focus Management section unchanged */}
+       {/* Focus Management section */}
        <TouchableOpacity
          style={themedStyles.accessibilityCard}
          onPress={() => setActiveStat(activeStat === 'implementation' ? null : 'implementation')}
@@ -2236,41 +2352,71 @@ export default function FrameworkComparisonScreen() {
  };
 
   /*
-   * 9C) Comparison Section - Implementation Details
+   * 9C) Implementation Section - Features specific implementation details for the selected framework
    */
-  const renderComparisonSection = () => {
-    const { accessibilityComparison, summaryData } = comparisonData;
+  const renderImplementationSection = () => {
+    const fw = frameworkData[selectedFramework];
+    const implementation = fw.accessibility.implementation;
+    const metrics = calculateMetrics(fw);
 
-    // Helper function to get complexity style
-    const getComplexityStyle = (complexity) => {
-      switch (complexity) {
-        case 'Low':
-          return themedStyles.complexityLow;
-        case 'Medium':
-          return themedStyles.complexityMedium;
-        case 'High':
-          return themedStyles.complexityHigh;
-        default:
-          return {};
+    // Get framework-specific data
+    const frameworkImplementationDetails = selectedFramework === 'react-native'
+      ? comparisonData.accessibilityComparison
+      : comparisonData.accessibilityComparison;
+
+    // Helper function to get complexity class
+    const getComplexityClass = (complexity) => {
+      switch(complexity) {
+        case 'Low': return themedStyles.complexityLow;
+        case 'Medium': return themedStyles.complexityMedium;
+        case 'High': return themedStyles.complexityHigh;
+        default: return {};
+      }
+    };
+
+    // Generate code examples based on selected framework
+    const getCodeExample = (feature) => {
+      if (selectedFramework === 'react-native') {
+        switch(feature) {
+          case 'headingElements':
+            return '<Text accessibilityRole="header">Heading</Text>';
+          case 'languageDeclaration':
+            return '<Text accessibilityLanguage="en">English text</Text>';
+          case 'textAbbreviations':
+            return '<Text accessibilityLabel="National Aeronautics and Space Administration">NASA</Text>';
+          default:
+            return '';
+        }
+      } else {
+        switch(feature) {
+          case 'headingElements':
+            return 'Semantics(\n  header: true,\n  child: Text(\'Heading\')\n)';
+          case 'languageDeclaration':
+            return 'Semantics(\n  attributedLabel: StringAttribute(\n    string: \'Text\',\n    attributes: {\n      LocaleStringAttribute(locale: Locale(\'en\'))\n    }\n  ),\n  child: Text(\'English text\')\n)';
+          case 'textAbbreviations':
+            return 'Text(\n  \'NASA\',\n  semanticsLabel: \'National Aeronautics and Space Administration\'\n)';
+          default:
+            return '';
+        }
       }
     };
 
     return (
       <View style={themedStyles.section}>
-        <Text style={themedStyles.sectionHeader}>Implementation Comparison</Text>
+        <Text style={themedStyles.sectionHeader}>Implementation Details</Text>
         <Text style={themedStyles.description}>
-          Comparison of accessibility implementation requirements between React Native and Flutter
+          Analysis of accessibility implementation requirements for {fw.name}
         </Text>
 
-        {/* Summary card with key metrics */}
+        {/* Overview Card */}
         <TouchableOpacity
           style={themedStyles.summaryCard}
-          onPress={() => showDetails('implementation')}
+          onPress={() => setActiveStat(activeStat === 'implementationDetail' ? null : 'implementationDetail')}
           accessibilityRole="button"
-          accessibilityLabel="Implementation Summary. Tap for more details."
+          accessibilityLabel={`${fw.name} implementation overview. Tap for details.`}
         >
           <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-            <Text style={themedStyles.summaryTitle}>Implementation Summary</Text>
+            <Text style={themedStyles.summaryTitle}>Implementation Overview</Text>
             <Ionicons
               name="information-circle-outline"
               size={16}
@@ -2281,95 +2427,231 @@ export default function FrameworkComparisonScreen() {
           </View>
 
           <View style={themedStyles.summaryRow}>
-            <Text style={themedStyles.summaryLabel}>Total Lines of Code:</Text>
-            <View style={themedStyles.frameworkCompare}>
-              <Text style={themedStyles.reactValue}>{summaryData.totalLOC.reactNative}</Text>
-              <Text style={themedStyles.flutterValue}>{summaryData.totalLOC.flutter}</Text>
-            </View>
+            <Text style={themedStyles.summaryLabel}>Implementation Complexity:</Text>
+            <Text style={themedStyles.statValue}>{metrics.implementationComplexity.toFixed(1)}/5</Text>
+          </View>
+
+          <View style={themedStyles.summaryRow}>
+            <Text style={themedStyles.summaryLabel}>Total Lines of Code Required:</Text>
+            <Text style={themedStyles.statValue}>
+              {selectedFramework === 'react-native'
+                ? comparisonData.summaryData.totalLOC.reactNative
+                : comparisonData.summaryData.totalLOC.flutter}
+            </Text>
           </View>
 
           <View style={themedStyles.summaryRow}>
             <Text style={themedStyles.summaryLabel}>Default Accessible Components:</Text>
-            <View style={themedStyles.frameworkCompare}>
-              <Text style={themedStyles.reactValue}>{summaryData.defaultAccessible.reactNative}/3</Text>
-              <Text style={themedStyles.flutterValue}>{summaryData.defaultAccessible.flutter}/3</Text>
-            </View>
-          </View>
-
-          <View style={themedStyles.summaryRow}>
-            <Text style={themedStyles.summaryLabel}>Implementation Complexity (1-5):</Text>
-            <View style={themedStyles.frameworkCompare}>
-              <Text style={themedStyles.reactValue}>{summaryData.overallScores.implementationComplexity.reactNative.toFixed(1)}</Text>
-              <Text style={themedStyles.flutterValue}>{summaryData.overallScores.implementationComplexity.flutter.toFixed(1)}</Text>
-            </View>
+            <Text style={themedStyles.statValue}>
+              {selectedFramework === 'react-native'
+                ? comparisonData.summaryData.defaultAccessible.reactNative + '/3'
+                : comparisonData.summaryData.defaultAccessible.flutter + '/3'}
+            </Text>
           </View>
         </TouchableOpacity>
 
-        {/* Detailed comparison table */}
-        <View style={themedStyles.tableContainer}>
-          {/* Table Header */}
-          <View style={themedStyles.tableHeader}>
-            <Text style={[themedStyles.tableHeaderCell, themedStyles.featureCell]}>Feature</Text>
-            <Text style={themedStyles.tableHeaderCell}>React Native</Text>
-            <Text style={themedStyles.tableHeaderCell}>Flutter</Text>
+        {/* Implementation Features Details */}
+        <View style={themedStyles.implementationFeature}>
+          <View style={themedStyles.implementationFeatureHeader}>
+<Text style={themedStyles.implementationFeatureTitle}>Heading Elements</Text>
+            <Text style={themedStyles.implementationFeatureWcag}>WCAG: 1.3.1, 2.4.6</Text>
           </View>
 
-          {/* Table Rows */}
-          {Object.values(accessibilityComparison).map((item, index) => (
-            <TouchableOpacity
-              key={index}
-              style={[
-                themedStyles.tableRow,
-                index === Object.values(accessibilityComparison).length - 1 && themedStyles.lastTableRow
-              ]}
-              onPress={() => showDetails('implementation')}
-              accessibilityRole="button"
-              accessibilityLabel={`Implementation comparison for ${item.title}. Tap for more details.`}
-            >
-              {/* Feature Cell */}
-              <View style={[themedStyles.tableCell, themedStyles.featureCell]}>
-                <Text style={themedStyles.featureName}>{item.title}</Text>
-                <Text style={themedStyles.featureWcag}>WCAG: {item.wcag}</Text>
-              </View>
+          <View style={themedStyles.implementationDetails}>
+            <View style={themedStyles.implementationDetail}>
+              <Text style={themedStyles.implementationDetailLabel}>Default Accessible:</Text>
+              <Text style={themedStyles.implementationDetailValue}>
+                {implementation.headingElements.accessible ? "Yes" : "No"}
+              </Text>
+            </View>
 
-              {/* React Native Cell */}
-              <View style={[themedStyles.tableCell, themedStyles.implementationCell]}>
-                <Text
-                  style={[
-                    themedStyles.accessibleStatus,
-                    item.reactNative.defaultAccessible ? themedStyles.accessible : themedStyles.notAccessible
-                  ]}
-                >
-                  {item.reactNative.defaultAccessible ? "✓" : "✗"}
-                </Text>
-                <Text style={themedStyles.implementationNotes}>
-                  LOC: {item.reactNative.linesOfCode}
-                </Text>
-                <Text style={[themedStyles.complexityIndicator, getComplexityStyle(item.reactNative.complexity)]}>
-                  {item.reactNative.complexity} Complexity
-                </Text>
-              </View>
+            <View style={themedStyles.implementationDetail}>
+              <Text style={themedStyles.implementationDetailLabel}>Complexity:</Text>
+              <Text style={[
+                themedStyles.implementationDetailValue,
+                getComplexityClass(implementation.headingElements.implementationComplexity)
+              ]}>
+                {implementation.headingElements.implementationComplexity}
+              </Text>
+            </View>
 
-              {/* Flutter Cell */}
-              <View style={[themedStyles.tableCell, themedStyles.implementationCell]}>
-                <Text
-                  style={[
-                    themedStyles.accessibleStatus,
-                    item.flutter.defaultAccessible ? themedStyles.accessible : themedStyles.notAccessible
-                  ]}
-                >
-                  {item.flutter.defaultAccessible ? "✓" : "✗"}
-                </Text>
-                <Text style={themedStyles.implementationNotes}>
-                  LOC: {item.flutter.linesOfCode}
-                </Text>
-                <Text style={[themedStyles.complexityIndicator, getComplexityStyle(item.flutter.complexity)]}>
-                  {item.flutter.complexity} Complexity
-                </Text>
-              </View>
-            </TouchableOpacity>
-          ))}
+            <View style={themedStyles.implementationDetail}>
+              <Text style={themedStyles.implementationDetailLabel}>Lines of Code:</Text>
+              <Text style={themedStyles.implementationDetailValue}>
+                {implementation.headingElements.linesOfCode}
+              </Text>
+            </View>
+
+            <View style={themedStyles.implementationDetail}>
+              <Text style={themedStyles.implementationDetailLabel}>Notes:</Text>
+              <Text style={themedStyles.implementationDetailValue}>
+                {implementation.headingElements.notes}
+              </Text>
+            </View>
+          </View>
+
+          <View style={themedStyles.codeExample}>
+            <Text style={themedStyles.codeExampleTitle}>Code Example:</Text>
+            <Text style={themedStyles.codeText}>{getCodeExample('headingElements')}</Text>
+          </View>
         </View>
+
+        <View style={themedStyles.implementationFeature}>
+          <View style={themedStyles.implementationFeatureHeader}>
+            <Text style={themedStyles.implementationFeatureTitle}>Language Declaration</Text>
+            <Text style={themedStyles.implementationFeatureWcag}>WCAG: 3.1.1, 3.1.2</Text>
+          </View>
+
+          <View style={themedStyles.implementationDetails}>
+            <View style={themedStyles.implementationDetail}>
+              <Text style={themedStyles.implementationDetailLabel}>Default Accessible:</Text>
+              <Text style={themedStyles.implementationDetailValue}>
+                {implementation.languageDeclaration.accessible ? "Yes" : "No"}
+              </Text>
+            </View>
+
+            <View style={themedStyles.implementationDetail}>
+              <Text style={themedStyles.implementationDetailLabel}>Complexity:</Text>
+              <Text style={[
+                themedStyles.implementationDetailValue,
+                getComplexityClass(implementation.languageDeclaration.implementationComplexity)
+              ]}>
+                {implementation.languageDeclaration.implementationComplexity}
+              </Text>
+            </View>
+
+            <View style={themedStyles.implementationDetail}>
+              <Text style={themedStyles.implementationDetailLabel}>Lines of Code:</Text>
+              <Text style={themedStyles.implementationDetailValue}>
+                {implementation.languageDeclaration.linesOfCode}
+              </Text>
+            </View>
+
+            <View style={themedStyles.implementationDetail}>
+              <Text style={themedStyles.implementationDetailLabel}>Notes:</Text>
+              <Text style={themedStyles.implementationDetailValue}>
+                {implementation.languageDeclaration.notes}
+              </Text>
+            </View>
+          </View>
+
+          <View style={themedStyles.codeExample}>
+            <Text style={themedStyles.codeExampleTitle}>Code Example:</Text>
+            <Text style={themedStyles.codeText}>{getCodeExample('languageDeclaration')}</Text>
+          </View>
+        </View>
+
+        <View style={themedStyles.implementationFeature}>
+          <View style={themedStyles.implementationFeatureHeader}>
+            <Text style={themedStyles.implementationFeatureTitle}>Text Abbreviations</Text>
+            <Text style={themedStyles.implementationFeatureWcag}>WCAG: 3.1.4</Text>
+          </View>
+
+          <View style={themedStyles.implementationDetails}>
+            <View style={themedStyles.implementationDetail}>
+              <Text style={themedStyles.implementationDetailLabel}>Default Accessible:</Text>
+              <Text style={themedStyles.implementationDetailValue}>
+                {implementation.textAbbreviations.accessible ? "Yes" : "No"}
+              </Text>
+            </View>
+
+            <View style={themedStyles.implementationDetail}>
+              <Text style={themedStyles.implementationDetailLabel}>Complexity:</Text>
+              <Text style={[
+                themedStyles.implementationDetailValue,
+                getComplexityClass(implementation.textAbbreviations.implementationComplexity)
+              ]}>
+                {implementation.textAbbreviations.implementationComplexity}
+              </Text>
+            </View>
+
+            <View style={themedStyles.implementationDetail}>
+              <Text style={themedStyles.implementationDetailLabel}>Lines of Code:</Text>
+              <Text style={themedStyles.implementationDetailValue}>
+                {implementation.textAbbreviations.linesOfCode}
+              </Text>
+            </View>
+
+            <View style={themedStyles.implementationDetail}>
+              <Text style={themedStyles.implementationDetailLabel}>Notes:</Text>
+              <Text style={themedStyles.implementationDetailValue}>
+                {implementation.textAbbreviations.notes}
+              </Text>
+            </View>
+          </View>
+
+          <View style={themedStyles.codeExample}>
+            <Text style={themedStyles.codeExampleTitle}>Code Example:</Text>
+            <Text style={themedStyles.codeText}>{getCodeExample('textAbbreviations')}</Text>
+          </View>
+        </View>
+
+        {/* Banner for implementation detail info */}
+        {activeStat === 'implementationDetail' && (
+          <View
+            style={themedStyles.methodologyBanner}
+            accessible={true}
+            accessibilityLabel={`${fw.name} implementation details`}
+          >
+            <View style={themedStyles.bannerHeader}>
+              <Text style={themedStyles.bannerTitle}>
+                {fw.name} Implementation Analysis
+              </Text>
+              <TouchableOpacity
+                onPress={() => setActiveStat(null)}
+                accessibilityLabel="Close implementation details"
+                accessibilityRole="button"
+              >
+                <Ionicons name="close" size={20} color={colors.text} />
+              </TouchableOpacity>
+            </View>
+
+            <ScrollView
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              accessibilityRole="tablist"
+            >
+              <View style={themedStyles.bannerTabs}>
+                <TouchableOpacity
+                  style={[
+                    themedStyles.bannerTab,
+                    activeBannerTab === 'overview' && themedStyles.activeBannerTab
+                  ]}
+                  onPress={() => setActiveBannerTab('overview')}
+                  accessibilityRole="tab"
+                  accessibilityState={{ selected: activeBannerTab === 'overview' }}
+                >
+                  <Text style={[
+                    themedStyles.bannerTabText,
+                    activeBannerTab === 'overview' && themedStyles.activeBannerTabText
+                  ]}>Methodology</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={[
+                    themedStyles.bannerTab,
+                    activeBannerTab === 'calculation' && themedStyles.activeBannerTab
+                  ]}
+                  onPress={() => setActiveBannerTab('calculation')}
+                  accessibilityRole="tab"
+                  accessibilityState={{ selected: activeBannerTab === 'calculation' }}
+                >
+                  <Text style={[
+                    themedStyles.bannerTabText,
+                    activeBannerTab === 'calculation' && themedStyles.activeBannerTabText
+                  ]}>Calculation</Text>
+                </TouchableOpacity>
+              </View>
+            </ScrollView>
+
+            <View
+              style={themedStyles.bannerContent}
+              accessibilityLiveRegion="polite"
+              importantForAccessibility="yes"
+            >
+              {renderBannerContent()}
+            </View>
+          </View>
+        )}
 
         <View style={themedStyles.sourceNote}>
           <TouchableOpacity
@@ -2491,8 +2773,8 @@ export default function FrameworkComparisonScreen() {
         return renderOverviewSection();
       case 'accessibility':
         return renderAccessibilitySection();
-      case 'comparison':
-        return renderComparisonSection();
+      case 'implementation':
+        return renderImplementationSection();
       case 'methodology':
         return renderMethodologySection();
       default:
@@ -2530,7 +2812,7 @@ export default function FrameworkComparisonScreen() {
           {renderContent()}
         </ScrollView>
 
-        {/* Modal per i dettagli */}
+        {/* Modal for details */}
         {renderDetailsModal()}
       </LinearGradient>
     </SafeAreaView>
