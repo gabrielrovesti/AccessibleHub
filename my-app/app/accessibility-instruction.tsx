@@ -38,16 +38,6 @@ const communityProjects = [
     tags: ['testing', 'automation', 'integration'],
     link: 'https://callstack.github.io/react-native-testing-library/',
   },
-  {
-    id: 'project3',
-    name: 'React Navigation',
-    description: 'Built-in a11y support for native screen navigation with screen reader announcements.',
-    contributors: 289,
-    issuesCount: 18,
-    icon: 'map-outline',
-    tags: ['navigation', 'screen-reader', 'focus-management'],
-    link: 'https://reactnavigation.org/docs/accessibility/',
-  },
 ];
 
 /* ----------------------------------------
@@ -109,14 +99,6 @@ useEffect(() => {
 const communityChannels = [
   {
     id: 'channel1',
-    name: 'React Native A11y Discord',
-    members: '1.2K+',
-    description: 'Active Discord server with channels for troubleshooting, sharing resources, and collaboration.',
-    icon: 'chatbubbles-outline',
-    link: 'https://discord.gg/reactnative-a11y',
-  },
-  {
-    id: 'channel2',
     name: 'A11y Stack Exchange',
     members: '8.7K+',
     description: 'Q&A platform with tagged questions specific to React Native accessibility challenges.',
@@ -124,7 +106,7 @@ const communityChannels = [
     link: 'https://stackoverflow.com/questions/tagged/react-native+accessibility',
   },
   {
-    id: 'channel3',
+    id: 'channel2',
     name: 'Accessibility Twitter Community',
     members: '15K+',
     description: 'Follow the #ReactNativeA11y hashtag to stay updated with the latest discussions.',
@@ -842,51 +824,6 @@ export default function CommunityScreen() {
           </Text>
 
           <View style={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between' }}>
-            <TouchableOpacity
-              style={{
-                backgroundColor: colors.surface,
-                borderRadius: 12,
-                padding: 16,
-                marginBottom: 16,
-                borderWidth: 1,
-                borderColor: colors.border,
-                width: '48%',
-              }}
-              onPress={() => openLink('https://github.com/FormidableLabs/eslint-plugin-react-native-a11y')}
-              accessibilityRole="button"
-              accessibilityLabel="ESLint Plugin for React Native Accessibility"
-            >
-              <Ionicons name="code-slash-outline" size={24} color={colors.primary} style={{ marginBottom: 8 }} />
-              <Text style={{ fontSize: textSizes.small, fontWeight: '600', color: colors.text, marginBottom: 4 }}>
-                ESLint A11y Plugin
-              </Text>
-              <Text style={{ fontSize: textSizes.xsmall, color: colors.textSecondary }}>
-                Static code analysis to catch accessibility issues during development
-              </Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              style={{
-                backgroundColor: colors.surface,
-                borderRadius: 12,
-                padding: 16,
-                marginBottom: 16,
-                borderWidth: 1,
-                borderColor: colors.border,
-                width: '48%',
-              }}
-              onPress={() => openLink('https://github.com/jwkellyiii/react-native-testing-library')}
-              accessibilityRole="button"
-              accessibilityLabel="React Native Testing Library with accessibility helpers"
-            >
-              <Ionicons name="flask-outline" size={24} color={colors.primary} style={{ marginBottom: 8 }} />
-              <Text style={{ fontSize: textSizes.small, fontWeight: '600', color: colors.text, marginBottom: 4 }}>
-                Testing Library
-              </Text>
-              <Text style={{ fontSize: textSizes.xsmall, color: colors.textSecondary }}>
-                Test components with accessibility in mind using testing-library
-              </Text>
-            </TouchableOpacity>
 
             <TouchableOpacity
               style={{

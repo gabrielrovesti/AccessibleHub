@@ -13,25 +13,25 @@ export default function AccessibleDialogExample() {
   const dialogRef = useRef(null);
   const openButtonRef = useRef(null);
 
-  // Announce dialog opening and set focus on content.
-    useEffect(() => {
-      if (showDialog) {
-        AccessibilityInfo.announceForAccessibility('Example dialog opened');
-        // Breve timeout per assicurarsi che la dialog sia completamente renderizzata
-        setTimeout(() => {
-          dialogRef.current?.focus();
-        }, 100);
-      } else {
-        // Ritorna il focus al pulsante di apertura quando la dialog si chiude
-        openButtonRef.current?.focus();
-      }
-    }, [showDialog]);
+ useEffect(() => {
+   if (showDialog) {
+     AccessibilityInfo.announceForAccessibility(
+       'Example dialog opened. This dialog contains information about accessibility features.'
+     );
+     // Brief timeout to ensure dialog is fully rendered
+     setTimeout(() => {
+       dialogRef.current?.focus();
+     }, 100);
+   } else {
+     // Return focus to open button when dialog closes
+     openButtonRef.current?.focus();
+   }
+ }, [showDialog]);
 
-  // Close the dialog (from Cancel or close icon).
-  const handleClose = () => {
-    setShowDialog(false);
-    AccessibilityInfo.announceForAccessibility('Dialog closed');
-  };
+ const handleClose = () => {
+   setShowDialog(false);
+   AccessibilityInfo.announceForAccessibility('Dialog closed. Returned to main screen.');
+ };
 
   // "Confirm" the dialog action, show success feedback.
   const handleConfirm = () => {
@@ -417,69 +417,79 @@ export default function AccessibleDialogExample() {
 
 
         {/* MODAL DIALOG */}
-        <Modal
-          visible={showDialog}
-          transparent
-          animationType="fade"
-          onRequestClose={handleClose}
-          accessibilityViewIsModal
-          accessibilityRole="dialog"
-          accessibilityLiveRegion="polite"
-        >
-          <View style={themedStyles.overlay}>
-            <View
-              style={themedStyles.dialogContainer}
-              ref={dialogRef}
-              accessible={true}
-              accessibilityLabel="Example dialog content"
-              onAccessibilityEscape={handleClose}
-            >
-              <View style={themedStyles.dialogHeader}>
-                <Text style={themedStyles.dialogTitle}>Example Dialog</Text>
-                <TouchableOpacity
-                  onPress={handleClose}
-                  accessibilityLabel="Close dialog"
-                  accessibilityRole="button"
-                >
-                  <Ionicons
-                    name="close"
-                    size={24}
-                    color={colors.text}
-                    accessibilityElementsHidden
-                    importantForAccessibility="no"
-                  />
-                </TouchableOpacity>
-              </View>
+          <Modal
+            visible={showDialog}
+            transparent
+            animationType="fade"
+            onRequestClose={handleClose}
+            accessibilityViewIsModal={true}
+            accessibilityLiveRegion="polite"
+          >
+            <View style={themedStyles.overlay}>
+              <View
+                style={themedStyles.dialogContainer}
+                ref={dialogRef}
+                onAccessibilityEscape={handleClose}
+              >
+                <View style={themedStyles.dialogHeader}>
+                  <Text
+                    style={themedStyles.dialogTitle}
+                    accessibilityRole="header"
+                  >
+                    Example Dialog
+                  </Text>
+                  <TouchableOpacity
+                    onPress={handleClose}
+                    accessibilityLabel="Close dialog"
+                    accessibilityRole="button"
+                    accessibilityHint="Double tap to close this dialog"
+                  >
+                    <Ionicons
+                      name="close"
+                      size={24}
+                      color={colors.text}
+                      accessibilityElementsHidden={true}
+                      importantForAccessibility="no"
+                    />
+                  </TouchableOpacity>
+                </View>
 
-              <Text style={themedStyles.dialogContent}>
-                This is an example of an accessible dialog with proper focus management,
-                keyboard interactions, and screen reader announcements.
-              </Text>
-
-              <View style={themedStyles.dialogActions}>
-                <TouchableOpacity
-                  style={[themedStyles.dialogButton, themedStyles.dialogSecondaryButton]}
-                  onPress={handleClose}
-                  accessibilityRole="button"
-                  accessibilityLabel="Cancel"
-                  accessibilityHint="Closes the dialog without saving changes"
+                <Text
+                  style={themedStyles.dialogContent}
+                  accessibilityRole="text"
                 >
-                  <Text style={themedStyles.dialogSecondaryButtonText}>Cancel</Text>
-                </TouchableOpacity>
+                  This is an example of an accessible dialog with proper focus management,
+                  keyboard interactions, and screen reader announcements.
+                </Text>
 
-                <TouchableOpacity
-                  style={[themedStyles.dialogButton, themedStyles.dialogPrimaryButton]}
-                  onPress={handleConfirm}
-                  accessibilityRole="button"
-                  accessibilityLabel="Confirm"
-                  accessibilityHint="Saves changes and closes the dialog"
+                <View
+                  style={themedStyles.dialogActions}
+                  accessibilityRole="group"
+                  accessibilityLabel="Dialog actions"
                 >
-                  <Text style={themedStyles.dialogButtonText}>Confirm</Text>
-                </TouchableOpacity>
+                  <TouchableOpacity
+                    style={[themedStyles.dialogButton, themedStyles.dialogSecondaryButton]}
+                    onPress={handleClose}
+                    accessibilityRole="button"
+                    accessibilityLabel="Cancel"
+                    accessibilityHint="Double tap to close dialog without saving changes"
+                  >
+                    <Text style={themedStyles.dialogSecondaryButtonText}>Cancel</Text>
+                  </TouchableOpacity>
+
+                  <TouchableOpacity
+                    style={[themedStyles.dialogButton, themedStyles.dialogPrimaryButton]}
+                    onPress={handleConfirm}
+                    accessibilityRole="button"
+                    accessibilityLabel="Confirm"
+                    accessibilityHint="Double tap to save changes and close dialog"
+                  >
+                    <Text style={themedStyles.dialogButtonText}>Confirm</Text>
+                  </TouchableOpacity>
+                </View>
               </View>
             </View>
-          </View>
-        </Modal>
+          </Modal>
 
         {/* SUCCESS FEEDBACK MODAL */}
         <Modal
