@@ -1,9 +1,8 @@
-**# AccessibleHub**
+# AccessibleHub
 
 <div align="center">
 
 <img src="my-app/assets/images/icon.png" alt="AccessibleHub Logo" width="120"/>
-
 
 **A comprehensive toolkit for implementing accessibility in React Native**
 
@@ -13,210 +12,114 @@
 
 </div>
 
+---
+
 ## 📱 Overview
 
-**AccessibleHub** is a React Native application designed to **teach**, **demonstrate**, and **implement** best practices in mobile accessibility. Built to comply with **WCAG 2.2** standards, this app serves as a comprehensive resource for both beginners and experienced developers.
+**AccessibleHub** is a React Native application designed to **teach**, **demonstrate**, and **implement** best practices in mobile accessibility. It complies with **WCAG 2.2** and provides practical tools and examples for developers of all levels.
 
-### 🎯 Main Goals
+### 🎯 Goals
 
-- **Educate** developers on mobile accessibility techniques
+- **Educate** developers on mobile accessibility
 - **Demonstrate** WCAG principles in a React Native context
-- **Compare** frameworks (React Native, Flutter) from an accessibility standpoint
-- **Provide** ready-to-use code examples and best practices
+- **Compare** frameworks (React Native vs Flutter) in terms of accessibility
+- **Provide** reusable and accessible component examples
 
-## 📋 Key Features
+---
 
-### 📚 Accessible Components
-- **Buttons & Touchables**: Minimum target size, feedback, and semantics
-- **Modal Dialogs**: Focus management, announcements, and keyboard support
-- **Form Controls**: Validated forms with labels, roles, and date/time elements
-- **Media Content**: Alternative text and descriptions for screen readers
-- **Advanced Components**: Tabs, Progress Indicators, Alerts, Sliders
+## 📋 Features
 
-### 🧰 Best Practices
-- **WCAG 2.2 Guidelines**: Detailed implementation for mobile
-- **Gestures Tutorial**: Gesture support for screen reader users
-- **Screen Reader Support**: Optimization guidelines for VoiceOver and TalkBack
-- **Semantic Structure**: Building meaningful content hierarchies
-- **Navigation & Focus**: Full navigation support and logical focus management
+### ✅ Accessible Components
+- **Buttons & Touchables**: Size, semantics, haptics
+- **Modals**: Focus management and screen reader support
+- **Forms**: Labels, roles, validation, date/time inputs
+- **Media**: Alt text, descriptions for assistive tech
+- **Advanced UI**: Tabs, sliders, alerts, progress indicators
 
-### 🔍 Tools and Resources
-- **Mobile Accessibility Tools**: Guides for TalkBack and VoiceOver
-- **Framework Comparison**: Analysis of accessibility features
-- **Community & Resources**: Links to learning materials
+### 🧩 Best Practices
+- **WCAG 2.2 compliance**: Practical mobile examples
+- **Gesture support**: For screen reader users
+- **Reader optimization**: VoiceOver and TalkBack
+- **Semantic hierarchy**: Headings, regions, landmarks
+- **Focus & Navigation**: Logical flow for all inputs
 
-## 🛠️ Tech Stack
+---
 
-- **React Native** + **Expo Router**
-- **Context API** for global state and theming
-- **TypeScript** for robustness and type safety
-- **Accessibility** integrated via `AccessibilityInfo`, `accessibilityRole`, etc.
+## 🛠️ Stack
 
-## 🚀 Installation
+- `React Native` + `Expo Router`
+- `TypeScript` for type safety
+- `Context API` for global state
+- Accessibility via `AccessibilityInfo`, `accessibilityRole`, etc.
 
-### Prerequisites
-- Node.js (LTS recommended)
-- NPM or Yarn
+---
+
+## 🚀 Getting Started
+
+### ✅ Requirements
+- Node.js (LTS)
 - Expo CLI
-- For builds: properly configured Android/iOS development environment
+- Android/iOS environment (for builds)
 
-### Quick Setup
+### ⚙️ Setup
 
-1. **Clone the Repository**
-   ```bash
-   git clone https://github.com/your-username/AccessibleHub.git
-   cd AccessibleHub/my-app
-   ```
-
-2. **Install Dependencies**
-   ```bash
-   # Using npm
-   npm install
-
-   # Or using yarn
-   yarn install
-   ```
-
-3. **Set Up Expo**
-   ```bash
-   npm install -g expo-cli
-   npx expo login
-   ```
-
-4. **Start Development**
-   ```bash
-   npx expo start
-   # or
-   yarn start
-   ```
-
-## 🔨 Build Instructions
-
-### Android Build (Expo EAS)
 ```bash
-# EAS setup (first time)
-npm install -g eas-cli
-eas build:configure
+# Clone
+git clone https://github.com/your-username/AccessibleHub.git
+cd AccessibleHub/my-app
 
-# Production build
-eas build --platform android
+# Install dependencies
+npm install # or yarn install
 
-# Generate a test APK
-eas build --platform android --profile preview
+# Log into Expo
+npm install -g expo-cli
+npx expo login
 ```
 
-### iOS Build (Expo EAS)
+### ▶️ Run the App
+
 ```bash
-# Requires an Apple Developer account
-eas build --platform ios
+cd my-app
+npx expo start
 ```
 
-### Local Build on Windows (WSL)
+- Recommended for Android: run on an **Android Virtual Device** or **Pixel 7**
+- Verified with **TalkBack** on **Android 14** and **15**
 
-<details>
-<summary>Detailed WSL Guide (click to expand)</summary>
+---
 
-#### Prerequisites
-- Windows 10/11
-- Basic command line knowledge
-- Existing Expo/React Native project
+## 🔨 Building (Android Only)
 
-#### 1. Install Windows Subsystem for Linux (WSL)
+Expo requires **local builds** on Windows via WSL. Use:
+
 ```bash
-# Enable WSL
-wsl --install
-
-# Update WSL
-wsl --update
+eas build --platform android --local
 ```
 
-#### 2. Set up the development environment in WSL Ubuntu
+> ⚠️ This is **mandatory** when building from WSL.
+
+### 🧪 Build Variants
+
 ```bash
-# Install essential tools
-sudo apt update
-sudo apt upgrade -y
-sudo apt install -y curl git unzip
-
-# Install Java Development Kit
-sudo apt install -y openjdk-17-jdk-headless
-
-# Install Node.js via NVM
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
-source ~/.bashrc
-nvm install --lts
-npm install -g yarn
-
-# Install Gradle
-wget https://services.gradle.org/distributions/gradle-8.5-bin.zip -P /tmp
-sudo mkdir -p /opt/gradle
-sudo unzip -d /opt/gradle /tmp/gradle-8.5-bin.zip
-```
-
-#### 3. Set environment variables
-Add the following to your `~/.bashrc`:
-```bash
-# Java Home
-export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
-
-# Android SDK configuration
-export ANDROID_HOME=$HOME/android
-export ANDROID_SDK_ROOT=${ANDROID_HOME}
-export PATH=$PATH:/opt/gradle/gradle-8.5/bin:${ANDROID_HOME}/cmdline-tools/latest/bin:${ANDROID_HOME}/platform-tools:${ANDROID_HOME}/tools:${ANDROID_HOME}/tools/bin
-
-# Reload the updated profile
-source ~/.bashrc
-```
-
-#### 4. Set up Android SDK and Build Tools
-```bash
-# Create Android SDK directory
-mkdir -p $HOME/android
-
-# Install Android SDK command-line tools
-wget https://dl.google.com/android/commandlinetools/commandlinetools-linux-10406996_latest.zip -O /tmp/cmdline-tools.zip
-unzip /tmp/cmdline-tools.zip -d $HOME/android/cmdline-tools
-mkdir -p $HOME/android/cmdline-tools/latest
-mv $HOME/android/cmdline-tools/cmdline-tools/* $HOME/android/cmdline-tools/latest/
-
-# Accept licenses and install required components
-yes | sdkmanager --licenses
-sdkmanager "platform-tools" "platforms;android-33" "build-tools;33.0.0"
-```
-
-#### 5. Expo build setup
-```bash
-# Install EAS CLI
-npm install -g eas-cli
-
-# Navigate to your project in WSL
-cd /mnt/c/YourProjectPath
-
-# Initialize EAS for your project
-eas init
-
-# Configure build
-eas build:configure
-```
-
-#### 6. Build the app
-```bash
-# Build Android App Bundle (.aab)
+# AAB (for Play Store)
 eas build --platform android --local
 
-# Build an APK for testing
+# APK (for testing)
 eas build --platform android --profile preview --local
 ```
 
-</details>
+You must configure `eas.json` to include the `preview` profile.
 
-## 🧪 Testing and Accessibility
+---
 
-### Screen Reader Testing
-- **TalkBack (Android)**: Enable from Settings > Accessibility > TalkBack
-- **VoiceOver (iOS)**: Enable from Settings > Accessibility > VoiceOver
-- **Quick Shortcuts**: Triple-click the Home button on iOS, or set a custom shortcut on Android
+## 🧪 Accessibility Testing
 
-### TalkBack Terminal Commands
+### Screen Reader Activation
+- **TalkBack** (Android): Settings → Accessibility → TalkBack
+- **VoiceOver** (iOS): Settings → Accessibility → VoiceOver
+- Shortcuts: triple-click Home (iOS), or assign shortcut (Android)
+
+### Terminal Commands for TalkBack
 ```bash
 # Disable
 adb shell settings put secure enabled_accessibility_services com.android.talkback/com.google.android.marvin.talkback.TalkBackService
@@ -225,31 +128,42 @@ adb shell settings put secure enabled_accessibility_services com.android.talkbac
 adb shell settings put secure enabled_accessibility_services com.google.android.marvin.talkback/com.google.android.marvin.talkback.TalkBackService
 ```
 
-### Accessibility Checks
-- **WCAG 2.2 Criteria**: Perceivable, Operable, Understandable, Robust
-- **Manual Verifications**: Correct roles, labels, and states
-- **Performance**: React DevTools, profiling
+### Manual Accessibility Checks
+- Labels, roles, hints
+- Contrast & visibility
+- Focus flow
+- Screen reader support
+- Performance profiling with React DevTools
+
+---
 
 ## 🤝 Contributing
 
-1. **Fork** the repository and create a new branch for your feature
-2. **Implement** your changes with careful attention to accessibility
-3. **Open a Pull Request** describing your feature/fix
-4. Ensure **WCAG compliance** and include relevant tests
+1. Fork and create a feature branch
+2. Implement with accessibility in mind
+3. Open a Pull Request
+4. Ensure WCAG compliance and include related tests
 
-## 📚 Additional Resources
+---
 
-- [W3C WCAG 2.2](https://www.w3.org/TR/WCAG22/)
-- [React Native Accessibility Documentation](https://reactnative.dev/docs/accessibility)
+## 📚 Resources
+
+- [WCAG 2.2 – W3C](https://www.w3.org/TR/WCAG22/)
+- [React Native Accessibility](https://reactnative.dev/docs/accessibility)
 - [Expo Documentation](https://docs.expo.dev/)
-- [MDN Accessibility Guides](https://developer.mozilla.org/en-US/docs/Web/Accessibility)
+- [MDN Web Accessibility](https://developer.mozilla.org/en-US/docs/Web/Accessibility)
+
+---
 
 ## 📄 License
 
-Distributed under the **MIT License**. See `LICENSE` for more details.
+Distributed under the **MIT License**. See `LICENSE` for details.
 
 ---
 
 <div align="center">
 <b>AccessibleHub: Empower Development, Enable Accessibility.</b>
 </div>
+```
+
+---
