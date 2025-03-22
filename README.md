@@ -2,7 +2,8 @@
 
 <div align="center">
 
-![AccessibleHub Logo](my-app/assets/images/icon.png)
+<img src="my-app/assets/images/icon.png" alt="AccessibleHub Logo" width="120"/>
+
 
 **A comprehensive toolkit for implementing accessibility in React Native**
 
