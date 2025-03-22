@@ -2,7 +2,7 @@
 
 <div align="center">
 
-![AccessibleHub Logo](my-app/app/assets/images/icon.png)
+![AccessibleHub Logo](my-app/assets/images/icon.png)
 
 **A comprehensive toolkit for implementing accessibility in React Native**
 
