@@ -164,6 +164,5 @@ Distributed under the **MIT License**. See `LICENSE` for details.
 <div align="center">
 <b>AccessibleHub: Empower Development, Enable Accessibility.</b>
 </div>
-```
 
 ---
