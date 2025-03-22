@@ -1,4 +1,0 @@
-Codice:
-
-- In Screen Reader Support, View Guidelines e View Examples non funzionano
-- In Example Dialog, ridurre la dimensione del testo di tutta la pagina e correggere l'indentazione del codice

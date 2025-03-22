@@ -16,99 +16,158 @@
 
 ## 📱 Overview
 
-**AccessibleHub** is a React Native application designed to **teach**, **demonstrate**, and **implement** best practices in mobile accessibility. It complies with **WCAG 2.2** and provides practical tools and examples for developers of all levels.
+**AccessibleHub** is a comprehensive educational tool designed to teach, demonstrate, and implement accessibility best practices in React Native applications. Built according to WCAG 2.2 guidelines, it offers practical examples and tools to help developers create more inclusive mobile experiences.
 
 ### 🎯 Goals
 
-- **Educate** developers on mobile accessibility
-- **Demonstrate** WCAG principles in a React Native context
-- **Compare** frameworks (React Native vs Flutter) in terms of accessibility
-- **Provide** reusable and accessible component examples
+- **Educate** developers on mobile accessibility concepts and standards
+- **Demonstrate** WCAG 2.2 principles in a React Native context
+- **Compare** accessibility implementations across frameworks (React Native vs Flutter)
+- **Provide** reusable, accessible component patterns
 
 ---
 
 ## 📋 Features
 
 ### ✅ Accessible Components
-- **Buttons & Touchables**: Size, semantics, haptics
-- **Modals**: Focus management and screen reader support
-- **Forms**: Labels, roles, validation, date/time inputs
-- **Media**: Alt text, descriptions for assistive tech
-- **Advanced UI**: Tabs, sliders, alerts, progress indicators
+- **Buttons & Touchables**: Proper sizing, semantic roles, haptic feedback
+- **Form Controls**: Labels, validation, error states, date/time pickers
+- **Media Content**: Alternative text and proper descriptions
+- **Dialog Windows**: Focus management and accessible modals
+- **Advanced UI**: Tabs, sliders, progress indicators, alerts
 
 ### 🧩 Best Practices
-- **WCAG 2.2 compliance**: Practical mobile examples
-- **Gesture support**: For screen reader users
-- **Reader optimization**: VoiceOver and TalkBack
-- **Semantic hierarchy**: Headings, regions, landmarks
-- **Focus & Navigation**: Logical flow for all inputs
+- **Semantic Structure**: Proper heading hierarchy and content organization
+- **Screen Reader Optimization**: VoiceOver and TalkBack support
+- **Gesture Support**: Comprehensive gesture tutorial and examples
+- **Navigation & Focus**: Logical focus order and keyboard navigation
+- **WCAG 2.2 Guidelines**: Implementation examples for mobile contexts
+
+### 🔍 Developer Tools
+- **Framework Comparison**: React Native vs Flutter accessibility features
+- **Mobile Testing Tools**: Resources for validating accessibility
+- **Community Resources**: Links to accessibility projects and documentation
 
 ---
 
-## 🛠️ Stack
+## 🛠️ TalkBack Gestures Reference
 
-- `React Native` + `Expo Router`
-- `TypeScript` for type safety
-- `Context API` for global state
-- Accessibility via `AccessibilityInfo`, `accessibilityRole`, etc.
+### Basic Navigation
+- **Single tap**: Select an item
+- **Double tap**: Activate selected item
+- **Swipe right**: Move to next item
+- **Swipe left**: Move to previous item
+- **Swipe up then down**: Open reading controls 
+- **Swipe down then right**: Open TalkBack menu
+
+### Reading Controls
+- **Two-finger tap**: Pause/resume reading
+- **Two-finger triple tap**: Start reading from next item
+- **Two-finger swipe up/down/left/right**: Scroll content
+
+### System Navigation
+- **Swipe up, then left**: Go to home screen
+- **Swipe down, then left**: Go back
+- **Swipe left, then up**: Open recent apps
+- **Swipe right, then down**: Open notifications
+
+### Advanced Controls
+- **Three-finger tap** (on supported devices): Open TalkBack menu
+- **Three-finger swipe left/right** (on supported devices): Cycle through reading controls
+- **Swipe right then up, speak command**: Voice commands (TalkBack 9.1+)
 
 ---
 
 ## 🚀 Getting Started
 
-### ✅ Requirements
-- Node.js (LTS)
+### Prerequisites
+- Node.js (LTS version)
 - Expo CLI
-- Android/iOS environment (for builds)
+- For building: Windows with WSL or macOS
 
-### ⚙️ Setup
+### Installation
 
 ```bash
-# Clone
-git clone https://github.com/your-username/AccessibleHub.git
+# Clone the repository
+git clone https://github.com/gabrielrovesti/AccessibleHub.git
 cd AccessibleHub/my-app
 
 # Install dependencies
-npm install # or yarn install
+npm install
 
-# Log into Expo
-npm install -g expo-cli
-npx expo login
-```
-
-### ▶️ Run the App
-
-```bash
-cd my-app
+# Start the development server
 npx expo start
 ```
 
-- Recommended for Android: run on an **Android Virtual Device** or **Pixel 7**
-- Verified with **TalkBack** on **Android 14** and **15**
-
 ---
 
-## 🔨 Building (Android Only)
+## 📦 Building for Android (Windows/WSL)
 
-Expo requires **local builds** on Windows via WSL. Use:
+### 1. Set Up WSL Environment
 
 ```bash
-eas build --platform android --local
+# Install WSL (in PowerShell as Administrator)
+wsl --install
+
+# After restart, install Ubuntu from Microsoft Store
+# Then set up development environment in WSL:
+
+# Install essential tools
+sudo apt install curl
+sudo apt install openjdk-17-jdk-headless
+
+# Install Node.js via NVM
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash
+source ~/.bashrc
+nvm install --lts
+
+# Install Gradle
+wget https://services.gradle.org/distributions/gradle-8.5-bin.zip -P /tmp
+sudo mkdir /opt/gradle
+sudo unzip -d /opt/gradle /tmp/gradle-8.5-bin.zip
 ```
 
-> ⚠️ This is **mandatory** when building from WSL.
+### 2. Configure Environment Variables
 
-### 🧪 Build Variants
+Add to your `~/.bashrc`:
 
 ```bash
-# AAB (for Play Store)
-eas build --platform android --local
+export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
+export ANDROID_HOME=$HOME/android
+export ANDROID_SDK_ROOT=${ANDROID_HOME}
+export PATH=$PATH:/opt/gradle/gradle-8.5/bin:${ANDROID_HOME}/cmdline-tools/latest/bin:${ANDROID_HOME}/platform-tools:${ANDROID_HOME}/tools:${ANDROID_HOME}/tools/bin
+source ~/.bashrc
+```
 
-# APK (for testing)
+### 3. Building the App
+
+```bash
+# Install EAS CLI
+npm install -g eas-cli
+
+# Navigate to your project
+cd /mnt/c/YourProjectPath
+
+# Initialize EAS
+eas init
+
+# Configure build
+eas build:configure
+
+# Create eas.json or modify to include:
+# {
+#   "build": {
+#     "preview": {
+#       "android": {
+#         "buildType": "apk"
+#       }
+#     }
+#   }
+# }
+
+# Build APK locally
 eas build --platform android --profile preview --local
 ```
-
-You must configure `eas.json` to include the `preview` profile.
 
 ---
 
@@ -117,32 +176,48 @@ You must configure `eas.json` to include the `preview` profile.
 ### Screen Reader Activation
 - **TalkBack** (Android): Settings → Accessibility → TalkBack
 - **VoiceOver** (iOS): Settings → Accessibility → VoiceOver
-- Shortcuts: triple-click Home (iOS), or assign shortcut (Android)
 
 ### Terminal Commands for TalkBack
 ```bash
-# Disable
-adb shell settings put secure enabled_accessibility_services com.android.talkback/com.google.android.marvin.talkback.TalkBackService
-
-# Enable
+# Enable TalkBack
 adb shell settings put secure enabled_accessibility_services com.google.android.marvin.talkback/com.google.android.marvin.talkback.TalkBackService
+
+# Disable TalkBack
+adb shell settings put secure enabled_accessibility_services com.android.talkback/com.google.android.marvin.talkback.TalkBackService
 ```
 
-### Manual Accessibility Checks
-- Labels, roles, hints
-- Contrast & visibility
-- Focus flow
-- Screen reader support
-- Performance profiling with React DevTools
+### Testing Checklist
+- Labels, roles, and hints
+- Focus order and navigation
+- Color contrast
+- Text sizing
+- Touch target size
+- Screen reader announcement clarity
 
 ---
 
-## 🤝 Contributing
+## 🔧 Troubleshooting
 
-1. Fork and create a feature branch
-2. Implement with accessibility in mind
-3. Open a Pull Request
-4. Ensure WCAG compliance and include related tests
+### Common Issues
+
+1. **Missing Gradle configuration**:
+    - Check Android SDK path in environment variables
+
+2. **Build fails in WSL**:
+    - Run `wsl --shutdown` and restart
+    - Ensure environment variables are set correctly
+
+3. **EAS Build Issues**:
+    - Ensure you're logged in with `eas login`
+    - Verify eas.json configuration is correct
+
+### Emergency Reset
+```bash
+# Delete node_modules and reinstall
+Remove-Item -Recurse -Force node_modules
+Remove-Item package-lock.json
+npm install --legacy-peer-deps
+```
 
 ---
 
@@ -151,7 +226,7 @@ adb shell settings put secure enabled_accessibility_services com.google.android.
 - [WCAG 2.2 – W3C](https://www.w3.org/TR/WCAG22/)
 - [React Native Accessibility](https://reactnative.dev/docs/accessibility)
 - [Expo Documentation](https://docs.expo.dev/)
-- [MDN Web Accessibility](https://developer.mozilla.org/en-US/docs/Web/Accessibility)
+- [TalkBack Gestures Documentation](https://dequeuniversity.com/screenreaders/talkback-shortcuts)
 
 ---
 
@@ -164,5 +239,3 @@ Distributed under the **MIT License**. See `LICENSE` for details.
 <div align="center">
 <b>AccessibleHub: Empower Development, Enable Accessibility.</b>
 </div>
-
----
