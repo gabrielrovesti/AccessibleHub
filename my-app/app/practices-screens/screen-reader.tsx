@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Platform } from 'react-native';
+import React, { useState, useCallback } from 'react';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Platform, Linking, Alert } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useTheme } from '../../context/ThemeContext';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -25,9 +25,98 @@ const platformSpecificGuides = {
   ],
 };
 
+// Documentazione ufficiale per accessibilità
+const documentationLinks = {
+  semanticStructure: 'https://reactnative.dev/docs/accessibility#accessibility-properties',
+  contentDescriptions: 'https://reactnative.dev/docs/accessibility#accessibility-properties',
+  interactiveElements: 'https://reactnative.dev/docs/accessibility#sending-accessibility-events',
+};
+
+// Esempi di codice per ogni sezione
+const codeExamples = {
+  semanticStructure: `// Structured semantics example
+<View accessibilityRole="main">
+  <Text accessibilityRole="header">Main title</Text>
+  <View accessibilityRole="list">
+    {items.map(item => (
+      <View key={item.id} accessibilityRole="listitem">
+        <Text>{item.name}</Text>
+      </View>
+    ))}
+  </View>
+</View>`,
+
+  contentDescriptions: `// Accessible labels example
+<TouchableOpacity
+  accessibilityLabel="Delete element"
+  accessibilityHint="Delete element from list"
+  accessibilityRole="button"
+  accessibilityState={{ disabled: isDisabled }}
+  onPress={handleDelete}>
+  <Ionicons name="trash" size={24} color="red"
+    accessibilityElementsHidden={true}
+    importantForAccessibility="no-hide-descendants" />
+</TouchableOpacity>`,
+
+  interactiveElements: `// Interactive elements example
+<TouchableOpacity
+  accessibilityRole="button"
+  accessibilityState={{
+    checked: isChecked,
+    expanded: isExpanded,
+    selected: isSelected
+  }}
+  accessibilityActions={[
+    { name: 'activate', label: 'activate' },
+    { name: 'longpress', label: 'show menu' }
+  ]}
+  onAccessibilityAction={(event) => {
+    switch (event.nativeEvent.actionName) {
+      case 'activate':
+        handleActivate();
+        break;
+      case 'longpress':
+        showMenu();
+        break;
+    }
+  }}
+  onPress={handlePress}>
+  <Text>Interactive button</Text>
+</TouchableOpacity>`
+};
+
 export default function ScreenReaderSupportScreen() {
   const { colors, textSizes, isDarkMode } = useTheme();
   const [activeSection, setActiveSection] = useState<string | null>(null);
+  const [expandedSections, setExpandedSections] = useState({
+    semanticStructure: false,
+    contentDescriptions: false,
+    interactiveElements: false
+  });
+
+  // Gestione apertura link esterni
+  const openExternalLink = useCallback((url: string) => {
+    Linking.canOpenURL(url).then(supported => {
+      if (supported) {
+        Linking.openURL(url);
+      } else {
+        Alert.alert(
+          "Errore",
+          "Impossibile aprire questo link",
+          [{ text: "OK" }],
+          { cancelable: true }
+        );
+      }
+    });
+  }, []);
+
+  // Gestione visualizzazione esempi di codice
+  const toggleSection = useCallback((section: string) => {
+    setExpandedSections(prev => ({
+      ...prev,
+      [section]: !prev[section]
+    }));
+  }, []);
 
   // 1) Subtle gradient background
   const gradientColors = isDarkMode
@@ -208,6 +297,19 @@ export default function ScreenReaderSupportScreen() {
       flex: 1,
       lineHeight: 20,
     },
+    // Nuovo stile per esempi di codice
+    codeExampleContainer: {
+      backgroundColor: isDarkMode ? '#1e1e1e' : '#f5f5f5',
+      padding: 12,
+      borderRadius: 8,
+      marginTop: 8,
+      marginBottom: 8,
+    },
+    codeText: {
+      fontFamily: Platform.OS === 'ios' ? 'Menlo' : 'monospace',
+      fontSize: textSizes.small,
+      color: isDarkMode ? '#e6e6e6' : '#333333',
+    },
   };
 
   return (
@@ -331,13 +433,32 @@ export default function ScreenReaderSupportScreen() {
               <Text style={themedStyles.guideItem}>• Use proper heading hierarchy</Text>
               <Text style={themedStyles.guideItem}>• Implement meaningful landmarks</Text>
               <Text style={themedStyles.guideItem}>• Group related elements logically</Text>
+
+              {expandedSections.semanticStructure && (
+                <View style={themedStyles.codeExampleContainer} accessibilityRole="text">
+                  <Text style={themedStyles.codeText}>
+                    {codeExamples.semanticStructure}
+                  </Text>
+                </View>
+              )}
+
               <TouchableOpacity
                 style={themedStyles.learnMoreButton}
                 accessibilityRole="button"
-                accessibilityLabel="View semantic structure code examples"
+                accessibilityLabel={expandedSections.semanticStructure ? "Hide semantic structure code examples" : "View semantic structure code examples"}
+                accessibilityHint={expandedSections.semanticStructure ? "Closes the code example section" : "Shows code examples for semantic structure implementation"}
+                onPress={() => toggleSection('semanticStructure')}
               >
-                <Text style={themedStyles.learnMoreText}>View Code Examples</Text>
-                <Ionicons name="arrow-forward" size={16} color={colors.primary} accessibilityElementsHidden={true} importantForAccessibility="no-hide-descendants"/>
+                <Text style={themedStyles.learnMoreText}>
+                  {expandedSections.semanticStructure ? "Hide Code Examples" : "View Code Examples"}
+                </Text>
+                <Ionicons
+                  name={expandedSections.semanticStructure ? "arrow-up" : "arrow-forward"}
+                  size={16}
+                  color={colors.primary}
+                  accessibilityElementsHidden={true}
+                  importantForAccessibility="no-hide-descendants"
+                />
               </TouchableOpacity>
             </View>
           </View>
@@ -352,13 +473,30 @@ export default function ScreenReaderSupportScreen() {
               <Text style={themedStyles.guideItem}>• Provide clear accessibilityLabels</Text>
               <Text style={themedStyles.guideItem}>• Include meaningful hints</Text>
               <Text style={themedStyles.guideItem}>• Describe state changes</Text>
+
+              {expandedSections.contentDescriptions && (
+                <View style={themedStyles.codeExampleContainer} accessibilityRole="text">
+                  <Text style={themedStyles.codeText}>
+                    {codeExamples.contentDescriptions}
+                  </Text>
+                </View>
+              )}
+
               <TouchableOpacity
                 style={themedStyles.learnMoreButton}
                 accessibilityRole="button"
-                accessibilityLabel="View content description guidelines"
+                accessibilityLabel={expandedSections.contentDescriptions ? "Hide content description guidelines" : "View content description guidelines"}
+                accessibilityHint={expandedSections.contentDescriptions ? "Closes the guidelines section" : "Shows guidelines for writing effective content descriptions"}
+                onPress={() => openExternalLink(documentationLinks.contentDescriptions)}
               >
-                <Text style={themedStyles.learnMoreText}>View Guidelines</Text>
-                <Ionicons name="arrow-forward" size={16} color={colors.primary} accessibilityElementsHidden={true} importantForAccessibility="no-hide-descendants"/>
+                <Text style={themedStyles.learnMoreText}>View Documentation</Text>
+                <Ionicons
+                  name="open-outline"
+                  size={16}
+                  color={colors.primary}
+                  accessibilityElementsHidden={true}
+                  importantForAccessibility="no-hide-descendants"
+                />
               </TouchableOpacity>
             </View>
           </View>
@@ -373,13 +511,32 @@ export default function ScreenReaderSupportScreen() {
               <Text style={themedStyles.guideItem}>• Define proper roles</Text>
               <Text style={themedStyles.guideItem}>• Manage focus appropriately</Text>
               <Text style={themedStyles.guideItem}>• Handle custom actions</Text>
+
+              {expandedSections.interactiveElements && (
+                <View style={themedStyles.codeExampleContainer} accessibilityRole="text">
+                  <Text style={themedStyles.codeText}>
+                    {codeExamples.interactiveElements}
+                  </Text>
+                </View>
+              )}
+
               <TouchableOpacity
                 style={themedStyles.learnMoreButton}
                 accessibilityRole="button"
-                accessibilityLabel="View interactive elements examples"
+                accessibilityLabel={expandedSections.interactiveElements ? "Hide interactive elements examples" : "View interactive elements examples"}
+                accessibilityHint={expandedSections.interactiveElements ? "Closes the example section" : "Shows examples of accessible interactive elements"}
+                onPress={() => toggleSection('interactiveElements')}
               >
-                <Text style={themedStyles.learnMoreText}>View Examples</Text>
-                <Ionicons name="arrow-forward" size={16} color={colors.primary} accessibilityElementsHidden={true} importantForAccessibility="no-hide-descendants"/>
+                <Text style={themedStyles.learnMoreText}>
+                  {expandedSections.interactiveElements ? "Hide Examples" : "View Examples"}
+                </Text>
+                <Ionicons
+                  name={expandedSections.interactiveElements ? "arrow-up" : "arrow-forward"}
+                  size={16}
+                  color={colors.primary}
+                  accessibilityElementsHidden={true}
+                  importantForAccessibility="no-hide-descendants"
+                />
               </TouchableOpacity>
             </View>
           </View>
@@ -397,7 +554,7 @@ export default function ScreenReaderSupportScreen() {
               'Confirm state changes are announced',
               'Validate custom actions work correctly',
             ].map((checkItem, idx) => (
-              <View key={idx} style={themedStyles.checklistItem}>
+              <View key={idx} style={themedStyles.checklistItem} accessibilityRole="text">
                 <Ionicons name="checkmark-circle" size={24} color="#28A745" accessibilityElementsHidden={true} importantForAccessibility="no-hide-descendants"/>
                 <Text style={themedStyles.checklistText}>{checkItem}</Text>
               </View>

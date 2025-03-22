@@ -43,37 +43,35 @@ export default function AccessibleDialogExample() {
     }, 2000);
   };
 
-  // Example code snippet
+  // Example code snippet con indentazione corretta
   const codeExample = `const AccessibleDialog = ({ visible, onClose, title, children }) => {
-
   return (
     <Modal
       visible={visible}
       transparent
       animationType="fade"
       onRequestClose={onClose}
-      accessibilityViewIsModal=
-      {true}
-      accessibilityLiveRegion=
-      "polite"
+      accessibility
+      ViewIsModal={true}
+      accessibility
+      LiveRegion="polite"
     >
       <View>
         <View
           style={styles.dialog}
-          accessibilityRole=
-          "alert"
-          accessibilityLabel=
-          {title}
+          accessibilityRole="alert"
+          accessibility
+          Label={title}
           ref={contentRef}
         >
           <View>
             <TouchableOpacity
               ref={closeRef}
               onPress={onClose}
-             accessibilityRole=
-              "button"
-             accessibilityLabel=
-            "Close"
+              accessibility
+              Role="button"
+              accessibility
+              Label="Close"
             >
             </TouchableOpacity>
           </View>
@@ -81,8 +79,8 @@ export default function AccessibleDialogExample() {
           <View>
             <TouchableOpacity
               onPress={onClose}
-              accessibilityRole=
-              "button"
+              accessibility
+              Role="button"
             >
               <Text>Close</Text>
             </TouchableOpacity>
@@ -217,8 +215,8 @@ export default function AccessibleDialogExample() {
   },
   codeText: {
     fontFamily: 'monospace',
-    fontSize: 15, // slightly larger font for advanced style
-    lineHeight: 22,
+    fontSize: 14, // ridotto da 15 a 14
+    lineHeight: 20, // ridotto da 22 a 20
     color: '#fff',
   },
   featuresCard: {
@@ -354,14 +352,14 @@ export default function AccessibleDialogExample() {
     },
   featureTitle: {
     color: colors.text,
-    fontSize: textSizes.large,
-    fontWeight: '700',
-    marginBottom: 6,
+    fontSize: textSizes.medium, // modificato da large a medium
+    fontWeight: '600', // ridotto da 700 a 600
+    marginBottom: 4, // ridotto da 6 a 4
   },
   featureDescription: {
     color: colors.textSecondary,
-    fontSize: textSizes.medium,
-    lineHeight: 24,
+    fontSize: textSizes.small + 1, // modificato da medium a small + 1
+    lineHeight: 20, // ridotto da 24 a 20
   },
     featureIconContainer: {
       width: 48,
