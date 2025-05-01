@@ -1,0 +1,29 @@
+\cleardoublepage
+\renewcommand{\contentsname}{Table of contents}
+\pdfbookmark{\contentsname}{tableofcontents}
+\setcounter{secnumdepth}{5}
+\setcounter{tocdepth}{5}     
+\tableofcontents
+\clearpage
+\begingroup
+    \let\clearpage\relax
+    \let\cleardoublepage\relax
+    \let\cleardoublepage\relax
+    % Figures list
+    \phantomsection
+    \renewcommand{\listfigurename}{List of figures}
+    \pdfbookmark{\listfigurename}{lof}
+    \listoffigures
+    \vspace*{8ex}
+    % Tables list
+    \phantomsection
+    \renewcommand{\listtablename}{List of tables}
+    \pdfbookmark{\listtablename}{lot}
+    \listoftables
+    % Listings list
+    \phantomsection
+    \renewcommand{\lstlistlistingname}{List of listings}
+    \addcontentsline{toc}{chapter}{\lstlistlistingname}
+    \lstlistoflistings
+\endgroup
+\cleardoublepage

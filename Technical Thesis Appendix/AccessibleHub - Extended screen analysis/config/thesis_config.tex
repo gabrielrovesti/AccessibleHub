@@ -1,0 +1,259 @@
+% Define custom colors
+\definecolor{hyperColor}{HTML}{0B3EE3}
+\definecolor{tableGray}{HTML}{F5F5F7}
+\definecolor{veryPeri}{HTML}{6667ab}
+
+% Set chapter font size
+\chapterfont{\fontsize{24}{22}\selectfont}
+
+% Set line height
+\linespread{1.5}
+
+% Custom hyphenation rules
+\hyphenation{
+    data-base
+    al-go-rithms
+    soft-ware
+}
+
+\begin{filecontents*}{\jobname.xmpdata}
+  \Title{Designing an accessibility learning toolkit: bridging the gap between guidelines and implementation}
+  \Author{Gabriel Rovesti} 
+  \Language{en-EN}
+  \Subject{Designing an accessible learning toolkit realized in React Native to help and guide developers in the creation of accessible mobile applications}
+  \Keywords{Accessibility \sep React Native \sep Guidelines \sep Accessibility testing \sep WCAG \sep MCAG \sep Developer education}
+\end{filecontents*} 
+
+% Images path
+\graphicspath{{img/}}
+
+% Force page color
+\pagecolor{white}
+
+% Better spacing for footnotes
+\setlength{\skip\footins}{5mm}
+\setlength{\footnotesep}{5mm}
+
+% Fix header height warning
+\setlength{\headheight}{27.11652pt}
+\addtolength{\topmargin}{-12.61652pt}
+
+% Add glossary subscript
+\newcommand{\glox}{\textsubscript{\textbf{\textit{G}}}}
+
+% Paragraph formatting
+\titleformat{\paragraph}
+{\normalfont\normalsize\bfseries}{\theparagraph}{1em}{}
+\titlespacing*{\paragraph}
+{0pt}{3.25ex plus 1ex minus .2ex}{1.5ex plus .2ex}
+
+% Keep chapter format with "Chapter X" but modify spacing
+\titleformat{\chapter}[display]
+    {\normalfont\huge\bfseries}
+    {\chaptertitlename\ \thechapter}
+    {10pt}   % Reduced space between "Chapter X" and the title
+    {\Huge}
+
+% Reduce spacing before and after the chapter
+\titlespacing*{\chapter}
+    {0pt}    % left margin
+    {20pt}   % space before title (reduced from default 50pt)
+    {20pt}   % space after title (reduced from default 40pt)
+
+\newcommand{\chapterintroline}[1]{%
+    \begin{quote}
+    \normalfont
+    #1
+    \end{quote}
+    \centerline{\rule{0.5\textwidth}{0.5pt}}  % Adds a horizontal line
+}
+
+% Page styling
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\leftmark}
+\fancyfoot[C]{\thepage}
+
+% Utility commands
+\newcommand\blankpage{
+\clearpage
+    \begingroup
+    \null
+    \thispagestyle{empty}
+    \hypersetup{pageanchor=false}
+    \clearpage
+\endgroup
+}
+
+\newcommand\blankpagewithnumber{
+  \clearpage
+  \thispagestyle{plain}
+  \null
+  \clearpage
+}
+
+\newcommand\increasepagenumbering{
+    \addtocounter{page}{+1}
+}
+
+% Load glossaries
+\input{references/glossary_acronyms}
+\makeglossaries
+\renewcommand*{\glstextformat}[1]{\textit{#1}\glox}
+\glsaddall
+
+% Bibliography setup
+\addbibresource{references/bibliography.bib}
+\defbibheading{bibliography}{
+    \cleardoublepage
+    \phantomsection
+    \addcontentsline{toc}{chapter}{\bibname}
+    \chapter*{\bibname\markboth{\bibname}{\bibname}}
+}
+
+% Add this to suppress split bibliography warning
+\BiblatexSplitbibDefernumbersWarningOff
+
+% Hyperref setup
+\hypersetup{
+    colorlinks=true,
+    linktocpage=true,
+    pdfstartpage=1,
+    pdfstartview=,
+    breaklinks=true,
+    pdfpagemode=UseNone,
+    pageanchor=true,
+    pdfpagemode=UseOutlines,
+    plainpages=false,
+    bookmarksnumbered,
+    bookmarksopen=true,
+    bookmarksopenlevel=1,
+    hypertexnames=true,
+    pdfhighlight=/O,
+    allcolors = hyperColor
+}
+
+% Caption setup
+\captionsetup{
+    tableposition=top,
+    figureposition=bottom,
+    font=small,
+    format=hang,
+    labelfont=bf
+}
+
+% Adjust the way tables are handled
+\setlength{\tabcolsep}{4pt}  % Default is 6pt, reducing gives more space in tables
+
+% For longtable format
+\setlength\LTleft{0pt}
+\setlength\LTright{0pt}
+
+% Adjust the way floats are handled to avoid excessive whitespace
+\renewcommand{\topfraction}{0.9}        % Default 0.7
+\renewcommand{\bottomfraction}{0.9}     % Default 0.3
+\renewcommand{\textfraction}{0.1}       % Default 0.2
+\renewcommand{\floatpagefraction}{0.85} % Default 0.5
+\setcounter{topnumber}{3}              % Default 2
+\setcounter{bottomnumber}{3}           % Default 1
+\setcounter{totalnumber}{5}            % Default 3
+
+% Code listings configuration
+\definecolor{codeBackground}{HTML}{F5F5F7}
+\definecolor{codeKeyword}{HTML}{CF222E}
+\definecolor{codeString}{HTML}{0550AE}
+\definecolor{codeComment}{HTML}{6E7781}
+
+\lstset{
+    basicstyle=\ttfamily\small,
+    backgroundcolor=\color{codeBackground},
+    commentstyle=\color{codeComment},
+    keywordstyle=\color{codeKeyword}\bfseries,
+    stringstyle=\color{codeString},
+    numbers=left,
+    numberstyle=\tiny\color{codeComment},
+    numbersep=10pt,
+    frame=single,
+    framesep=2mm,
+    xleftmargin=25pt,
+    breaklines=true,
+    breakatwhitespace=true,
+    showstringspaces=false,
+    tabsize=2,
+    captionpos=b,
+    float=htbp
+}
+
+% Language definition for React Native
+\lstdefinelanguage{ReactNative}{
+  keywords={
+    import, export, default, function, return, const, let, var, 
+    if, else, for, while, do, switch, case, break, continue, 
+    class, extends, new, try, catch, finally, throw, async, await,
+    useState, useEffect, useContext, useRef
+  },
+  sensitive=true,
+  comment=[l]{//},
+  morecomment=[s]{/*}{*/},
+  morestring=[b]',
+  morestring=[b]",
+  morestring=[b]`
+}
+
+% Then define a style that uses this language
+\lstdefinestyle{ReactNativeStyle}{
+  language=ReactNative,
+  basicstyle=\ttfamily\footnotesize,
+  backgroundcolor=\color{codeBackground},
+  commentstyle=\color{codeComment},
+  keywordstyle=\color{codeKeyword}\bfseries,
+  stringstyle=\color{codeString},
+  numbers=left,
+  numberstyle=\tiny\color{codeComment},
+  numbersep=10pt,
+  frame=single,
+  framesep=2mm,
+  xleftmargin=25pt,
+  breaklines=true,
+  breakatwhitespace=true,
+  showstringspaces=false,
+  tabsize=2,
+  captionpos=b,
+  float=htbp
+}
+
+\lstdefinelanguage{Dart}{
+  keywords={
+    import, export, part, library, class, extends, implements, mixin, with, 
+    static, final, const, var, void, dynamic, if, else, for, while, do, switch, 
+    case, break, continue, return, try, catch, finally, throw, assert, 
+    this, super, new, async, await, yield, true, false, null
+  },
+  sensitive=true,
+  comment=[l]{//},
+  morecomment=[s]{/*}{*/},
+  morestring=[b]',
+  morestring=[b]",
+  morestring=[b]'''
+}
+
+\lstdefinestyle{DartStyle}{
+  language=Dart,
+  basicstyle=\ttfamily\footnotesize,
+  backgroundcolor=\color{codeBackground},
+  commentstyle=\color{codeComment},
+  keywordstyle=\color{codeKeyword}\bfseries,
+  stringstyle=\color{codeString},
+  numbers=left,
+  numberstyle=\tiny\color{codeComment},
+  numbersep=10pt,
+  frame=single,
+  framesep=2mm,
+  xleftmargin=25pt,
+  breaklines=true,
+  breakatwhitespace=true,
+  showstringspaces=false,
+  tabsize=2,
+  captionpos=b,
+  float=htbp
+}
