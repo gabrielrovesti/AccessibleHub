@@ -11,7 +11,7 @@ export default function AccessibleButtonExample() {
   const { colors, textSizes, isDarkMode } = useTheme();
 
   // 1) Example code snippet
-const codeExample = `<TouchableOpacity
+  const codeExample = `<TouchableOpacity
   accessibilityRole="button"
   accessibilityLabel="Submit form"
   accessibilityHint="Activates form submission"
@@ -56,7 +56,6 @@ const DemoButton = () => (
     }}
   >
     <Text style={[styles.buttonText, {
-      // Always white text on the primary color button for better contrast
       color: '#FFFFFF'
     }]}>
       Submit
@@ -266,7 +265,6 @@ const DemoButton = () => (
           </View>
         </View>
 
-
         {/* CODE EXAMPLE SECTION */}
         <View style={themedStyles.section}>
           <Text style={[styles.sectionTitle, { color: colors.text }]}>
@@ -305,7 +303,6 @@ const DemoButton = () => (
               </View>
             </View>
         </View>
-
 
         {/* ACCESSIBILITY FEATURES SECTION */}
         <View style={themedStyles.featuresSection}>
@@ -384,7 +381,6 @@ const DemoButton = () => (
   );
 }
 
-// LOCAL STYLES (combine with the themed overrides above)
 const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 20,

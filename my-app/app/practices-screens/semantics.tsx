@@ -9,16 +9,13 @@ export default function SemanticStructureScreen() {
   const router = useRouter();
   const { colors, textSizes, isDarkMode } = useTheme();
 
-  // 1) Subtle gradient background
   const gradientColors = isDarkMode
     ? [colors.background, '#2c2c2e']
     : ['#e2e2e2', colors.background];
 
-  // 2) Slightly larger text than default
   const biggerMedium = textSizes.medium + 2;
   const biggerSmall = textSizes.small + 1;
 
-  // 3) Elevated card shadow style
   const cardShadowStyle = {
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 3 },
@@ -27,7 +24,6 @@ export default function SemanticStructureScreen() {
     elevation: 3,
   };
 
-  // 4) Themed + local styles
   const themedStyles = {
     container: {
       flex: 1,

@@ -25,14 +25,12 @@ const platformSpecificGuides = {
   ],
 };
 
-// Documentazione ufficiale per accessibilità
 const documentationLinks = {
   semanticStructure: 'https://reactnative.dev/docs/accessibility#accessibility-properties',
   contentDescriptions: 'https://reactnative.dev/docs/accessibility#accessibility-properties',
   interactiveElements: 'https://reactnative.dev/docs/accessibility#sending-accessibility-events',
 };
 
-// Esempi di codice per ogni sezione
 const codeExamples = {
   semanticStructure: `// Structured semantics example
 <View accessibilityRole="main">
@@ -94,15 +92,14 @@ export default function ScreenReaderSupportScreen() {
     interactiveElements: false
   });
 
-  // Gestione apertura link esterni
   const openExternalLink = useCallback((url: string) => {
     Linking.canOpenURL(url).then(supported => {
       if (supported) {
         Linking.openURL(url);
       } else {
         Alert.alert(
-          "Errore",
-          "Impossibile aprire questo link",
+          "Error",
+          "The link is not accessible",
           [{ text: "OK" }],
           { cancelable: true }
         );
@@ -110,7 +107,6 @@ export default function ScreenReaderSupportScreen() {
     });
   }, []);
 
-  // Gestione visualizzazione esempi di codice
   const toggleSection = useCallback((section: string) => {
     setExpandedSections(prev => ({
       ...prev,
@@ -118,12 +114,10 @@ export default function ScreenReaderSupportScreen() {
     }));
   }, []);
 
-  // 1) Subtle gradient background
   const gradientColors = isDarkMode
     ? [colors.background, '#2c2c2e']
     : ['#e2e2e2', colors.background];
 
-  // 2) Elevated card style
   const cardShadowStyle = {
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 3 },
@@ -137,7 +131,6 @@ export default function ScreenReaderSupportScreen() {
     container: {
       flex: 1,
     },
-    // Hero Card for screen title/description
     heroCard: {
       backgroundColor: colors.surface,
       marginHorizontal: 16,
@@ -199,7 +192,6 @@ export default function ScreenReaderSupportScreen() {
     platformLabelActive: {
       color: colors.background,
     },
-    // Gesture Guide container
     gestureGuideContainer: {
       backgroundColor: colors.surface,
       borderRadius: 16,
@@ -236,10 +228,9 @@ export default function ScreenReaderSupportScreen() {
     gestureDescription: {
       fontSize: textSizes.small + 1,
       color: colors.textSecondary,
-      marginLeft: 30, // extra indent
+      marginLeft: 30,
       lineHeight: 20,
     },
-    // Implementation guide cards
     guideCard: {
       backgroundColor: colors.surface,
       borderRadius: 16,
@@ -276,7 +267,6 @@ export default function ScreenReaderSupportScreen() {
       color: colors.primary,
       fontWeight: '500',
     },
-    // Checklist
     checklistCard: {
       backgroundColor: colors.surface,
       borderRadius: 16,
@@ -297,7 +287,6 @@ export default function ScreenReaderSupportScreen() {
       flex: 1,
       lineHeight: 20,
     },
-    // Nuovo stile per esempi di codice
     codeExampleContainer: {
       backgroundColor: isDarkMode ? '#1e1e1e' : '#f5f5f5',
       padding: 12,

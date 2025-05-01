@@ -14,12 +14,10 @@ export default function ComponentsScreen() {
     AccessibilityInfo.announceForAccessibility(`Opening ${title} component details`);
   };
 
-  // Background gradient
   const gradientColors = isDarkMode
     ? [colors.background, '#2c2c2e']
     : ['#e2e2e2', colors.background];
 
-  // Themed + local styles
   const themedStyles = {
     container: {
       flex: 1,

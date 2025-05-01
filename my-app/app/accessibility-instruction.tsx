@@ -1,15 +1,5 @@
 import React, { useState } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  TouchableOpacity,
-  Linking,
-  AccessibilityInfo,
-  Platform,
-  useWindowDimensions,
-} from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Linking, AccessibilityInfo, Platform, useWindowDimensions } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 import { useTheme } from '../context/ThemeContext';
@@ -39,10 +29,6 @@ const communityProjects = [
     link: 'https://callstack.github.io/react-native-testing-library/',
   },
 ];
-
-/* ----------------------------------------
-   This section has been removed as it contained fictional events
----------------------------------------- */
 
 /* ----------------------------------------
    Inspiration Items

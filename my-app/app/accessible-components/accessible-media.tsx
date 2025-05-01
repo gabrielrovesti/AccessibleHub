@@ -10,15 +10,11 @@ export default function AccessibleMediaExample() {
   const [copied, setCopied] = useState(false);
   const { colors, textSizes, isDarkMode } = useTheme();
 
-  // Ottieni le dimensioni dello schermo
   const { width: screenWidth } = Dimensions.get('window');
 
   const calculateImageSize = () => {
-    // Usa il 75% della larghezza dello schermo ma con un massimo di 300px
     const maxWidth = Math.min(screenWidth * 0.75, 300);
 
-    // Per immagini quadrate (512x512 o 256x256)
-    // Manteniamo la stessa dimensione per larghezza e altezza
     return {
       width: maxWidth,
       height: maxWidth,

@@ -131,9 +131,6 @@ const TOOLS_DATA = [
   },
 ];
 
-/**
- * Mobile Accessibility Tools Screen with card-based layout and practical usage details.
- */
 export default function TestingToolsScreen() {
   const { colors, textSizes, isDarkMode } = useTheme();
   const [expanded, setExpanded] = useState<string | null>(null);

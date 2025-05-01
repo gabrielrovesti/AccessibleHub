@@ -86,8 +86,6 @@ export default function AccessibleFormExample() {
 
 </View>`;
 
-
-
   // Evaluate whether all required fields are filled
   const formDataComplete =
     formData.name &&
@@ -200,7 +198,6 @@ export default function AccessibleFormExample() {
       paddingHorizontal: 16,
       marginTop: 16,
     },
-    // Elevated card for the form
     demoCard: {
       backgroundColor: colors.surface,
       borderRadius: 16,
@@ -209,7 +206,6 @@ export default function AccessibleFormExample() {
       borderWidth: isDarkMode ? 1 : 0,
       borderColor: isDarkMode ? colors.border : 'transparent',
     },
-    // Elevated card for code snippet
     codeCardContainer: {
       backgroundColor: '#1c1c1e',
       borderRadius: 8,
@@ -376,10 +372,6 @@ export default function AccessibleFormExample() {
       );
     }
   };
-
-  // 3) Additional required field? If yes, incorporate it in formDataComplete and validateForm
-  // For demonstration, we won't treat birthDate or appointmentTime as "strictly required",
-  // but you can easily do so by adding them to the logic.
 
   return (
     <LinearGradient colors={gradientColors} style={themedStyles.container}>

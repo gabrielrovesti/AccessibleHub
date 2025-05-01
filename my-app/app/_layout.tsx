@@ -139,12 +139,11 @@ const BREADCRUMB_MAP = {
 };
 
 /* --------------------------------------------
-   1. Header Title Function (using useSegments)
+   1. Header Title Function (with useSegments to allow breadcrumb in all screens)
 -------------------------------------------- */
 function renderHeaderTitle(router) {
-  const segments = useSegments(); // Legge i segmenti di percorso
+  const segments = useSegments();
 
-  // Se non ci sono segmenti o siamo in Home
   if (!segments || segments.length === 0 || segments[0] === 'index') {
     return (
       <Text
@@ -156,10 +155,9 @@ function renderHeaderTitle(router) {
     );
   }
 
-  // Se abbiamo un solo segmento (top-level screen come 'tools', 'components', ecc.)
   if (segments.length === 1) {
-    const child = segments[0]; // Esempio: 'tools'
-    const title = TITLE_MAP[child] || child; // Mappa su "Mobile Accessibility Tools"
+    const child = segments[0];
+    const title = TITLE_MAP[child] || child;
     return (
       <View style={styles.breadcrumbContainer}>
         <TouchableOpacity
@@ -197,9 +195,8 @@ function renderHeaderTitle(router) {
     );
   }
 
-  // Se abbiamo più segmenti (subscreen)
-  const parent = segments[0]; // ad esempio "components"
-  const child = segments[segments.length - 1]; // ad esempio "accessible-button"
+  const parent = segments[0];
+  const child = segments[segments.length - 1];
   const key = `${parent}/${child}`;
   const mapping = BREADCRUMB_MAP[key] || BREADCRUMB_MAP[child] || {
     parentRoute: parent,
@@ -245,7 +242,7 @@ function renderHeaderTitle(router) {
 }
 
 /* --------------------------------------------
-   2. Custom Drawer Content (invariato)
+   2. Custom Drawer Content
 -------------------------------------------- */
 function CustomDrawerContent({ state, descriptors }) {
   const { colors, isDarkMode } = useTheme();
@@ -378,7 +375,7 @@ function CustomDrawerContent({ state, descriptors }) {
 function DrawerNavigator() {
  const router = useRouter();
   const { colors } = useTheme();
-  const segments = useSegments(); // Hook at top level
+  const segments = useSegments();
   const currentRoute = segments && segments.length > 0 ? segments[0] : '';
 
   const screenOptions = ({ navigation, route }) => {
@@ -475,7 +472,6 @@ function DrawerNavigator() {
       headerRight: () => (
         <TouchableOpacity
           onPress={() => {
-            // Pass currentRoute as 'prev' param
             router.push({
               pathname: '/settings',
               params: { prev: currentRoute },
@@ -613,40 +609,40 @@ const styles = StyleSheet.create({
 });
 
 const drawerStyles = StyleSheet.create({
-  container: { flex: 1 },
-header: {
-  paddingVertical: 42,
-  paddingHorizontal: 16,
-  alignItems: 'center',
-  justifyContent: 'center',
-  marginBottom: 16,
-  borderBottomLeftRadius: 24,
-  borderBottomRightRadius: 24,
-  elevation: 4,
-  shadowColor: '#000',
-  shadowOffset: { width: 0, height: 2 },
-  shadowOpacity: 0.2,
-  shadowRadius: 4,
-},
-appIcon: { marginBottom: 12 },
-appName: { fontSize: 26, fontWeight: 'bold' },
-  version: { fontSize: 12 },
-  drawerContent: { flex: 1, padding: 16 },
-drawerItem: {
-  marginBottom: 12,
-  borderRadius: 12,
-  paddingVertical: 14,
-  paddingHorizontal: 18,
-  minHeight: 56,
-  borderWidth: 1,
-  flexDirection: 'row',
-  alignItems: 'center',
-  elevation: 1,
-  shadowColor: '#000',
-  shadowOffset: { width: 0, height: 1 },
-  shadowOpacity: 0.1,
-  shadowRadius: 2,
-},
+      container: { flex: 1 },
+      header: {
+          paddingVertical: 42,
+          paddingHorizontal: 16,
+          alignItems: 'center',
+          justifyContent: 'center',
+          marginBottom: 16,
+          borderBottomLeftRadius: 24,
+          borderBottomRightRadius: 24,
+          elevation: 4,
+          shadowColor: '#000',
+          shadowOffset: { width: 0, height: 2 },
+          shadowOpacity: 0.2,
+          shadowRadius: 4,
+    },
+    appIcon: { marginBottom: 12 },
+    appName: { fontSize: 26, fontWeight: 'bold' },
+      version: { fontSize: 12 },
+      drawerContent: { flex: 1, padding: 16 },
+    drawerItem: {
+      marginBottom: 12,
+      borderRadius: 12,
+      paddingVertical: 14,
+      paddingHorizontal: 18,
+      minHeight: 56,
+      borderWidth: 1,
+      flexDirection: 'row',
+      alignItems: 'center',
+      elevation: 1,
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 1 },
+      shadowOpacity: 0.1,
+      shadowRadius: 2,
+    },
   drawerIcon: { marginRight: 12 },
   drawerLabel: { fontSize: 16, marginLeft: 16, flex: 1 },
   footer: {

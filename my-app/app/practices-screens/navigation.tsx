@@ -7,22 +7,18 @@ import { LinearGradient } from 'expo-linear-gradient';
 export default function LogicalFocusOrderScreen() {
   const { colors, textSizes, isDarkMode } = useTheme();
 
-  // Refs to scroll and measure the main content’s position
   const scrollViewRef = useRef<ScrollView>(null);
   const mainContentRef = useRef<View>(null);
 
   const [mainContentY, setMainContentY] = useState(0);
 
-  // Capture the y-offset of the main content after layout
   const handleMainContentLayout = (e: NativeSyntheticEvent<LayoutChangeEvent>) => {
     const { y } = e.nativeEvent.layout;
     setMainContentY(y);
   };
 
-  // A simple state to show we can track text input or pressed items
   const [feedback, setFeedback] = useState('');
 
-  // 1) Gradient background
   const gradientColors = isDarkMode
     ? [colors.background, '#2c2c2e']
     : ['#e2e2e2', colors.background];

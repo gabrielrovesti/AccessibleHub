@@ -18,12 +18,10 @@ export default function AccessibleDialogExample() {
      AccessibilityInfo.announceForAccessibility(
        'Example dialog opened. This dialog contains information about accessibility features.'
      );
-     // Brief timeout to ensure dialog is fully rendered
      setTimeout(() => {
        dialogRef.current?.focus();
      }, 100);
    } else {
-     // Return focus to open button when dialog closes
      openButtonRef.current?.focus();
    }
  }, [showDialog]);
@@ -33,7 +31,6 @@ export default function AccessibleDialogExample() {
    AccessibilityInfo.announceForAccessibility('Dialog closed. Returned to main screen.');
  };
 
-  // "Confirm" the dialog action, show success feedback.
   const handleConfirm = () => {
     setShowDialog(false);
     setShowSuccess(true);
@@ -43,7 +40,6 @@ export default function AccessibleDialogExample() {
     }, 2000);
   };
 
-  // Example code snippet con indentazione corretta
   const codeExample = `const AccessibleDialog = ({ visible, onClose, title, children }) => {
   return (
     <Modal
@@ -104,7 +100,6 @@ export default function AccessibleDialogExample() {
     }
   };
 
-  // Common elevated card shadow style
   const cardShadowStyle = {
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 3 },
@@ -113,12 +108,10 @@ export default function AccessibleDialogExample() {
     elevation: 3,
   };
 
-  // Gradient background based on dark/light mode
   const gradientColors = isDarkMode
     ? [colors.background, '#2c2c2e']
     : ['#e2e2e2', colors.background];
 
-  // Themed + local style overrides
   const themedStyles = {
   container: {
     flex: 1,
@@ -210,19 +203,18 @@ export default function AccessibleDialogExample() {
     color: '#28A745',
   },
   codeCard: {
-    padding: 24, // increased padding for extended code view
-    // Removed maxHeight to show full snippet
+    padding: 24,
   },
   codeText: {
     fontFamily: 'monospace',
-    fontSize: 14, // ridotto da 15 a 14
-    lineHeight: 20, // ridotto da 22 a 20
+    fontSize: 14,
+    lineHeight: 20,
     color: '#fff',
   },
   featuresCard: {
     backgroundColor: colors.surface,
     borderRadius: 16,
-    padding: 24, // increased padding to match advanced style
+    padding: 24,
     marginTop: 16,
     ...cardShadowStyle,
     borderWidth: isDarkMode ? 1 : 0,
@@ -235,7 +227,6 @@ export default function AccessibleDialogExample() {
     fontWeight: '600',
     marginBottom: 12,
   },
-  // --- Integrated Dialog Styles ---
   overlay: {
     flex: 1,
     justifyContent: 'center',
@@ -322,7 +313,6 @@ export default function AccessibleDialogExample() {
     textAlign: 'center',
     lineHeight: 24,
   },
-  // --- Features Section Updated for Advanced Style ---
     featuresSection: {
       marginTop: 24,
       paddingHorizontal: 16,
@@ -352,14 +342,14 @@ export default function AccessibleDialogExample() {
     },
   featureTitle: {
     color: colors.text,
-    fontSize: textSizes.medium, // modificato da large a medium
-    fontWeight: '600', // ridotto da 700 a 600
-    marginBottom: 4, // ridotto da 6 a 4
+    fontSize: textSizes.medium,
+    fontWeight: '600',
+    marginBottom: 4,
   },
   featureDescription: {
     color: colors.textSecondary,
-    fontSize: textSizes.small + 1, // modificato da medium a small + 1
-    lineHeight: 20, // ridotto da 24 a 20
+    fontSize: textSizes.small + 1,
+    lineHeight: 20,
   },
     featureIconContainer: {
       width: 48,
@@ -551,7 +541,6 @@ export default function AccessibleDialogExample() {
             </View>
           </View>
         </View>
-
 
         {/* ACCESSIBILITY FEATURES SECTION */}
         <View style={themedStyles.featuresSection}>

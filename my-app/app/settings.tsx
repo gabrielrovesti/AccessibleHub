@@ -143,7 +143,6 @@ const SettingRow = ({
       }}
       trackColor={{ false: '#767577', true: colors.primary }}
       thumbColor={value ? '#fff' : '#f4f3f4'}
-      // Combine title, description, and state in one accessibility label
       accessibilityLabel={`${title}. ${description}. Switch is ${value ? 'on' : 'off'}.`}
       accessibilityRole="switch"
       accessibilityHint="Double tap to toggle setting"

@@ -142,7 +142,6 @@ export default function AccessibleAdvancedScreen() {
     elevation: 3,
   };
 
-  // Themed style overrides
   const themedStyles = {
     container: { flex: 1 },
     heroCard: {
@@ -186,16 +185,13 @@ export default function AccessibleAdvancedScreen() {
       fontWeight: '600',
       marginBottom: 12,
     },
-    // Tab styles
     tabText: {
-      // Always white for selected tab
       color: '#fff',
       fontWeight: '600',
       fontSize: textSizes.medium,
     },
     inactiveTabText: {
-      // Dark mode fix: was '#ccc' on '#ccc' => invisible
-      color: isDarkMode ? '#333' : '#666', // ensures visibility on #ccc
+      color: isDarkMode ? '#333' : '#666',
       fontWeight: '600',
       fontSize: textSizes.medium,
     },
@@ -205,7 +201,6 @@ export default function AccessibleAdvancedScreen() {
       marginTop: 12,
       marginBottom: 16,
     },
-    // Progress
     progressBarContainer: {
       height: 10,
       width: '100%',
@@ -218,7 +213,6 @@ export default function AccessibleAdvancedScreen() {
       height: 10,
       backgroundColor: colors.primary,
     },
-    // Features section
     featuresSection: {
       marginTop: 24,
       paddingHorizontal: 16,
@@ -542,7 +536,6 @@ export default function AccessibleAdvancedScreen() {
                 style={{ width: '100%', height: 40 }}
                 minimumTrackTintColor="#2196F3"
                 maximumTrackTintColor="#ccc"
-                // Hide from TalkBack but keep for visual users
                 importantForAccessibility="no-hide-descendants"
               />
             </View>

@@ -54,7 +54,6 @@ const guidelineData = [
 export default function WCAGGuidelinesScreen() {
   const { colors, textSizes, isDarkMode } = useTheme();
 
-  // Define a subtle gradient for the background
   const gradientColors = isDarkMode
     ? [colors.background, '#2c2c2e']
     : ['#e2e2e2', colors.background];
@@ -66,7 +65,6 @@ export default function WCAGGuidelinesScreen() {
     container: {
       flex: 1,
     },
-    // Hero card at top
     heroCard: {
       backgroundColor: colors.surface,
       marginHorizontal: 16,

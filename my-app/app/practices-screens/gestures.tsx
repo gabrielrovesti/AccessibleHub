@@ -10,11 +10,10 @@ export default function GesturesTutorialScreen() {
   const [showLongPressSuccess, setShowLongPressSuccess] = useState(false);
   const [lastTap, setLastTap] = useState(0);
   const doubleTapButtonRef = React.useRef(null);
-  const DOUBLE_TAP_DELAY = 300; // milliseconds
+  const DOUBLE_TAP_DELAY = 300;
 
   const setAccessibilityFocus = (ref) => {
     if (ref && ref.current) {
-      // Per Android
       if (Platform.OS === 'android') {
         UIManager.sendAccessibilityEvent(
           findNodeHandle(ref.current),
@@ -43,17 +42,14 @@ export default function GesturesTutorialScreen() {
     setTimeout(() => setShowSingleTapSuccess(false), 1500);
   };
 
-// Double tap handler modificato
 const handleDoubleTap = () => {
   if (screenReaderEnabled) {
-    // Se lo screen reader è attivo, mostra subito il successo
     setShowDoubleTapSuccess(true);
     AccessibilityInfo.announceForAccessibility('Double tap gesture completed successfully with screen reader');
     setTimeout(() => setShowDoubleTapSuccess(false), 1500);
     return;
   }
 
-  // Comportamento standard (senza screen reader)
   const now = Date.now();
   if (lastTap && now - lastTap < DOUBLE_TAP_DELAY) {
     setShowDoubleTapSuccess(true);

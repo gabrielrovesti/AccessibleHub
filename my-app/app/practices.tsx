@@ -1,12 +1,5 @@
 import React, { useState } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  TouchableOpacity,
-  AccessibilityInfo
-} from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, AccessibilityInfo} from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import { useTheme } from '../context/ThemeContext';
@@ -17,19 +10,10 @@ export default function BestPracticesScreen() {
   const router = useRouter();
   const { colors, textSizes, isDarkMode } = useTheme();
 
-  /*
-   * 1) Subtle gradient background
-   *    - Light mode: slightly darker gray → background
-   *    - Dark mode: background → #2c2c2e
-   */
   const gradientColors = isDarkMode
     ? [colors.background, '#2c2c2e']
     : ['#e2e2e2', colors.background];
 
-  /*
-   * 2) Icon color sets
-   *    (retaining your existing approach)
-   */
   const iconColors = {
     wcag:        { bg: '#E8F1FF',  icon: '#0055CC' },
     semantic:    { bg: '#F0F7FF',  icon: '#0070F3' },
@@ -38,15 +22,10 @@ export default function BestPracticesScreen() {
     navigation:  { bg: '#E6FFE6',  icon: '#28A745' },
   };
 
-  /*
-   * 3) Themed + local styles
-   *    Similar approach as your updated screens
-   */
   const themedStyles = {
     container: {
       flex: 1,
     },
-    /* Hero card for title + description */
     heroCard: {
       backgroundColor: colors.surface,
       marginHorizontal: 16,
@@ -77,7 +56,6 @@ export default function BestPracticesScreen() {
       paddingHorizontal: 16,
       paddingTop: 20,
     },
-    /* Practice cards */
     card: {
       backgroundColor: colors.surface,
       borderRadius: 16,

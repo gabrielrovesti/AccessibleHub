@@ -18,7 +18,6 @@ import { LinearGradient } from 'expo-linear-gradient';
  * @returns {Object} Comprehensive metrics with component, WCAG, and testing scores
  */
 const calculateAccessibilityScore = () => {
-  // METHODOLOGY METADATA
   const methodologyData = {
     version: "1.0.0",
     lastUpdated: "2025-03-13",
@@ -31,12 +30,12 @@ const calculateAccessibilityScore = () => {
       { citation: "Perinello & Gaggi (2024)", doi: "10.1109/CCNC51664.2024.10454681" }
     ],
     wcagVersion: "2.2",
-    conformanceTarget: "AAA" // Changed from AA to AAA
+    conformanceTarget: "AAA"
   };
 
   // 1. COMPONENT REGISTRY WITH ACCESSIBILITY STATUS
   // Each component is categorized and tracked across app screens
-const componentsRegistry = {
+  const componentsRegistry = {
   // Basic UI components
   'button': { implemented: true, accessible: true, screens: ['home', 'gestures', 'navigation'] },
   'text': { implemented: true, accessible: true, screens: ['home', 'guidelines', 'navigation', 'screen-reader', 'semantics'] },
@@ -237,16 +236,7 @@ const componentsRegistry = {
     }
   };
 
-  // 6. INACCESSIBLE COMPONENTS ANALYSIS
-  const inaccessibleComponents = Object.entries(componentsRegistry)
-    .filter(([_, c]) => c.implemented && !c.accessible)
-    .map(([name, c]) => ({
-      name,
-      screens: c.screens,
-      issues: c.accessibilityIssues || ["Accessibility issues not specified"]
-    }));
-
-  // 7. COMPREHENSIVE RESULT OBJECT
+  // 6. COMPREHENSIVE RESULT OBJECT
   return {
     componentScore,
     wcagCompliance,
@@ -256,9 +246,9 @@ const componentsRegistry = {
     // Key metrics with updated formal weighting for AAA
     overallScore: Math.round(
       (componentScore * 0.35) +
-      (levelACompliance * 0.25) + // Reduced from 0.3
-      (levelAACompliance * 0.20) + // Reduced from 0.25
-      (levelAAACompliance * 0.15) + // Increased from 0.05
+      (levelACompliance * 0.25) +
+      (levelAACompliance * 0.20) +
+      (levelAAACompliance * 0.15) +
       (testingScore * 0.05)
     ),
 
@@ -276,7 +266,6 @@ const componentsRegistry = {
         basic: 8,
         complex: componentsTotal - 8
       },
-      inaccessibleComponents // New field with detailed information
     },
     wcagData: {
       totalCriteria,
@@ -367,7 +356,6 @@ const academicReferences = [
     url: 'https://reactnative.dev/docs/accessibility',
     description: 'Official documentation on implementing accessibility features in React Native applications.'
   },
-  // Added new AAA-focused reference
   {
     title: 'Understanding WCAG 2.2 Level AAA Success Criteria',
     authors: 'W3C Web Accessibility Initiative (WAI)',
@@ -386,12 +374,10 @@ export default function HomeScreen() {
   const { colors, textSizes, isDarkMode } = useTheme();
   const accessibilityMetrics = calculateAccessibilityScore();
 
-  // State for managing the metrics details modal
   const [detailsVisible, setDetailsVisible] = useState(false);
   const [activeMetricType, setActiveMetricType] = useState(null); // 'component', 'wcag', 'testing'
   const [activeTab, setActiveTab] = useState('overview');
 
-  // Function to open metric details
   const openMetricDetails = (metricType) => {
     setActiveMetricType(metricType);
     setActiveTab('overview');
@@ -406,7 +392,6 @@ export default function HomeScreen() {
   /* -----------------------------------------
      4. MODAL STYLES AND RENDERING
   ----------------------------------------- */
-  // Styles for the details modal
   const detailsModalStyles = {
     centeredView: {
       flex: 1,
@@ -897,7 +882,6 @@ export default function HomeScreen() {
    * 6. Render metric details modal content
    */
   const renderMetricDetails = () => {
-    // Appropriate title based on metric type
     const getDetailsTitle = () => {
       switch (activeMetricType) {
         case 'component':
@@ -991,26 +975,6 @@ export default function HomeScreen() {
             <Text style={[detailsModalStyles.sectionSubtitle, {marginTop: 8}]}>
               All components implement proper accessibility attributes including semantic roles, labels, and touch target sizing.
             </Text>
-
-            {accessibilityMetrics.componentsData.inaccessibleComponents.map((component, index) => (
-              <View key={index} style={{ marginBottom: 12 }}>
-                <View style={detailsModalStyles.statRow}>
-                  <Text style={[detailsModalStyles.statLabel, { fontWeight: 'bold' }]}>{component.name}</Text>
-                  <Text style={detailsModalStyles.statValue}>
-                    {component.screens.length > 0 ? `${component.screens.length} screens` : "Not used"}
-                  </Text>
-                </View>
-
-                <View style={detailsModalStyles.issueList}>
-                  {component.issues.map((issue, i) => (
-                    <View key={i} style={detailsModalStyles.issueItem}>
-                      <Text style={detailsModalStyles.issueBullet}>•</Text>
-                      <Text style={detailsModalStyles.issueText}>{issue}</Text>
-                    </View>
-                  ))}
-                </View>
-              </View>
-            ))}
           </View>
         );
       } else if (activeMetricType === 'wcag') {
@@ -2072,14 +2036,7 @@ export default function HomeScreen() {
         </View>
       </ScrollView>
 
-      {/* Modal for metric details */}
       {renderMetricDetails()}
     </LinearGradient>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-});

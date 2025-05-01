@@ -536,9 +536,6 @@ export default function FrameworkComparisonScreen() {
     { id: 'methodology', label: 'Methodology', icon: 'book' },
   ];
 
-  /*
-   * Accessibility announcements on changes
-   */
   useEffect(() => {
     const fw = frameworkData[selectedFramework];
     const metrics = calculateMetrics(fw);
@@ -554,16 +551,13 @@ export default function FrameworkComparisonScreen() {
   // Function to handle widget click
   const handleWidgetClick = (widgetType) => {
     if (activeWidget === widgetType && widgetInfoVisible) {
-      // Se è già aperto, chiudilo
       setWidgetInfoVisible(false);
       setActiveWidget(null);
     } else {
-      // Altrimenti, apri con il nuovo widget
       setActiveWidget(widgetType);
       setWidgetInfoVisible(true);
-      setActiveBannerTab('overview'); // Reset tab to overview
+      setActiveBannerTab('overview');
 
-      // Announce per screen reader
       const widgetName =
         widgetType === 'language' ? 'Language' :
         widgetType === 'learning' ? 'Learning Curve' :
@@ -578,7 +572,6 @@ export default function FrameworkComparisonScreen() {
     }
   };
 
-  // Show details in a modal
   const showDetails = (type) => {
     setDetailType(type);
     setActiveDetailTab('overview');
@@ -1404,8 +1397,8 @@ export default function FrameworkComparisonScreen() {
   const themedIconStyles = {
     infoIcon: {
       marginTop: 4,
-      color: isDarkMode ? colors.primary : colors.primary, // Assicurati che il colore sia visibile in entrambi i temi
-      opacity: isDarkMode ? 0.9 : 0.6, // Aumenta l'opacità in dark mode per maggiore contrasto
+      color: isDarkMode ? colors.primary : colors.primary,
+      opacity: isDarkMode ? 0.9 : 0.6,
     },
     infoIconAbsolute: {
       position: 'absolute',
@@ -1418,24 +1411,22 @@ export default function FrameworkComparisonScreen() {
 
   // Update contrast for dark mode
   if (isDarkMode) {
-    // Increase contrast for text and interactive elements in dark mode
     themedStyles.statValue = {
       ...themedStyles.statValue,
       color: colors.text,
-      fontWeight: '700', // Più bold per migliore leggibilità
+      fontWeight: '700',
     };
 
     themedStyles.cardTitle = {
       ...themedStyles.cardTitle,
       color: colors.text,
-      opacity: 1, // Massima opacità per i titoli
+      opacity: 1,
     };
 
-    // Ensure icons in containers have sufficient contrast
     themedStyles.statItem = {
       ...themedStyles.statItem,
       borderColor: colors.border,
-      borderWidth: 1, // Bordo più definito in dark mode
+      borderWidth: 1,
     };
   }
 
@@ -1632,7 +1623,6 @@ export default function FrameworkComparisonScreen() {
      6) RENDER DETAILS MODAL
   -------------------------------------------- */
   const renderDetailsModal = () => {
-    // Appropriate title based on detail type
     const getModalTitle = () => {
       switch (detailType) {
         case 'methodology':
@@ -2337,7 +2327,6 @@ const renderAccessibilitySection = () => {
   const sem = fw.accessibility.semantics;
   const focus = fw.accessibility.focusManagement;
 
-  // Assicuriamoci che tutti i rating siano numeri validi
   const screenReaderRating = Number(sr.rating) || 0;
   const semanticsRating = Number(sem.rating) || 0;
   const focusRating = Number(focus.rating) || 0;
