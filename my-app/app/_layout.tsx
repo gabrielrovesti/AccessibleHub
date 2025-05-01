@@ -270,7 +270,14 @@ function CustomDrawerContent({ state, descriptors }) {
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 1 }}
       >
-        <Ionicons name="rocket-outline" size={56} color="#FFFFFF" style={drawerStyles.appIcon} />
+        <Ionicons
+        name="rocket-outline"
+        size={56}
+        color="#FFFFFF"
+        style={drawerStyles.appIcon}
+        importantForAccessibility="no"
+        accessibilityElementsHidden={true}
+        />
         <Text style={[drawerStyles.appName, { color: '#FFFFFF' }]}>AccessibleHub</Text>
       </LinearGradient>
       <View style={drawerStyles.drawerContent}>
@@ -354,9 +361,12 @@ function CustomDrawerContent({ state, descriptors }) {
         importantForAccessibility="no"
         accessibilityElementsHidden={true}
       >
-        <Text style={[drawerStyles.footerText, { color: colors.textSecondary }]}>
-          Made with ❤️ by Gabriel Rovesti
-        </Text>
+    <Text
+        style={[drawerStyles.footerText, { color: colors.textSecondary }]}
+        accessibilityLabel="Made with love by Gabriel Rovesti"
+    >
+        Made with ❤️ by Gabriel Rovesti
+    </Text>
       </View>
     </View>
   );
