@@ -4,13 +4,13 @@ import { Ionicons } from '@expo/vector-icons';
 import { useTheme } from '../../context/ThemeContext';
 import { LinearGradient } from 'expo-linear-gradient';
 
+
 export default function AccessibleButtonExample() {
   const [copied, setCopied] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
 
   const { colors, textSizes, isDarkMode } = useTheme();
 
-  // 1) Example code snippet
   const codeExample = `<TouchableOpacity
   accessibilityRole="button"
   accessibilityLabel="Submit form"
@@ -29,7 +29,6 @@ export default function AccessibleButtonExample() {
   </Text>
 </TouchableOpacity>`;
 
-  // 2) Copy code to clipboard
   const handleCopy = async () => {
     try {
       await Clipboard.setString(codeExample);
@@ -42,7 +41,6 @@ export default function AccessibleButtonExample() {
     }
   };
 
-// 3) Demo button that triggers success modal
 const DemoButton = () => (
   <TouchableOpacity
     style={[styles.demoButton, { backgroundColor: colors.primary }]}
@@ -63,7 +61,6 @@ const DemoButton = () => (
   </TouchableOpacity>
 );
 
-  // 4) Elevated card style for uniform design
   const cardShadowStyle = {
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 3 },
@@ -72,7 +69,6 @@ const DemoButton = () => (
     elevation: 3,
   };
 
-  // 5) Themed + local styles
   const gradientColors = isDarkMode
     ? [colors.background, '#2c2c2e']
     : ['#e2e2e2', colors.background];
@@ -81,7 +77,6 @@ const DemoButton = () => (
     container: {
       flex: 1,
     },
-    // Hero card at top
     heroCard: {
       backgroundColor: colors.surface,
       marginHorizontal: 16,
@@ -241,7 +236,6 @@ const DemoButton = () => (
         accessibilityRole="scrollview"
         accessibilityLabel="Accessible Button Example Screen"
       >
-        {/* HERO CARD */}
         <View style={themedStyles.heroCard}>
           <Text style={themedStyles.heroTitle} accessibilityRole="header">
             Buttons & Touchables - Interactive Example
@@ -251,7 +245,6 @@ const DemoButton = () => (
           </Text>
         </View>
 
-        {/* DEMO SECTION */}
         <View style={themedStyles.section}>
           <Text
             style={[styles.sectionTitle, { color: colors.text }]}
@@ -265,7 +258,6 @@ const DemoButton = () => (
           </View>
         </View>
 
-        {/* CODE EXAMPLE SECTION */}
         <View style={themedStyles.section}>
           <Text style={[styles.sectionTitle, { color: colors.text }]}>
             Code Implementation
@@ -278,7 +270,6 @@ const DemoButton = () => (
                   onPress={handleCopy}
                   accessibilityRole="button"
                   accessibilityLabel={copied ? "Code copied" : "Copy code example"}
-                  accessibilityHint="Copies the code example to your clipboard"
                 >
                   <Ionicons
                     name={copied ? "checkmark" : "copy-outline"}
@@ -304,7 +295,6 @@ const DemoButton = () => (
             </View>
         </View>
 
-        {/* ACCESSIBILITY FEATURES SECTION */}
         <View style={themedStyles.featuresSection}>
           <Text style={themedStyles.featuresTitle}>
             Accessibility Features
@@ -350,7 +340,6 @@ const DemoButton = () => (
           ))}
         </View>
 
-        {/* SUCCESS MODAL */}
         <Modal
           visible={showSuccess}
           transparent

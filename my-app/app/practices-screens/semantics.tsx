@@ -141,7 +141,6 @@ export default function SemanticStructureScreen() {
         accessibilityRole="scrollview"
         accessibilityLabel="Semantic Structure Screen"
       >
-        {/* HERO CARD */}
         <View style={themedStyles.heroCard}>
           <Text style={themedStyles.heroTitle} accessibilityRole="header">
             Semantic Structure
@@ -151,10 +150,8 @@ export default function SemanticStructureScreen() {
           </Text>
         </View>
 
-        {/* MAIN SECTION */}
         <View style={themedStyles.section}>
 
-          {/* CARD 1: Content Hierarchy & Heading Levels */}
           <View style={themedStyles.card}>
             <View style={themedStyles.cardHeader}>
               <View style={themedStyles.iconContainer}>
@@ -167,7 +164,6 @@ export default function SemanticStructureScreen() {
               In React Native, use <Text style={{ fontWeight: 'bold' }}>accessibilityRole="heading"</Text> for key titles.
             </Text>
 
-            {/* Example of multiple heading levels */}
             <View
               style={themedStyles.codeExample}
               accessible
@@ -198,7 +194,6 @@ export default function SemanticStructureScreen() {
             </View>
           </View>
 
-          {/* CARD 2: Navigation Order & Skip Navigation */}
           <View style={themedStyles.card}>
             <View style={themedStyles.cardHeader}>
               <View style={themedStyles.iconContainer}>
@@ -230,7 +225,6 @@ export default function SemanticStructureScreen() {
             </View>
           </View>
 
-          {/* CARD 3: Landmarks & ARIA Roles */}
           <View style={themedStyles.card}>
             <View style={themedStyles.cardHeader}>
               <View style={themedStyles.iconContainer}>
@@ -285,7 +279,6 @@ export default function SemanticStructureScreen() {
             </View>
           </View>
 
-          {/* CARD 4: Official Docs & "Try It Out" */}
           <View style={themedStyles.card}>
             <View style={themedStyles.cardHeader}>
               <View style={themedStyles.iconContainer}>

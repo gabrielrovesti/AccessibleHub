@@ -8,7 +8,6 @@ import { LinearGradient } from 'expo-linear-gradient';
 export default function AccessibleFormExample() {
   const { colors, textSizes, isDarkMode } = useTheme();
 
-  // Form state + error state
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -23,14 +22,11 @@ export default function AccessibleFormExample() {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [showSuccessModal, setShowSuccessModal] = useState(false);
 
-  // State for date/time pickers
   const [showBirthDatePicker, setShowBirthDatePicker] = useState(false);
   const [showAppointmentTimePicker, setShowAppointmentTimePicker] = useState(false);
 
-  // Code snippet copy state
   const [copied, setCopied] = useState(false);
 
-  // Minimal code snippet for demonstration
   const codeExample = `<View accessibilityRole="form">
 
   {/* Input Field */}
@@ -86,7 +82,6 @@ export default function AccessibleFormExample() {
 
 </View>`;
 
-  // Evaluate whether all required fields are filled
   const formDataComplete =
     formData.name &&
     formData.email &&
@@ -95,7 +90,6 @@ export default function AccessibleFormExample() {
     formData.birthDate &&
     formData.agreed;
 
-  // Validate required fields
   const validateForm = () => {
     const newErrors: Record<string, string> = {};
     if (!formData.name) newErrors.name = 'Name is required';
@@ -108,7 +102,6 @@ export default function AccessibleFormExample() {
     return Object.keys(newErrors).length === 0;
   };
 
-  // Handle form submission
   const handleSubmit = () => {
     if (validateForm()) {
       AccessibilityInfo.announceForAccessibility('Form submitted successfully');
@@ -116,7 +109,6 @@ export default function AccessibleFormExample() {
 
       setTimeout(() => {
         setShowSuccessModal(false);
-        // Reset form
         setFormData({
           name: '',
           email: '',
@@ -136,7 +128,6 @@ export default function AccessibleFormExample() {
     }
   };
 
-  // Copy code snippet
   const handleCopy = async () => {
     try {
       await Clipboard.setString(codeExample);
@@ -149,10 +140,6 @@ export default function AccessibleFormExample() {
     }
   };
 
-  /*
-   * 1) Gradient background
-   * 2) Elevated card style
-   */
   const gradientColors = isDarkMode
     ? [colors.background, '#2c2c2e']
     : ['#e2e2e2', colors.background];
@@ -165,7 +152,6 @@ export default function AccessibleFormExample() {
     elevation: 3,
   };
 
-  // Themed + local styles
   const themedStyles = {
     container: {
       flex: 1,
@@ -250,7 +236,6 @@ export default function AccessibleFormExample() {
       fontSize: 14,
       lineHeight: 20,
     },
-    // Elevated card for features
     featuresCard: {
       backgroundColor: colors.surface,
       borderRadius: 16,
@@ -346,7 +331,6 @@ export default function AccessibleFormExample() {
     },
   };
 
-  // 2) Handlers for Date/Time pickers
   const handleDateChange = (event: any, selectedDate?: Date) => {
     setShowBirthDatePicker(Platform.OS === 'ios');
     if (selectedDate) {
@@ -380,7 +364,6 @@ export default function AccessibleFormExample() {
         accessibilityRole="scrollview"
         accessibilityLabel="Accessible Form Example Screen"
       >
-        {/* HERO CARD */}
         <View style={themedStyles.heroCard}>
           <Text style={themedStyles.heroTitle} accessibilityRole="header">
             Form Controls - Interactive Example
@@ -390,7 +373,6 @@ export default function AccessibleFormExample() {
           </Text>
         </View>
 
-         {/* 1) INTERACTIVE FORM */}
          <View
            style={[themedStyles.section, { marginBottom: 24 }]}
          >
@@ -408,7 +390,6 @@ export default function AccessibleFormExample() {
                Form Demo
              </Text>
 
-             {/* Name */}
              <Text style={[styles.label, { color: colors.text, marginTop: 16 }]}>
                Name
              </Text>
@@ -428,7 +409,6 @@ export default function AccessibleFormExample() {
                </View>
              )}
 
-             {/* Email */}
              <Text style={[styles.label, { color: colors.text, marginTop: 16 }]}>
                Email
              </Text>
@@ -451,7 +431,6 @@ export default function AccessibleFormExample() {
                </View>
              )}
 
-             {/* Gender */}
              <Text style={[styles.label, { color: colors.text, marginTop: 16 }]}>
                Gender
              </Text>
@@ -484,7 +463,6 @@ export default function AccessibleFormExample() {
                </View>
              )}
 
-             {/* Preferred Contact Time */}
              <Text style={[styles.label, { color: colors.text, marginTop: 16 }]}>
                Preferred Contact Time
              </Text>
@@ -515,7 +493,6 @@ export default function AccessibleFormExample() {
                </View>
              )}
 
-             {/* Birth Date */}
              <Text style={[styles.label, { color: colors.text, marginTop: 16 }]}>
                Birth Date
              </Text>
@@ -554,7 +531,6 @@ export default function AccessibleFormExample() {
               />
             )}
 
-            {/* Appointment Time (optional) */}
             <Text style={[styles.label, { color: colors.text }]}>Appointment Time (Optional)</Text>
             <TouchableOpacity
               style={styles.dateTimeButton}
@@ -586,7 +562,6 @@ export default function AccessibleFormExample() {
               />
             )}
 
-            {/* Communication Preferences */}
             <Text style={[styles.label, { color: colors.text, marginTop: 16 }]}>
               Communication Preferences
             </Text>
@@ -626,7 +601,6 @@ export default function AccessibleFormExample() {
               ))}
             </View>
 
-            {/* Agreement */}
             <View style={{ marginVertical: 16 }}>
               <TouchableOpacity
                 style={styles.agreementTouchable}
@@ -648,14 +622,12 @@ export default function AccessibleFormExample() {
               </TouchableOpacity>
             </View>
 
-            {/* Short note if fields incomplete */}
             {!formDataComplete && (
               <Text style={themedStyles.noteText}>
                 Complete all required fields to proceed
               </Text>
             )}
 
-            {/* Submit Button */}
             <TouchableOpacity
               style={[
                 styles.submitButton,
@@ -678,7 +650,6 @@ export default function AccessibleFormExample() {
           </View>
         </View>
 
-        {/* 2) IMPLEMENTATION CARD */}
         <View style={themedStyles.section}>
           <View style={themedStyles.demoCard}>
             <Text style={[styles.sectionTitle, { color: colors.text, marginBottom: 12 }]}>
@@ -686,7 +657,6 @@ export default function AccessibleFormExample() {
             </Text>
 
             <View style={themedStyles.codeCardContainer}>
-              {/* Code Header */}
               <View style={themedStyles.codeHeader}>
                 <Text style={themedStyles.codeHeaderText}>JSX</Text>
                 <TouchableOpacity
@@ -712,7 +682,6 @@ export default function AccessibleFormExample() {
                 </TouchableOpacity>
               </View>
 
-                {/* Code snippet */}
                 <View
                   style={themedStyles.codeCard}
                   accessible={true}
@@ -727,7 +696,6 @@ export default function AccessibleFormExample() {
           </View>
         </View>
 
-        {/* 3) ACCESSIBILITY FEATURES CARD */}
         <View style={themedStyles.featuresSection}>
           <Text style={themedStyles.featuresTitle}>Accessibility Features</Text>
           {[
@@ -786,7 +754,6 @@ export default function AccessibleFormExample() {
           ))}
         </View>
 
-        {/* SUCCESS MODAL */}
         <Modal
           visible={showSuccessModal}
           transparent
@@ -821,9 +788,6 @@ export default function AccessibleFormExample() {
   );
 }
 
-/* ---------------------------------------
-   LOCAL STYLES per elementi form-specifici
-----------------------------------------*/
 const styles = StyleSheet.create({
   container: {
     flex: 1,

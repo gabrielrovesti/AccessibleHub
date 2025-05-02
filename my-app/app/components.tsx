@@ -151,7 +151,6 @@ export default function ComponentsScreen() {
         accessibilityRole="scrollview"
         accessibilityLabel="Accessibility Components Screen"
       >
-        {/* HERO CARD */}
         <View style={themedStyles.heroCard}>
           <Text style={themedStyles.heroTitle} accessibilityRole="header">
             Accessibility Components
@@ -161,10 +160,8 @@ export default function ComponentsScreen() {
           </Text>
         </View>
 
-        {/* LIST OF COMPONENT CARDS */}
         <View style={themedStyles.section}>
 
-          {/* 1. Buttons & Touchables */}
           <TouchableOpacity
             style={themedStyles.card}
             onPress={() => handleComponentPress('/accessible-components/accessible-button', 'Buttons & Touchables')}
@@ -223,7 +220,6 @@ export default function ComponentsScreen() {
             </View>
           </TouchableOpacity>
 
-          {/* 2. Form Controls */}
           <TouchableOpacity
             style={themedStyles.card}
             onPress={() => handleComponentPress('/accessible-components/accessible-form', 'Form Controls')}
@@ -282,7 +278,6 @@ export default function ComponentsScreen() {
             </View>
           </TouchableOpacity>
 
-          {/* 3. Media Content */}
           <TouchableOpacity
             style={themedStyles.card}
             onPress={() => handleComponentPress('/accessible-components/accessible-media', 'Media Content')}
@@ -341,7 +336,6 @@ export default function ComponentsScreen() {
             </View>
           </TouchableOpacity>
 
-          {/* 4. Modal Dialogs */}
           <TouchableOpacity
             style={themedStyles.card}
             onPress={() => handleComponentPress('/accessible-components/accessible-dialog', 'Modal Dialogs')}
@@ -475,8 +469,6 @@ export default function ComponentsScreen() {
             />
           </View>
         </TouchableOpacity>
-
-
         </View>
       </ScrollView>
     </LinearGradient>

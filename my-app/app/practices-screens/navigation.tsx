@@ -23,7 +23,6 @@ export default function LogicalFocusOrderScreen() {
     ? [colors.background, '#2c2c2e']
     : ['#e2e2e2', colors.background];
 
-  // 2) Common shadow style
   const cardShadowStyle = {
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 3 },
@@ -32,7 +31,6 @@ export default function LogicalFocusOrderScreen() {
     elevation: 3,
   };
 
-  // 3) Themed + local styles
   const themedStyles = {
     container: { flex: 1 },
     heroCard: {
@@ -104,7 +102,7 @@ export default function LogicalFocusOrderScreen() {
       borderRadius: 8,
       paddingVertical: 12,
       paddingHorizontal: 24,
-      alignSelf: 'center', // Center horizontally
+      alignSelf: 'center',
       marginTop: 16,
       alignItems: 'center',
     },
@@ -124,15 +122,12 @@ export default function LogicalFocusOrderScreen() {
     },
   };
 
-  // 4) "Skip to main content" logic
   const skipToMainContent = () => {
-    // 1. Scroll to the main content
     scrollViewRef.current?.scrollTo({
       y: mainContentY,
       animated: true,
     });
 
-    // 2. After a short delay, set accessibility focus to the main content container
     setTimeout(() => {
       if (mainContentRef.current && Platform.OS !== 'web') {
         const reactTag = findNodeHandle(mainContentRef.current);
@@ -143,7 +138,6 @@ export default function LogicalFocusOrderScreen() {
     }, 500);
   };
 
-  // 5) A dummy “Submit” action for the second button
   const handleSubmitFeedback = () => {
     Alert.alert('Feedback Submitted', `Feedback: ${feedback}`);
   };
@@ -156,7 +150,6 @@ export default function LogicalFocusOrderScreen() {
         accessibilityRole="scrollview"
         accessibilityLabel="Logical Focus Order Screen"
       >
-        {/* HERO CARD */}
         <View style={themedStyles.heroCard}>
           <Text style={themedStyles.heroTitle} accessibilityRole="header">
             Logical Focus Order
@@ -166,7 +159,6 @@ export default function LogicalFocusOrderScreen() {
           </Text>
         </View>
 
-        {/* Skip Link */}
         <View style={themedStyles.skipLinkContainer}>
           <TouchableOpacity
             style={themedStyles.skipLinkButton}
@@ -178,7 +170,6 @@ export default function LogicalFocusOrderScreen() {
           </TouchableOpacity>
         </View>
 
-        {/* Some filler info before main content */}
         <View style={themedStyles.section}>
           <View style={themedStyles.infoCard}>
             <Text style={themedStyles.infoTitle}>Why Focus Order Matters</Text>
@@ -189,7 +180,6 @@ export default function LogicalFocusOrderScreen() {
           </View>
         </View>
 
-        {/* MAIN CONTENT: multiple focusable items */}
         <View
           style={[themedStyles.section, { marginTop: 0 }]}
           onLayout={handleMainContentLayout}
@@ -203,7 +193,6 @@ export default function LogicalFocusOrderScreen() {
               Below are interactive elements in a logical sequence.
             </Text>
 
-            {/* 1) Simple focusable button */}
             <TouchableOpacity
               style={[themedStyles.focusableButton, { marginBottom: 10 }]}
               onPress={() => Alert.alert('Button Pressed', 'You pressed the first button!')}
@@ -213,7 +202,6 @@ export default function LogicalFocusOrderScreen() {
               <Text style={themedStyles.focusableButtonText}>Focusable Button 1</Text>
             </TouchableOpacity>
 
-            {/* 2) Text Input */}
             <TextInput
               style={themedStyles.input}
               placeholder="Enter feedback"
@@ -223,7 +211,6 @@ export default function LogicalFocusOrderScreen() {
               accessibilityLabel="Feedback Input"
             />
 
-            {/* 3) Another focusable button */}
             <TouchableOpacity
               style={[themedStyles.focusableButton, { marginBottom: 10 }]}
               onPress={handleSubmitFeedback}

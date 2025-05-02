@@ -21,9 +21,6 @@ export default function SettingsScreen() {
     textSizes,
   } = useTheme();
 
-  /* -----------------------------------------
-     1. Themed Styles
-  ----------------------------------------- */
   const themedStyles = StyleSheet.create({
     container: {
       flex: 1,
@@ -88,9 +85,6 @@ export default function SettingsScreen() {
     },
   });
 
-  /* -----------------------------------------
-     2. Reusable Setting Row
-  ----------------------------------------- */
 const SettingRow = ({
   icon,
   title,
@@ -145,21 +139,15 @@ const SettingRow = ({
       thumbColor={value ? '#fff' : '#f4f3f4'}
       accessibilityLabel={`${title}. ${description}. Switch is ${value ? 'on' : 'off'}.`}
       accessibilityRole="switch"
-      accessibilityHint="Double tap to toggle setting"
     />
   </View>
 );
 
-
-  /* -----------------------------------------
-     3. Render Screen
-  ----------------------------------------- */
   return (
     <ScrollView
       style={themedStyles.container}
       contentContainerStyle={themedStyles.scrollContent}
     >
-      {/* VISUAL SETTINGS */}
       <View style={themedStyles.section}>
         <Text style={themedStyles.sectionHeader} accessibilityRole="header">
           Visual Settings
@@ -183,7 +171,6 @@ const SettingRow = ({
         </View>
       </View>
 
-      {/* READABILITY ENHANCEMENTS */}
       <View style={themedStyles.section}>
         <Text style={themedStyles.sectionHeader} accessibilityRole="header">
           Readability Enhancements
@@ -207,7 +194,6 @@ const SettingRow = ({
         </View>
       </View>
 
-      {/* COLOR & TOUCH SETTINGS */}
       <View style={themedStyles.section}>
         <Text style={themedStyles.sectionHeader} accessibilityRole="header">
           Color & Touch Settings

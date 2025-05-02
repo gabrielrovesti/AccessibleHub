@@ -4,9 +4,6 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 import { useTheme } from '../context/ThemeContext';
 
-/* ----------------------------------------
-   Inspiration Projects
----------------------------------------- */
 const communityProjects = [
   {
     id: 'project1',
@@ -30,9 +27,6 @@ const communityProjects = [
   },
 ];
 
-/* ----------------------------------------
-   Inspiration Items
----------------------------------------- */
 const successStories = [
   {
     id: 'inspire1',
@@ -79,9 +73,6 @@ useEffect(() => {
   },
 ];
 
-/* ----------------------------------------
-   Community Resources & Channels
----------------------------------------- */
 const communityChannels = [
   {
     id: 'channel1',
@@ -101,9 +92,6 @@ const communityChannels = [
   },
 ];
 
-/* ----------------------------------------
-   Collapsible preview for code/text
----------------------------------------- */
 function CollapsiblePreview({
   title,
   excerpt,
@@ -159,9 +147,6 @@ function CollapsiblePreview({
   );
 }
 
-/* ----------------------------------------
-   Project Card Component
----------------------------------------- */
 function ProjectCard({ project, colors, textSizes, onPress }) {
   return (
     <TouchableOpacity
@@ -304,9 +289,6 @@ function ProjectCard({ project, colors, textSizes, onPress }) {
   );
 }
 
-/* ----------------------------------------
-   Event Card Component
----------------------------------------- */
 function EventCard({ event, colors, textSizes, onPress }) {
   return (
     <TouchableOpacity
@@ -410,9 +392,6 @@ function EventCard({ event, colors, textSizes, onPress }) {
   );
 }
 
-/* ----------------------------------------
-   Community Channel Card
----------------------------------------- */
 function ChannelCard({ channel, colors, textSizes, onPress }) {
   return (
     <TouchableOpacity
@@ -489,7 +468,6 @@ export default function CommunityScreen() {
 
   const [expandedStoryId, setExpandedStoryId] = useState(null);
 
-  // Handle external links
   const openLink = async (url) => {
     if (await Linking.canOpenURL(url)) {
       await Linking.openURL(url);
@@ -497,7 +475,6 @@ export default function CommunityScreen() {
     }
   };
 
-  // Basic styles
   const gradientColors = isDarkMode
     ? [colors.background, '#1a1a1d']
     : ['#f5f7fa', colors.background];
@@ -601,7 +578,7 @@ export default function CommunityScreen() {
         accessibilityRole="scrollview"
         accessibilityLabel="Accessibility Community Screen"
       >
-        {/* Hero Section */}
+
         <View style={styles.heroCard}>
           <Text style={styles.heroTitle} accessibilityRole="header">
             Join the A11y Community
@@ -621,7 +598,6 @@ export default function CommunityScreen() {
           </TouchableOpacity>
         </View>
 
-        {/* Community Projects To Contribute */}
         <Text style={styles.sectionTitle}>Projects Seeking Contributors</Text>
         <View style={styles.contentContainer}>
           {communityProjects.map((project) => (
@@ -637,7 +613,6 @@ export default function CommunityScreen() {
 
         <View style={styles.sectionDivider} />
 
-        {/* Learning Resources */}
         <Text style={styles.sectionTitle}>Learning Resources</Text>
         <View style={styles.contentContainer}>
           <TouchableOpacity
@@ -697,7 +672,6 @@ export default function CommunityScreen() {
 
         <View style={styles.sectionDivider} />
 
-        {/* Inspiration Examples */}
         <Text style={styles.sectionTitle}>Inspiration Examples</Text>
         <View style={styles.storiesContainer}>
           {successStories.map((story) => {
@@ -766,7 +740,6 @@ export default function CommunityScreen() {
 
         <View style={styles.sectionDivider} />
 
-        {/* Community Channels */}
         <Text style={styles.sectionTitle}>Join Community Channels</Text>
         <View style={styles.contentContainer}>
           {communityChannels.map((channel) => (
@@ -780,7 +753,6 @@ export default function CommunityScreen() {
           ))}
         </View>
 
-        {/* Developer Toolkit Footer */}
         <View
           style={{
             backgroundColor: colors.primary + '20',

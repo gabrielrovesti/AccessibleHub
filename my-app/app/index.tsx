@@ -5,18 +5,6 @@ import { Ionicons } from '@expo/vector-icons';
 import { useTheme } from '../context/ThemeContext';
 import { LinearGradient } from 'expo-linear-gradient';
 
-/* -----------------------------------------
-   1. FORMAL ACCESSIBILITY METRICS SYSTEM
------------------------------------------ */
-
-/**
- * Calculates accessibility score based on a formal evaluation system
- * following Perinello & Gaggi (2024) methodology, with extensions for
- * React Native component implementations, WCAG 2.2 compliance mapping,
- * and empirical screen reader test results.
- *
- * @returns {Object} Comprehensive metrics with component, WCAG, and testing scores
- */
 const calculateAccessibilityScore = () => {
   const methodologyData = {
     version: "1.0.0",
@@ -33,10 +21,7 @@ const calculateAccessibilityScore = () => {
     conformanceTarget: "AAA"
   };
 
-  // 1. COMPONENT REGISTRY WITH ACCESSIBILITY STATUS
-  // Each component is categorized and tracked across app screens
   const componentsRegistry = {
-  // Basic UI components
   'button': { implemented: true, accessible: true, screens: ['home', 'gestures', 'navigation'] },
   'text': { implemented: true, accessible: true, screens: ['home', 'guidelines', 'navigation', 'screen-reader', 'semantics'] },
   'image': { implemented: true, accessible: true, screens: ['accessible-media'] },
@@ -46,11 +31,10 @@ const calculateAccessibilityScore = () => {
   'textInput': { implemented: true, accessible: true, screens: ['navigation', 'accessible-form'] },
   'switch': { implemented: true, accessible: true, screens: ['settings'] },
 
-  // More complex components
   'card': { implemented: true, accessible: true, screens: ['home', 'guidelines', 'navigation', 'screen-reader', 'semantics'] },
   'icon': {
     implemented: true,
-    accessible: true, // Changed to true
+    accessible: true,
     screens: ['home', 'guidelines', 'screen-reader', 'semantics']
   },
   'linearGradient': { implemented: true, accessible: true, screens: ['home', 'guidelines', 'navigation', 'screen-reader', 'semantics'] },
@@ -65,8 +49,6 @@ const calculateAccessibilityScore = () => {
   'datePicker': { implemented: true, accessible: true, screens: ['accessible-form'] },
 };
 
-  // 2. WCAG 2.2 CRITERIA WITH IMPLEMENTATION STATUS
-  // Mapped to specific success criteria with level and implementation status
   const wcagCriteria = {
     // Principle 1: Perceivable
     '1.1.1': { level: 'A', implemented: true, name: "Non-text Content" },
@@ -134,15 +116,13 @@ const calculateAccessibilityScore = () => {
     '4.1.3': { level: 'AA', implemented: true, name: "Status Messages" },
   };
 
-  // 3. SCREEN READER TEST RESULTS (iOS AND ANDROID)
-  // Scores from empirical testing with assistive technologies
   const screenReaderTests = {
-    voiceOver: { // iOS
-      navigation: 4.5, // Logical navigation flow
-      gestures: 4.0,   // Gesture recognition
-      labels: 4.5,     // Label clarity and completeness
-      forms: 4.2,      // Form control accessibility
-      alerts: 4.5      // Alert and dialog accessibility
+    voiceOver: {
+      navigation: 4.5,
+      gestures: 4.0,
+      labels: 4.5,
+      forms: 4.2,
+      alerts: 4.5
     },
     talkBack: { // Android
       navigation: 4.3,
@@ -153,24 +133,17 @@ const calculateAccessibilityScore = () => {
     }
   };
 
-  // 4. METRICS CALCULATION WITH FORMAL WEIGHTING SYSTEM
-
-  // 4.1 Component accessibility metric
-  // Weight: 0.4 in overall assessment (formal implementation of components)
   const componentsTotal = Object.keys(componentsRegistry).length;
   const accessibleComponents = Object.values(componentsRegistry).filter(c => c.implemented && c.accessible).length;
   const partiallyAccessible = Object.values(componentsRegistry).filter(c => c.implemented && !c.accessible).length;
   const componentScore = Math.round((accessibleComponents / componentsTotal) * 100);
 
-  // 4.2 WCAG compliance metric
-  // Weight: 0.4 in overall assessment (standards compliance)
   const criteriaValues = Object.values(wcagCriteria);
   const aAndAACriteria = criteriaValues.filter(c => c.level === 'A' || c.level === 'AA');
   const aAndAAImplemented = aAndAACriteria.filter(c => c.implemented).length;
   const allImplemented = criteriaValues.filter(c => c.implemented).length;
   const allCriteria = criteriaValues.length;
 
-  // In case, we keep anyway detailed criteria, since this computation is fair
   const totalCriteria = criteriaValues.length;
   const levelACriteria = criteriaValues.filter(c => c.level === 'A').length;
   const levelAACriteria = criteriaValues.filter(c => c.level === 'AA').length;
@@ -179,32 +152,22 @@ const calculateAccessibilityScore = () => {
   const levelAACriteriaMet = criteriaValues.filter(c => c.level === 'AA' && c.implemented).length;
   const levelAAACriteriaMet = criteriaValues.filter(c => c.level === 'AAA' && c.implemented).length;
 
-    // 80% based on A & AA, 20% based on overall
     const wcagCompliance = Math.round(
       (((aAndAAImplemented / aAndAACriteria.length) * 0.8) +
        ((allImplemented / allCriteria) * 0.2)) * 100
     );
 
-  // Level A compliance (higher priority)
   const levelACompliance = Math.round((levelACriteriaMet / levelACriteria) * 100);
-
-  // Level AA compliance
   const levelAACompliance = Math.round((levelAACriteriaMet / levelAACriteria) * 100);
-
-  // Level AAA compliance
   const levelAAACompliance = Math.round((levelAAACriteriaMet / levelAAACriteria) * 100);
 
-  // 4.3 Screen reader test metric
-  // Weight: 0.2 in overall assessment (user experience with assistive tech)
   const voiceOverScores = Object.values(screenReaderTests.voiceOver);
   const talkBackScores = Object.values(screenReaderTests.talkBack);
   const voiceOverAvg = voiceOverScores.reduce((sum, score) => sum + score, 0) / voiceOverScores.length;
   const talkBackAvg = talkBackScores.reduce((sum, score) => sum + score, 0) / talkBackScores.length;
 
-  // Screen reader testing score normalized to percentage scale
   const testingScore = Math.round(((voiceOverAvg + talkBackAvg) / 2) * 20);
 
-  // 5. DETAILED ANALYSIS BY WCAG PRINCIPLE
   const wcagByPrinciple = {
     perceptible: {
       total: Object.entries(wcagCriteria).filter(([id]) => id.startsWith('1.')).length,
@@ -236,14 +199,12 @@ const calculateAccessibilityScore = () => {
     }
   };
 
-  // 6. COMPREHENSIVE RESULT OBJECT
   return {
     componentScore,
     wcagCompliance,
     testingScore,
     componentCount: componentsTotal,
 
-    // Key metrics with updated formal weighting for AAA
     overallScore: Math.round(
       (componentScore * 0.35) +
       (levelACompliance * 0.25) +
@@ -252,10 +213,8 @@ const calculateAccessibilityScore = () => {
       (testingScore * 0.05)
     ),
 
-    // Methodology metadata for transparency and reproducibility
     methodology: methodologyData,
 
-    // Detailed data for expandable visualization
     componentsData: {
       total: componentsTotal,
       fullyAccessible: accessibleComponents,
@@ -318,9 +277,6 @@ const calculateAccessibilityScore = () => {
   };
 };
 
-/* -----------------------------------------
-   2. ACADEMIC AND OFFICIAL REFERENCES
------------------------------------------ */
 const academicReferences = [
   {
     title: 'Web Content Accessibility Guidelines (WCAG) 2.2',
@@ -366,16 +322,13 @@ const academicReferences = [
   }
 ];
 
-/* -----------------------------------------
-   3. HOME SCREEN COMPONENT
------------------------------------------ */
 export default function HomeScreen() {
   const router = useRouter();
   const { colors, textSizes, isDarkMode } = useTheme();
   const accessibilityMetrics = calculateAccessibilityScore();
 
   const [detailsVisible, setDetailsVisible] = useState(false);
-  const [activeMetricType, setActiveMetricType] = useState(null); // 'component', 'wcag', 'testing'
+  const [activeMetricType, setActiveMetricType] = useState(null);
   const [activeTab, setActiveTab] = useState('overview');
 
   const openMetricDetails = (metricType) => {
@@ -384,14 +337,10 @@ export default function HomeScreen() {
     setDetailsVisible(true);
   };
 
-  // Background gradient
   const backgroundGradientColors = isDarkMode
     ? [colors.background, '#2c2c2e']
     : ['#e2e2e2', colors.background];
 
-  /* -----------------------------------------
-     4. MODAL STYLES AND RENDERING
-  ----------------------------------------- */
   const detailsModalStyles = {
     centeredView: {
       flex: 1,
@@ -653,9 +602,6 @@ export default function HomeScreen() {
     },
   };
 
-  /* -----------------------------------------
-     5. HOME SCREEN STYLES
-  ----------------------------------------- */
   const themedStyles = {
     container: {
       flex: 1,
@@ -878,9 +824,7 @@ export default function HomeScreen() {
     },
   };
 
-  /**
-   * 6. Render metric details modal content
-   */
+
   const renderMetricDetails = () => {
     const getDetailsTitle = () => {
       switch (activeMetricType) {
@@ -895,7 +839,6 @@ export default function HomeScreen() {
       }
     };
 
-    // Content based on active tab
     const renderTabContent = () => {
       switch (activeTab) {
         case 'overview':
@@ -911,7 +854,6 @@ export default function HomeScreen() {
       }
     };
 
-    // Overview tab
     const renderOverviewTab = () => {
       if (activeMetricType === 'component') {
         return (
@@ -956,7 +898,6 @@ export default function HomeScreen() {
               <Text style={detailsModalStyles.statValue}>{accessibilityMetrics.componentsData.issuesCount}</Text>
             </View>
 
-            {/* Explanation on how these components are computed */}
             <Text style={detailsModalStyles.sectionTitle}>Component Registry</Text>
             <Text style={detailsModalStyles.sectionSubtitle}>
               These 20 components represent reusable UI elements implemented in the application codebase. Each component is evaluated for accessibility across multiple screens:
@@ -1033,7 +974,7 @@ export default function HomeScreen() {
               </Text>
             </View>
 
-            {/* New AAA criteria row */}
+
             <View style={detailsModalStyles.statRow}>
               <Text style={detailsModalStyles.statLabel}>Level AAA criteria implemented</Text>
               <View style={detailsModalStyles.progressContainer}>
@@ -1111,7 +1052,6 @@ export default function HomeScreen() {
               </Text>
             </View>
 
-            {/* New section for AAA benefits */}
             <Text style={[detailsModalStyles.sectionTitle, { marginTop: 16 }]}>Level AAA Benefits</Text>
             <Text style={detailsModalStyles.sectionSubtitle}>
               While not required for standard conformance, implementing AAA criteria provides additional benefits for users with disabilities.
@@ -1207,7 +1147,6 @@ export default function HomeScreen() {
               </View>
             ))}
 
-            {/* New section for AAA testing */}
             <Text style={[detailsModalStyles.sectionTitle, { marginTop: 16 }]}>AAA Criteria Testing</Text>
             <Text style={detailsModalStyles.sectionSubtitle}>
               Level AAA criteria were specifically tested with screen readers to ensure comprehensive accessibility.
@@ -1300,7 +1239,6 @@ export default function HomeScreen() {
               <Text style={detailsModalStyles.statValue}>Home, Navigation</Text>
             </View>
 
-            {/* New section discussing AAA compliance in components */}
             <Text style={[detailsModalStyles.sectionTitle, { marginTop: 16 }]}>AAA Component Considerations</Text>
             <Text style={detailsModalStyles.sectionSubtitle}>
               Components have been enhanced to meet Level AAA criteria through additional accessibility attributes and behaviors.
@@ -1398,7 +1336,6 @@ export default function HomeScreen() {
               <Text style={detailsModalStyles.statValue}>3 identified</Text>
             </View>
 
-            {/* AAA-specific implementation details */}
             <Text style={[detailsModalStyles.sectionTitle, { marginTop: 16 }]}>AAA Implementation Notes</Text>
             <Text style={detailsModalStyles.sectionSubtitle}>
               Specific approaches taken to implement Level AAA criteria in the application.
@@ -1503,7 +1440,6 @@ export default function HomeScreen() {
               <Text style={detailsModalStyles.statValue}>82%</Text>
             </View>
 
-            {/* AAA-specific testing details */}
             <Text style={[detailsModalStyles.sectionTitle, { marginTop: 16 }]}>AAA Testing Protocols</Text>
             <Text style={detailsModalStyles.sectionSubtitle}>
               Specialized tests were designed to verify compliance with Level AAA criteria.
@@ -1673,7 +1609,6 @@ export default function HomeScreen() {
             </View>
           </View>
 
-          {/* AAA Methodology */}
           <Text style={[detailsModalStyles.sectionTitle, { marginTop: 16 }]}>AAA Evaluation Approach</Text>
           <Text style={detailsModalStyles.sectionSubtitle}>
             Special considerations were taken to properly evaluate Level AAA criteria implementation.
@@ -1785,9 +1720,6 @@ export default function HomeScreen() {
     );
   };
 
-  /* -----------------------------------------
-     7. Main render function
-  ----------------------------------------- */
   return (
     <LinearGradient colors={backgroundGradientColors} style={themedStyles.container}>
       <ScrollView
@@ -1795,7 +1727,6 @@ export default function HomeScreen() {
         accessibilityRole="scrollview"
         accessibilityLabel="AccessibleHub Home Screen"
       >
-        {/* HERO SECTION */}
         <View style={themedStyles.heroCard}>
           <Text style={themedStyles.heroTitle} accessibilityRole="header">
             The ultimate accessibility-driven toolkit for developers
@@ -1804,9 +1735,7 @@ export default function HomeScreen() {
             A comprehensive resource for building inclusive React Native applications with verified accessibility standards – explore for more!
           </Text>
 
-          {/* STATS - Clickable */}
           <View style={themedStyles.statsContainer}>
-            {/* COMPONENTS STAT */}
             <View
               style={themedStyles.statCard}
             >
@@ -1816,7 +1745,6 @@ export default function HomeScreen() {
                 accessible
                 accessibilityRole="button"
                 accessibilityLabel={`${accessibilityMetrics.componentCount} components, ${accessibilityMetrics.componentScore}% accessible implementation. Tap to see details.`}
-                accessibilityHint="Shows component accessibility details"
               >
                 <Text style={themedStyles.statNumber} accessibilityElementsHidden>
                   {accessibilityMetrics.componentCount}
@@ -1844,8 +1772,6 @@ export default function HomeScreen() {
             </View>
 
             <View style={themedStyles.statDivider} importantForAccessibility="no" />
-
-            {/* WCAG STAT */}
             <View
               style={themedStyles.statCard}
             >
@@ -1855,7 +1781,6 @@ export default function HomeScreen() {
                 accessible
                 accessibilityRole="button"
                 accessibilityLabel={`${accessibilityMetrics.wcagCompliance}% WCAG 2.2, Level AAA. Tap to see details.`}
-                accessibilityHint="Shows WCAG compliance details"
               >
                 <Text style={themedStyles.statNumber} accessibilityElementsHidden>
                   {accessibilityMetrics.wcagCompliance}%
@@ -1884,7 +1809,6 @@ export default function HomeScreen() {
 
             <View style={themedStyles.statDivider} importantForAccessibility="no" />
 
-            {/* SCREEN READER STAT */}
             <View
               style={themedStyles.statCard}
             >
@@ -1894,7 +1818,6 @@ export default function HomeScreen() {
                 accessible
                 accessibilityRole="button"
                 accessibilityLabel={`${accessibilityMetrics.testingScore}% screen reader test coverage. Tap to see details.`}
-                accessibilityHint="Shows screen reader test details"
               >
                 <Text style={themedStyles.statNumber} accessibilityElementsHidden>
                   {accessibilityMetrics.testingScore}%
@@ -1923,13 +1846,11 @@ export default function HomeScreen() {
           </View>
         </View>
 
-        {/* QUICK START */}
         <TouchableOpacity
           style={themedStyles.quickStartCard}
           onPress={() => router.push('/components')}
           accessibilityRole="button"
           accessibilityLabel="Quick start with component examples"
-          accessibilityHint="Navigate to components section"
         >
           <View style={themedStyles.cardText}>
             <Text style={themedStyles.cardTitle}>Quick Start</Text>
@@ -1946,7 +1867,6 @@ export default function HomeScreen() {
           />
         </TouchableOpacity>
 
-        {/* DEVELOPMENT RESOURCES */}
         <View style={themedStyles.mainContent}>
           <Text style={themedStyles.sectionTitle}>Development Resources</Text>
 
@@ -1982,7 +1902,6 @@ export default function HomeScreen() {
               onPress={() => router.push(feature.route)}
               accessibilityRole="button"
               accessibilityLabel={feature.title}
-              accessibilityHint={feature.hint}
             >
             <View style={themedStyles.featureIconContainer}>
                 <Ionicons
@@ -2005,7 +1924,6 @@ export default function HomeScreen() {
           ))}
         </View>
 
-        {/* COMMUNITY / INSTRUCTION SECTION */}
         <View style={themedStyles.mainContent}>
           <View style={themedStyles.communitySection}>
             <Text style={themedStyles.communitySectionTitle}>
@@ -2020,7 +1938,6 @@ export default function HomeScreen() {
               onPress={() => router.push('/accessibility-instruction')}
               accessibilityRole="button"
               accessibilityLabel="Open accessibility instruction and community"
-              accessibilityHint="Navigate to instructional modules and community resources"
             >
               <Text style={themedStyles.communityButtonText}>
                 Open Instruction

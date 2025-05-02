@@ -87,7 +87,6 @@ export default function AccessibleDialogExample() {
   );
 };`;
 
-  // Copy code snippet
   const handleCopy = async () => {
     try {
       await Clipboard.setString(codeExample);
@@ -169,7 +168,7 @@ export default function AccessibleDialogExample() {
   codeCardContainer: {
     backgroundColor: '#1c1c1e',
     borderRadius: 8,
-    overflow: 'scroll', // allow full code viewing
+    overflow: 'scroll',
     marginTop: 16,
     ...cardShadowStyle,
     borderWidth: isDarkMode ? 1 : 0,
@@ -288,7 +287,6 @@ export default function AccessibleDialogExample() {
     fontSize: textSizes.medium,
     fontWeight: '600',
   },
-  // --- Preserve Success Styles as originally defined ---
   successContainer: {
     backgroundColor: colors.surface,
     borderRadius: 16,
@@ -369,7 +367,6 @@ export default function AccessibleDialogExample() {
         accessibilityRole="scrollview"
         accessibilityLabel="Accessible Dialog Example Screen"
       >
-        {/* HERO CARD */}
         <View style={themedStyles.heroCard}>
           <Text style={themedStyles.heroTitle} accessibilityRole="header">
             Modal Dialogs - Interactive Example
@@ -379,7 +376,6 @@ export default function AccessibleDialogExample() {
           </Text>
         </View>
 
-        {/* INTERACTIVE DEMO SECTION */}
         <View style={themedStyles.section}>
           <Text
             style={[themedStyles.sectionTitle, { color: colors.text }]}
@@ -395,16 +391,12 @@ export default function AccessibleDialogExample() {
               onPress={() => setShowDialog(true)}
               accessibilityRole="button"
               accessibilityLabel="Open example dialog"
-              accessibilityHint="Opens an accessible modal dialog"
             >
               <Text style={themedStyles.demoButtonText}>Open Dialog</Text>
             </TouchableOpacity>
           </View>
         </View>
 
-
-
-        {/* MODAL DIALOG */}
           <Modal
             visible={showDialog}
             transparent
@@ -430,7 +422,6 @@ export default function AccessibleDialogExample() {
                     onPress={handleClose}
                     accessibilityLabel="Close dialog"
                     accessibilityRole="button"
-                    accessibilityHint="Double tap to close this dialog"
                   >
                     <Ionicons
                       name="close"
@@ -460,7 +451,6 @@ export default function AccessibleDialogExample() {
                     onPress={handleClose}
                     accessibilityRole="button"
                     accessibilityLabel="Cancel"
-                    accessibilityHint="Double tap to close dialog without saving changes"
                   >
                     <Text style={themedStyles.dialogSecondaryButtonText}>Cancel</Text>
                   </TouchableOpacity>
@@ -470,7 +460,6 @@ export default function AccessibleDialogExample() {
                     onPress={handleConfirm}
                     accessibilityRole="button"
                     accessibilityLabel="Confirm"
-                    accessibilityHint="Double tap to save changes and close dialog"
                   >
                     <Text style={themedStyles.dialogButtonText}>Confirm</Text>
                   </TouchableOpacity>
@@ -479,7 +468,6 @@ export default function AccessibleDialogExample() {
             </View>
           </Modal>
 
-        {/* SUCCESS FEEDBACK MODAL */}
         <Modal
           visible={showSuccess}
           transparent
@@ -504,7 +492,6 @@ export default function AccessibleDialogExample() {
           </View>
         </Modal>
 
-        {/* IMPLEMENTATION SECTION */}
         <View style={themedStyles.section}>
           <Text style={themedStyles.sectionTitle}>Code Implementation</Text>
           <View style={themedStyles.codeCardContainer} accessible={false}>
@@ -515,7 +502,6 @@ export default function AccessibleDialogExample() {
                 onPress={handleCopy}
                 accessibilityRole="button"
                 accessibilityLabel={copied ? 'Code copied' : 'Copy code'}
-                accessibilityHint="Copies the code example to your clipboard"
               >
                 <Ionicons
                   name={copied ? 'checkmark' : 'copy-outline'}
@@ -542,7 +528,6 @@ export default function AccessibleDialogExample() {
           </View>
         </View>
 
-        {/* ACCESSIBILITY FEATURES SECTION */}
         <View style={themedStyles.featuresSection}>
           <Text style={themedStyles.featuresTitle}>Accessibility Features</Text>
           {[

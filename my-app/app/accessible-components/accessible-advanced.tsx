@@ -5,7 +5,6 @@ import { LinearGradient } from 'expo-linear-gradient';
 import Slider from '@react-native-community/slider';
 import { useTheme } from '../../context/ThemeContext';
 
-// Accessibility features data
 const accessibilityFeatures = [
   {
     icon: 'albums-outline',
@@ -59,7 +58,7 @@ function CodeSnippet({ snippet, label }) {
           onPress={handleCopy}
           accessibilityRole="button"
           accessibilityLabel={copied ? 'Code copied' : 'Copy code example'}
-          accessibilityHint="Copies the code example to your clipboard"
+          accessibilityHint="Tap to copy code example to clipboard"
         >
           <Ionicons
             name={copied ? 'checkmark' : 'copy-outline'}
@@ -92,7 +91,6 @@ export default function AccessibleAdvancedScreen() {
   const progressAnimated = useRef(new Animated.Value(progress)).current;
   const tabs = ['Tab One', 'Tab Two', 'Tab Three'];
 
-  // Animate progress
   useEffect(() => {
     Animated.timing(progressAnimated, {
       toValue: progress,
@@ -264,7 +262,6 @@ export default function AccessibleAdvancedScreen() {
   return (
     <LinearGradient colors={gradientColors} style={themedStyles.container}>
       <ScrollView contentContainerStyle={{ paddingBottom: 24 }} accessibilityRole="scrollview">
-        {/* HERO CARD */}
         <View style={themedStyles.heroCard}>
           <Text style={themedStyles.heroTitle} accessibilityRole="header">
             Advanced Accessible Components
@@ -274,7 +271,6 @@ export default function AccessibleAdvancedScreen() {
           </Text>
         </View>
 
-        {/* TABS & CAROUSELS */}
         <View style={themedStyles.section}>
           <View style={themedStyles.demoCard}>
             <Text style={themedStyles.sectionTitle}>Tabs &amp; Carousels</Text>
@@ -318,7 +314,6 @@ export default function AccessibleAdvancedScreen() {
           </View>
         </View>
 
-        {/* PROGRESS INDICATORS */}
         <View style={themedStyles.section}>
           <View style={themedStyles.demoCard}>
             <Text style={themedStyles.sectionTitle}>Progress Indicators</Text>
@@ -365,7 +360,7 @@ export default function AccessibleAdvancedScreen() {
                 >
                   <Text
                     style={{
-                      color: '#fff',             // always white for contrast
+                      color: '#fff',
                       fontSize: textSizes.medium,
                       fontWeight: '600',
                     }}
@@ -379,7 +374,6 @@ export default function AccessibleAdvancedScreen() {
           </View>
         </View>
 
-        {/* ALERTS & TOASTS */}
         <View style={themedStyles.section}>
           <View style={themedStyles.demoCard}>
             <Text style={themedStyles.sectionTitle}>Alerts &amp; Toasts</Text>
@@ -412,18 +406,15 @@ export default function AccessibleAdvancedScreen() {
           </View>
         </View>
 
-        {/* SLIDERS / RANGE INPUTS - With Accessible Controls */}
         <View style={themedStyles.section}>
           <View style={themedStyles.demoCard}>
             <Text style={themedStyles.sectionTitle}>Sliders &amp; Range Inputs</Text>
 
-            {/* Main accessible container */}
             <View
               accessible={true}
               accessibilityLabel={`Slider control, current value ${sliderValue} percent`}
               style={{ marginVertical: 12 }}
             >
-              {/* Button Controls for TalkBack */}
               <View style={{
                 flexDirection: 'row',
                 justifyContent: 'space-between',
@@ -485,7 +476,6 @@ export default function AccessibleAdvancedScreen() {
                 </TouchableOpacity>
               </View>
 
-              {/* Preset buttons for quick values */}
               <View style={{
                 flexDirection: 'row',
                 justifyContent: 'space-between',
@@ -519,7 +509,6 @@ export default function AccessibleAdvancedScreen() {
                 ))}
               </View>
 
-              {/* Visual Slider (for non-screen reader users) */}
               <Slider
                 value={sliderValue}
                 minimumValue={0}
@@ -544,7 +533,6 @@ export default function AccessibleAdvancedScreen() {
           </View>
         </View>
 
-        {/* ACCESSIBILITY FEATURES */}
         <View style={themedStyles.featuresSection}>
           <Text style={themedStyles.featuresTitle}>Accessibility Features</Text>
           {accessibilityFeatures.map((feature, index) => (
@@ -554,7 +542,6 @@ export default function AccessibleAdvancedScreen() {
                   <Ionicons
                     name={feature.icon}
                     size={24}
-                    // If you want always dark, replace below with color="#000"
                     color={isDarkMode ? '#1a75ff' : colors.primary}
                     accessibilityElementsHidden={true}
                     importantForAccessibility="no-hide-descendants"
@@ -573,14 +560,12 @@ export default function AccessibleAdvancedScreen() {
           ))}
         </View>
 
-        {/* Bottom spacing */}
         <View style={{ height: 48 }} />
       </ScrollView>
     </LinearGradient>
   );
 }
 
-// Code snippets definitions
 const tabsSnippet = `const [selectedTab, setSelectedTab] = useState(0);
 const tabs = ['Tab One', 'Tab Two', 'Tab Three'];
 
@@ -689,9 +674,6 @@ export const options = {
   title: 'Loading & Navigation',
 };
 
-/* -------------------------------------------
-   LOCAL STYLES
---------------------------------------------*/
 const styles = StyleSheet.create({
   snippetContainer: {
     backgroundColor: '#1c1c1e',

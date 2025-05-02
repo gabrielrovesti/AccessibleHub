@@ -126,7 +126,6 @@ export default function ScreenReaderSupportScreen() {
     elevation: 3,
   };
 
-  // 3) Themed + local styles
   const themedStyles = {
     container: {
       flex: 1,
@@ -164,7 +163,6 @@ export default function ScreenReaderSupportScreen() {
       flexDirection: 'row',
       gap: 12,
     },
-    // Platform toggle buttons
     platformButton: {
       flex: 1,
       flexDirection: 'row',
@@ -308,7 +306,6 @@ export default function ScreenReaderSupportScreen() {
         accessibilityRole="scrollview"
         accessibilityLabel="Screen Reader Support Screen"
       >
-        {/* HERO CARD */}
         <View style={themedStyles.heroCard}>
           <Text style={themedStyles.heroTitle} accessibilityRole="header">
             Screen Reader Support
@@ -318,7 +315,6 @@ export default function ScreenReaderSupportScreen() {
           </Text>
         </View>
 
-        {/* PLATFORM TOGGLES */}
         <View style={themedStyles.section}>
           <View style={themedStyles.platformToggles}>
             <TouchableOpacity
@@ -378,7 +374,6 @@ export default function ScreenReaderSupportScreen() {
             </TouchableOpacity>
           </View>
 
-          {/* GESTURE GUIDE */}
           {activeSection && (
             <View style={themedStyles.gestureGuideContainer}>
               <Text style={themedStyles.gestureTitle}>Essential Gestures</Text>
@@ -406,13 +401,11 @@ export default function ScreenReaderSupportScreen() {
           )}
         </View>
 
-        {/* IMPLEMENTATION GUIDE */}
         <View style={themedStyles.section}>
           <Text style={[themedStyles.gestureTitle, { marginBottom: 8 }]}>
             Implementation Guide
           </Text>
 
-          {/* Card 1: Semantic Structure */}
           <View style={themedStyles.guideCard}>
             <View style={themedStyles.guideHeader}>
               <Ionicons name="code-working-outline" size={24} color={colors.primary} accessibilityElementsHidden={true} importantForAccessibility="no-hide-descendants"/>
@@ -452,7 +445,6 @@ export default function ScreenReaderSupportScreen() {
             </View>
           </View>
 
-          {/* Card 2: Content Descriptions */}
           <View style={themedStyles.guideCard}>
             <View style={themedStyles.guideHeader}>
               <Ionicons name="text-outline" size={24} color={colors.primary} accessibilityElementsHidden={true} importantForAccessibility="no-hide-descendants"/>
@@ -490,7 +482,6 @@ export default function ScreenReaderSupportScreen() {
             </View>
           </View>
 
-          {/* Card 3: Interactive Elements */}
           <View style={themedStyles.guideCard}>
             <View style={themedStyles.guideHeader}>
               <Ionicons name="options-outline" size={24} color={colors.primary} accessibilityElementsHidden={true} importantForAccessibility="no-hide-descendants"/>
@@ -531,7 +522,6 @@ export default function ScreenReaderSupportScreen() {
           </View>
         </View>
 
-        {/* TESTING CHECKLIST */}
         <View style={themedStyles.section}>
           <Text style={[themedStyles.gestureTitle, { marginBottom: 8 }]}>
             Testing Checklist

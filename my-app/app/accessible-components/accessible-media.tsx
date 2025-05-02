@@ -41,14 +41,12 @@ export default function AccessibleMediaExample() {
     },
   ];
 
-  // Announce alt text toggle changes
   useEffect(() => {
     if (showAltText) {
       AccessibilityInfo.announceForAccessibility(`Showing alternative text for image ${currentImage}`);
     }
   }, [showAltText, currentImage]);
 
-  // Example code snippet
   const codeExample = `<Image
   source={require('./path/to/image.png')}
   accessibilityLabel="Detailed description of the image content"
@@ -61,7 +59,6 @@ export default function AccessibleMediaExample() {
   }}
 />`;
 
-  // Copy code to clipboard
   const handleCopy = async () => {
     try {
       await Clipboard.setString(codeExample);
@@ -74,7 +71,6 @@ export default function AccessibleMediaExample() {
     }
   };
 
-  // Common elevated card shadow style
   const cardShadowStyle = {
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 3 },
@@ -83,12 +79,10 @@ export default function AccessibleMediaExample() {
     elevation: 3,
   };
 
-  // Background gradient based on dark/light mode
   const gradientColors = isDarkMode
     ? [colors.background, '#2c2c2e']
     : ['#e2e2e2', colors.background];
 
-  // Themed + local styles
   const themedStyles = {
     container: {
       flex: 1,
@@ -274,7 +268,6 @@ featureDescription: {
 
   };
 
-  // Navigate to the previous image
   const goPrevImage = () => {
     const newIndex = Math.max(1, currentImage - 1);
     setCurrentImage(newIndex);
@@ -283,7 +276,6 @@ featureDescription: {
     );
   };
 
-  // Navigate to the next image
   const goNextImage = () => {
     const newIndex = Math.min(images.length, currentImage + 1);
     setCurrentImage(newIndex);
@@ -292,7 +284,6 @@ featureDescription: {
     );
   };
 
-  // Toggle alt text
   const toggleAltText = () => {
     setShowAltText(!showAltText);
     AccessibilityInfo.announceForAccessibility(
@@ -307,7 +298,6 @@ featureDescription: {
         accessibilityRole="scrollview"
         accessibilityLabel="Accessible Media Example Screen"
       >
-        {/* HERO CARD */}
         <View style={themedStyles.heroCard}>
           <Text style={themedStyles.heroTitle} accessibilityRole="header">
             Media Content - Interactive Example
@@ -317,7 +307,6 @@ featureDescription: {
           </Text>
         </View>
 
-        {/* INTERACTIVE DEMO SECTION */}
         <View style={themedStyles.section}>
          <Text style={themedStyles.sectionTitle}
          accessibilityRole="header"
@@ -341,7 +330,6 @@ featureDescription: {
                 disabled={currentImage === 1}
                 accessibilityRole="button"
                 accessibilityLabel="Previous image"
-                accessibilityHint="Changes to the previous image in the gallery"
                 accessibilityState={{ disabled: currentImage === 1 }}
               >
                 <Ionicons
@@ -356,7 +344,6 @@ featureDescription: {
                 onPress={toggleAltText}
                 accessibilityRole="button"
                 accessibilityLabel={showAltText ? "Hide alternative text" : "Show alternative text"}
-                accessibilityHint="Toggles the alternative text description for the current image"
               >
                 <Text style={{ color: colors.background, fontWeight: '600' }}>
                   {showAltText ? "Hide Alt Text" : "Show Alt Text"}
@@ -369,7 +356,6 @@ featureDescription: {
                 disabled={currentImage === images.length}
                 accessibilityRole="button"
                 accessibilityLabel="Next image"
-                accessibilityHint="Changes to the next image in the gallery"
                 accessibilityState={{ disabled: currentImage === images.length }}
               >
                 <Ionicons
@@ -394,7 +380,6 @@ featureDescription: {
           </View>
         </View>
 
-        {/* MEDIA IMPLEMENTATION SECTION */}
         <View style={themedStyles.section}>
           <Text style={themedStyles.sectionTitle}>Code Implementation</Text>
           <View style={themedStyles.codeCardContainer} accessible={true} accessibilityRole="text">
@@ -405,7 +390,6 @@ featureDescription: {
                 onPress={handleCopy}
                 accessibilityRole="button"
                 accessibilityLabel={copied ? "Code copied" : "Copy code"}
-                accessibilityHint="Copies the media code example to your clipboard"
               >
                 <Ionicons
                   name={copied ? "checkmark" : "copy-outline"}
@@ -431,8 +415,6 @@ featureDescription: {
           </View>
         </View>
 
-
-        {/* ACCESSIBILITY FEATURES SECTION */}
         <View style={themedStyles.featuresSection}>
           <Text style={themedStyles.featuresTitle}>Accessibility Features</Text>
           {[

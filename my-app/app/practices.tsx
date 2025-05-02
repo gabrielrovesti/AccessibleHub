@@ -152,7 +152,6 @@ export default function BestPracticesScreen() {
         accessibilityRole="scrollview"
         accessibilityLabel="Mobile Accessibility Best Practices Screen"
       >
-        {/* HERO CARD (Title + Subtitle) */}
         <View style={themedStyles.heroCard}>
           <Text style={themedStyles.heroTitle} accessibilityRole="header">
             Mobile Accessibility Best Practices
@@ -162,9 +161,7 @@ export default function BestPracticesScreen() {
           </Text>
         </View>
 
-        {/* MAIN SECTION: PRACTICE CARDS */}
         <View style={themedStyles.section}>
-          {/* 1) WCAG Guidelines */}
           <TouchableOpacity
             style={themedStyles.card}
             onPress={() => {
@@ -301,7 +298,6 @@ export default function BestPracticesScreen() {
             />
           </TouchableOpacity>
 
-          {/* 3) Gesture Tutorial */}
           <TouchableOpacity
             style={themedStyles.card}
             onPress={() => {
@@ -369,7 +365,6 @@ export default function BestPracticesScreen() {
             />
           </TouchableOpacity>
 
-          {/* 4) Screen Reader Support */}
           <TouchableOpacity
             style={themedStyles.card}
             onPress={() => {
@@ -437,7 +432,6 @@ export default function BestPracticesScreen() {
             />
           </TouchableOpacity>
 
-          {/* 5) Logical Focus Order */}
           <TouchableOpacity
             style={themedStyles.card}
             onPress={() => {

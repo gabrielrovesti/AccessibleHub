@@ -23,7 +23,6 @@ export default function GesturesTutorialScreen() {
     }
   };
 
-  // Check if a screen reader is enabled
   const [screenReaderEnabled, setScreenReaderEnabled] = useState(false);
   useEffect(() => {
     AccessibilityInfo.isScreenReaderEnabled().then((enabled) => {
@@ -35,7 +34,6 @@ export default function GesturesTutorialScreen() {
     return () => listener.remove();
   }, []);
 
-  // Single tap handler
   const handleSingleTap = () => {
     setShowSingleTapSuccess(true);
     AccessibilityInfo.announceForAccessibility('Single tap gesture completed successfully');
@@ -55,13 +53,12 @@ const handleDoubleTap = () => {
     setShowDoubleTapSuccess(true);
     AccessibilityInfo.announceForAccessibility('Double tap gesture completed successfully');
     setTimeout(() => setShowDoubleTapSuccess(false), 1500);
-    setLastTap(0); // reset
+    setLastTap(0);
   } else {
     setLastTap(now);
   }
 };
 
-// Long press handler modificato
 const handleLongPress = () => {
   setShowLongPressSuccess(true);
   const message = screenReaderEnabled
@@ -71,7 +68,6 @@ const handleLongPress = () => {
   setTimeout(() => setShowLongPressSuccess(false), 1500);
 };
 
-  // Theming and styling
   const gradientColors = isDarkMode
     ? [colors.background, '#2c2c2e']
     : ['#e2e2e2', colors.background];
@@ -164,7 +160,6 @@ const handleLongPress = () => {
         accessibilityRole="scrollview"
         accessibilityLabel="Gestures Tutorial Screen"
       >
-        {/* HERO CARD */}
         <View style={themedStyles.heroCard}>
           <Text style={themedStyles.heroTitle} accessibilityRole="header">
             Gestures Tutorial
@@ -174,9 +169,7 @@ const handleLongPress = () => {
           </Text>
         </View>
 
-        {/* SECTION */}
         <View style={themedStyles.section}>
-          {/* Single Tap Practice */}
           <View style={themedStyles.practiceCard}>
             <Text style={themedStyles.practiceTitle}>Single Tap</Text>
             <TouchableOpacity
@@ -196,7 +189,6 @@ const handleLongPress = () => {
             </Text>
           </View>
 
-          {/* Double Tap Practice */}
           <View style={themedStyles.practiceCard}>
             <Text style={themedStyles.practiceTitle}>Double Tap</Text>
             <TouchableOpacity
@@ -228,7 +220,6 @@ const handleLongPress = () => {
             </Text>
           </View>
 
-          {/* Long Press Practice */}
           <View style={themedStyles.practiceCard}>
             <Text style={themedStyles.practiceTitle}>Long Press</Text>
             <TouchableOpacity

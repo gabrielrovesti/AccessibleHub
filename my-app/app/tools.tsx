@@ -4,9 +4,6 @@ import { Ionicons } from '@expo/vector-icons';
 import { useTheme } from '../context/ThemeContext';
 import { LinearGradient } from 'expo-linear-gradient';
 
-/**
- * Map of official documentation links for each tool.
- */
 const TOOL_LINKS: Record<string, string> = {
   talkback: 'https://support.google.com/accessibility/android/answer/6283677',
   voiceover: 'https://support.apple.com/guide/iphone/turn-on-and-practice-voiceover-iph3e2e415f/ios',
@@ -14,12 +11,9 @@ const TOOL_LINKS: Record<string, string> = {
   contrast: 'https://webaim.org/resources/contrastchecker/',
   testing: 'https://developer.android.com/guide/topics/ui/accessibility/testing',
   scanner: 'https://support.google.com/accessibility/android/answer/7101858',
-  linter: 'https://github.com/microsoft/accessibility-insights-web', // example link
+  linter: 'https://github.com/microsoft/accessibility-insights-web',
 };
 
-/**
- * Data for each tool, enriched with a brief "Practical Usage" explanation.
- */
 const TOOLS_DATA = [
   {
     id: 'talkback',
@@ -139,7 +133,6 @@ export default function TestingToolsScreen() {
     ? [colors.background, '#2c2c2e']
     : ['#e2e2e2', colors.background];
 
-  // Group tools by their section (e.g., Screen Readers, Development Tools, Testing Checklist)
   const groupedTools = TOOLS_DATA.reduce((acc, tool) => {
     if (!acc[tool.section]) {
       acc[tool.section] = [];
@@ -148,9 +141,6 @@ export default function TestingToolsScreen() {
     return acc;
   }, {} as Record<string, typeof TOOLS_DATA>);
 
-  /**
-   * Handle opening the official documentation link.
-   */
   const handleOpenLink = async (toolId: string, toolTitle: string) => {
     const url = TOOL_LINKS[toolId];
     if (url && (await Linking.canOpenURL(url))) {
@@ -163,16 +153,10 @@ export default function TestingToolsScreen() {
     }
   };
 
-  /**
-   * Toggle the expansion state of a card.
-   */
   const toggleExpand = (toolId: string) => {
     setExpanded((prev) => (prev === toolId ? null : toolId));
   };
 
-  /**
-   * Render a single tool card.
-   */
   const renderToolCard = (tool: any) => {
     const isOpen = expanded === tool.id;
 
@@ -213,7 +197,6 @@ export default function TestingToolsScreen() {
                 </Text>
               ))}
             </View>
-            {/* Practical Usage Section */}
             <View style={styles.practicalSection}>
               <Text style={[styles.practicalHeader, { color: colors.primary, fontSize: textSizes.small + 1 }]}>
                 Practical Usage:
@@ -240,9 +223,6 @@ export default function TestingToolsScreen() {
     );
   };
 
-  /**
-   * Render each section (e.g., Screen Readers, Development Tools, Testing Checklist).
-   */
   const renderSection = (sectionTitle: string, toolsList: any[]) => {
     return (
       <View key={sectionTitle} style={styles.section}>
@@ -259,7 +239,6 @@ export default function TestingToolsScreen() {
   return (
     <LinearGradient colors={gradientColors} style={{ flex: 1 }}>
       <ScrollView contentContainerStyle={styles.scrollContainer} accessibilityRole="scrollview" accessibilityLabel="Mobile Accessibility Tools Screen">
-        {/* Introductory Hero Card */}
         <View style={[styles.heroCard, { backgroundColor: colors.surface, borderColor: isDarkMode ? colors.border : 'transparent', shadowColor: '#000' }]}>
           <Text style={[styles.heroTitle, { color: colors.text, fontSize: textSizes.xlarge }]} accessibilityRole="header">
             Mobile Accessibility Tools
@@ -269,7 +248,6 @@ export default function TestingToolsScreen() {
           </Text>
         </View>
 
-        {/* Render grouped sections */}
         {Object.entries(groupedTools).map(([section, items]) => renderSection(section, items))}
       </ScrollView>
     </LinearGradient>

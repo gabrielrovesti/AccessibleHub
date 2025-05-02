@@ -5,14 +5,6 @@ import { useTheme } from '../context/ThemeContext';
 import { LinearGradient } from 'expo-linear-gradient';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-/* ----------------------------------------------------------------------
-  1) FORMAL SYSTEM FOR FRAMEWORK EVALUATION
----------------------------------------------------------------------- */
-
-/**
- * Methodological information for framework comparison
- * Used to document the scientific approach to evaluation
- */
 const methodologyInfo = {
   version: "1.1.0",
   lastUpdated: "2025-03-15",
@@ -50,10 +42,6 @@ const methodologyInfo = {
   }
 };
 
-/**
- * Academic references and official documentation
- * Used to support evaluations with verifiable sources
- */
 const dataSources = {
   "perinello-gaggi-2024": {
     title: "Accessibility of Mobile User Interfaces using Flutter and React Native",
@@ -91,10 +79,6 @@ const dataSources = {
   }
 };
 
-/**
- * Framework data with verified metrics and citations
- * Each aspect is supported by sources and justifications
- */
 const frameworkData = {
   'react-native': {
     name: 'React Native',
@@ -273,62 +257,33 @@ const frameworkData = {
   }
 };
 
-/* --------------------------------------------
-   2) FORMAL METRICS CALCULATION
--------------------------------------------- */
-/**
- * Calculates accessibility metrics based on WCAG criteria implementation
- * and empirical testing with screen readers.
- * Implements the methodology from Perinello & Gaggi (2024)
- */
 function calculateMetrics(framework) {
   if (!framework) return { accessibility: 0, performance: 0 };
 
-  // Accessibility Score - weighted based on user research and impact
-  // Each component is weighted according to its importance for accessibility
   const a11y = framework.accessibility;
-
-  // Screen Reader Compatibility (30%) - Critical for blind users
-  // Based on VoiceOver and TalkBack empirical testing
   const screenReaders = a11y.screenReaders?.rating ?? 0;
-
-  // Semantic Properties Support (30%) - Essential for content understanding
-  // Based on availability and implementation of semantic attributes
   const semantics = a11y.semantics?.rating ?? 0;
-
-  // Gesture Support (20%) - Important for alternative interactions
-  // Based on touch, swipe and custom gesture handler support
   const gestures = a11y.gestures?.rating ?? 0;
-
-  // Focus Management (20%) - Essential for keyboard navigation
-  // Based on focus traversal, trapping and navigation support
   const focus = a11y.focusManagement?.rating ?? 0;
 
-  // Weighted calculation of overall accessibility score (0-5 scale)
   const accessibilityScore = Number(
     (
-      screenReaders * 0.3 +  // Critical for screen reader users
-      semantics * 0.3 +      // Essential for all AT compatibility
-      gestures * 0.2 +       // Important for touch-based interactions
-      focus * 0.2            // Crucial for keyboard/switch users
+      screenReaders * 0.3 +
+      semantics * 0.3 +
+      gestures * 0.2 +
+      focus * 0.2
     ).toFixed(1)
   );
 
-  // Implementation Complexity Score - normalized to 0-5 scale
-  // (lower value is better = less code required)
   const impl = a11y.implementation;
   const headingComplexity = impl?.headingElements?.linesOfCode ?? 0;
   const languageComplexity = impl?.languageDeclaration?.linesOfCode ?? 0;
   const abbreviationComplexity = impl?.textAbbreviations?.linesOfCode ?? 0;
 
-  // Total lines of code needed for accessibility implementation
   const totalLinesOfCode = headingComplexity + languageComplexity + abbreviationComplexity;
 
-  // Scale from 0-5 where lower value is better (less code is better)
-  // Expected max LOC around 50, so normalized to 0-5 scale where 5 is better (less code)
   const implementationScore = Math.max(0, Math.min(5, 5 - (totalLinesOfCode / 10)));
 
-  // Performance Score - normalized from benchmark data
   const perf = framework.performance;
   const startupTimeStr = perf.startupTime;
   const startupTimeNum = parseFloat(startupTimeStr) || 0;
@@ -342,39 +297,30 @@ function calculateMetrics(framework) {
   const bundleSizeRange = perf.bundleSize.split('-');
   const bundleSizeMin = parseFloat(bundleSizeRange[0]) || 0;
 
-  // Performance score calculation with weighted factors
   const performanceScore = Number(
     (
-      // Startup time (30%) - faster is better
       (5 - startupTimeNum * 2) * 0.3 +
-      // Memory usage (30%) - less is better
       memoryScore * 0.3 +
-      // Bundle size (40%) - smaller is better
       (5 - bundleSizeMin / 2) * 0.4
     ).toFixed(1)
   );
 
-  // Qualitative Complexity Assessment
-  // Maps complexity ratings to numeric scores
   const implementationScores = [
     impl?.headingElements?.implementationComplexity,
     impl?.languageDeclaration?.implementationComplexity,
     impl?.textAbbreviations?.implementationComplexity
   ];
 
-  // Converts qualitative complexity to quantitative scores (5=best, 1=worst)
   const complexityMap = {
-    "Low": 5,    // Easy implementation
-    "Medium": 3, // Moderate complexity
-    "High": 1    // Complex implementation
+    "Low": 5,
+    "Medium": 3,
+    "High": 1
   };
 
-  // Calculate average complexity score
   const avgComplexity = implementationScores
     .map(complexity => complexityMap[complexity] || 0)
     .reduce((sum, score) => sum + score, 0) / implementationScores.length;
 
-  // Limit to [0, 5] to ensure valid scores
   return {
     accessibility: Math.max(0, Math.min(5, accessibilityScore)),
     performance: Math.max(0, Math.min(5, performanceScore)),
@@ -383,18 +329,13 @@ function calculateMetrics(framework) {
   };
 }
 
-/* --------------------------------------------
-   3) COMPARISON DATA GENERATION
--------------------------------------------- */
 function generateComparisonTable() {
   const reactNativeData = frameworkData['react-native'];
   const flutterData = frameworkData['flutter'];
 
-  // Calculate metrics
   const reactNativeMetrics = calculateMetrics(reactNativeData);
   const flutterMetrics = calculateMetrics(flutterData);
 
-  // Detailed comparison for accessibility features
   const accessibilityComparison = {
     headingElements: {
       title: "Heading Elements",
@@ -446,7 +387,6 @@ function generateComparisonTable() {
     }
   };
 
-  // Generate summary statistics
   const summaryData = {
     totalLOC: {
       reactNative: Object.values(accessibilityComparison)
@@ -476,7 +416,6 @@ function generateComparisonTable() {
     }
   };
 
-  // Add details for debugging and deeper analysis
   const detailedAnalysis = {
     reactNative: {
       screenReader: reactNativeData.accessibility.screenReaders,
@@ -505,30 +444,23 @@ function generateComparisonTable() {
   };
 }
 
-/* --------------------------------------------
-   4) FRAMEWORK COMPARISON COMPONENT
--------------------------------------------- */
 export default function FrameworkComparisonScreen() {
   const [selectedCategory, setSelectedCategory] = useState('overview');
   const [selectedFramework, setSelectedFramework] = useState('react-native');
-  const [activeStat, setActiveStat] = useState(null); // 'language', 'learning', 'hotReload', etc.
-  const [activeBannerTab, setActiveBannerTab] = useState('overview'); // 'overview', 'calculation', 'references'
+  const [activeStat, setActiveStat] = useState(null);
+  const [activeBannerTab, setActiveBannerTab] = useState('overview');
 
-  // State for detail modal
   const [detailsVisible, setDetailsVisible] = useState(false);
-  const [detailType, setDetailType] = useState(null); // 'methodology', 'implementation', 'references'
+  const [detailType, setDetailType] = useState(null);
   const [activeDetailTab, setActiveDetailTab] = useState('overview');
 
-  // State for widget info modal
   const [widgetInfoVisible, setWidgetInfoVisible] = useState(false);
-  const [activeWidget, setActiveWidget] = useState(null); // 'language', 'learning', 'accessibility', etc.
+  const [activeWidget, setActiveWidget] = useState(null);
 
   const { colors, textSizes, isDarkMode } = useTheme();
 
-  // Generate comparison data
   const comparisonData = generateComparisonTable();
 
-  // Display categories
   const categories = [
     { id: 'overview', label: 'Overview', icon: 'information-circle' },
     { id: 'accessibility', label: 'Accessibility', icon: 'eye' },
@@ -548,7 +480,6 @@ export default function FrameworkComparisonScreen() {
     );
   }, [selectedFramework, selectedCategory]);
 
-  // Function to handle widget click
   const handleWidgetClick = (widgetType) => {
     if (activeWidget === widgetType && widgetInfoVisible) {
       setWidgetInfoVisible(false);
@@ -578,9 +509,6 @@ export default function FrameworkComparisonScreen() {
     setDetailsVisible(true);
   };
 
-  /*
-   * 5) Themed + local styles
-   */
   const gradientColors = isDarkMode
     ? [colors.background, '#2c2c2e']
     : ['#e2e2e2', colors.background];
@@ -1409,7 +1337,6 @@ export default function FrameworkComparisonScreen() {
     }
   };
 
-  // Update contrast for dark mode
   if (isDarkMode) {
     themedStyles.statValue = {
       ...themedStyles.statValue,
@@ -1430,9 +1357,6 @@ export default function FrameworkComparisonScreen() {
     };
   }
 
-  /* --------------------------------------------
-     5.1) RENDER METHODOLOGY BANNER CONTENT
-  -------------------------------------------- */
   const renderBannerContent = () => {
     if (activeBannerTab === 'overview') {
       if (activeWidget === 'language') {
@@ -1538,7 +1462,6 @@ export default function FrameworkComparisonScreen() {
         );
       }
     } else if (activeBannerTab === 'calculation') {
-      // Calculation tab content
       if (activeWidget === 'accessibility') {
         return (
           <View>
@@ -1598,7 +1521,6 @@ export default function FrameworkComparisonScreen() {
         );
       }
     } else {
-      // References tab
       return (
         <View>
           <Text style={themedStyles.bannerSubtext}>Key References</Text>
@@ -1619,9 +1541,6 @@ export default function FrameworkComparisonScreen() {
     return null;
   };
 
-  /* --------------------------------------------
-     6) RENDER DETAILS MODAL
-  -------------------------------------------- */
   const renderDetailsModal = () => {
     const getModalTitle = () => {
       switch (detailType) {
@@ -1636,7 +1555,6 @@ export default function FrameworkComparisonScreen() {
       }
     };
 
-    // Content based on active tab
     const renderTabContent = () => {
       switch (activeDetailTab) {
         case 'overview':
@@ -1650,7 +1568,6 @@ export default function FrameworkComparisonScreen() {
       }
     };
 
-    // Overview tab
     const renderOverviewTab = () => {
       if (detailType === 'methodology') {
         return (
@@ -1768,7 +1685,6 @@ export default function FrameworkComparisonScreen() {
       return null;
     };
 
-    // Details tab
     const renderDetailsTab = () => {
       if (detailType === 'methodology') {
         return (
@@ -1883,7 +1799,6 @@ export default function FrameworkComparisonScreen() {
       return null;
     };
 
-    // References tab
     const renderReferencesTab = () => {
       return (
         <View style={themedStyles.detailSection}>
@@ -2034,7 +1949,6 @@ export default function FrameworkComparisonScreen() {
                 }}
                 accessibilityLabel="Close information dialog"
                 accessibilityRole="button"
-                accessibilityHint="Closes the current information dialog"
               >
                 <Ionicons name="close" size={24} color={colors.text} />
               </TouchableOpacity>
@@ -2092,9 +2006,6 @@ export default function FrameworkComparisonScreen() {
     );
   };
 
-  /* --------------------------------------------
-     8) RENDER RATING BAR
-  -------------------------------------------- */
 const renderRatingBar = (rating, label = '') => {
   const numericRating = Number(rating) || 0;
 
@@ -2126,9 +2037,6 @@ const renderRatingBar = (rating, label = '') => {
   );
 };
 
-  /* --------------------------------------------
-     9) HANDLERS
-  -------------------------------------------- */
   const handleCategoryChange = (catId) => {
     setSelectedCategory(catId);
     const fw = frameworkData[selectedFramework];
@@ -2202,7 +2110,6 @@ const renderRatingBar = (rating, label = '') => {
             accessibilityRole="tab"
             accessibilityState={{ selected: active }}
             accessibilityLabel={`${cat.label} tab`}
-            accessibilityHint={`Shows ${cat.label.toLowerCase()} information`}
           >
             <Ionicons
               name={cat.icon}
@@ -2225,14 +2132,10 @@ const renderRatingBar = (rating, label = '') => {
     </ScrollView>
   );
 
-  /*
-   * 10A) Overview Section
-   */
   const renderOverviewSection = () => {
     const fw = frameworkData[selectedFramework];
     return (
       <View style={themedStyles.section}>
-        {/* Info Card */}
         <View style={themedStyles.infoCard}>
           <Text style={themedStyles.frameworkName}>{fw.name}</Text>
           <Text style={themedStyles.companyName}>by {fw.company}</Text>
@@ -2240,7 +2143,6 @@ const renderRatingBar = (rating, label = '') => {
           <Text style={themedStyles.description}>{fw.description}</Text>
         </View>
 
-        {/* Quick Stats with methodology inline banners */}
         <View style={themedStyles.quickStats}>
           <TouchableOpacity
             style={themedStyles.statItem}
@@ -2318,9 +2220,6 @@ const renderRatingBar = (rating, label = '') => {
     );
   };
 
-  /*
-   * 10B) Accessibility Section
-   */
 const renderAccessibilitySection = () => {
   const fw = frameworkData[selectedFramework];
   const sr = fw.accessibility.screenReaders;
@@ -2333,7 +2232,6 @@ const renderAccessibilitySection = () => {
 
   return (
     <View style={themedStyles.section}>
-      {/* Screen Reader Support */}
       <TouchableOpacity
         style={themedStyles.accessibilityCard}
         onPress={() => handleWidgetClick('accessibility')}
@@ -2378,7 +2276,6 @@ const renderAccessibilitySection = () => {
         />
       </TouchableOpacity>
 
-      {/* Semantic Support */}
       <TouchableOpacity
         style={themedStyles.accessibilityCard}
         onPress={() => handleWidgetClick('implementation')}
@@ -2416,7 +2313,6 @@ const renderAccessibilitySection = () => {
         />
       </TouchableOpacity>
 
-      {/* Focus Management section */}
       <TouchableOpacity
         style={themedStyles.accessibilityCard}
         onPress={() => handleWidgetClick('implementation')}
@@ -2457,20 +2353,15 @@ const renderAccessibilitySection = () => {
   );
 };
 
-  /*
-   * 10C) Implementation Section - Features specific implementation details for the selected framework
-   */
   const renderImplementationSection = () => {
     const fw = frameworkData[selectedFramework];
     const implementation = fw.accessibility.implementation;
     const metrics = calculateMetrics(fw);
 
-    // Get framework-specific data
     const frameworkImplementationDetails = selectedFramework === 'react-native'
       ? comparisonData.accessibilityComparison
       : comparisonData.accessibilityComparison;
 
-    // Helper function to get complexity class
     const getComplexityClass = (complexity) => {
       switch(complexity) {
         case 'Low': return themedStyles.complexityLow;
@@ -2480,7 +2371,6 @@ const renderAccessibilitySection = () => {
       }
     };
 
-    // Generate code examples based on selected framework
     const getCodeExample = (feature) => {
       if (selectedFramework === 'react-native') {
         switch(feature) {
@@ -2514,7 +2404,6 @@ const renderAccessibilitySection = () => {
           Analysis of accessibility implementation requirements for {fw.name}
         </Text>
 
-        {/* Overview Card */}
         <TouchableOpacity
           style={themedStyles.summaryCard}
           onPress={() => handleWidgetClick('implementationDetail')}
@@ -2556,7 +2445,6 @@ const renderAccessibilitySection = () => {
           </View>
         </TouchableOpacity>
 
-        {/* Implementation Features Details */}
         <View style={themedStyles.implementationFeature}>
           <View style={themedStyles.implementationFeatureHeader}>
             <Text style={themedStyles.implementationFeatureTitle} accessibilityRole="header">Heading Elements</Text>
@@ -2697,7 +2585,6 @@ const renderAccessibilitySection = () => {
             onPress={() => showDetails('references')}
             accessibilityRole="button"
             accessibilityLabel="View reference details"
-            accessibilityHint="Opens a modal with academic references"
           >
             <Text style={themedStyles.sourceText}>
               Source: Perinello & Gaggi (2024), CCNC
@@ -2716,9 +2603,6 @@ const renderAccessibilitySection = () => {
     );
   };
 
-  /*
-   * 10D) Methodology Section
-   */
   const renderMethodologySection = () => {
     return (
       <View style={themedStyles.section}>
@@ -2732,7 +2616,6 @@ const renderAccessibilitySection = () => {
           onPress={() => showDetails('methodology')}
           accessibilityRole="button"
           accessibilityLabel="Accessibility Testing Methodology. Tap for more details."
-          accessibilityHint="Opens a modal with detailed methodology information"
         >
           <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
             <Text style={themedStyles.methodologyTitle} accessibilityRole="header">Accessibility Testing Methodology</Text>
@@ -2759,7 +2642,6 @@ const renderAccessibilitySection = () => {
           onPress={() => showDetails('implementation')}
           accessibilityRole="button"
           accessibilityLabel="Implementation Complexity Analysis. Tap for more details."
-          accessibilityHint="Opens a modal with implementation complexity details"
         >
           <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
             <Text style={themedStyles.methodologyTitle} accessibilityRole="header">Implementation Complexity Analysis</Text>
@@ -2785,7 +2667,6 @@ const renderAccessibilitySection = () => {
           onPress={() => showDetails('references')}
           accessibilityRole="button"
           accessibilityLabel="Academic References. Tap to view references."
-          accessibilityHint="Opens a modal with academic references"
         >
           <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
             <Text style={themedStyles.methodologyTitle} accessibilityRole="header">Academic References</Text>
@@ -2808,9 +2689,6 @@ const renderAccessibilitySection = () => {
     );
   };
 
-  /*
-   * 11) MAIN CONTENT SWITCH
-   */
   const renderContent = () => {
     switch (selectedCategory) {
       case 'overview':
@@ -2834,7 +2712,6 @@ const renderAccessibilitySection = () => {
           accessibilityRole="scrollview"
           accessibilityLabel="Framework Comparison Screen"
         >
-          {/* HERO CARD */}
           <View style={themedStyles.heroCard}>
             <Text style={themedStyles.heroTitle} accessibilityRole="header">
               Framework Comparison
@@ -2843,32 +2720,19 @@ const renderAccessibilitySection = () => {
               Evidence-based comparison of accessibility features in React Native and Flutter
             </Text>
           </View>
-
-          {/* Framework Selection (React Native, Flutter) */}
           {renderFrameworkSelection()}
-
-          {/* Category Tabs (Overview, Accessibility, Implementation, Methodology) */}
           <View style={themedStyles.categoryTabsContainer}>
             {renderCategoryTabs()}
           </View>
-
-          {/* Main Content based on selectedCategory */}
           {renderContent()}
         </ScrollView>
-
-        {/* Modal for detailed information */}
         {renderDetailsModal()}
-
-        {/* Modal for widget information */}
         {renderWidgetInfoModal()}
       </LinearGradient>
     </SafeAreaView>
   );
 }
 
-/* --------------------------------------------
-   12) BASE STYLES
--------------------------------------------- */
 const styles = StyleSheet.create({
   container: {
     flex: 1,

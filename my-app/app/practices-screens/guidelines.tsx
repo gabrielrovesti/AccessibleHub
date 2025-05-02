@@ -58,9 +58,6 @@ export default function WCAGGuidelinesScreen() {
     ? [colors.background, '#2c2c2e']
     : ['#e2e2e2', colors.background];
 
-  /* ---------------------------------------
-     Themed + local styles
-  ----------------------------------------*/
   const themedStyles = {
     container: {
       flex: 1,
@@ -95,7 +92,6 @@ export default function WCAGGuidelinesScreen() {
       padding: 16,
       gap: 16,
     },
-    // Elevated card for each WCAG guideline
     guidelineCard: {
       backgroundColor: colors.surface,
       borderRadius: 16,
@@ -120,7 +116,7 @@ export default function WCAGGuidelinesScreen() {
       borderRadius: 12,
       alignItems: 'center',
       justifyContent: 'center',
-      backgroundColor: '#E8F1FF', // Light highlight for icons
+      backgroundColor: '#E8F1FF',
     },
     cardTitle: {
       color: colors.text,
@@ -160,7 +156,6 @@ export default function WCAGGuidelinesScreen() {
         accessibilityRole="scrollview"
         accessibilityLabel="WCAG Guidelines Screen"
       >
-        {/* HERO CARD */}
         <View style={themedStyles.heroCard}>
           <Text style={themedStyles.heroTitle} accessibilityRole="header">
             WCAG 2.2 Guidelines
@@ -170,11 +165,9 @@ export default function WCAGGuidelinesScreen() {
           </Text>
         </View>
 
-        {/* MAIN SECTION */}
         <View style={themedStyles.section}>
           {guidelineData.map((guideline, index) => (
             <View key={index} style={themedStyles.guidelineCard}>
-              {/* Header: Icon + Title */}
               <View style={themedStyles.cardHeader}>
                 <View style={themedStyles.iconContainer}>
                   <Ionicons
@@ -188,12 +181,10 @@ export default function WCAGGuidelinesScreen() {
                 <Text style={themedStyles.cardTitle}>{guideline.title}</Text>
               </View>
 
-              {/* Description */}
               <Text style={themedStyles.cardDescription}>
                 {guideline.description}
               </Text>
 
-              {/* Checklist items */}
               <View style={themedStyles.checkList}>
                 {guideline.checkItems.map((item, itemIndex) => (
                   <View key={itemIndex} style={themedStyles.checkItemRow}>

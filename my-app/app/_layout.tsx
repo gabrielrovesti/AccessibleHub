@@ -6,9 +6,6 @@ import { Ionicons } from '@expo/vector-icons';
 import { ThemeProvider, useTheme } from '../context/ThemeContext';
 import { LinearGradient } from 'expo-linear-gradient';
 
-/* --------------------------------------------
-   0. Constants & Maps
--------------------------------------------- */
 const HEADER_TEXT_COLOR = '#FFFFFF';
 
 const MAIN_ROUTES = [
@@ -58,7 +55,6 @@ const BREADCRUMB_MAP = {
     title: 'Advanced Components',
   },
 
-  // Practices sub-screens
   semantics: {
     parentRoute: 'practices',
     parentLabel: 'Best Practices',
@@ -85,7 +81,6 @@ const BREADCRUMB_MAP = {
     title: 'Gesture Tutorial',
   },
 
-  // Full-path keys (alternative)
   'accessible-components/accessible-button': {
     parentRoute: 'components',
     parentLabel: 'Components',
@@ -138,9 +133,6 @@ const BREADCRUMB_MAP = {
   },
 };
 
-/* --------------------------------------------
-   1. Header Title Function (with useSegments to allow breadcrumb in all screens)
--------------------------------------------- */
 function renderHeaderTitle(router) {
   const segments = useSegments();
 
@@ -241,9 +233,6 @@ function renderHeaderTitle(router) {
   );
 }
 
-/* --------------------------------------------
-   2. Custom Drawer Content
--------------------------------------------- */
 function CustomDrawerContent({ state, descriptors }) {
   const { colors, isDarkMode } = useTheme();
   const router = useRouter();
@@ -369,9 +358,6 @@ function CustomDrawerContent({ state, descriptors }) {
   );
 }
 
-/* --------------------------------------------
-   3. Drawer Navigator
--------------------------------------------- */
 function DrawerNavigator() {
  const router = useRouter();
   const { colors } = useTheme();
@@ -392,7 +378,6 @@ function DrawerNavigator() {
         const routeName = route.name;
 
         if (MAIN_ROUTES.includes(routeName)) {
-          // Top-level route → open drawer
           return (
             <TouchableOpacity
               onPress={() => navigation.toggleDrawer()}
@@ -405,7 +390,6 @@ function DrawerNavigator() {
           );
         }
 
-        // Various conditions for "accessible-components", "practices-screens", etc.
         if (routeName === 'accessible-components' || routeName.startsWith('accessible-')) {
           return (
             <TouchableOpacity
@@ -436,7 +420,6 @@ function DrawerNavigator() {
           );
         }
 
-        // For settings with param "prev"
         if (routeName === 'settings') {
           const prevRoute = route.params?.prev;
           return (
@@ -457,7 +440,6 @@ function DrawerNavigator() {
           );
         }
 
-        // Default goBack
         return (
           <TouchableOpacity
             onPress={() => navigation.goBack()}
@@ -550,9 +532,6 @@ function DrawerNavigator() {
   );
 }
 
-/* --------------------------------------------
-   4. App Wrapper & Export
--------------------------------------------- */
 function AppWrapper({ children }) {
   useEffect(() => {
     if (Platform.OS === 'ios') {
@@ -580,9 +559,6 @@ export default function AppLayout() {
   );
 }
 
-/* --------------------------------------------
-   5. Styles
--------------------------------------------- */
 const styles = StyleSheet.create({
   appContainer: { flex: 1 },
   headerButton: {
