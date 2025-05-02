@@ -1,82 +1,118 @@
-% First pass color options before any packages
-\PassOptionsToPackage{dvipsnames}{xcolor}
-
-% PDF/A compliance and basic document setup
+% ===========================================================
+% Pacchetti di base e compliance PDF/A
+% ===========================================================
+\PassOptionsToPackage{dvipsnames}{xcolor} % opzioni passate prima di tutto
 \usepackage{colorprofiles}
-\usepackage[a-1a,mathxmp]{pdfx}[2018/12/22]
-\usepackage[T1]{fontenc}
-\usepackage[utf8]{inputenc}
-\usepackage[english]{babel}
+\usepackage[a-1a,mathxmp]{pdfx}[2018/12/22] % crea PDF/A-1a
 
-% Load figure-related packages in the correct order
+% ===========================================================
+% Set di caratteri e lingua
+% ===========================================================
+\usepackage[T1]{fontenc}   % output font encoding
+\usepackage[utf8]{inputenc}% input UTF-8
+\usepackage[english]{babel}
+\usepackage{lmodern}       % Latin Modern font
+
+% ===========================================================
+% Colori, grafica, caption, subfigure
+% ===========================================================
+\usepackage[dvipsnames]{xcolor} % caricato ora con opzione passata sopra
 \usepackage{graphicx}
 \usepackage{caption}
 \usepackage{subcaption}
 
-% Document structure and layout
-\usepackage{bookmark}
-\usepackage{comment}
-\usepackage{chngpage, calc}
+% ===========================================================
+% Layout di pagina
+% ===========================================================
+\usepackage[
+  top=2.5cm,
+  bottom=2.5cm,
+  right=2.0cm,
+  left=2.5cm,
+  includehead,
+  includefoot
+]{geometry}
+\usepackage{fancyhdr}
+\usepackage{setspace}
 \usepackage{emptypage}
-\usepackage{epigraph}
 \usepackage{indentfirst}
-\usepackage{mparhack,relsize}
-\usepackage{nameref}
-\usepackage[font=small]{quoting}
-\usepackage[italian]{varioref}
 
-% Tables and layout packages
+% ===========================================================
+% Sezioni, titoli, citazioni
+% ===========================================================
+\usepackage{titlesec}
+\usepackage{sectsty}
+\usepackage{quoting}[font=small]
+\usepackage{csquotes}
+
+% ===========================================================
+% Tabelle & figura: longtable + patch centratura
+% ===========================================================
+\usepackage{array}     % estende col spec
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+
+
 \usepackage{longtable}
+\usepackage{etoolbox}
+
+% -- centra automaticamente *ogni* longtable --
+\makeatletter
+\pretocmd\LT@start{%
+  \setlength{\LTleft}{\fill}%
+  \setlength{\LTright}{\fill}%
+}{}{}
+\makeatother
+
 \usepackage{tabularx}
 \usepackage{tabulary}
 \usepackage{adjustbox}
+
+% Landscape (reset centraggio dentro landscape)
 \usepackage{pdflscape}
+\AtBeginEnvironment{landscape}{%
+  \setlength{\LTleft}{0pt}%
+  \setlength{\LTright}{0pt}%
+}
+
+% Float & utilità
+\usepackage{placeins}   % \FloatBarrier
 \usepackage{tikz}
 
-% Page geometry - CORRETTO POSIZIONAMENTO
-\usepackage[
-   top=2.5cm,
-   bottom=2.5cm,
-   right=2.0cm,
-   left=2.5cm,
-   includehead,
-   includefoot
-]{geometry}
-
-% Bibliography and glossary support
-\usepackage[toc, acronym]{glossaries}
-\usepackage[backend=biber, backref, style=numeric]{biblatex}
-
-% Font and typography
-\usepackage{lmodern}
-
-% Page layout
-\usepackage{fancyhdr}
-\usepackage{lipsum}
-\usepackage{setspace}
-
-% Section and title formatting
-\usepackage{titlesec}
-\usepackage{sectsty}
-
-% Text formatting and special characters
-\usepackage{csquotes}
-\usepackage{etoolbox}
-\usepackage[bottom]{footmisc}
+% ===========================================================
+% Struttura documento, riferimenti interni
+% ===========================================================
+\usepackage{bookmark}
+\usepackage{nameref}
+\usepackage[italian]{varioref}
 \usepackage{zref-totpages}
 
-% Code listings
+% ===========================================================
+% Contenuto extra
+% ===========================================================
+\usepackage{comment}
+\usepackage{epigraph}
+\usepackage{lipsum}
 \usepackage{listings}
 
-% Load xcolor with correct options
-\usepackage[dvipsnames]{xcolor}
-\usepackage[normalem]{ulem}
+% ===========================================================
+% Bibliografia & glossari
+% ===========================================================
+\usepackage[backend=biber, backref, style=numeric]{biblatex}
+\usepackage[toc, acronym]{glossaries}
+
+% ===========================================================
+% Altro
+% ===========================================================
+\usepackage{mparhack,relsize}
+\usepackage{chngpage, calc}
+\usepackage[bottom]{footmisc}
 \usepackage{pifont}
 
-% Load hyperref last
+% ===========================================================
+% Hyperref *sempre* per ultimo
+% ===========================================================
 \usepackage{hyperref}
 
-\usepackage{array}
-\newcolumntype{P}[1]{>{\centering\arraybackslash}p{#1}}
-
-\usepackage{placeins}
+% ===========================================================
+% Fine pacchetti
+% ===========================================================
