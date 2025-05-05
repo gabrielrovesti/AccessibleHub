@@ -147,8 +147,6 @@ These principles inform the specific code patterns and implementations documente
 
 By grounding our implementation patterns in both formal guidelines and practical mobile considerations, we establish a foundation for the screen-by-screen analyses that follow. This approach ensures that accessibility is implemented systematically rather than as an afterthought, resulting in truly inclusive mobile experiences.
 
-\FloatBarrier
-
 \section{Accessibility implementation guidelines}
 \label{sec:implementation-guidelines}
 
@@ -804,7 +802,7 @@ Listing~\ref{lst:form_implementation} demonstrates the implementation of accessi
 
 \paragraph{Implementation overhead}
 
-Forms have the highest accessibility implementation overhead (21.5\%) among component types, reflecting the complexity of making multi-part input systems fully accessible. The primary contributors to this overhead are state communication mechanisms, validation feedback systems, and the implementation of context-specific help that meets AAA criteria.
+Forms have an high accessibility implementation overhead (21.5\%) among single component types, reflecting the complexity of making multi-part input systems fully accessible. The primary contributors to this overhead are state communication mechanisms, validation feedback systems, and the implementation of context-specific help that meets AAA criteria.
 
 \subsubsection{Dialog screen}
 \label{subsubsec:dialogs-screen}
@@ -1031,7 +1029,7 @@ This implementation successfully addresses AAA criteria by providing enhanced ta
 
 \paragraph{Implementation overhead}
 
-Advanced components have the highest implementation overhead (22.7\%) among component types, with slider controls being particularly demanding (8.1\% overhead). This reflects the additional complexity required to make inherently visual controls accessible through alternative interaction mechanisms.
+Advanced components have the highest implementation overhead (22.7\%) given the presence of multiple components and examples, with slider controls being particularly demanding (8.1\% overhead). This reflects the additional complexity required to make inherently visual controls accessible through alternative interaction mechanisms.
 
 \subsubsection{Key insights from component implementation}
 \label{subsubsec:component-insights}
@@ -1391,18 +1389,16 @@ The Best practices screen implementation addresses several mobile-specific acces
 The Best practices screen defines several educational principles that extend beyond standard WCAG requirements, addressing how accessibility knowledge should be structured and presented to developers:
 
 \begin{enumerate}
-    \item \textbf{Multi-modal learning principle}: Accessibility education should combine different learning modalities (documentation, code examples, interactive guides) to accommodate diverse learning styles. The Best practices screen implements this through explicit categorization of each practice with appropriate badges (Documentation, Code Examples, Interactive Guide) that indicate the learning approach;
+    \item \textbf{Multi-modal learning principle}: Accessibility education combine different learning modalities (documentation, code examples, interactive guides) to accommodate diverse learning styles. The Best practices screen implements this through explicit categorization of each practice with appropriate badges (Documentation, Code Examples, Interactive Guide) that indicate the learning approach;
     
     \item \textbf{Conceptual categorization}: Accessibility practices are organized by conceptual domain (guidelines, structure, gestures, screen readers, navigation) rather than by technical implementation details. This organization recognizes that developers approach accessibility from different conceptual entry points based on their specific challenges and interests;
     
-    \item \textbf{Visual encoding of content types}: Different types of accessibility guidance should be visually differentiated through consistent color coding and iconography. The Best practices screen implements this through a formal color system that assigns specific colors to each practice category, reinforcing the conceptual boundaries between different accessibility domains;
+    \item \textbf{Visual encoding of content types}: Different types of accessibility guidance are visually differentiated through consistent color coding and iconography. The Best practices screen implements this through a formal color system that assigns specific colors to each practice category, reinforcing the conceptual boundaries between different accessibility domains;
     
     \item \textbf{Feature-level accessibility indication}: Each practice area explicitly indicates the specific accessibility features it addresses. The implementation of feature lists with focused icons and labels ensures developers can quickly identify relevant guidelines for particular accessibility challenges;
     
-    \item \textbf{Platform-specific guidance principle}: Accessibility education should explicitly acknowledge platform differences where relevant (e.g., for screen readers). The Screen Reader Support practice category explicitly indicates its platform-specific nature, recognizing that some accessibility implementations must adapt to platform constraints.
+    \item \textbf{Platform-specific guidance principle}: Accessibility education explicitly acknowledges platform differences where relevant (e.g., for screen readers). The Screen Reader Support practice category explicitly indicates its platform-specific nature, recognizing that some accessibility implementations must adapt to platform constraints.
 \end{enumerate}
-
-These guidelines extend WCAG by addressing the educational aspects of accessibility implementation—how knowledge about accessibility should be structured, presented, and consumed by developers. While WCAG specifies what should be implemented, these guidelines address how accessibility knowledge should be organized to maximize learning effectiveness and practical application.
 
 \subsection{Best practices section}
 \label{subsec:best-practices-section}
@@ -2853,25 +2849,7 @@ The categorization system addresses several additional accessibility considerati
 
 The category structure also supports the AAA criteria 3.2.5 Change on Request by organizing information into logical groups that users can expand at their own pace, maintaining user control over content presentation and information density.
 
-\subsubsection{Beyond WCAG: development-focused accessibility guidelines}
 
-While WCAG provides a solid foundation for accessibility requirements, our analysis of the Tools screen highlights several additional guidelines specifically relevant to mobile development workflows:
-
-\begin{enumerate}
-    \item \textbf{Tool integration guideline}: Accessibility tools are presented with clear integration paths into existing development workflows, not as standalone solutions. The Tools screen implements this by including explicit "Practical Usage" sections that explain integration;
-    
-    \item \textbf{Platform-specific guidance principle}: Due to the substantial differences between platform accessibility implementations, tools and guidance are explicitly organized by platform when platform-specific considerations apply. The Tools screen implements this by separating iOS and Android tools;
-    
-    \item \textbf{Development stage appropriateness}: Accessibility tools are categorized by the development stage in which they are most effective (design, development, testing). This helps developers integrate accessibility throughout the development lifecycle rather than treating it as a single checkbox activity;
-    
-    \item \textbf{Tool complexity indicator}: Accessibility tools vary significantly in complexity and learning curve. Providing clear indicators of tool complexity (like the "Built-in" badge) helps developers choose appropriate tools based on their experience level;
-    
-    \item \textbf{Contextual documentation principle}: Links to external resources are contextually relevant and provide appropriate expectations about content (e.g., official documentation vs. community resources). This reduces the cognitive load of finding appropriate resources for specific accessibility challenges.
-\end{enumerate}
-
-These guidelines extend WCAG principles to address the specific needs of developers implementing accessibility features, focusing on workflow integration and practical application of accessibility knowledge.
-
-Beyond the standard WCAG requirements, the development-focused guidelines also address AAA-level considerations including 3.1.5 Reading Level (by providing practical usage sections that simplify complex technical concepts) and 3.3.6 Error Prevention (by guiding developers toward appropriate tool selection for specific accessibility challenges).
 
 \subsection{Instruction and community screen}
 \label{subsec:instruction-community}
@@ -3301,24 +3279,6 @@ Platform-specific styling & Conditional styling based on platform detection & \t
 \end{longtable}
 \FloatBarrier
 
-\subsubsection{Beyond WCAG: community-centered accessibility guidelines}
-\label{subsubsec:instruction-beyond-wcag}
-
-The instruction and community screen defines several accessibility principles that extend beyond standard WCAG requirements, focusing on the social and community aspects of accessibility implementation:
-
-\begin{enumerate}
-    \item \textbf{Community of practice principle}: Accessibility implementation benefits significantly from social learning and community support. The screen implements this by connecting developers to established community channels and platforms where accessibility knowledge is shared;
-    
-    \item \textbf{Real-world example guideline}: Illustrating accessibility principles with real-world code samples and success stories enhances understanding and implementation. The screen addresses this through collapsible code examples that demonstrate practical solutions to common challenges;
-    
-    \item \textbf{Contribution pathway}: Effective accessibility ecosystems provide clear pathways for developers to contribute to open source accessibility projects. The screen implements this by highlighting projects seeking contributors with specific tags that indicate required skills;
-    
-    \item \textbf{Multi-format learning principle}: Accessibility concepts are presented in multiple formats (text, code, examples) to accommodate different learning styles and reinforce understanding. The screen addresses this through varied content presentation methods;
-    
-    \item \textbf{Platform-specific ecosystem guidance}: Resources are grouped by platform ecosystem (iOS, Android) to help developers navigate the platform-specific nature of accessibility implementation. The screen implements this in the Developer Toolkit section with platform-specific resource cards.
-\end{enumerate}
-
-
 \subsection{Settings screen}
 \label{subsec:settings-screen}
 
@@ -3677,22 +3637,326 @@ The Settings screen implementation addresses several mobile-specific accessibili
     \item \textbf{Haptic feedback integration}: The implementation adds haptic feedback (vibration) when settings are changed on Android devices, providing an additional sensory channel that is particularly valuable in mobile contexts where visual attention may be limited.
 \end{enumerate}
 
-\subsubsection{Beyond WCAG: self-adapting interface guidelines}
+\chapter{Beyond WCAG - Extended accessibility principles in \textit{AccessibleHub}}
+\label{chap:beyond-wcag}
+
+\section{Introduction}
+\label{sec:beyond-wcag-intro}
+
+While the Web Content Accessibility Guidelines (WCAG) provide a robust framework for ensuring digital accessibility, they were primarily developed for web content and do not fully address the unique challenges of mobile interfaces. Mobile applications present distinct accessibility concerns related to touch interaction, limited screen real estate, variable usage contexts, and platform-specific implementations. Additionally, WCAG focuses primarily on technical compliance rather than the broader educational, social, and developmental aspects of creating accessible applications.
+
+AccessibleHub extends beyond standard WCAG criteria in several important ways:
+
+\begin{enumerate}
+    \item \textbf{Implementation focus}: Where WCAG defines \textit{what} should be accessible, AccessibleHub demonstrates \textit{how} to implement accessibility in practical code patterns;
+    
+    \item \textbf{Quantitative measurement}: AccessibleHub introduces formal metrics for measuring accessibility implementation overhead and compliance levels, making abstract guidelines concrete and measurable;
+    
+    \item \textbf{Educational framework}: AccessibleHub embeds pedagogical principles that facilitate developer learning, extending accessibility from a compliance exercise to an educational journey;
+    
+    \item \textbf{Mobile-specific adaptations}: The application addresses mobile-specific challenges that fall outside traditional WCAG criteria, such as touch target optimization, swipe efficiency, and battery considerations;
+    
+    \item \textbf{Social learning integration}: AccessibleHub recognizes that accessibility implementation is both a technical and social process, connecting developers to communities of practice and collaborative learning resources.
+\end{enumerate}
+
+The following sections analyze each screen of AccessibleHub through this extended lens, identifying principles that go beyond standard WCAG criteria while contributing to more accessible, inclusive mobile experiences. These principles collectively form an extended theory of mobile accessibility that bridges technical compliance with practical implementation, educational effectiveness, and social engagement.
+
+By systematically documenting these extended principles, we aim to advance accessibility theory beyond compliance-focused approaches toward a more holistic understanding of how developers learn, implement, and socialize accessibility practices. These insights can guide future accessibility tool development, educational resources, and implementation methodologies.
+
+\section{Screen-specific accessibility guidelines}
+\label{sec:screen-specific-principles}
+
+\subsection{Home: Metrics-driven}
+
+The Home screen implementation highlights several accessibility principles that extend beyond standard WCAG requirements, specifically addressing quantitative accessibility evaluation in mobile applications:
+
+\begin{enumerate}
+    \item \textbf{Comprehensive metrics visualization}: Accessibility compliance are quantified and presented in a transparent, understandable format. The Home screen implements this through dedicated metric cards with clear visual indicators of implementation status, moving beyond binary compliance to represent different degrees of accessibility achievement;
+    
+    \item \textbf{Multi-dimensional evaluation framework}: Accessibility assessment consider multiple dimensions including component implementation, standards compliance, and empirical testing. This weighted approach, implemented in the metrics calculation system, recognizes that true accessibility extends beyond technical conformance to include real-world usability;
+    
+    \item \textbf{Transparency in methodology}: Applications should provide clear documentation of accessibility evaluation methodology including test devices, standards versions, and measurement approaches. The modal details system implements this principle by exposing the entire evaluation framework to users, creating accountability in accessibility claims;
+    
+    \item \textbf{Academic grounding principle}: Accessibility implementations benefit from explicit connection to peer-reviewed research and formal standards. The References tab implements this by connecting implementation practices to specific academic papers and standards documentation;
+    
+    \item \textbf{Progressive disclosure of complexity}: Technical accessibility details should be organized in layers of increasing complexity, allowing users to access the appropriate level of detail for their needs. The tabbed modal system implements this by separating overview information from detailed implementation specifics.
+\end{enumerate}
+
+\subsection{Framework comparison: Evidence-based evaluation}
+
+The Framework comparison screen embodies several principles that extend beyond standard WCAG requirements, particularly focusing on evidence-based evaluation and formal methodology:
+
+\begin{enumerate}
+    \item \textbf{Academic grounding principle}: Accessibility evaluations are grounded in peer-reviewed research and formal methodologies. The screen implements this through explicit citations to academic papers and clearly defined evaluation protocols;
+    
+    \item \textbf{Quantitative metric transparency}: Framework evaluations use explicit, quantitative metrics with clearly defined calculation methodologies. The implementation demonstrates this through LOC counts and explicit complexity ratings;
+    
+    \item \textbf{Implementation complexity consideration}: Accessibility evaluation assess not just feature presence but implementation complexity. The screen implements this through multi-dimensional complexity assessment (LOC, qualitative rating, knowledge requirements);
+    
+    \item \textbf{Empirical testing validation}: Accessibility claims are validated through documented testing on specific devices and platforms. The implementation includes explicit references to test devices and operating system versions;
+    
+    \item \textbf{Comparative analysis principle}: Accessibility features are evaluated through direct side-by-side comparison using consistent metrics. The screen implements this through structured comparison of identical features across frameworks.
+\end{enumerate}
+
+\subsection{Best practices main screen: Pedagogical accessibility guidelines}
+
+The Best practices screen defines several educational principles that extend beyond standard WCAG requirements, addressing how accessibility knowledge is structured and presented to developers:
+
+\begin{enumerate}
+    \item \textbf{Multi-modal learning principle}: Accessibility education combines different learning modalities (documentation, code examples, interactive guides) to accommodate diverse learning styles. The Best practices screen implements this through explicit categorization of each practice with appropriate badges (Documentation, Code Examples, Interactive Guide) that indicate the learning approach;
+    
+    \item \textbf{Conceptual categorization}: Accessibility practices are organized by conceptual domain (guidelines, structure, gestures, screen readers, navigation) rather than by technical implementation details. This organization recognizes that developers approach accessibility from different conceptual entry points based on their specific challenges and interests;
+    
+    \item \textbf{Visual encoding of content types}: Different types of accessibility guidance are visually differentiated through consistent color coding and iconography. The Best practices screen implements this through a formal color system that assigns specific colors to each practice category, reinforcing the conceptual boundaries between different accessibility domains;
+    
+    \item \textbf{Feature-level accessibility indication}: Each practice area explicitly indicates the specific accessibility features it addresses. The implementation of feature lists with focused icons and labels ensures developers can quickly identify relevant guidelines for particular accessibility challenges;
+    
+    \item \textbf{Platform-specific guidance principle}: Accessibility education explicitly acknowledges platform differences where relevant (e.g., for screen readers). The Screen Reader Support practice category explicitly indicates its platform-specific nature, recognizing that some accessibility implementations must adapt to platform constraints.
+\end{enumerate}
+
+\subsection{Best practices screens: Domain-specific patterns}
+\label{subsec:best-practices-screens-beyond-wcag}
+
+The Best Practices screens extend beyond standard WCAG requirements through specialized educational and implementation patterns tailored to specific accessibility domains.
+
+\subsubsection{WCAG guidelines screen: Knowledge scaffolding}
+
+The WCAG Guidelines screen establishes several patterns that extend beyond the guidelines themselves:
+
+\begin{enumerate}
+    \item \textbf{Principle-based organization}: Guidelines are organized around the four fundamental WCAG principles rather than success criteria numbers, creating a conceptual structure that emphasizes understanding over compliance checklists;
+    
+    \item \textbf{Visual principle encoding}: Each WCAG principle is assigned a distinct visual identity through color coding and iconography, reinforcing conceptual boundaries and aiding visual learners;
+    
+    \item \textbf{Concrete implementation examples}: Abstract success criteria are paired with concrete mobile implementation patterns, bridging the gap between theory and practice;
+    
+    \item \textbf{Progressive disclosure}: Guidelines are presented with layered complexity, starting with core concepts before revealing detailed requirements;
+    
+    \item \textbf{Framework-specific adaptations}: Guidelines acknowledge differences in implementation between React Native and Flutter, recognizing that accessibility requirements may have different technical expressions across frameworks.
+\end{enumerate}
+
+\subsubsection{Gestures tutorial screen: Interaction equivalence}
+
+The Gestures Tutorial screen demonstrates principles that specifically address the challenges of touch-based interaction:
+
+\begin{enumerate}
+    \item \textbf{Adaptive interaction patterns}: Applications detect the user's interaction mode (standard touch vs. screen reader) and adapt their behavior accordingly, ensuring equivalent functionality regardless of input method;
+    
+    \item \textbf{Gesture alternative principle}: Every gesture-based interaction provides programmatic alternatives through accessibility actions, ensuring screen reader users can access all functionality;
+    
+    \item \textbf{Context-sensitive instruction}: Guidance changes based on the user's current interaction mode, providing relevant information without overwhelming with unnecessary details;
+    
+    \item \textbf{Multi-sensory feedback}: Gesture completion confirmation is provided through multiple sensory channels (visual, auditory, haptic), ensuring users receive feedback regardless of sensory capabilities;
+    
+    \item \textbf{Educational comparison}: Standard gestures and screen reader gestures are explicitly compared, helping developers understand the relationship between these interaction modes.
+\end{enumerate}
+
+\subsubsection{Semantic structure screen: Hierarchical organization}
+
+The Semantic Structure screen extends accessibility concepts beyond visual presentation to information architecture:
+
+\begin{enumerate}
+    \item \textbf{Self-demonstrating implementation}: The screen itself implements the semantic structures it teaches, providing a meta-level educational experience where the medium demonstrates the message;
+    
+    \item \textbf{Translation from web to mobile}: Web semantic concepts (headings, landmarks) are explicitly adapted to mobile contexts, acknowledging the differences in platform capabilities;
+    
+    \item \textbf{Hierarchical navigation principle}: Content is organized in a clear hierarchy with appropriate heading levels and landmark roles, creating an efficient navigation structure for assistive technology users;
+    
+    \item \textbf{Code-output relationship visualization}: Semantic structures are shown both as code and rendered output, helping developers connect implementation choices with user experience outcomes;
+    
+    \item \textbf{Progressive semantic development}: Semantic concepts are introduced incrementally, starting with basic heading structure before introducing more complex landmark roles.
+\end{enumerate}
+
+\subsubsection{Logical navigation screen: Focus management}
+
+The Logical Navigation screen addresses navigation patterns critical for non-visual users:
+
+\begin{enumerate}
+    \item \textbf{Bypass block implementation}: Skip links are implemented to allow users to bypass repetitive content, demonstrating a pattern rarely applied in mobile applications;
+    
+    \item \textbf{Synchronized visual-focus relationship}: Visual scrolling and accessibility focus are coordinated to maintain a consistent experience for all users;
+    
+    \item \textbf{Landmark-based navigation}: Content is organized using landmark roles that create navigation shortcuts for assistive technology users;
+    
+    \item \textbf{Focus persistence}: Focus position is maintained across view changes and dynamic content updates, preventing disorientation during navigation;
+    
+    \item \textbf{Focus restoration}: When temporary UI elements (dialogs, menus) are dismissed, focus returns to the triggering element, maintaining user context.
+\end{enumerate}
+
+\subsubsection{Screen reader support screen: Adaptive guidance}
+
+The Screen Reader Support screen demonstrates platform-specific accessibility patterns:
+
+\begin{enumerate}
+    \item \textbf{Platform-tailored guidance}: Accessibility instructions are adapted to the specific capabilities and limitations of each platform's screen reader;
+    
+    \item \textbf{Gesture dictionary visualization}: Screen reader gestures are presented in a visual format that helps developers understand the non-visual navigation experience;
+    
+    \item \textbf{Code-gesture relationship}: Implementation patterns are explicitly connected to the screen reader gestures they support, creating a clear relationship between code and user experience;
+    
+    \item \textbf{Adaptive content presentation}: The screen adapts its content based on the selected platform, showing only relevant information for the current context;
+    
+    \item \textbf{Unified cross-platform patterns}: Despite platform differences, common patterns are identified that work consistently across platforms, helping developers create coherent cross-platform experiences.
+\end{enumerate}
+
+These domain-specific patterns collectively extend accessibility beyond technical compliance, addressing the educational, interaction, structural, navigational, and platform-specific challenges that developers face when creating truly accessible mobile applications.
+
+\subsection{Accessible components main screen: Content categorization}
+
+The Components screen defines several accessibility principles specifically focused on organizing and categorizing interface elements to promote systematic accessibility implementation:
+
+\begin{enumerate}
+    \item \textbf{Feature-oriented grouping}: Accessibility features are grouped by functional similarity rather than WCAG criteria, creating more intuitive implementation pathways. The Components screen implements this by organizing related controls together (e.g., "Buttons \& Touchables") regardless of which specific WCAG criteria they address;
+    
+    \item \textbf{Progressive implementation pathway}: Components are organized in a sequence that builds accessibility knowledge progressively, beginning with fundamental elements before introducing more complex patterns. The Components screen implements this through its hierarchical organization from basic elements (buttons) to complex patterns (dialogs, navigation);
+    
+    \item \textbf{Cross-cutting feature indication}: Key accessibility features that apply across multiple component types should be visually highlighted to reinforce their importance. The feature icons within each component card implement this by consistently identifying common accessibility considerations (e.g., touch target sizing, focus management);
+    
+    \item \textbf{Transition announcement principle}: Navigation between component categories should be explicitly announced to assist screen reader users in maintaining context. The Components screen implements this through the \texttt{announceForAccessibility} announcements during navigation;
+    
+    \item \textbf{Contextual documentation integration}: Each component implementation include direct references to relevant accessibility guidelines, helping developers understand not just how to implement accessibility features but why they matter. The code samples in each component detail screen implement this by including explanatory comments that connect implementation choices to specific WCAG success criteria.
+\end{enumerate}
+
+\subsection{Accessible components screens: Hierarchical complexity implementation}
+\label{subsec:accessible-components-beyond-wcag}
+
+The Accessible Components section of \textit{AccessibleHub} extends traditional WCAG requirements through practical implementation patterns across common mobile interface elements. 
+
+\subsubsection{Buttons and touchables screen: Fundamental interaction accessibility}
+\label{subsubsec:buttons-touchables-beyond-wcag}
+
+The Buttons and touchables screen extends beyond standard WCAG requirements through several key implementation patterns:
+
+\begin{enumerate}
+    \item \textbf{Action-outcome oriented labeling}: Labels communicate not just the element identity but its purpose and outcome, enhancing user understanding beyond basic identification;
+    
+    \item \textbf{Multi-channel feedback}: Interaction feedback is provided through multiple channels (visual, auditory via screen reader announcement, and potentially haptic), ensuring perceivability regardless of user capabilities;
+    
+    \item \textbf{Visible state persistence}: Active and focus states remain visible longer than minimum requirements, addressing the challenge of transient touch interactions on mobile devices;
+    
+    \item \textbf{Enhanced target spacing}: Interactive elements are not only individually sized appropriately but spaced to prevent accidental activation of adjacent controls, extending beyond individual target size requirements;
+    
+    \item \textbf{Educational code-output relationship}: Implementation demonstrates the direct relationship between code properties and user experience outcomes, creating a self-teaching component.
+\end{enumerate}
+
+\subsubsection{Form screen: Complex input accessibility beyond technical compliance}
+\label{subsubsec:forms-beyond-wcag}
+
+The Form screen demonstrates accessibility principles that extend significantly beyond WCAG's input field requirements:
+
+\begin{enumerate}
+    \item \textbf{Semantic field grouping}: Related inputs are explicitly grouped with appropriate container roles, creating logical navigation units for screen reader users beyond basic labeling;
+    
+    \item \textbf{Contextual validation feedback}: Error messages are not just visually distinguished but programmatically linked to specific fields with appropriate roles and timing;
+    
+    \item \textbf{Progressive disclosure of complexity}: Form validation complexity is revealed progressively, with immediate feedback for critical errors but delayed validation for less critical fields;
+    
+    \item \textbf{Platform-optimized input methods}: The implementation leverages platform-native input methods where they provide superior accessibility, demonstrating a hybrid approach beyond framework-agnostic guidelines;
+    
+    \item \textbf{Comprehensive AAA-level implementation}: The form implements multiple AAA-level criteria including Help (3.3.5) and Error Prevention (3.3.6) through contextual guidance and validation.
+\end{enumerate}
+
+\subsubsection{Dialog screen: Focus management beyond basic modality}
+\label{subsubsec:dialogs-beyond-wcag}
+
+The Dialog screen implements accessibility principles that address the complex challenges of modal interaction contexts:
+
+\begin{enumerate}
+    \item \textbf{Focus restoration mechanism}: The implementation not only traps focus during dialog display but explicitly returns it to the triggering element upon dismissal, maintaining user context beyond basic modal guidelines;
+    
+    \item \textbf{Context announcement}: Dialog appearance and dismissal are explicitly announced to screen reader users, providing orientation beyond visual cues;
+    
+    \item \textbf{Multi-path dismissal}: Multiple interaction methods for closing dialogs are provided (explicit button, backdrop press, hardware back button), ensuring operability through different input methods;
+    
+    \item \textbf{Visual-semantic relationship}: Visual modal presentation is precisely aligned with semantic modal behavior, ensuring consistency between visual and programmatic experiences;
+    
+    \item \textbf{AAA-level user control}: All modal state changes occur only on explicit user request, implementing AAA criterion 3.2.5 (Change on Request).
+\end{enumerate}
+
+\subsubsection{Media screen: Beyond alternative text}
+\label{subsubsec:media-beyond-wcag}
+
+The Media screen extends basic alternative text requirements into a comprehensive framework for non-text content accessibility:
+
+\begin{enumerate}
+    \item \textbf{Context-aware alternative text}: Alternative descriptions adapt based on the image's context and purpose rather than providing generic descriptions;
+    
+    \item \textbf{Position indication}: Gallery navigation explicitly communicates the user's position within a sequence (e.g., "Image 2 of 5"), providing orientation beyond basic descriptions;
+    
+    \item \textbf{Educational transparency}: The implementation explicitly reveals alternative text visually as an educational feature, bridging the gap between visual and non-visual experiences;
+    
+    \item \textbf{Multi-modal controls}: Media navigation incorporates redundant control mechanisms optimized for different interaction methods;
+    
+    \item \textbf{User-controlled progression}: All media content changes occur only on explicit user action, implementing AAA criterion 3.2.5 (Change on Request).
+\end{enumerate}
+
+\subsubsection{Advanced components screen: Complex interaction patterns}
+\label{subsubsec:advanced-beyond-wcag}
+
+The Advanced components screen demonstrates accessibility principles for complex interface patterns that extend significantly beyond basic WCAG requirements:
+
+\begin{enumerate}
+    \item \textbf{Alternative interaction pathways}: Inherently visual controls like sliders offer multiple interaction methods optimized for different user capabilities;
+    
+    \item \textbf{State relationship communication}: Tab interfaces explicitly communicate the relationship between selectors and their associated content through programmatic connections;
+    
+    \item \textbf{Hierarchy-aware notification}: Alert components are implemented with appropriate live region properties based on their urgency and relationship to other content;
+    
+    \item \textbf{Value communication precision}: Progress indicators convey exact percentage values rather than approximations, providing precision beyond visual representations;
+    
+    \item \textbf{Comprehensive AAA compliance}: Controls implement multiple AAA-level criteria including Enhanced Target Size (2.5.5) and Change on Request (3.2.5).
+\end{enumerate}
+
+\subsection{Tools: Development-focused accessibility}
+
+While WCAG provides a solid foundation for accessibility requirements, our analysis of the Tools screen highlights several additional guidelines specifically relevant to mobile development workflows:
+
+\begin{enumerate}
+    \item \textbf{Tool integration guideline}: Accessibility tools are presented with clear integration paths into existing development workflows, not as standalone solutions. The Tools screen implements this by including explicit "Practical Usage" sections that explain integration;
+    
+    \item \textbf{Platform-specific guidance principle}: Due to the substantial differences between platform accessibility implementations, tools and guidance are explicitly organized by platform when platform-specific considerations apply. The Tools screen implements this by separating iOS and Android tools;
+    
+    \item \textbf{Development stage appropriateness}: Accessibility tools are categorized by the development stage in which they are most effective (design, development, testing). This helps developers integrate accessibility throughout the development lifecycle rather than treating it as a single checkbox activity;
+    
+    \item \textbf{Tool complexity indicator}: Accessibility tools vary significantly in complexity and learning curve. Providing clear indicators of tool complexity (like the "Built-in" badge) helps developers choose appropriate tools based on their experience level;
+    
+    \item \textbf{Contextual documentation principle}: Links to external resources are contextually relevant and provide appropriate expectations about content (e.g., official documentation vs. community resources). This reduces the cognitive load of finding appropriate resources for specific accessibility challenges.
+\end{enumerate}
+
+These guidelines extend WCAG principles to address the specific needs of developers implementing accessibility features, focusing on workflow integration and practical application of accessibility knowledge.
+
+Beyond the standard WCAG requirements, the development-focused guidelines also address AAA-level considerations including 3.1.5 Reading Level (by providing practical usage sections that simplify complex technical concepts) and 3.3.6 Error Prevention (by guiding developers toward appropriate tool selection for specific accessibility challenges).
+
+\subsection{Instruction and Community: Community-centered}
+
+The Instruction and Community screen defines several accessibility principles that extend beyond standard WCAG requirements, focusing on the social and community aspects of accessibility implementation:
+
+\begin{enumerate}
+    \item \textbf{Community of practice principle}: Accessibility implementation benefits significantly from social learning and community support. The screen implements this by connecting developers to established community channels and platforms where accessibility knowledge is shared;
+    
+    \item \textbf{Real-world example guideline}: Illustrating accessibility principles with real-world code samples and success stories enhances understanding and implementation. The screen addresses this through collapsible code examples that demonstrate practical solutions to common challenges;
+    
+    \item \textbf{Contribution pathway}: Effective accessibility ecosystems provide clear pathways for developers to contribute to open source accessibility projects. The screen implements this by highlighting projects seeking contributors with specific tags that indicate required skills;
+    
+    \item \textbf{Multi-format learning principle}: Accessibility concepts are presented in multiple formats (text, code, examples) to accommodate different learning styles and reinforce understanding. The screen addresses this through varied content presentation methods;
+    
+    \item \textbf{Platform-specific ecosystem guidance}: Resources are grouped by platform ecosystem (iOS, Android) to help developers navigate the platform-specific nature of accessibility implementation. The screen implements this in the Developer Toolkit section with platform-specific resource cards.
+\end{enumerate}
+
+\subsection{Settings: Self-adapting interface}
 
 The Settings screen defines several accessibility principles that extend beyond standard WCAG requirements, particularly focusing on the ability of interfaces to adapt to user needs:
 
 \begin{enumerate}
-    \item \textbf{Embedded customization principle}: Accessibility adjustments should be directly embedded within the application rather than relying solely on system-level settings. The Settings screen implements this by providing in-app controls for text size, contrast, and other visual preferences;
+    \item \textbf{Embedded customization principle}: Accessibility adjustments are directly embedded within the application rather than relying solely on system-level settings. The Settings screen implements this by providing in-app controls for text size, contrast, and other visual preferences;
     
-    \item \textbf{Multi-sensory feedback guideline}: Changes to accessibility settings should provide feedback through multiple sensory channels. The implementation combines visual cues (toggle animation), auditory feedback (screen reader announcements), and haptic feedback (vibration) to ensure changes are perceivable regardless of user abilities;
+    \item \textbf{Multi-sensory feedback guideline}: Changes to accessibility settings provide feedback through multiple sensory channels. The implementation combines visual cues (toggle animation), auditory feedback (screen reader announcements), and haptic feedback (vibration) to ensure changes are perceivable regardless of user abilities;
     
     \item \textbf{Contextual help principle}: Setting controls should provide context-specific guidance on their purpose and effect. The implementation combines descriptive labels with specific hints to help users understand the impact of each setting;
     
-    \item \textbf{Setting persistence}: User preferences for accessibility features should persist across application sessions. The implementation stores accessibility settings persistently, ensuring users don't need to reconfigure their preferences with each use;
+    \item \textbf{Setting persistence}: User preferences for accessibility features persist across application sessions. The implementation stores accessibility settings persistently, ensuring users don't need to reconfigure their preferences with each use;
     
-    \item \textbf{Complementary settings grouping}: Related accessibility settings should be grouped together to help users understand their relationships and combined effects. The implementation organizes settings into logical categories (Visual, Readability, Color \& Touch) that reflect how features work together to create accessible experiences.
+    \item \textbf{Complementary settings grouping}: Related accessibility settings are grouped together to help users understand their relationships and combined effects. The implementation organizes settings into logical categories (Visual, Readability, Color \& Touch) that reflect how features work together to create accessible experiences.
 \end{enumerate}
-
-These guidelines extend WCAG by focusing on the self-adaptation capabilities of interfaces, recognizing that true accessibility requires not just compliance with static criteria but the ability to dynamically adjust to diverse user needs and preferences.
 
 \newpage
