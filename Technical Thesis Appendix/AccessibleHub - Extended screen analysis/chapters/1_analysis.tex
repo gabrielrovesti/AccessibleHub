@@ -152,6 +152,88 @@ By grounding our implementation patterns in both formal guidelines and practical
 
 Each of the following subsections highlights the key \textit{success criteria} addressed, references relevant \textit{mobile-specific considerations}, and demonstrates practical solutions in React Native building upon the insights from Gaggi and Perinello's approach \cite{budai2024mobile}. The following part is intended to complete the screen analysis considered in the Master Thesis, with the goal of supplying a complete developer resource to be used and applied in professional projects.
 
+\subsection{WCAG2Mobile integration framework}
+\label{sec:wcag2mobile-framework}
+
+While the AccessibleHub toolkit was developed based on established WCAG 2.2 guidelines, the W3C has recently published "Guidance on applying WCAG 2.2 to mobile applications" (WCAG2Mobile) \cite{w3c-wcag2mobile}, which provides authoritative interpretations of accessibility success criteria specifically tailored for mobile contexts. This section outlines how WCAG2Mobile principles have been integrated into the \textit{AccessibleHub} framework to ensure alignment with the latest mobile accessibility standards.
+
+\subsubsection{Understanding WCAG2Mobile}
+
+WCAG2Mobile represents an important evolution in accessibility guidelines, adapting the web-oriented WCAG 2.2 criteria to address the unique challenges of mobile application interfaces. Unlike traditional web content, mobile applications present distinct interaction patterns, viewport limitations, and platform-specific considerations that require specialized interpretation of accessibility principles.
+
+Key aspects of WCAG2Mobile include:
+
+\begin{itemize}
+    \item Mobile-specific terminology adaptations (e.g., "screens" instead of "pages", "views" instead of "web content");
+    
+    \item Reinterpretation of success criteria for touch-based interactions rather than keyboard/mouse paradigms;
+    
+    \item Platform-specific implementation guidance for iOS and Android accessibility frameworks;
+    
+    \item Considerations for limited screen real estate and its impact on perceivability;
+    
+    \item Guidelines for handling mobile-specific interaction patterns such as gestures, notifications, and platform transitions.
+\end{itemize}
+
+By integrating WCAG2Mobile principles into \textit{AccessibleHub}, we ensure that the toolkit not only addresses general accessibility requirements but also provides mobile-specific guidance that reflects the authoritative W3C interpretation of how WCAG 2.2 applies to mobile application development.
+
+\subsubsection{WCAG2Mobile mapping to component categories}
+
+Table~\ref{tab:wcag2mobile_mapping} provides a formal mapping between \textit{AccessibleHub} component categories and the relevant WCAG2Mobile success criteria, highlighting mobile-specific considerations for each component type.
+
+\begin{longtable}[c]{|C{2.5cm}|C{3cm}|C{4cm}|C{5cm}|}
+\caption{AccessibleHub component categories mapped to WCAG2Mobile success criteria}
+\label{tab:wcag2mobile_mapping}\\
+\hline
+\textbf{Component Category} & \textbf{Primary WCAG2Mobile Success Criteria} & \textbf{Mobile-Specific Considerations} & \textbf{Implementation Focus} \\
+\hline
+\endfirsthead
+\multicolumn{4}{c}%
+{{\bfseries Table \thetable\ -- continued from previous page}} \\
+\hline
+\textbf{Component Category} & \textbf{Primary WCAG2Mobile Success Criteria} & \textbf{Mobile-Specific Considerations} & \textbf{Implementation Focus} \\
+\hline
+\endhead
+\hline
+\multicolumn{4}{r}{{Continued on next page}} \\
+\endfoot
+\hline
+\endlastfoot
+Buttons \& Touchables & 2.5.8 Target Size (AA), 4.1.2 Name, Role, Value (A), 2.1.1 Keyboard (A) & Touch target optimization, Screen reader focus, One-handed operation & Minimum touch target of 44×44dp, Precise \texttt{accessibility \ Role} assignment, Gesture alternatives \\
+\hline
+Forms & 3.3.1 Error Identification (A), 3.3.2 Labels or Instructions (A), 1.3.1 Info and Relationships (A) & Virtual keyboard management, Input validation, Form control grouping & Input labeling techniques, Error messaging, Keyboard type adaptation \\
+\hline
+Media & 1.1.1 Non-text Content (A), 1.2.2 Captions (A), 1.4.2 Audio Control (A) & Mobile bandwidth considerations, Small-screen playback controls, Device orientation adaptation & Efficient alt text, Responsive media controls, Bandwidth-aware loading \\
+\hline
+Dialogs & 2.4.3 Focus Order (A), 4.1.2 Name, Role, Value (A), 3.2.1 On Focus (A) & Overlay management, Modal dismissal gestures, Screen reader trapping prevention & Focus management, Dismissal methods, Proper dialog role assignment \\
+\hline
+Advanced Controls & 1.3.1 Info and Relationships (A), 4.1.2 Name, Role, Value (A), 2.5.1 Pointer Gestures (A) & Complex gesture alternatives, State communication, Interactive element grouping & Slider implementations, Tab navigation patterns, Platform-specific role mappings \\
+\end{longtable}
+
+\FloatBarrier
+
+This mapping forms the foundation for integrating WCAG2Mobile throughout the \textit{AccessibleHub} toolkit, guiding both the implementation details in code examples and the educational content presented to developers. Each component category has been analyzed through the lens of WCAG2Mobile to identify mobile-specific considerations that extend beyond standard WCAG 2.2 interpretations.
+
+\subsubsection{Integration approach}
+
+Rather than treating WCAG2Mobile as a separate framework, this implementation integrates these mobile-specific interpretations directly into the existing structure of \textit{AccessibleHub}. This integration occurs at multiple levels:
+
+\begin{enumerate}
+    \item \textbf{Terminology alignment} - Throughout the toolkit, terminology has been updated to match WCAG2Mobile conventions (e.g., "screens" instead of "pages") to reinforce mobile-specific contexts;
+    
+    \item \textbf{Success criteria mapping} - Each component example explicitly references relevant WCAG2Mobile interpretations of success criteria, highlighting where mobile implementations differ from web approaches;
+    
+    \item \textbf{Implementation patterns} - Code examples demonstrate WCAG2Mobile-compliant implementation techniques, with particular attention to mobile-specific challenges like touch target sizing and screen reader optimization;
+    
+    \item \textbf{Testing methodologies} - Screen reader testing procedures align with WCAG2Mobile guidance on platform-specific assistive technology testing;
+    
+    \item \textbf{Educational content} - Best practices sections incorporate WCAG2Mobile insights on mobile-specific accessibility considerations.
+\end{enumerate}
+
+This integrated approach ensures that developers using \textit{AccessibleHub} receive guidance that is both fundamentally sound (based on core WCAG 2.2 principles) and contextually appropriate for mobile development (through WCAG2Mobile interpretations).
+
+Detailed implementation examples illustrating WCAG2Mobile principles are provided in the following sections for each component category, with cross-references to the formal success criteria and mobile-specific interpretations documented by the W3C.
+
 \subsection{Cross-screen accessibility implementation analysis}
 \label{subsec:cross-screen-analysis}
 
@@ -4503,10 +4585,6 @@ While WCAG provides a solid foundation for accessibility requirements, our analy
     \item \textbf{Contextual documentation principle}: Links to external resources are contextually relevant and provide appropriate expectations about content (e.g., official documentation vs. community resources). This reduces the cognitive load of finding appropriate resources for specific accessibility challenges.
 \end{enumerate}
 
-These guidelines extend WCAG principles to address the specific needs of developers implementing accessibility features, focusing on workflow integration and practical application of accessibility knowledge.
-
-Beyond the standard WCAG requirements, the development-focused guidelines also address AAA-level considerations including 3.1.5 Reading Level (by providing practical usage sections that simplify complex technical concepts) and 3.3.6 Error Prevention (by guiding developers toward appropriate tool selection for specific accessibility challenges).
-
 \subsection{Instruction and Community: Community-centered}
 
 The Instruction and Community screen defines several accessibility principles that extend beyond standard WCAG requirements, focusing on the social and community aspects of accessibility implementation:
@@ -4538,5 +4616,103 @@ The Settings screen defines several accessibility principles that extend beyond 
     
     \item \textbf{Complementary settings grouping}: Related accessibility settings are grouped together to help users understand their relationships and combined effects. The implementation organizes settings into logical categories (Visual, Readability, Color \& Touch) that reflect how features work together to create accessible experiences.
 \end{enumerate}
+
+\subsection{Framework comparison: quality-over-quantity}
+
+The Framework comparison screen not only serves as an analytical tool for current accessibility implementation patterns but also demonstrates several forward-looking principles that extend beyond standard WCAG requirements. This section explores how the screen incorporates emerging accessibility concepts and measurement methodologies that anticipate future extensions to formal accessibility guidelines.
+
+\subsubsection{Quantitative accessibility measurement models}
+
+While WCAG provides a comprehensive qualitative framework for evaluating accessibility, it offers limited guidance on quantitative measurement. These quantitative models extend beyond standard WCAG evaluation approaches in several important ways:
+
+\begin{enumerate}
+    \item \textbf{Implementation effort quantification}: The screen formalizes the concept of accessibility implementation effort through lines of code (LOC) metrics, creating a reproducible measurement system for comparing framework approaches;
+    
+    \item \textbf{Complexity impact rating}: Through the explicit formulaic approach shown in the calculation methodology, the screen implements a structured system for converting qualitative complexity assessments to quantitative scores;
+    
+    \item \textbf{Weighted component scoring}: The implementation demonstrates a formal approach to weighting different accessibility components based on their relative importance, something not addressed in current WCAG criteria;
+    
+    \item \textbf{Comparative metrics visualization}: Through rating bars and visual indicators, the screen provides intuitive representation of comparative accessibility metrics that go beyond binary compliance assessment;
+    
+    \item \textbf{Implementation overhead tracking}: The formal tracking of accessibility implementation overhead represents a novel approach to evaluating the development cost of accessibility features.
+\end{enumerate}
+
+These quantitative models anticipate a potential future direction for accessibility standards that could incorporate more specific guidance on implementation effort and complexity measurement, helping development teams make more informed decisions about accessibility approaches.
+
+\begin{table}[ht]
+\caption{Implementation complexity quantification model}
+\label{tab:implementation_complexity_model}
+\centering
+\begin{tabular}{|C{3cm}|C{3.5cm}|C{3.5cm}|C{4cm}|}
+\hline
+\textbf{Complexity Level} & \textbf{Quantitative Score} & \textbf{Defining Characteristics} & \textbf{Development Impact} \\
+\hline
+Low & 5 & Minimal additional code, simple property additions & Minimal learning curve, straightforward implementation \\
+\hline
+Medium & 3 & Moderate code addition, some structural changes & Requires framework-specific knowledge, moderate learning curve \\
+\hline
+High & 1 & Significant code overhead, complex structural changes & Substantial learning curve, significant development overhead \\
+\hline
+\end{tabular}
+\end{table}
+
+\FloatBarrier
+
+\subsubsection{Framework transparency principles}
+\label{subsubsec:framework-transparency-principles}
+
+The Framework comparison screen implements several transparency principles that extend beyond current WCAG requirements but align with emerging trends in ethical accessibility implementation:
+
+\begin{enumerate}
+    \item \textbf{Methodological transparency}: The explicit presentation of evaluation methodologies creates accountability in accessibility assessment that goes beyond standard compliance checklists;
+    
+    \item \textbf{Implementation overhead disclosure}: By quantifying and visualizing the development overhead required for accessibility features, the screen addresses an often-overlooked aspect of accessibility implementation—the resource requirements;
+    
+    \item \textbf{Academic reference integration}: The implementation of formal academic citations and methodology references (shown in the References tab) establishes a scientific foundation for accessibility evaluation;
+    
+    \item \textbf{Platform-specific limitation disclosure}: Through explicit platform testing notes and version-specific results, the screen acknowledges the reality of platform differences in accessibility implementation.
+\end{enumerate}
+
+These transparency principles anticipate future accessibility guidelines that may require more explicit disclosure of evaluation methodologies and implementation limitations, helping users and developers make more informed decisions about accessibility approaches.
+
+\subsubsection{Future WCAG implementation anticipation}
+\label{subsubsec:future-wcag-anticipation}
+
+The Framework comparison screen implements several features that align with anticipated future directions for WCAG and mobile accessibility guidelines:
+
+\begin{enumerate}
+    \item \textbf{Quantitative implementation metrics}: As accessibility standards evolve, quantitative implementation metrics similar to those in the Framework comparison screen may become formalized in future guidelines;
+    
+    \item \textbf{Framework-specific guidance}: Future WCAG versions may provide more framework-specific implementation guidance, similar to the comparative approach demonstrated in the screen;
+    
+    \item \textbf{Developer experience consideration}: As accessibility becomes increasingly integrated into development workflows, future guidelines may address developer experience factors more explicitly;
+    
+    \item \textbf{Cross-platform consistency requirements}: Future mobile accessibility guidelines may formalize requirements for cross-platform consistency, building on the comparative approach demonstrated in the screen;
+    
+    \item \textbf{Implementation overhead disclosure}: Transparency about accessibility implementation overhead may become a formal requirement in future guidelines, particularly for enterprise and government applications.
+\end{enumerate}
+
+Through these forward-looking implementations, the Framework comparison screen not only provides valuable current analysis but also demonstrates a potential future direction for accessibility evaluation that integrates quantitative metrics, developer experience considerations, and transparent methodology.
+
+\begin{table}[ht]
+\caption{Potential future WCAG extensions anticipated by Framework comparison screen}
+\label{tab:future_wcag_extensions}
+\centering
+\begin{tabular}{|C{3.5cm}|C{3.5cm}|C{7cm}|}
+\hline
+\textbf{Potential Extension} & \textbf{Current Implementation} & \textbf{Future Standards Implication} \\
+\hline
+Implementation Metrics & LOC and complexity quantification & Standardized metrics for implementation effort \\
+\hline
+Developer Experience & Learning curve and overhead assessment & Formal consideration of developer factors in accessibility \\
+\hline
+Cross-platform Consistency & Platform variance metrics & Requirements for consistent behavior across platforms \\
+\hline
+Empirical Validation & Device-specific testing protocols & Standardized testing methodologies and reproducibility requirements \\
+\hline
+Educational Requirements & Pattern visualization and explanation & Formal requirements for accessibility knowledge transfer \\
+\hline
+\end{tabular}
+\end{table}
 
 \newpage
