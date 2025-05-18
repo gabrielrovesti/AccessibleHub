@@ -1,0 +1,3 @@
+- Check if the (i) are as big as arrow
+- Test the app entirely to find problems and repetitions with hints
+- Build it finally and have the apk ready
