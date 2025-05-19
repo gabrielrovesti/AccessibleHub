@@ -4578,21 +4578,21 @@ The Framework comparison screen's formal methodology extends the Master Thesis' 
 
 \FloatBarrier
 
-\subsubsection{Component inventory and WCAG/MCAG mapping}
+\subsubsection{Component inventory and WCAG/MCAG/WCAG2Mobile mapping}
 
-Table~\ref{tab:framework_comparison_mapping} provides a formal mapping between the UI components, their semantic roles, the specific WCAG 2.2 criteria they address, and their React Native implementation properties.
+Table~\ref{tab:framework_comparison_mapping} provides a formal mapping between the UI components, their semantic roles, the specific WCAG 2.2 criteria they address, their WCAG2Mobile considerations, and their React Native implementation properties.
 
-\begin{longtable}[c]{|C{2.5cm}|C{2cm}|C{2.8cm}|C{2.8cm}|C{4.5cm}|}
-\caption{Framework comparison screen component-criteria mapping}
+\begin{longtable}[c]{|C{2.5cm}|C{2cm}|C{2.8cm}|C{2.8cm}|C{4.7cm}|}
+\caption{Framework comparison screen component-criteria mapping with WCAG2Mobile considerations}
 \label{tab:framework_comparison_mapping}\\
 \hline
-\textbf{Component} & \textbf{Semantic Role} & \textbf{WCAG 2.2 Criteria} & \textbf{MCAG Considerations} & \textbf{Implementation Properties} \\
+\textbf{Component} & \textbf{Semantic Role} & \textbf{WCAG 2.2 Criteria} & \textbf{WCAG2Mobile Considerations} & \textbf{Implementation Properties} \\
 \hline
 \endfirsthead
 \multicolumn{5}{c}%
 {{\bfseries Table \thetable\ -- continued from previous page}} \\
 \hline
-\textbf{Component} & \textbf{Semantic Role} & \textbf{WCAG 2.2 Criteria} & \textbf{MCAG Considerations} & \textbf{Implementation Properties} \\
+\textbf{Component} & \textbf{Semantic Role} & \textbf{WCAG 2.2 Criteria} & \textbf{WCAG2Mobile Considerations} & \textbf{Implementation Properties} \\
 \hline
 \endhead
 \hline
@@ -4600,29 +4600,31 @@ Table~\ref{tab:framework_comparison_mapping} provides a formal mapping between t
 \endfoot
 \hline
 \endlastfoot
-Hero Title & heading & 1.4.3 Contrast (AA)\newline 2.4.6 Headings (AA) & Text readability on variable screen sizes & \texttt{accessibility \ Role="header"} \\
+Hero Title & heading & 1.4.3 Contrast (AA)\newline 2.4.6 Headings (AA) & SC 2.4.6 applied to screens rather than pages; Mobile-specific view context & \texttt{accessibility \ Role="header"} \\
 \hline
-Hero Subtitle & text & 1.4.3 Contrast (AA) & Content description & Text styling with semantic connection to title \\
+Hero Subtitle & text & 1.4.3 Contrast (AA) & Content description in mobile screen context & Text styling with semantic connection to title \\
 \hline
-Framework Selection Buttons & button & 1.4.3 Contrast (AA)\newline 2.5.8 Target Size (AA)\newline 4.1.2 Name, Role, Value (A) & Touch target size\newline Framework choice & \texttt{accessibility \ Role="button"},\newline \texttt{accessibility \ Label},\newline \texttt{accessibility \ State=\{\{selected: ...\}\}} \\
+Framework Selection Buttons & button & 1.4.3 Contrast (AA)\newline 2.5.8 Target Size (AA)\newline 4.1.2 Name, Role, Value (A) & SC 2.5.8 for mobile touch targets; SC 4.1.2 adapted for mobile platform accessibility services & \texttt{accessibility \ Role="button"},\newline \texttt{accessibility \ Label},\newline \texttt{accessibility \ State=\{\{selected: ...\}\}} \\
 \hline
-Category Tabs & tab & 1.4.3 Contrast (AA)\newline 4.1.2 Name, Role, Value (A) & Categorical organization & \texttt{accessibility \ Role="tab"},\newline \texttt{accessibility \ State=\{\{selected: ...\}\}} \\
+Category Tabs & tab & 1.4.3 Contrast (AA)\newline 4.1.2 Name, Role, Value (A) & Mobile navigation patterns; Screen-specific tab patterns & \texttt{accessibility \ Role="tab"},\newline \texttt{accessibility \ State=\{\{selected: ...\}\}} \\
 \hline
-Tab Icons & none & 1.1.1 Non-text Content (A) & Reduction of unnecessary focus stops & \texttt{importantFor \ Accessibility="no-hide \ descendants"} \\
+Tab Icons & none & 1.1.1 Non-text Content (A) & SC 1.1.1 applied to reduce unnecessary focus stops in mobile screen reader navigation & \texttt{importantFor \ Accessibility="no-hide \ descendants"} \\
 \hline
-Framework Info Card & none & 1.3.1 Info and Relationships (A)\newline 1.4.3 Contrast (AA) & Content grouping & Semantic container with proper styling \\
+Framework Info Card & none & 1.3.1 Info and Relationships (A)\newline 1.4.3 Contrast (AA) & SC 1.3.1 adapted for view-specific information grouping & Semantic container with proper styling \\
 \hline
-Statistic Cards & button & 1.4.3 Contrast (AA)\newline 4.1.2 Name, Role, Value (A) & Information presentation\newline Touch target size & \texttt{accessibility \ Role="button"},\newline \texttt{accessibility \ Label} \\
+Statistic Cards & button & 1.4.3 Contrast (AA)\newline 4.1.2 Name, Role, Value (A) & Information presentation in mobile context; SC 2.5.8 for mobile touch targets & \texttt{accessibility \ Role="button"},\newline \texttt{accessibility \ Label} \\
 \hline
-Rating Bar & progressbar & 1.4.3 Contrast (AA)\newline 4.1.2 Name, Role, Value (A) & Progress visualization & \texttt{accessibility \ Role="progressbar"},\newline \texttt{accessibilityLabel} \\
+Rating Bar & progressbar & 1.4.3 Contrast (AA)\newline 4.1.2 Name, Role, Value (A) & Progress visualization in mobile context & \texttt{accessibility \ Role="progressbar"},\newline \texttt{accessibility \ Label} \\
 \hline
-Info Button & button & 1.4.3 Contrast (AA)\newline 4.1.2 Name, Role, Value (A) & Information access & \texttt{accessibility \ Role="button"},\newline \texttt{accessibilityLabel} \\
+Info Button & button & 1.4.3 Contrast (AA)\newline 4.1.2 Name, Role, Value (A) & SC 4.1.2 applied to mobile touch affordances & \texttt{accessibility \ Role="button"},\newline \texttt{accessibility \ Label} \\
 \hline
-Modal Dialog & dialog & 2.4.3 Focus Order (A)\newline 4.1.2 Name, Role, Value (A) & Keyboard trap prevention & \texttt{accessibilityView \ IsModal},\newline Focus management implementation \\
+Modal Dialog & dialog & 2.4.3 Focus Order (A)\newline 4.1.2 Name, Role, Value (A) & SC 2.4.3 adapted for mobile screen navigation; Mobile view modal context & \texttt{accessibility \ ViewIsModal},\newline Focus management implementation \\
 \hline
-Modal Tabs & tablist & 2.4.7 Focus Visible (AA)\newline 4.1.2 Name, Role, Value (A) & Touch interaction & \texttt{accessibility \ Role="tablist"},\newline \texttt{accessibility \ State=\{\{selected: isActive\}\}} \\
+Modal Tabs & tablist & 2.4.7 Focus Visible (AA)\newline 4.1.2 Name, Role, Value (A) & Mobile-specific tab interface patterns & \texttt{accessibility \ Role="tablist"},\newline \texttt{accessibility \ State=\{\{selected: isActive\}\}} \\
 \hline
 \end{longtable}
+
+\FloatBarrier
 
 \subsubsection{Formal methodology system implementation}
 
@@ -4743,7 +4745,7 @@ The framework data structure implements several key features:
     
     \item \textbf{Visual state indication}: The selected framework is visually indicated through background color changes and maintains this state for screen readers via \texttt{accessibilityState};
     
-    \item \textbf{Feature categorization}: Framework features are consistently categorized into core attributes (Language, Learning Curve, Hot Reload), creating a systematic comparison structure;
+    \item \textbf{Feature categorization}: Framework features are consistently categorized into core attributes (\texttt{Language, Learning Curve, Hot Reload}), creating a systematic comparison structure;
     
     \item \textbf{Quantitative representation}: Features include both qualitative descriptions (e.g., "Moderate" learning curve) and quantitative indicators where applicable, enabling objective comparison.
 \end{enumerate}
@@ -4904,19 +4906,19 @@ This accessible modal implementation ensures that complex information like metho
 
 \subsubsection{Screen reader support analysis}
 
-Table~\ref{tab:framework_comparison_screen_reader} presents results from systematic testing of the Framework comparison screen with screen readers on both iOS and Android platforms.
+Table~\ref{tab:framework_comparison_screen_reader} presents results from systematic testing of the Framework comparison screen with screen readers on both iOS and Android platforms, addressing WCAG2Mobile's emphasis on platform-specific accessibility services.
 
 \begin{longtable}[c]{|C{2.8cm}|C{3.5cm}|C{3.5cm}|C{4cm}|}
-\caption{Framework comparison screen screen reader testing results}
+\caption{Framework comparison screen screen reader testing with WCAG2Mobile considerations}
 \label{tab:framework_comparison_screen_reader}\\
 \hline
-\textbf{Test Case} & \textbf{VoiceOver (iOS 16)} & \textbf{TalkBack (Android 14-15)} & \textbf{WCAG Criteria Addressed} \\
+\textbf{Test Case} & \textbf{VoiceOver (iOS 16)} & \textbf{TalkBack (Android 14-15)} & \textbf{WCAG2Mobile Considerations} \\
 \hline
 \endfirsthead
 \multicolumn{4}{c}%
 {{\bfseries Table \thetable\ -- continued from previous page}} \\
 \hline
-\textbf{Test Case} & \textbf{VoiceOver (iOS 16)} & \textbf{TalkBack (Android 14-15)} & \textbf{WCAG Criteria Addressed} \\
+\textbf{Test Case} & \textbf{VoiceOver (iOS 16)} & \textbf{TalkBack (Android 14-15)} & \textbf{WCAG2Mobile Considerations} \\
 \hline
 \endhead
 \hline
@@ -4924,31 +4926,33 @@ Table~\ref{tab:framework_comparison_screen_reader} presents results from systema
 \endfoot
 \hline
 \endlastfoot
-Hero Title & \ding{51} Announces ``Framework Comparison, heading'' & \ding{51} Announces ``Framework Comparison, heading'' & 1.3.1 Info and Relationships (A), 2.4.6 Headings and Labels (AA) \\
+Hero Title & {\ding{51}} Announces ``Framework Comparison, heading'' & {\ding{51}} Announces ``Framework Comparison, heading'' & SC 2.4.6 applied to screens rather than pages; Proper heading role in mobile context \\
 \hline
-Framework Selection & \ding{51} Announces framework name and selection state & \ding{51} Announces framework name and selection state & 4.1.2 Name, Role, Value (A) \\
+Framework Selection & {\ding{51}} Announces framework name and selection state & {\ding{51}} Announces framework name and selection state & SC 4.1.2 adapted for mobile platform accessibility services; State changes properly announced \\
 \hline
-Category Tabs & \ding{51} Announces tab name and selection state & \ding{51} Announces tab name and selection state & 4.1.2 Name, Role, Value (A) \\
+Category Tabs & {\ding{51}} Announces tab name and selection state & {\ding{51}} Announces tab name and selection state & Mobile-specific tab navigation patterns; Platform accessibility service integration \\
 \hline
-Framework Info & \ding{51} Announces framework details in logical order & \ding{51} Announces framework details in logical order & 1.3.1 Info and Relationships (A), 1.3.2 Meaningful Sequence (A) \\
+Framework Info & {\ding{51}} Announces framework details in logical order & {\ding{51}} Announces framework details in logical order & SC 1.3.1 and 1.3.2 adapted for mobile view structure and reading sequence \\
 \hline
-Statistic Cards & \ding{51} Announces label and value & \ding{51} Announces label and value & 1.3.1 Info and Relationships (A) \\
+Statistic Cards & {\ding{51}} Announces label and value & {\ding{51}} Announces label and value & Mobile-specific information presentation; Compact data communication \\
 \hline
-Rating Bars & \ding{51} Announces value and range & \ding{51} Announces value and range & 1.3.1 Info and Relationships (A), 4.1.2 Name, Role, Value (A) \\
+Rating Bars & {\ding{51}} Announces value and range & {\ding{51}} Announces value and range & SC 4.1.2 implemented for mobile progress visualization; Platform-specific value reporting \\
 \hline
-Info Buttons & \ding{51} Announces purpose and action & \ding{51} Announces purpose and action & 2.4.4 Link Purpose (In Context) (A), 2.4.9 Link Purpose (Link Only) (AAA) \\
+Info Buttons & {\ding{51}} Announces purpose and action & {\ding{51}} Announces purpose and action & SC 2.4.4 applied to mobile touch affordances; Platform-specific action indication \\
 \hline
-Modal Dialog Opening & \ding{51} Focus moves to dialog title & \ding{51} Focus moves to dialog title & 2.4.3 Focus Order (A) \\
+Modal Dialog Opening & {\ding{51}} Focus moves to dialog title & {\ding{51}} Focus moves to dialog title & SC 2.4.3 adapted for mobile screen navigation; Mobile view modal context \\
 \hline
-Modal Tab Navigation & \ding{51} Announces tab selection state & \ding{51} Announces tab selection state & 4.1.2 Name, Role, Value (A) \\
+Modal Tab Navigation & {\ding{51}} Announces tab selection state & {\ding{51}} Announces tab selection state & Mobile-specific tab interface patterns; Platform-specific control behavior \\
 \hline
-Implementation Examples & \ding{51} Announces code examples as text blocks & \ding{51} Announces code examples as text blocks & 1.3.1 Info and Relationships (A) \\
+Implementation Examples & {\ding{51}} Announces code examples as text blocks & {\ding{51}} Announces code examples as text blocks & SC 1.3.1 adapted for mobile code presentation; Platform-specific text handling \\
 \hline
-Color-coded Complexity & \ding{51} Announces complexity level, not just color & \ding{51} Announces complexity level, not just color & 1.4.1 Use of Color (A) \\
+Color-coded Complexity & {\ding{51}} Announces complexity level, not just color & {\ding{51}} Announces complexity level, not just color & SC 1.4.1 implemented for mobile view contexts; Platform-specific color handling \\
 \hline
 \end{longtable}
 
-The implementation addresses several key screen reader considerations:
+\FloatBarrier
+
+The implementation addresses several key screen reader considerations compliant to MCAG and WCAG2Mobile:
 
 \begin{enumerate}
     \item \textbf{State communication}: Selection states for frameworks and tabs are explicitly communicated via \texttt{accessibilityState}, ensuring screen reader users understand current selection;
@@ -5011,19 +5015,19 @@ This analysis reveals that implementing comprehensive accessibility for the Fram
 
 \subsubsection{WCAG conformance by principle}
 
-Table~\ref{tab:framework_comparison_wcag} provides a detailed analysis of WCAG 2.2 compliance by principle for the Framework comparison screen:
+Table~\ref{tab:framework_comparison_wcag2mobile} provides a detailed analysis of WCAG 2.2 compliance by principle for the Framework comparison screen, with specific attention to WCAG2Mobile interpretations:
 
 \begin{longtable}[c]{|C{2.5cm}|C{3.8cm}|C{3.2cm}|C{5.2cm}|}
-\caption{Framework comparison screen WCAG compliance analysis by principle}
-\label{tab:framework_comparison_wcag}\\
+\caption{Framework comparison screen WCAG compliance with WCAG2Mobile interpretations}
+\label{tab:framework_comparison_wcag2mobile}\\
 \hline
-\textbf{Principle} & \textbf{Description} & \textbf{Implementation Level} & \textbf{Key Success Criteria} \\
+\textbf{Principle} & \textbf{Description} & \textbf{Implementation Level} & \textbf{Key Success Criteria with Mobile Context} \\
 \hline
 \endfirsthead
 \multicolumn{4}{c}%
 {{\bfseries Table \thetable\ -- continued from previous page}} \\
 \hline
-\textbf{Principle} & \textbf{Description} & \textbf{Implementation Level} & \textbf{Key Success Criteria} \\
+\textbf{Principle} & \textbf{Description} & \textbf{Implementation Level} & \textbf{Key WCAG2Mobile Interpretations} \\
 \hline
 \endhead
 \hline
@@ -5031,17 +5035,19 @@ Table~\ref{tab:framework_comparison_wcag} provides a detailed analysis of WCAG 2
 \endfoot
 \hline
 \endlastfoot
-1. Perceivable & Information and UI components must be presentable to users in ways they can perceive & 12/13 (92\%) & 1.1.1 Non-text Content (A)\newline 1.3.1 Info and Relationships (A)\newline 1.4.1 Use of Color (A)\newline 1.4.3 Contrast (Minimum) (AA)\newline 1.4.8 Visual Presentation (AAA) \\
+1. Perceivable & Information and UI components must be presentable to users in ways they can perceive & 12/13 (92\%) & SC 1.1.1 applied to reduce unnecessary focus stops\newline SC 1.3.1 adapted for view-specific information grouping\newline SC 1.4.1 implemented for mobile view contexts\newline SC 1.4.3 applied to mobile viewing conditions \\
 \hline
-2. Operable & UI components and navigation must be operable & 16/17 (94\%) & 2.4.3 Focus Order (A)\newline 2.4.4 Link Purpose (A)\newline 2.4.6 Headings and Labels (AA)\newline 2.4.7 Focus Visible (AA)\newline 2.5.8 Target Size (Minimum) (AA)\newline 2.4.8 Location (AAA)\newline 2.4.9 Link Purpose (Link Only) (AAA) \\
+2. Operable & UI components and navigation must be operable & 16/17 (94\%) & SC 2.4.3 adapted for mobile screen navigation\newline SC 2.4.6 applied to screens rather than pages\newline SC 2.5.8 implemented for mobile touch targets\newline SC 2.4.7 applied to mobile focus indication \\
 \hline
-3. Understandable & Information and operation of UI must be understandable & 9/10 (90\%) & 3.2.1 On Focus (A)\newline 3.2.2 On Input (A)\newline 3.2.4 Consistent Identification (AA)\newline 3.3.2 Labels or Instructions (A)\newline 3.2.5 Change on Request (AAA) \\
+3. Understandable & Information and operation of UI must be understandable & 9/10 (90\%) & SC 3.1.1 and 3.1.2 adapted for mobile views\newline SC 3.2.1 and 3.2.2 applied to mobile input methods\newline SC 3.2.4 implemented for consistent mobile patterns\newline SC 3.3.2 adapted for mobile input contexts \\
 \hline
-4. Robust & Content must be robust enough to be interpreted by a wide variety of user agents & 3/3 (100\%) & 4.1.1 Parsing (A)\newline 4.1.2 Name, Role, Value (A)\newline 4.1.3 Status Messages (AA) \\
+4. Robust & Content must be robust enough to be interpreted by a wide variety of user agents & 3/3 (100\%) & SC 4.1.2 adapted for mobile platform accessibility services\newline SC 4.1.3 implemented for mobile status notifications \\
 \hline
 \end{longtable}
 
-The WCAG compliance analysis in Table~\ref{tab:framework_comparison_wcag} demonstrates exceptional conformance across all principles, with particular strength in the Robust principle (100\% compliance). The implementation of multiple AAA criteria, including 1.4.8 (Visual Presentation), 2.4.8 (Location), 2.4.9 (Link Purpose - Link Only), and 3.2.5 (Change on Request) exceeds standard requirements to create an enhanced user experience for people with disabilities. 
+\FloatBarrier
+
+The WCAG compliance analysis in Table~\ref{tab:framework_comparison_wcag2mobile} demonstrates exceptional conformance across all principles, with particular strength in the Robust principle (100\% compliance). The implementation of multiple AAA criteria, including 1.4.8 (Visual Presentation), 2.4.8 (Location), 2.4.9 (Link Purpose - Link Only), and 3.2.5 (Change on Request) exceeds standard requirements to create an enhanced user experience for people with disabilities. 
 The Framework comparison screen achieves high compliance across all WCAG principles, with particular strength in the Perceivable, Operable, and Robust principles.
 
 \subsubsection{Mobile-specific considerations}
