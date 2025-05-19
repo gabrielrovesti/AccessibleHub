@@ -329,7 +329,7 @@ featureDescription: {
                 onPress={goPrevImage}
                 disabled={currentImage === 1}
                 accessibilityRole="button"
-                accessibilityLabel="Previous image"
+                accessibilityLabel="Navigate to previous image in gallery"
                 accessibilityState={{ disabled: currentImage === 1 }}
               >
                 <Ionicons
@@ -355,7 +355,7 @@ featureDescription: {
                 onPress={goNextImage}
                 disabled={currentImage === images.length}
                 accessibilityRole="button"
-                accessibilityLabel="Next image"
+                accessibilityLabel="Navigate to next image in gallery"
                 accessibilityState={{ disabled: currentImage === images.length }}
               >
                 <Ionicons

@@ -390,7 +390,7 @@ export default function AccessibleDialogExample() {
               style={themedStyles.demoButton}
               onPress={() => setShowDialog(true)}
               accessibilityRole="button"
-              accessibilityLabel="Open example dialog"
+              accessibilityLabel="Open example dialog with dialog options"
             >
               <Text style={themedStyles.demoButtonText}>Open Dialog</Text>
             </TouchableOpacity>

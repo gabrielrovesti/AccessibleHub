@@ -34,8 +34,6 @@ export default function AccessibleFormExample() {
   <TextInput
     value={formData.name}
     accessibilityLabel="Enter name"
-    accessibilityHint="Type full
-    name"
   />
 
   {/* Radio Group */}
@@ -401,7 +399,6 @@ export default function AccessibleFormExample() {
                value={formData.name}
                onChangeText={(text) => setFormData((prev) => ({ ...prev, name: text }))}
                accessibilityLabel="Enter your name"
-               accessibilityHint="Type your full name"
              />
              {errors.name && (
                <View style={styles.errorMessage} accessibilityRole="alert">
@@ -423,7 +420,6 @@ export default function AccessibleFormExample() {
                textContentType="emailAddress"
                autoCapitalize="none"
                accessibilityLabel="Enter your email"
-               accessibilityHint="Type your email address"
              />
              {errors.email && (
                <View style={styles.errorMessage} accessibilityRole="alert">
@@ -501,7 +497,7 @@ export default function AccessibleFormExample() {
                onPress={() => setShowBirthDatePicker(true)}
                accessibilityRole="button"
                accessibilityLabel="Select birth date"
-               accessibilityHint="Opens a date picker"
+             accessibilityHint="Opens a date picker"
              >
                <Text style={{ color: colors.text }}>
                  {formData.birthDate
@@ -641,7 +637,6 @@ export default function AccessibleFormExample() {
               accessibilityRole="button"
               accessibilityState={{ disabled: !formDataComplete }}
               accessibilityLabel="Submit form"
-              accessibilityHint="Double tap to submit the form"
             >
               <Text style={[styles.submitButtonText, { color: colors.background }]}>
                 Submit
