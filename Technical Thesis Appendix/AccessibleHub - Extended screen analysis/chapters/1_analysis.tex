@@ -689,7 +689,7 @@ Table~\ref{tab:buttons_component_mapping} provides a formal mapping between the 
 \caption{Buttons screen component-criteria mapping with WCAG2Mobile considerations}
 \label{tab:buttons_component_mapping}\\
 \hline
-\textbf{Component} & \textbf{Semantic Role} & \textbf{WCAG 2.2 Criteria} & \textbf{WCAG2Mobile Considerations} & \textbf{Implementation Properties} \\
+\textbf{Component and Location} & \textbf{Semantic Role} & \textbf{WCAG 2.2 Criteria} & \textbf{WCAG2Mobile Considerations} & \textbf{Implementation Properties} \\
 \hline
 \endfirsthead
 \multicolumn{5}{c}%
@@ -703,19 +703,19 @@ Table~\ref{tab:buttons_component_mapping} provides a formal mapping between the 
 \endfoot
 \hline
 \endlastfoot
-Hero Title & heading & 1.4.3 Contrast (AA)\newline 2.4.6 Headings (AA) & Mobile-specific view context; Screen title differentiation & \texttt{accessibility \ Role="header"} \\
+Hero Title (top: "Interactive Example") & heading & 1.4.3 Contrast (AA)\newline 2.4.6 Headings (AA) & Mobile-specific view context; Screen title differentiation & \texttt{accessibility \ Role="header"} \\
 \hline
-Demo Button & button & 1.4.3 Contrast (AA)\newline 2.5.8 Target Size (AA)\newline 2.5.5 Target Size (Enhanced) (AAA)\newline 4.1.2 Name, Role, Value (A) & Touch target optimization; Haptic feedback; Platform-specific button behavior & \texttt{accessibility \ Role="button"},\newline \texttt{accessibility \ Label="Submit form"},\newline \texttt{minHeight: 44} \\
+Demo Button (blue "Submit" button in demo section) & button & 1.4.3 Contrast (AA)\newline 2.5.8 Target Size (AA)\newline 2.5.5 Target Size (Enhanced) (AAA)\newline 4.1.2 Name, Role, Value (A) & Touch target optimization; Haptic feedback; Platform-specific button behavior & \texttt{accessibility \ Role="button"},\newline \texttt{accessibility \ Label="Submit form"},\newline \texttt{minHeight: 44} \\
 \hline
-Code Snippet & text & 1.3.1 Info and Relationships (A) & Content structure preservation in mobile context & \texttt{accessibility \ Role="text"},\newline \texttt{accessibility \ Label= "Button implementation code"} \\
+Code Snippet (dark code blocks showing implementation) & text & 1.3.1 Info and Relationships (A) & Content structure preservation in mobile context & \texttt{accessibility \ Role="text"},\newline \texttt{accessibility \ Label= "Button implementation code"} \\
 \hline
-Copy Button & button & 1.4.3 Contrast (AA)\newline 4.1.3 Status Messages (AA) & Touch feedback for mobile interactions; Mobile platform notifications & \texttt{accessibility \ Role="button"},\newline \texttt{accessibility \ Label="\{copied ? "Code copied" : "Copy code example"\}"} \\
+Copy Button (top right of code blocks) & button & 1.4.3 Contrast (AA)\newline 4.1.3 Status Messages (AA) & Touch feedback for mobile interactions; Mobile platform notifications & \texttt{accessibility \ Role="button"},\newline \texttt{accessibility \ Label="\{copied ? "Code copied" : "Copy code example"\}"} \\
 \hline
-Success Modal & alertdialog & 4.1.3 Status Messages (AA) & Mobile-specific notification pattern; Mobile platform focus management & \texttt{accessibility \ ViewIsModal},\newline \texttt{accessibility \ LiveRegion="polite"} \\
+Success Modal (popup after submitting button) & alertdialog & 4.1.3 Status Messages (AA) & Mobile-specific notification pattern; Mobile platform focus management & \texttt{accessibility \ ViewIsModal},\newline \texttt{accessibility \ LiveRegion="polite"} \\
 \hline
-Feature Cards & none & 1.3.1 Info and Relationships (A) & Mobile-specific grouping for screen context & \texttt{accessibility \ Role="text"} \\
+Feature Cards (bottom: Minimum Touch Target, etc.) & none & 1.3.1 Info and Relationships (A) & Mobile-specific grouping for screen context & \texttt{accessibility \ Role="text"} \\
 \hline
-Feature Icons & none & 1.1.1 Non-text Content (A) & Reduction of unnecessary focus stops to optimize mobile navigation & \texttt{accessibility \ Elements \ Hidden=true},\newline \texttt{importantFor \ Accessibility="no-hide \ -descendants"} \\
+Feature Icons (icons within feature cards) & none & 1.1.1 Non-text Content (A) & Reduction of unnecessary focus stops to optimize mobile navigation & \texttt{accessibility \ Elements \ Hidden=true},\newline \texttt{importantFor \ Accessibility="no-hide \ -descendants"} \\
 \end{longtable}
 \FloatBarrier
 
@@ -886,7 +886,7 @@ Table~\ref{tab:form_component_mapping} provides a comprehensive mapping between 
 \caption{Form screen component-criteria mapping with WCAG2Mobile considerations}
 \label{tab:form_component_mapping}\\
 \hline
-\textbf{Component} & \textbf{Semantic Role} & \textbf{WCAG 2.2 Criteria} & \textbf{WCAG2Mobile Considerations} & \textbf{Implementation Properties} \\
+\textbf{Component and Location} & \textbf{Semantic Role} & \textbf{WCAG 2.2 Criteria} & \textbf{WCAG2Mobile Considerations} & \textbf{Implementation Properties} \\
 \hline
 \endfirsthead
 \multicolumn{4}{c}%
@@ -900,19 +900,19 @@ Table~\ref{tab:form_component_mapping} provides a comprehensive mapping between 
 \endfoot
 \hline
 \endlastfoot
-Text Input & textbox & 1.3.1 Info and Relationships (A)\newline 3.3.2 Labels or Instructions (A)\newline 3.3.5 Help (AAA) & Mobile input context; Mobile keyboard adaptation & \texttt{accessibility \ Label="Enter your name"} \\
+Text Input (Name and Email fields) & textbox & 1.3.1 Info and Relationships (A)\newline 3.3.2 Labels or Instructions (A)\newline 3.3.5 Help (AAA) & Mobile input context; Mobile keyboard adaptation & \texttt{accessibility \ Label="Enter your name"} \\
 \hline
-Radio Buttons & radio & 1.3.1 Info and Relationships (A)\newline 4.1.2 Name, Role, Value (A) & Mobile touch selection patterns; Platform-specific state behavior & \texttt{accessibility \ Role="radio"},\newline \texttt{accessibility \ State=\{\{checked: selected\}\}} \\
+Radio Buttons (Male/Female gender options) & radio & 1.3.1 Info and Relationships (A)\newline 4.1.2 Name, Role, Value (A) & Mobile touch selection patterns; Platform-specific state behavior & \texttt{accessibility \ Role="radio"},\newline \texttt{accessibility \ State=\{\{checked: selected\}\}} \\
 \hline
-Radio Group & radiogroup & 1.3.1 Info and Relationships (A) & Mobile-specific control grouping & \texttt{accessibility \ Role="radiogroup"} \\
+Radio Group (Gender selection container) & radiogroup & 1.3.1 Info and Relationships (A) & Mobile-specific control grouping & \texttt{accessibility \ Role="radiogroup"} \\
 \hline
-Checkboxes & checkbox & 1.3.1 Info and Relationships (A)\newline 4.1.2 Name, Role, Value (A) & Mobile touch selection patterns & \texttt{accessibility \ Role="checkbox"},\newline \texttt{accessibility \ State=\{\{checked: selected\}\}} \\
+Checkboxes (Morning/Afternoon/time options) & checkbox & 1.3.1 Info and Relationships (A)\newline 4.1.2 Name, Role, Value (A) & Mobile touch selection patterns & \texttt{accessibility \ Role="checkbox"},\newline \texttt{accessibility \ State=\{\{checked: selected\}\}} \\
 \hline
-Date Picker & button & 3.2.2 On Input (A)\newline 3.3.2 Labels or Instructions (A) & Native mobile date picker integration & \texttt{accessibility \ Role="button"},\newline \texttt{accessibility \ Label="Select birth date"} \\
+Date Picker (Birth Date field) & button & 3.2.2 On Input (A)\newline 3.3.2 Labels or Instructions (A) & Native mobile date picker integration & \texttt{accessibility \ Role="button"},\newline \texttt{accessibility \ Label="Select birth date"} \\
 \hline
-Error Messages & alert & 3.3.1 Error Identification (A)\newline 3.3.3 Error Suggestion (AA) & Mobile-specific error notification patterns & \texttt{accessibility \ Role="alert"} \\
+Error Messages (feedback when forms incomplete) & alert & 3.3.1 Error Identification (A)\newline 3.3.3 Error Suggestion (AA) & Mobile-specific error notification patterns & \texttt{accessibility \ Role="alert"} \\
 \hline
-Submit Button & button & 3.3.4 Error Prevention (AA)\newline 2.5.8 Target Size (AA) & Mobile form submission patterns; Mobile touch target sizing & \texttt{accessibility \ Role="button"},\newline \texttt{accessibility \ State=\{\{disabled: !formDataComplete\}\}} \\
+Submit Button (form submission at bottom) & button & 3.3.4 Error Prevention (AA)\newline 2.5.8 Target Size (AA) & Mobile form submission patterns; Mobile touch target sizing & \texttt{accessibility \ Role="button"},\newline \texttt{accessibility \ State=\{\{disabled: !formDataComplete\}\}} \\
 \end{longtable}
 \FloatBarrier
 
@@ -1094,7 +1094,7 @@ Table~\ref{tab:dialog_component_mapping} provides a comprehensive mapping betwee
 \caption{Dialog screen component-criteria mapping with WCAG2Mobile considerations}
 \label{tab:dialog_component_mapping}\\
 \hline
-\textbf{Component} & \textbf{Semantic Role} & \textbf{WCAG 2.2 Criteria} & \textbf{WCAG2Mobile Considerations} & \textbf{Implementation Properties} \\
+\textbf{Component and Location} & \textbf{Semantic Role} & \textbf{WCAG 2.2 Criteria} & \textbf{WCAG2Mobile Considerations} & \textbf{Implementation Properties} \\
 \hline
 \endfirsthead
 \multicolumn{4}{c}%
@@ -1108,17 +1108,17 @@ Table~\ref{tab:dialog_component_mapping} provides a comprehensive mapping betwee
 \endfoot
 \hline
 \endlastfoot
-Dialog Trigger Button & button & 2.5.8 Target Size (AA)\newline 4.1.2 Name, Role, Value (A) & Mobile touch target optimization; Mobile action labeling & \texttt{accessibility \ Role="button"},\newline \texttt{accessibility \ Label="Open example dialog"},\newline \texttt{minHeight: 44} \\
+Dialog Trigger Button (blue "Open Dialog" button) & button & 2.5.8 Target Size (AA)\newline 4.1.2 Name, Role, Value (A) & Mobile touch target optimization; Mobile action labeling & \texttt{accessibility \ Role="button"},\newline \texttt{accessibility \ Label="Open example dialog"},\newline \texttt{minHeight: 44} \\
 \hline
-Modal Dialog & dialog & 2.4.3 Focus Order (A)\newline 4.1.2 Name, Role, Value (A) & Mobile view modal context; Mobile screen reader focus management & \texttt{accessibility \ ViewIsModal=true},\newline \texttt{accessibility \ LiveRegion="polite"} \\
+Modal Dialog (popup overlay when triggered) & dialog & 2.4.3 Focus Order (A)\newline 4.1.2 Name, Role, Value (A) & Mobile view modal context; Mobile screen reader focus management & \texttt{accessibility \ ViewIsModal=true},\newline \texttt{accessibility \ LiveRegion="polite"} \\
 \hline
-Dialog Title & header & 1.3.1 Info and Relationships (A)\newline 2.4.6 Headings and Labels (AA) & Mobile dialog context structuring & \texttt{accessibility \ Role="header"} \\
+Dialog Title (header within modal popup) & header & 1.3.1 Info and Relationships (A)\newline 2.4.6 Headings and Labels (AA) & Mobile dialog context structuring & \texttt{accessibility \ Role="header"} \\
 \hline
-Close Button & button & 2.1.2 No Keyboard Trap (A)\newline 2.5.8 Target Size (AA) & Mobile escape mechanism; Touch target sizing & \texttt{accessibility \ Role="button"},\newline \texttt{accessibility \ Label="Close dialog"} \\
+Close Button (X button in modal header) & button & 2.1.2 No Keyboard Trap (A)\newline 2.5.8 Target Size (AA) & Mobile escape mechanism; Touch target sizing & \texttt{accessibility \ Role="button"},\newline \texttt{accessibility \ Label="Close dialog"} \\
 \hline
-Dialog Actions & group & 1.3.1 Info and Relationships (A) & Mobile action button grouping & \texttt{accessibility \ Role="group"},\newline \texttt{accessibility \ Label="Dialog actions"} \\
+Dialog Actions (action buttons within modal) & group & 1.3.1 Info and Relationships (A) & Mobile action button grouping & \texttt{accessibility \ Role="group"},\newline \texttt{accessibility \ Label="Dialog actions"} \\
 \hline
-Success Notification & alert & 4.1.3 Status Messages (AA) & Mobile notification pattern & \texttt{accessibility \ Role="alert"} \\
+Success Notification (confirmation after dialog actions) & alert & 4.1.3 Status Messages (AA) & Mobile notification pattern & \texttt{accessibility \ Role="alert"} \\
 \end{longtable}
 \FloatBarrier
 
@@ -1272,7 +1272,7 @@ Table~\ref{tab:media_component_mapping} provides a comprehensive mapping between
 \multicolumn{4}{c}%
 {{\bfseries Table \thetable\ -- continued from previous page}} \\
 \hline
-\textbf{Component} & \textbf{Semantic Role} & \textbf{WCAG 2.2 Criteria} & \textbf{WCAG2Mobile Considerations} & \textbf{Implementation Properties} \\
+\textbf{Component and Location} & \textbf{Semantic Role} & \textbf{WCAG 2.2 Criteria} & \textbf{WCAG2Mobile Considerations} & \textbf{Implementation Properties} \\
 \hline
 \endhead
 \hline
@@ -1280,15 +1280,15 @@ Table~\ref{tab:media_component_mapping} provides a comprehensive mapping between
 \endfoot
 \hline
 \endlastfoot
-Image & image & 1.1.1 Non-text Content (A) & Mobile-specific image description; Platform-specific image role & \texttt{accessibility \ Role="image"},\newline \texttt{accessibility \ Label="A placeholder image (first example)"} \\
+Image (media display with checkmarks and interface elements) & image & 1.1.1 Non-text Content (A) & Mobile-specific image description; Platform-specific image role & \texttt{accessibility \ Role="image"},\newline \texttt{accessibility \ Label="A placeholder image (first example)"} \\
 \hline
-Navigation Controls & button & 2.1.1 Keyboard (A)\newline 2.5.8 Target Size (AA) & Mobile touch target sizing; Mobile navigation patterns & \texttt{accessibility \ Role="button"},\newline \texttt{accessibility \ Label="Previous image"},\newline \texttt{accessibility \ State=\{\{disabled: currentImage === 1\}\}} \\
+Navigation Controls (left/right arrow buttons for image navigation) & button & 2.1.1 Keyboard (A)\newline 2.5.8 Target Size (AA) & Mobile touch target sizing; Mobile navigation patterns & \texttt{accessibility \ Role="button"},\newline \texttt{accessibility \ Label="Previous image"},\newline \texttt{accessibility \ State=\{\{disabled: currentImage === 1\}\}} \\
 \hline
-Alt Text Button & button & 2.5.8 Target Size (AA)\newline 3.2.2 On Input (A) & Mobile button sizing; Mobile state change notification & \texttt{accessibility \ Role="button"},\newline \texttt{accessibility \ Label="Show alternative text"} \\
+Alt Text Button (blue "Hide Alt Text" button below image) & button & 2.5.8 Target Size (AA)\newline 3.2.2 On Input (A) & Mobile button sizing; Mobile state change notification & \texttt{accessibility \ Role="button"},\newline \texttt{accessibility \ Label="Show alternative text"} \\
 \hline
-Alt Text Display & text & 1.1.1 Non-text Content (A)\newline 1.3.1 Info and Relationships (A) & Mobile-specific text display; Mobile content structuring & \texttt{style=themedStyles.altTextContainer} \\
+Alt Text Display (text description below the alt text button) & text & 1.1.1 Non-text Content (A)\newline 1.3.1 Info and Relationships (A) & Mobile-specific text display; Mobile content structuring & \texttt{style= \ themedStyles.altText \ Container} \\
 \hline
-Position Announcements & none & 2.4.3 Focus Order (A)\newline 4.1.3 Status Messages (AA) & Mobile navigation sequence; Mobile screen reader announcements & \texttt{AccessibilityInfo. \ announce \ ForAccessibility(`Next image. Now showing image \${newIndex} of \${images.length}`)} \\
+Position Announcements (screen reader announcements during navigation) & none & 2.4.3 Focus Order (A)\newline 4.1.3 Status Messages (AA) & Mobile navigation sequence; Mobile screen reader announcements & \texttt{AccessibilityInfo. \ announce \ ForAccessibility(`Next image. Now showing image \${newIndex} of \${images.length}`)} \\
 \end{longtable}
 \FloatBarrier
 
@@ -1470,7 +1470,7 @@ Table~\ref{tab:advanced_component_mapping} provides a comprehensive mapping betw
 \multicolumn{4}{c}%
 {{\bfseries Table \thetable\ -- continued from previous page}} \\
 \hline
-\textbf{Component} & \textbf{Semantic Role} & \textbf{WCAG 2.2 Criteria} & \textbf{WCAG2Mobile Considerations} & \textbf{Implementation Properties} \\
+\textbf{Component and Location} & \textbf{Semantic Role} & \textbf{WCAG 2.2 Criteria} & \textbf{WCAG2Mobile Considerations} & \textbf{Implementation Properties} \\
 \hline
 \endhead
 \hline
@@ -1478,21 +1478,21 @@ Table~\ref{tab:advanced_component_mapping} provides a comprehensive mapping betw
 \endfoot
 \hline
 \endlastfoot
-Tab Container & tablist & 1.3.1 Info and Relationships (A)\newline 2.4.3 Focus Order (A) & Mobile tab navigation patterns; Mobile content grouping & \texttt{accessibility \ Role="tablist"},\newline \texttt{accessibility \ Label="Navigation tabs"} \\
+Tab Container (Section with three tabs) & tablist & 1.3.1 Info and Relationships (A)\newline 2.4.3 Focus Order (A) & Mobile tab navigation patterns; Mobile content grouping & \texttt{accessibility \ Role="tablist"},\newline \texttt{accessibility \ Label="Navigation tabs"} \\
 \hline
-Tab Item & tab & 4.1.2 Name, Role, Value (A)\newline 3.2.1 On Focus (A) & Mobile tab selection; Mobile touch interaction & \texttt{accessibility \ Role="tab"},\newline \texttt{accessibility \ Label="Select \${tab}"},\newline \texttt{accessibility \ State=\{\{selected: isSelected\}\}} \\
+Tab Item (Tab One, Tab Two, Tab Three buttons) & tab & 4.1.2 Name, Role, Value (A)\newline 3.2.1 On Focus (A) & Mobile tab selection; Mobile touch interaction & \texttt{accessibility \ Role="tab"},\newline \texttt{accessibility \ Label="Select \${tab}"},\newline \texttt{accessibility \ State=\{\{selected: isSelected\}\}} \\
 \hline
-Progress Bar & progressbar & 1.3.1 Info and Relationships (A)\newline 4.1.2 Name, Role, Value (A) & Mobile progress indication; Mobile value reporting & \texttt{accessibility \ Role="progressbar"},\newline \texttt{accessibility \ Label="Progress indicator"},\newline \texttt{accessibility \ Value=\{\{min: 0, max: 100, now: progress\}\}} \\
+Progress Bar (Progress Indicators section with values) & progressbar & 1.3.1 Info and Relationships (A)\newline 4.1.2 Name, Role, Value (A) & Mobile progress indication; Mobile value reporting & \texttt{accessibility \ Role="progressbar"},\newline \texttt{accessibility \ Label="Progress indicator"},\newline \texttt{accessibility \ Value=\{\{min: 0, max: 100, now: progress\}\}} \\
 \hline
-Alert Message & alert & 4.1.3 Status Messages (AA) & Mobile notification pattern; Mobile screen reader priority & \texttt{accessibility \ Role="alert"},\newline \texttt{accessibility \ LiveRegion="assertive"} \\
+Alert Message (status notifications during interactions) & alert & 4.1.3 Status Messages (AA) & Mobile notification pattern; Mobile screen reader priority & \texttt{accessibility \ Role="alert"},\newline \texttt{accessibility \ LiveRegion="assertive"} \\
 \hline
-Slider Container & none & 1.3.1 Info and Relationships (A) & Mobile slider context grouping & \texttt{accessible=true},\newline \texttt{accessibility \ Label="Slider control, current value \${sliderValue} percent"} \\
+Slider Container (slider component grouping) & none & 1.3.1 Info and Relationships (A) & Mobile slider context grouping & \texttt{accessible=true},\newline \texttt{accessibility \ Label="Slider control, current value \${sliderValue} percent"} \\
 \hline
-Slider Controls & button & 2.1.1 Keyboard (A)\newline 2.5.8 Target Size (AA) & Mobile alternative controls; Enhanced touch targets & \texttt{accessibility \ Role="button"},\newline \texttt{accessibility \ Label="Decrease value"},\newline \texttt{accessibility \ Hint="Decreases slider value by 5 percent"} \\
+Slider Controls (buttons for increasing/decreasing slider values) & button & 2.1.1 Keyboard (A)\newline 2.5.8 Target Size (AA) & Mobile alternative controls; Enhanced touch targets & \texttt{accessibility \ Role="button"},\newline \texttt{accessibility \ Label="Decrease value"},\newline \texttt{accessibility \ Hint="Decreases slider value by 5 percent"} \\
 \hline
-Slider Presets & button & 2.5.1 Pointer Gestures (A)\newline 2.5.7 Dragging Movements (AA) & Mobile alternative to dragging; Touch-based presets & \texttt{accessibility \ Role="button"},\newline \texttt{accessibility \ Label="Set value to \${value} percent"},\newline \texttt{accessibility \ State=\{\{selected: sliderValue === value\}\}} \\
+Slider Presets (preset value buttons for quick selection) & button & 2.5.1 Pointer Gestures (A)\newline 2.5.7 Dragging Movements (AA) & Mobile alternative to dragging; Touch-based presets & \texttt{accessibility \ Role="button"},\newline \texttt{accessibility \ Label="Set value to \${value} percent"},\newline \texttt{accessibility \ State=\{\{selected: sliderValue === value\}\}} \\
 \hline
-Visual Slider & none & 2.5.1 Pointer Gestures (A)\newline 2.5.7 Dragging Movements (AA) & Hidden from screen readers; Alternative controls provided & \texttt{importantFor \ Accessibility="no- \ hide-descendants"} \\
+Visual Slider (graphical slider interface) & none & 2.5.1 Pointer Gestures (A)\newline 2.5.7 Dragging Movements (AA) & Hidden from screen readers; Alternative controls provided & \texttt{importantFor \ Accessibility="no- \ hide-descendants"} \\
 \end{longtable}
 \FloatBarrier
 
