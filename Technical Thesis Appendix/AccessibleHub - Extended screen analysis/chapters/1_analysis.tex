@@ -1747,7 +1747,7 @@ Table~\ref{tab:best_practices_wcag2mobile_mapping} provides a formal mapping bet
 \caption{Best practices screen component-criteria mapping with WCAG2Mobile considerations}
 \label{tab:best_practices_wcag2mobile_mapping}\\
 \hline
-\textbf{Component} & \textbf{Semantic Role} & \textbf{WCAG 2.2 Criteria} & \textbf{WCAG2Mobile Considerations} & \textbf{Implementation Properties} \\
+\textbf{Component and Location} & \textbf{Semantic Role} & \textbf{WCAG 2.2 Criteria} & \textbf{WCAG2Mobile Considerations} & \textbf{Implementation Properties} \\
 \hline
 \endfirsthead
 \multicolumn{5}{c}%
@@ -1761,19 +1761,19 @@ Table~\ref{tab:best_practices_wcag2mobile_mapping} provides a formal mapping bet
 \endfoot
 \hline
 \endlastfoot
-Hero Title & heading & 1.4.3 Contrast (AA)\newline 2.4.6 Headings (AA) & SC 2.4.6 applied to screens rather than pages; Proper semantic structure in view context & \texttt{accessibility \ Role="header"} \\
+Hero Title (center: "Mobile Accessibility Best Practices") & heading & 1.4.3 Contrast (AA)\newline 2.4.6 Headings (AA) & SC 2.4.6 applied to screens rather than pages; Proper semantic structure in view context & \texttt{accessibility \ Role="header"} \\
 \hline
-Practice Cards & button & 1.4.3 Contrast (AA)\newline 2.5.8 Target Size (AA)\newline 2.5.5 Target Size (Enhanced) (AAA)\newline 4.1.2 Name, Role, Value (A) & SC 2.5.8 for mobile touch targets (min 44×44dp); SC 4.1.2 adapted for mobile platform accessibility services & \texttt{accessibility \ Role="button"},\newline \texttt{accessibility \ Label="[Practice]. [Description]"} \\
+Practice Cards (grid: WCAG Guidelines, Semantic Structure, etc.) & button & 1.4.3 Contrast (AA)\newline 2.5.8 Target Size (AA)\newline 2.5.5 Target Size (Enhanced) (AAA)\newline 4.1.2 Name, Role, Value (A) & SC 2.5.8 for mobile touch targets (min 44×44dp); SC 4.1.2 adapted for mobile platform accessibility services & \texttt{accessibility \ Role="button"},\newline \texttt{accessibility \ Label="[Practice]. [Description]"} \\
 \hline
-Category Icons & none & 1.1.1 Non-text Content (A) & SC 1.1.1 applied to reduce unnecessary focus stops; Efficiency in screen reader navigation sequence & \texttt{accessibility \ ElementsHidden=true} \\
+Category Icons (within cards: document, hand, eye icons) & none & 1.1.1 Non-text Content (A) & SC 1.1.1 applied to reduce unnecessary focus stops; Efficiency in screen reader navigation sequence & \texttt{accessibility \ ElementsHidden=true} \\
 \hline
-Badges (Documentation, Interactive Guide, etc.) & text & 1.4.3 Contrast (AA)\newline 1.3.1 Info and Relationships (A) & SC 1.3.1 applied to mobile views rather than pages; Descriptive labeling within view context & Inherited from parent button's \texttt{accessibility \ Label} \\
+Badges (top-right labels: Documentation, Interactive Guide, etc.) & text & 1.4.3 Contrast (AA)\newline 1.3.1 Info and Relationships (A) & SC 1.3.1 applied to mobile views rather than pages; Descriptive labeling within view context & Inherited from parent button's \texttt{accessibility \ Label} \\
 \hline
-Feature Items (with checkmark icons) & text & 1.3.1 Info and Relationships (A) & SC 1.3.1 adapted for view-specific information grouping; Semantic structure mapping for screen components & All related information inherited from parent element\\
+Feature Items (bulleted lists within cards) & text & 1.3.1 Info and Relationships (A) & SC 1.3.1 adapted for view-specific information grouping; Semantic structure mapping for screen components & All related information inherited from parent element\\
 \hline
-Chevron Icons & none & 1.1.1 Non-text Content (A) & SC 1.1.1 applied to reduce swipes in mobile screen reader navigation & \texttt{accessibility \ ElementsHidden=true},\newline \texttt{importantFor \ Accessibility= \ "no-hide-descendants"} \\
+Chevron Icons (right arrows in cards) & none & 1.1.1 Non-text Content (A) & SC 1.1.1 applied to reduce swipes in mobile screen reader navigation & \texttt{accessibility \ ElementsHidden=true},\newline \texttt{importantFor \ Accessibility= \ "no-hide-descendants"} \\
 \hline
-Screen Announcements & status & 4.1.3 Status Messages (AA) & SC 4.1.3 adapted for screen transitions in mobile context; Status changes announced through platform-specific services & \texttt{AccessibilityInfo. \ announceFor \ Accessibility} \\
+Screen Announcements (navigation feedback) & status & 4.1.3 Status Messages (AA) & SC 4.1.3 adapted for screen transitions in mobile context; Status changes announced through platform-specific services & \texttt{AccessibilityInfo. \ announceFor \ Accessibility} \\
 \end{longtable}
 \FloatBarrier
 
@@ -1969,6 +1969,8 @@ Table~\ref{tab:best_practices_wcag2mobile_by_principle} provides a detailed anal
 \end{longtable}
 \FloatBarrier
 
+The Best Practices screen shows strong WCAG2Mobile compliance with effective mobile adaptations. Robust (100\%) demonstrates perfect platform integration for screen transitions and accessibility services. Perceivable (92\%) reflects successful mobile-specific optimizations like reduced navigation elements and mobile viewing contrast considerations. Operable (88\%) shows good touch target implementation and swipe navigation optimization, with minor gaps in complex navigation patterns. Understandable (80\%) indicates room for improvement in mobile-optimized labeling and instruction clarity, typical for educational content where comprehensive information must fit mobile constraints.
+
 Table~\ref{tab:best_practices_wcag_by_level} categorizes the implementation by WCAG conformance levels:
 
 \begin{table}[ht]
@@ -2086,13 +2088,13 @@ Table~\ref{tab:guidelines_component_mapping} provides a formal mapping between t
 \caption{Guidelines screen component-criteria mapping with WCAG2Mobile considerations}
 \label{tab:guidelines_component_mapping}\\
 \hline
-\textbf{Component} & \textbf{Semantic Role} & \textbf{WCAG 2.2 Criteria} & \textbf{WCAG2Mobile Considerations} & \textbf{Implementation Properties} \\
+\textbf{Component and Location} & \textbf{Semantic Role} & \textbf{WCAG 2.2 Criteria} & \textbf{WCAG2Mobile Considerations} & \textbf{Implementation Properties} \\
 \hline
 \endfirsthead
 \multicolumn{5}{c}%
 {{\bfseries Table \thetable\ -- continued from previous page}} \\
 \hline
-\textbf{Component} & \textbf{Semantic Role} & \textbf{WCAG 2.2 Criteria} & \textbf{WCAG2Mobile Considerations} & \textbf{Implementation Properties} \\
+\textbf{Component and Location} & \textbf{Semantic Role} & \textbf{WCAG 2.2 Criteria} & \textbf{WCAG2Mobile Considerations} & \textbf{Implementation Properties} \\
 \hline
 \endhead
 \hline
@@ -2100,21 +2102,21 @@ Table~\ref{tab:guidelines_component_mapping} provides a formal mapping between t
 \endfoot
 \hline
 \endlastfoot
-Hero Title & heading & 1.4.3 Contrast (AA)\newline 2.4.6 Headings (AA)\newline 2.4.10 Section Headings (AAA) & Text readability across variable screen sizes; Header role in screen context rather than web page & \texttt{accessibility \ Role="header"} \\
+Hero Title (top: "WCAG 2.2 Guidelines") & heading & 1.4.3 Contrast (AA)\newline 2.4.6 Headings (AA)\newline 2.4.10 Section Headings (AAA) & Text readability across variable screen sizes; Header role in screen context rather than web page & \texttt{accessibility \ Role="header"} \\
 \hline
-Principle Cards & none & 1.3.1 Info and Relationships (A)\newline 1.4.3 Contrast (AA) & Grouping related information in screen context; Mobile-specific content association patterns & Inherited from parent container the proper structural context \\
+Principle Cards (sections: Perceivable, Operable, etc.) & none & 1.3.1 Info and Relationships (A)\newline 1.4.3 Contrast (AA) & Grouping related information in screen context; Mobile-specific content association patterns & Inherited from parent container the proper structural context \\
 \hline
-Principle Icons & none & 1.1.1 Non-text Content (A) & Reduction of unnecessary focus stops to optimize touch navigation; Efficiency in screen reader navigation sequence & \texttt{accessibility \ ElementsHidden=true},\newline \texttt{importantFor \ Accessibility= \ "no-hide-descendants"} \\
+Principle Icons (eye, hand icons within cards) & none & 1.1.1 Non-text Content (A) & Reduction of unnecessary focus stops to optimize touch navigation; Efficiency in screen reader navigation sequence & \texttt{accessibility \ ElementsHidden=true},\newline \texttt{importantFor \ Accessibility= \ "no-hide-descendants"} \\
 \hline
-Principle Title & text & 2.4.6 Headings and Labels (AA) & Clear section identification within mobile screen context & Text styling with semantic meaning \\
+Principle Title (blue headings: "Perceivable", "Operable") & text & 2.4.6 Headings and Labels (AA) & Clear section identification within mobile screen context & Text styling with semantic meaning \\
 \hline
-Principle Description & text & 1.3.1 Info and Relationships (A) & Descriptive content with relation to screen context rather than web page context & Proper text styling with semantic connection to title \\
+Principle Description (explanatory text under titles) & text & 1.3.1 Info and Relationships (A) & Descriptive content with relation to screen context rather than web page context & Proper text styling with semantic connection to title \\
 \hline
-Checklist Items & text & 1.3.1 Info and Relationships (A)\newline 1.3.2 Meaningful Sequence (A) & Logical grouping for mobile screen reading sequence; Touch-based navigation considerations & All related information inherited from parent \\
+Checklist Items (bulleted lists within cards) & text & 1.3.1 Info and Relationships (A)\newline 1.3.2 Meaningful Sequence (A) & Logical grouping for mobile screen reading sequence; Touch-based navigation considerations & All related information inherited from parent \\
 \hline
-Checkmark Icons & none & 1.1.1 Non-text Content (A) & Reduction of unnecessary focus stops for more efficient touch-based screen reader navigation & \texttt{accessibility \ ElementsHidden=true},\newline \texttt{importantFor \ Accessibility= \ "no-hide-descendants"} \\
+Checkmark Icons (green checks in lists) & none & 1.1.1 Non-text Content (A) & Reduction of unnecessary focus stops for more efficient touch-based screen reader navigation & \texttt{accessibility \ ElementsHidden=true},\newline \texttt{importantFor \ Accessibility= \ "no-hide-descendants"} \\
 \hline
-Card Container & none & 2.5.5 Target Size (Enhanced) (AAA)\newline 3.2.5 Change on Request (AAA) & Touch target sizing exceeding WCAG2Mobile recommendations for minimum size; Mobile-specific touch interaction feedback & Container with adequate spacing and consistent interactive behavior \\
+Card Container (overall card structure) & none & 2.5.5 Target Size (Enhanced) (AAA)\newline 3.2.5 Change on Request (AAA) & Touch target sizing exceeding WCAG2Mobile recommendations for minimum size; Mobile-specific touch interaction feedback & Container with adequate spacing and consistent interactive behavior \\
 \hline
 \end{longtable}
 
@@ -2315,13 +2317,13 @@ Table~\ref{tab:gestures_component_mapping} provides a formal mapping between the
 \caption{Gestures tutorial screen component-criteria mapping with WCAG2Mobile considerations}
 \label{tab:gestures_component_mapping}\\
 \hline
-\textbf{Component} & \textbf{Semantic Role} & \textbf{WCAG 2.2 Criteria} & \textbf{WCAG2Mobile Considerations} & \textbf{Implementation Properties} \\
+\textbf{Component and Location} & \textbf{Semantic Role} & \textbf{WCAG 2.2 Criteria} & \textbf{WCAG2Mobile Considerations} & \textbf{Implementation Properties} \\
 \hline
 \endfirsthead
 \multicolumn{5}{c}%
 {{\bfseries Table \thetable\ -- continued from previous page}} \\
 \hline
-\textbf{Component} & \textbf{Semantic Role} & \textbf{WCAG 2.2 Criteria} & \textbf{WCAG2Mobile Considerations} & \textbf{Implementation Properties} \\
+\textbf{Component and Location} & \textbf{Semantic Role} & \textbf{WCAG 2.2 Criteria} & \textbf{WCAG2Mobile Considerations} & \textbf{Implementation Properties} \\
 \hline
 \endhead
 \hline
@@ -2329,17 +2331,17 @@ Table~\ref{tab:gestures_component_mapping} provides a formal mapping between the
 \endfoot
 \hline
 \endlastfoot
-Hero Title & heading & 1.4.3 Contrast (AA)\newline 2.4.6 Headings (AA) & Text readability on variable screen sizes; Header role in screen context per WCAG2Mobile interpretation & \texttt{accessibility \ Role="header"} \\
+Hero Title (top: "Gestures Tutorial") & heading & 1.4.3 Contrast (AA)\newline 2.4.6 Headings (AA) & Text readability on variable screen sizes; Header role in screen context per WCAG2Mobile interpretation & \texttt{accessibility \ Role="header"} \\
 \hline
-Practice Cards & none & 1.3.1 Info and Relationships (A) & Logical grouping of related gesture content in screen context rather than web page & Container with clear visual boundaries \\
+Practice Cards (gesture sections: Single Tap, Double Tap, Long Press) & none & 1.3.1 Info and Relationships (A) & Logical grouping of related gesture content in screen context rather than web page & Container with clear visual boundaries \\
 \hline
-Practice Title & text & 2.4.6 Headings and Labels (AA) & Clear gesture type identification in mobile screen context & Text styling with appropriate weight and size \\
+Practice Title (section headers: "Single Tap", "Double Tap", etc.) & text & 2.4.6 Headings and Labels (AA) & Clear gesture type identification in mobile screen context & Text styling with appropriate weight and size \\
 \hline
-Practice Buttons & button & 2.5.1 Pointer Gestures (A)\newline 2.5.2 Pointer Cancellation (A)\newline 4.1.2 Name, Role, Value (A)\newline 2.5.5 Target Size (Enhanced) (AAA) & WCAG2Mobile's emphasis on single-pointer alternatives for gestures; Touch target size exceeds minimum requirements for mobile; Gesture information provided for screen readers & \texttt{accessibility \ Role="button"},\newline \texttt{accessibility \ Label},\newline \texttt{accessibility \ Actions} \\
+Practice Buttons (blue buttons: "Tap me!", "Double Tap me!", etc.) & button & 2.5.1 Pointer Gestures (A)\newline 2.5.2 Pointer Cancellation (A)\newline 4.1.2 Name, Role, Value (A)\newline 2.5.5 Target Size (Enhanced) (AAA) & WCAG2Mobile's emphasis on single-pointer alternatives for gestures; Touch target size exceeds minimum requirements for mobile; Gesture information provided for screen readers & \texttt{accessibility \ Role="button"},\newline \texttt{accessibility \ Label},\newline \texttt{accessibility \ Actions} \\
 \hline
-Success Feedback & text & 4.1.3 Status Messages (AA) & Non-visual feedback for actions per WCAG2Mobile's guidance on mobile status messages & \texttt{accessibility \ LiveRegion="polite"} \\
+Success Feedback (green "successful" messages) & text & 4.1.3 Status Messages (AA) & Non-visual feedback for actions per WCAG2Mobile's guidance on mobile status messages & \texttt{accessibility \ LiveRegion="polite"} \\
 \hline
-Info Text & text & 3.3.2 Labels or Instructions (A)\newline 3.2.5 Change on Request (AAA) & Platform-specific gesture guidance addressing WCAG2Mobile's focus on platform accessibility services & Descriptive text with context-aware content \\
+Info Text (instructional text below buttons) & text & 3.3.2 Labels or Instructions (A)\newline 3.2.5 Change on Request (AAA) & Platform-specific gesture guidance addressing WCAG2Mobile's focus on platform accessibility services & Descriptive text with context-aware content \\
 \hline
 \end{longtable}
 \FloatBarrier
@@ -2571,13 +2573,13 @@ Table~\ref{tab:navigation_component_mapping} provides a mapping between the UI c
 \caption{Logical navigation screen component-criteria mapping with WCAG2Mobile considerations}
 \label{tab:navigation_component_mapping}\\
 \hline
-\textbf{Component} & \textbf{Semantic Role} & \textbf{WCAG 2.2 Criteria} & \textbf{WCAG2Mobile Considerations} & \textbf{Implementation Properties} \\
+\textbf{Component and Location} & \textbf{Semantic Role} & \textbf{WCAG 2.2 Criteria} & \textbf{WCAG2Mobile Considerations} & \textbf{Implementation Properties} \\
 \hline
 \endfirsthead
 \multicolumn{5}{c}%
 {{\bfseries Table \thetable\ -- continued from previous page}} \\
 \hline
-\textbf{Component} & \textbf{Semantic Role} & \textbf{WCAG 2.2 Criteria} & \textbf{WCAG2Mobile Considerations} & \textbf{Implementation Properties} \\
+\textbf{Component and Location} & \textbf{Semantic Role} & \textbf{WCAG 2.2 Criteria} & \textbf{WCAG2Mobile Considerations} & \textbf{Implementation Properties} \\
 \hline
 \endhead
 \hline
@@ -2585,17 +2587,17 @@ Table~\ref{tab:navigation_component_mapping} provides a mapping between the UI c
 \endfoot
 \hline
 \endlastfoot
-Hero Title & heading & 1.4.3 Contrast (AA)\newline 2.4.6 Headings (AA) & Text readability across variable screen sizes; Header role in screen context per WCAG2Mobile interpretation & \texttt{accessibility \ Role="header"} \\
+Hero Title (top: "Logical Focus Order") & heading & 1.4.3 Contrast (AA)\newline 2.4.6 Headings (AA) & Text readability across variable screen sizes; Header role in screen context per WCAG2Mobile interpretation & \texttt{accessibility \ Role="header"} \\
 \hline
-Skip Link Button & button & 2.4.1 Bypass Blocks (A)\newline 2.5.8 Target Size (AA) & Implementation of "bypass blocks" specific to mobile screen context per WCAG2Mobile; Touch target sized for mobile interaction & \texttt{accessibility \ Role="button"},\newline \texttt{accessibility \ Label="Skip to main content"} \\
+Skip Link Button (blue button: "Skip to Main Content") & button & 2.4.1 Bypass Blocks (A)\newline 2.5.8 Target Size (AA) & Implementation of "bypass blocks" specific to mobile screen context per WCAG2Mobile; Touch target sized for mobile interaction & \texttt{accessibility \ Role="button"},\newline \texttt{accessibility \ Label="Skip to main content"} \\
 \hline
-Info Cards & none & 1.3.1 Info and Relationships (A) & Logical grouping of content in screen context rather than web page per WCAG2Mobile & Container with clear visual boundaries \\
+Info Cards (sections explaining focus order) & none & 1.3.1 Info and Relationships (A) & Logical grouping of content in screen context rather than web page per WCAG2Mobile & Container with clear visual boundaries \\
 \hline
-Main Content Container & summary & 1.3.1 Info and Relationships (A)\newline 2.4.1 Bypass Blocks (A) & Proper destination for skip links in mobile context per WCAG2Mobile; Screen-based landmark equivalent & \texttt{accessibility \ Role="summary"},\newline \texttt{accessibility \ Label="Main Content Section"} \\
+Main Content Container (lower section: "Main Content") & summary & 1.3.1 Info and Relationships (A)\newline 2.4.1 Bypass Blocks (A) & Proper destination for skip links in mobile context per WCAG2Mobile; Screen-based landmark equivalent & \texttt{accessibility \ Role="summary"},\newline \texttt{accessibility \ Label="Main Content Section"} \\
 \hline
-Form Inputs & none & 3.3.2 Labels or Instructions (A)\newline 4.1.2 Name, Role, Value (A) & Mobile-specific input labeling per WCAG2Mobile; Touch-friendly input implementation & \texttt{accessibility \ Label="Feedback Input"} \\
+Form Inputs (text field: "Enter feedback") & none & 3.3.2 Labels or Instructions (A)\newline 4.1.2 Name, Role, Value (A) & Mobile-specific input labeling per WCAG2Mobile; Touch-friendly input implementation & \texttt{accessibility \ Label="Feedback Input"} \\
 \hline
-Interactive Buttons & button & 2.5.8 Target Size (AA)\newline 4.1.2 Name, Role, Value (A) & Touch target sizing exceeding WCAG2Mobile recommendations; Mobile-specific button implementation & \texttt{accessibility \ Role="button"},\newline \texttt{accessibility \ Label} \\
+Interactive Buttons (blue buttons: "Focusable Button 1", "Submit Feedback") & button & 2.5.8 Target Size (AA)\newline 4.1.2 Name, Role, Value (A) & Touch target sizing exceeding WCAG2Mobile recommendations; Mobile-specific button implementation & \texttt{accessibility \ Role="button"},\newline \texttt{accessibility \ Label} \\
 \hline
 \end{longtable}
 \FloatBarrier
@@ -2781,13 +2783,13 @@ Table~\ref{tab:screen_reader_component_mapping} provides a mapping between the U
 \caption{Screen reader support screen component-criteria mapping with WCAG2Mobile considerations}
 \label{tab:screen_reader_component_mapping}\\
 \hline
-\textbf{Component} & \textbf{Semantic Role} & \textbf{WCAG 2.2 Criteria} & \textbf{WCAG2Mobile Considerations} & \textbf{Implementation Properties} \\
+\textbf{Component and Location} & \textbf{Semantic Role} & \textbf{WCAG 2.2 Criteria} & \textbf{WCAG2Mobile Considerations} & \textbf{Implementation Properties} \\
 \hline
 \endfirsthead
 \multicolumn{5}{c}%
 {{\bfseries Table \thetable\ -- continued from previous page}} \\
 \hline
-\textbf{Component} & \textbf{Semantic Role} & \textbf{WCAG 2.2 Criteria} & \textbf{WCAG2Mobile Considerations} & \textbf{Implementation Properties} \\
+\textbf{Component and Location} & \textbf{Semantic Role} & \textbf{WCAG 2.2 Criteria} & \textbf{WCAG2Mobile Considerations} & \textbf{Implementation Properties} \\
 \hline
 \endhead
 \hline
@@ -2795,23 +2797,23 @@ Table~\ref{tab:screen_reader_component_mapping} provides a mapping between the U
 \endfoot
 \hline
 \endlastfoot
-Hero Title & heading & 1.4.3 Contrast (AA)\newline 2.4.6 Headings (AA)\newline 2.4.10 Section Headings (AAA) & Text readability across variable screen sizes; Header role in screen context per WCAG2Mobile & \texttt{accessibility \ Role="header"} \\
+Hero Title (top: "Screen Reader Support") & heading & 1.4.3 Contrast (AA)\newline 2.4.6 Headings (AA)\newline 2.4.10 Section Headings (AAA) & Text readability across variable screen sizes; Header role in screen context per WCAG2Mobile & \texttt{accessibility \ Role="header"} \\
 \hline
-Platform Toggle Buttons & button & 4.1.2 Name, Role, Value (A)\newline 2.5.8 Target Size (AA)\newline 2.5.5 Target Size (Enhanced) (AAA) & Touch target size exceeding WCAG2Mobile recommendations; Platform selection with proper state indication & \texttt{accessibility \ Role="button"},\newline \texttt{accessibility \ State=\{\{selected: ...\}\}} \\
+Platform Toggle Buttons (VoiceOver \ \& TalkBack buttons) & button & 4.1.2 Name, Role, Value (A)\newline 2.5.8 Target Size (AA)\newline 2.5.5 Target Size (Enhanced) (AAA) & Touch target size exceeding WCAG2Mobile recommendations; Platform selection with proper state indication & \texttt{accessibility \ Role="button"},\newline \texttt{accessibility \ State=\{\{selected: ...\}\}} \\
 \hline
-Platform Icons & none & 1.1.1 Non-text Content (A) & Reduction of focus stops for efficient screen reader navigation per WCAG2Mobile & \texttt{accessibility \ ElementsHidden=true},\newline \texttt{importantFor \ Accessibility \ ="no-hide-descendants"} \\
+Platform Icons (Apple/Android icons in buttons) & none & 1.1.1 Non-text Content (A) & Reduction of focus stops for efficient screen reader navigation per WCAG2Mobile & \texttt{accessibility \ ElementsHidden=true},\newline \texttt{importantFor \ Accessibility \ ="no-hide-descendants"} \\
 \hline
-Gesture Items & text & 1.3.1 Info and Relationships (A) & Gesture description specific to mobile platform context per WCAG2Mobile & \texttt{accessibility \ Role="text"},\newline \texttt{accessibility \ Label=\`\${item.gesture}: \${item.action}\`} \\
+Gesture Items (Essential Features list: Single tap, Double tap, etc.) & text & 1.3.1 Info and Relationships (A) & Gesture description specific to mobile platform context per WCAG2Mobile & \texttt{accessibility \ Role="text"},\newline \texttt{accessibility \ Label=\`\${item.gesture}: \${item.action}\`} \\
 \hline
-Implementation Guide Cards & none & 1.3.1 Info and Relationships (A)\newline 2.4.10 Section Headings (AAA) & Logical grouping in mobile screen context per WCAG2Mobile & Container with proper visual boundaries \\
+Implementation Guide Cards (sections: Semantic Structure, Content Descriptions) & none & 1.3.1 Info and Relationships (A)\newline 2.4.10 Section Headings (AAA) & Logical grouping in mobile screen context per WCAG2Mobile & Container with proper visual boundaries \\
 \hline
-Guide Title & text & 2.4.6 Headings and Labels (AA) & Content section identification in screen context per WCAG2Mobile & Semantic text styling with proper hierarchy \\
+Guide Title (card headers: "Semantic Structure", "Content Descriptions") & text & 2.4.6 Headings and Labels (AA) & Content section identification in screen context per WCAG2Mobile & Semantic text styling with proper hierarchy \\
 \hline
-Checklist Items & text & 1.3.1 Info and Relationships (A) & Grouped related information for screen reader navigation per WCAG2Mobile & Parent container with contextual organization \\
+Checklist Items (bulleted lists within guide cards) & text & 1.3.1 Info and Relationships (A) & Grouped related information for screen reader navigation per WCAG2Mobile & Parent container with contextual organization \\
 \hline
-Code Examples & text & 1.3.1 Info and Relationships (A) & Code accessibility in mobile context with appropriate labels per WCAG2Mobile & \texttt{accessibility \ Role="text"} \\
+Code Examples (dark code blocks) & text & 1.3.1 Info and Relationships (A) & Code accessibility in mobile context with appropriate labels per WCAG2Mobile & \texttt{accessibility \ Role="text"} \\
 \hline
-Toggle Code Examples Button & button & 3.2.5 Change on Request (AAA) & User control with clear state indication per WCAG2Mobile & \texttt{accessibility \ Role="button"},\newline \texttt{accessibility \ Label} \\
+Toggle Code Examples Button ("View Code Examples" links) & button & 3.2.5 Change on Request (AAA) & User control with clear state indication per WCAG2Mobile & \texttt{accessibility \ Role="button"},\newline \texttt{accessibility \ Label} \\
 \hline
 \end{longtable}
 \FloatBarrier
@@ -3058,13 +3060,13 @@ Table~\ref{tab:semantics_component_mapping} provides a mapping between the UI co
 \caption{Semantic structure screen component-criteria mapping with WCAG2Mobile considerations}
 \label{tab:semantics_component_mapping}\\
 \hline
-\textbf{Component} & \textbf{Semantic Role} & \textbf{WCAG 2.2 Criteria} & \textbf{WCAG2Mobile Considerations} & \textbf{Implementation Properties} \\
+\textbf{Component and Location} & \textbf{Semantic Role} & \textbf{WCAG 2.2 Criteria} & \textbf{WCAG2Mobile Considerations} & \textbf{Implementation Properties} \\
 \hline
 \endfirsthead
 \multicolumn{5}{c}%
 {{\bfseries Table \thetable\ -- continued from previous page}} \\
 \hline
-\textbf{Component} & \textbf{Semantic Role} & \textbf{WCAG 2.2 Criteria} & \textbf{WCAG2Mobile Considerations} & \textbf{Implementation Properties} \\
+\textbf{Component and Location} & \textbf{Semantic Role} & \textbf{WCAG 2.2 Criteria} & \textbf{WCAG2Mobile Considerations} & \textbf{Implementation Properties} \\
 \hline
 \endhead
 \hline
@@ -3072,21 +3074,21 @@ Table~\ref{tab:semantics_component_mapping} provides a mapping between the UI co
 \endfoot
 \hline
 \endlastfoot
-Hero Title & heading & 1.4.3 Contrast (AA)\newline 2.4.6 Headings (AA)\newline 2.4.10 Section Headings (AAA) & Text readability across variable screen sizes; Header role in screen context per WCAG2Mobile & \texttt{accessibility \ Role="header"} \\
+Hero Title (top: "Semantic Structure") & heading & 1.4.3 Contrast (AA)\newline 2.4.6 Headings (AA)\newline 2.4.10 Section Headings (AAA) & Text readability across variable screen sizes; Header role in screen context per WCAG2Mobile & \texttt{accessibility \ Role="header"} \\
 \hline
-Information Cards & none & 1.3.1 Info and Relationships (A) & Logical grouping of content sections in screen context per WCAG2Mobile & Container with proper visual boundaries \\
+Information Cards (sections: Perceivable, Understandable, Robust) & none & 1.3.1 Info and Relationships (A) & Logical grouping of content sections in screen context per WCAG2Mobile & Container with proper visual boundaries \\
 \hline
-Card Title & text & 2.4.6 Headings and Labels (AA)\newline 2.4.10 Section Headings (AAA) & Information category identification in screen context per WCAG2Mobile & Semantic text styling with proper hierarchy \\
+Card Title (card headers: "Perceivable", "Understandable", "Robust") & text & 2.4.6 Headings and Labels (AA)\newline 2.4.10 Section Headings (AAA) & Information category identification in screen context per WCAG2Mobile & Semantic text styling with proper hierarchy \\
 \hline
-Card Description & text & 1.3.1 Info and Relationships (A) & Content description in mobile screen context per WCAG2Mobile & Proper text styling with semantic connection to title \\
+Card Description (explanatory text under titles) & text & 1.3.1 Info and Relationships (A) & Content description in mobile screen context per WCAG2Mobile & Proper text styling with semantic connection to title \\
 \hline
-Code Examples & text & 1.3.1 Info and Relationships (A) & Semantic structure in mobile code examples per WCAG2Mobile & \texttt{accessibility \ Role="text"},\newline \texttt{accessibility \ Label="Source code of..."} \\
+Code Examples (dark code blocks with HTML/role examples) & text & 1.3.1 Info and Relationships (A) & Semantic structure in mobile code examples per WCAG2Mobile & \texttt{accessibility \ Role="text"},\newline \texttt{accessibility \ Label="Source code of..."} \\
 \hline
-Bullet List Items & text & 1.3.1 Info and Relationships (A)\newline 1.3.2 Meaningful Sequence (A) & Grouped related information for screen reader navigation per WCAG2Mobile & Parent container with proper visual structure \\
+Bullet List Items (checkmarked lists within cards) & text & 1.3.1 Info and Relationships (A)\newline 1.3.2 Meaningful Sequence (A) & Grouped related information for screen reader navigation per WCAG2Mobile & Parent container with proper visual structure \\
 \hline
-Icon Decorations & none & 1.1.1 Non-text Content (A) & Reduction of focus stops for efficient screen reader navigation per WCAG2Mobile & \texttt{accessibility \ ElementsHidden=true},\newline \texttt{importantFor \ Accessibility \ ="no-hide-descendants"} \\
+Icon Decorations (card icons and checkmarks) & none & 1.1.1 Non-text Content (A) & Reduction of focus stops for efficient screen reader navigation per WCAG2Mobile & \texttt{accessibility \ ElementsHidden=true},\newline \texttt{importantFor \ Accessibility \ ="no-hide-descendants"} \\
 \hline
-Card Container & none & 2.5.5 Target Size (Enhanced) (AAA)\newline 3.2.5 Change on Request (AAA) & Touch target sizing exceeding WCAG2Mobile recommendations; Predictable behavior in mobile context & Container with adequate spacing and consistent interaction model \\
+Card Container (overall card structure)  & none & 2.5.5 Target Size (Enhanced) (AAA)\newline 3.2.5 Change on Request (AAA) & Touch target sizing exceeding WCAG2Mobile recommendations; Predictable behavior in mobile context & Container with adequate spacing and consistent interaction model \\
 \hline
 \end{longtable}
 \FloatBarrier
@@ -3349,13 +3351,13 @@ Table~\ref{tab:tools_component_mapping} provides a formal mapping between the UI
 \caption{Tools screen component-criteria mapping with WCAG2Mobile considerations}
 \label{tab:tools_component_mapping}\\
 \hline
-\textbf{Component} & \textbf{Semantic Role} & \textbf{WCAG 2.2 Criteria} & \textbf{WCAG2Mobile Considerations} & \textbf{Implementation Properties} \\
+\textbf{Component and Location} & \textbf{Semantic Role} & \textbf{WCAG 2.2 Criteria} & \textbf{WCAG2Mobile Considerations} & \textbf{Implementation Properties} \\
 \hline
 \endfirsthead
 \multicolumn{5}{c}%
 {{\bfseries Table \thetable\ -- continued from previous page}} \\
 \hline
-\textbf{Component} & \textbf{Semantic Role} & \textbf{WCAG 2.2 Criteria} & \textbf{WCAG2Mobile Considerations} & \textbf{Implementation Properties} \\
+\textbf{Component and Location} & \textbf{Semantic Role} & \textbf{WCAG 2.2 Criteria} & \textbf{WCAG2Mobile Considerations} & \textbf{Implementation Properties} \\
 \hline
 \endhead
 \hline
@@ -3363,23 +3365,23 @@ Table~\ref{tab:tools_component_mapping} provides a formal mapping between the UI
 \endfoot
 \hline
 \endlastfoot
-ScrollView Container & scrollview & 2.1.1 Keyboard (A)\newline 2.4.3 Focus Order (A) & SC 2.4.3 applied to screen context; Logical focus sequence for touch-based navigation & \texttt{accessibility \ Role="scrollview"},\newline \texttt{accessibility \ Label="Mobile Accessibility Tools Screen"} \\
+ScrollView Container (main screen wrapper) & scrollview & 2.1.1 Keyboard (A)\newline 2.4.3 Focus Order (A) & SC 2.4.3 applied to screen context; Logical focus sequence for touch-based navigation & \texttt{accessibility \ Role="scrollview"},\newline \texttt{accessibility \ Label="Mobile Accessibility Tools Screen"} \\
 \hline
-Hero Title & header & 1.4.3 Contrast (AA)\newline 2.4.6 Headings (AA) & SC 2.4.6 adapted for screens instead of web pages; Screen title differentiation & \texttt{accessibility \ Role="header"} \\
+Hero Title (top: "Mobile Accessibility Tools") & header & 1.4.3 Contrast (AA)\newline 2.4.6 Headings (AA) & SC 2.4.6 adapted for screens instead of web pages; Screen title differentiation & \texttt{accessibility \ Role="header"} \\
 \hline
-Section Headers & header & 2.4.6 Headings (AA)\newline 1.3.1 Info and Relationships (A)\newline 2.4.10 Section Headings (AAA) & SC 1.3.1 applied to mobile screen hierarchy; Logical section organization & \texttt{accessibility \ Role="header"} \\
+Section Headers (Development Tools, Testing Checklist, etc.) & header & 2.4.6 Headings (AA)\newline 1.3.1 Info and Relationships (A)\newline 2.4.10 Section Headings (AAA) & SC 1.3.1 applied to mobile screen hierarchy; Logical section organization & \texttt{accessibility \ Role="header"} \\
 \hline
-Tool Cards & button & 1.4.3 Contrast (AA)\newline 2.5.8 Target Size (AA)\newline 4.1.2 Name, Role, Value (A) & SC 2.5.8 Target Size applied to touch context; SC 4.1.2 adapted for mobile platform services & \texttt{accessibility \ Role="button"},\newline \texttt{accessibility \ Label="[Tool]. Double tap to expand/collapse"} \\
+Tool Cards (Accessibility Inspector, Contrast Analyzer, etc.) & button & 1.4.3 Contrast (AA)\newline 2.5.8 Target Size (AA)\newline 4.1.2 Name, Role, Value (A) & SC 2.5.8 Target Size applied to touch context; SC 4.1.2 adapted for mobile platform services & \texttt{accessibility \ Role="button"},\newline \texttt{accessibility \ Label="[Tool]. Double tap to expand/collapse"} \\
 \hline
-Card Icons & none & 1.1.1 Non-text Content (A) & SC 1.1.1 adapted for mobile screen reader efficiency; Reduction of unnecessary focus stops & \texttt{accessibility \ ElementsHidden=true},\newline \texttt{importantFor \ Accessibility="no \ -hide-descendants"} \\
+Card Icons (tool icons within cards) & none & 1.1.1 Non-text Content (A) & SC 1.1.1 adapted for mobile screen reader efficiency; Reduction of unnecessary focus stops & \texttt{accessibility \ ElementsHidden=true},\newline \texttt{importantFor \ Accessibility="no \ -hide-descendants"} \\
 \hline
-Expandable Content & text & 1.3.1 Info and Relationships (A)\newline 4.1.2 Name, Role, Value (A) & SC 1.3.1 applied to view hierarchy; Information relationships in mobile context & \texttt{role="list"}\newline \texttt{role="listitem"} \\
+Expandable Content (tool descriptions and features) & text & 1.3.1 Info and Relationships (A)\newline 4.1.2 Name, Role, Value (A) & SC 1.3.1 applied to view hierarchy; Information relationships in mobile context & \texttt{role="list"}\newline \texttt{role="listitem"} \\
 \hline
-Documentation Links & link & 2.4.4 Link Purpose (A)\newline 4.1.2 Name, Role, Value (A) & SC 2.4.4 adapted for mobile context; Link purpose clear in context & \texttt{accessibility \ Role="link"},\newline \texttt{accessibility \ Label} \\
+Documentation Links (blue "Documentation" links) & link & 2.4.4 Link Purpose (A)\newline 4.1.2 Name, Role, Value (A) & SC 2.4.4 adapted for mobile context; Link purpose clear in context & \texttt{accessibility \ Role="link"},\newline \texttt{accessibility \ Label} \\
 \hline
-Badge Elements & none & 1.1.1 Non-text Content (A) & SC 1.1.1 for decorative content in mobile context; Reduction of swipe interactions & \texttt{importantFor \ Accessibility="no"} \newline \texttt{accessibility \ ElementsHidden=true} \\
+Badge Elements (Built-in tags) & none & 1.1.1 Non-text Content (A) & SC 1.1.1 for decorative content in mobile context; Reduction of swipe interactions & \texttt{importantFor \ Accessibility="no"} \newline \texttt{accessibility \ ElementsHidden=true} \\
 \hline
-Expansion State Icons & none & 1.1.1 Non-text Content (A) & SC 1.1.1 for decorative indicators; Reduction of screen reader navigation friction & \texttt{accessibility \ ElementsHidden} \newline \texttt{importantFor \ Accessibility="no \ -hide-descendants"} \\
+Expansion State Icons (chevron arrows) & none & 1.1.1 Non-text Content (A) & SC 1.1.1 for decorative indicators; Reduction of screen reader navigation friction & \texttt{accessibility \ ElementsHidden} \newline \texttt{importantFor \ Accessibility="no \ -hide-descendants"} \\
 \end{longtable}
 \FloatBarrier
 
@@ -3599,6 +3601,8 @@ Table~\ref{tab:tools_wcag_by_principle} provides a detailed analysis of WCAG 2.2
 \end{longtable}
 \FloatBarrier
 
+The Tools screen demonstrates strong WCAG compliance with notable mobile-specific adaptations. Perceivable (93.3\%) and Operable (90.9\%) principles show excellent implementation of mobile touch targets and screen reader optimization. Robust (100\%) reflects perfect integration with platform accessibility services, critical for development tools. Understandable (76.5\%) presents the main challenge, reflecting the inherent difficulty of making complex technical documentation comprehensible on mobile screens. The pattern suggests successful mobile accessibility implementation with room for improvement in content clarity.
+
 This analysis shows a strong implementation of WCAG criteria across all principles, with specific WCAG2Mobile adaptations for the mobile application context. Notable patterns include:
 
 \begin{enumerate}
@@ -3795,13 +3799,13 @@ Table~\ref{tab:instruction_component_mapping} provides a formal mapping between 
 \caption{Instruction screen component-criteria mapping with WCAG2Mobile considerations}
 \label{tab:instruction_component_mapping}\\
 \hline
-\textbf{Component} & \textbf{Semantic Role} & \textbf{WCAG 2.2 Criteria} & \textbf{WCAG2Mobile Considerations} & \textbf{Implementation Properties} \\
+\textbf{Component and Location} & \textbf{Semantic Role} & \textbf{WCAG 2.2 Criteria} & \textbf{WCAG2Mobile Considerations} & \textbf{Implementation Properties} \\
 \hline
 \endfirsthead
 \multicolumn{5}{c}%
 {{\bfseries Table \thetable\ -- continued from previous page}} \\
 \hline
-\textbf{Component} & \textbf{Semantic Role} & \textbf{WCAG 2.2 Criteria} & \textbf{WCAG2Mobile Considerations} & \textbf{Implementation Properties} \\
+\textbf{Component and Location} & \textbf{Semantic Role} & \textbf{WCAG 2.2 Criteria} & \textbf{WCAG2Mobile Considerations} & \textbf{Implementation Properties} \\
 \hline
 \endhead
 \hline
@@ -3809,27 +3813,27 @@ Table~\ref{tab:instruction_component_mapping} provides a formal mapping between 
 \endfoot
 \hline
 \endlastfoot
-ScrollView Container & scrollview & 2.1.1 Keyboard (A)\newline 2.4.3 Focus Order (A) & Mobile screen-based content organization; Focus management in scrollable content & \texttt{accessibility \ Role="scrollview"},\newline \texttt{accessibility \ Label="Accessibility Community Screen"} \\
+ScrollView Container (main screen wrapper) & scrollview & 2.1.1 Keyboard (A)\newline 2.4.3 Focus Order (A) & Mobile screen-based content organization; Focus management in scrollable content & \texttt{accessibility \ Role="scrollview"},\newline \texttt{accessibility \ Label="Accessibility Community Screen"} \\
 \hline
-Hero Card & none & 1.4.3 Contrast (AA)\newline 1.4.6 Contrast (Enhanced) (AAA) & Proper contrast for varying mobile lighting conditions & Container with visual boundaries and appropriate contrast for mobile viewing \\
+Hero Card (top: "Join the A11y Community") & none & 1.4.3 Contrast (AA)\newline 1.4.6 Contrast (Enhanced) (AAA) & Proper contrast for varying mobile lighting conditions & Container with visual boundaries and appropriate contrast for mobile viewing \\
 \hline
-Hero Title & header & 1.3.1 Info and Relationships (A)\newline 2.4.6 Headings (AA)\newline 2.4.10 Section Headings (AAA) & Screen title differentiation in mobile context & \texttt{accessibility \ Role="header"} \\
+Hero Title (card header: "Join the A11y Community") & header & 1.3.1 Info and Relationships (A)\newline 2.4.6 Headings (AA)\newline 2.4.10 Section Headings (AAA) & Screen title differentiation in mobile context & \texttt{accessibility \ Role="header"} \\
 \hline
-CTA Button & button & 2.4.4 Link Purpose (A)\newline 2.5.5 Target Size (Enhanced) (AAA)\newline 2.5.8 Target Size (AA) & Touch target size optimization for mobile interaction & \texttt{accessibility \ Role="button"},\newline \texttt{accessibilityLabel},\newline \texttt{minHeight: 48} \\
+Call-to-Action Button (blue button: "Explore Open Issues") & button & 2.4.4 Link Purpose (A)\newline 2.5.5 Target Size (Enhanced) (AAA)\newline 2.5.8 Target Size (AA) & Touch target size optimization for mobile interaction & \texttt{accessibility \ Role="button"},\newline \texttt{accessibilityLabel},\newline \texttt{minHeight: 48} \\
 \hline
-Project Cards & button & 1.4.3 Contrast (AA)\newline 2.5.8 Target Size (AA)\newline 4.1.2 Name, Role, Value (A) & Mobile-optimized touch targets; Comprehensive card labeling & \texttt{accessibility \ Role="button"},\newline \texttt{accessibilityLabel},\newline \texttt{minHeight: 44} \\
+Project Cards (ESLint A11y Plugin, React Native Testing Library) & button & 1.4.3 Contrast (AA)\newline 2.5.8 Target Size (AA)\newline 4.1.2 Name, Role, Value (A) & Mobile-optimized touch targets; Comprehensive card labeling & \texttt{accessibility \ Role="button"},\newline \texttt{accessibilityLabel},\newline \texttt{minHeight: 44} \\
 \hline
-Project Icons & none & 1.1.1 Non-text Content (A) & Reduction of unnecessary focus stops in mobile screen reader navigation & \texttt{accessibility \ Elements \ Hidden=true} \\
+Project Icons (code icons within project cards) & none & 1.1.1 Non-text Content (A) & Reduction of unnecessary focus stops in mobile screen reader navigation & \texttt{accessibility \ Elements \ Hidden=true} \\
 \hline
-Tag Pills & none & 1.3.1 Info and Relationships (A) & Content categorization in mobile views & Part of parent's \texttt{accessibilityLabel} to reduce navigation burden \\
+Tag Pills (linting, static-analysis, open-source tags) & none & 1.3.1 Info and Relationships (A) & Content categorization in mobile views & Part of parent's \texttt{accessibilityLabel} to reduce navigation burden \\
 \hline
-Collapsible Preview & button & 4.1.2 Name, Role, Value (A)\newline 4.1.3 Status Messages (AA) & Mobile-specific state announcements for expandable content & \texttt{accessibility \ Role="button"},\newline \texttt{accessibilityLabel},\newline \texttt{AccessibilityInfo. \ announceFor \ Accessibility} \\
+Collapsible Preview (expandable sections: "Show Details") & button & 4.1.2 Name, Role, Value (A)\newline 4.1.3 Status Messages (AA) & Mobile-specific state announcements for expandable content & \texttt{accessibility \ Role="button"},\newline \texttt{accessibilityLabel},\newline \texttt{AccessibilityInfo. \ announceFor \ Accessibility} \\
 \hline
-Code Snippet & text & 1.3.1 Info and Relationships (A)\newline 1.4.3 Contrast (AA) & Code presentation optimization for mobile screens & Platform-specific monospace font with optimized contrast \\
+Code Snippet (dark code blocks in expanded sections) & text & 1.3.1 Info and Relationships (A)\newline 1.4.3 Contrast (AA) & Code presentation optimization for mobile screens & Platform-specific monospace font with optimized contrast \\
 \hline
-Community Channel Cards & button & 2.4.4 Link Purpose (A)\newline 4.1.2 Name, Role, Value (A) & External resource navigation in mobile context & \texttt{accessibility \ Role="button"},\newline \texttt{accessibilityLabel},\newline Mobile-specific link handling \\
+Community Channel Cards (A11y Stack Exchange, Accessibility Twitter) & button & 2.4.4 Link Purpose (A)\newline 4.1.2 Name, Role, Value (A) & External resource navigation in mobile context & \texttt{accessibility \ Role="button"},\newline \texttt{accessibilityLabel},\newline Mobile-specific link handling \\
 \hline
-Toolkit Cards & button & 2.4.4 Link Purpose (A)\newline 4.1.2 Name, Role, Value (A)\newline 2.5.8 Target Size (AA) & Mobile-optimized resource links with adequate touch targets & \texttt{accessibility \ Role="button"},\newline \texttt{accessibilityLabel},\newline Generous sizing (48dp) \\
+Toolkit Cards (iOS Guidelines, Android Guidelines) & button & 2.4.4 Link Purpose (A)\newline 4.1.2 Name, Role, Value (A)\newline 2.5.8 Target Size (AA) & Mobile-optimized resource links with adequate touch targets & \texttt{accessibility \ Role="button"},\newline \texttt{accessibilityLabel},\newline Generous sizing (48dp) \\
 \end{longtable}
 \FloatBarrier
 
@@ -4205,13 +4209,13 @@ Table~\ref{tab:settings_component_mapping} provides a formal mapping between the
 \caption{Settings screen component-criteria mapping with WCAG2Mobile considerations}
 \label{tab:settings_component_mapping}\\
 \hline
-\textbf{Component} & \textbf{Semantic Role} & \textbf{WCAG 2.2 Criteria} & \textbf{WCAG2Mobile Considerations} & \textbf{Implementation Properties} \\
+\textbf{Component and Location} & \textbf{Semantic Role} & \textbf{WCAG 2.2 Criteria} & \textbf{WCAG2Mobile Considerations} & \textbf{Implementation Properties} \\
 \hline
 \endfirsthead
 \multicolumn{5}{c}%
 {{\bfseries Table \thetable\ -- continued from previous page}} \\
 \hline
-\textbf{Component} & \textbf{Semantic Role} & \textbf{WCAG 2.2 Criteria} & \textbf{WCAG2Mobile Considerations} & \textbf{Implementation Properties} \\
+\textbf{Component and Location} & \textbf{Semantic Role} & \textbf{WCAG 2.2 Criteria} & \textbf{WCAG2Mobile Considerations} & \textbf{Implementation Properties} \\
 \hline
 \endhead
 \hline
@@ -4219,23 +4223,23 @@ Table~\ref{tab:settings_component_mapping} provides a formal mapping between the
 \endfoot
 \hline
 \endlastfoot
-Section Headers & heading & 2.4.6 Headings (AA) & Header announcement in screen context; Semantic significance in mobile navigation & \texttt{accessibility \ Role="header"} \\
+Section Headers (Visual Settings, Readability Enhancements, etc.) & heading & 2.4.6 Headings (AA) & Header announcement in screen context; Semantic significance in mobile navigation & \texttt{accessibility \ Role="header"} \\
 \hline
-Setting Card & none & 1.3.1 Info and Relationships (A)\newline 1.4.3 Contrast (AA) & Logical grouping on screen; Mobile layout containment; Visual boundaries & Container with proper styling and contrast ratios \\
+Setting Card (grouped sections containing related settings) & none & 1.3.1 Info and Relationships (A)\newline 1.4.3 Contrast (AA) & Logical grouping on screen; Mobile layout containment; Visual boundaries & Container with proper styling and contrast ratios \\
 \hline
-Setting Row & none & 1.3.1 Info and Relationships (A)\newline 2.5.8 Target Size (AA) & Touch target optimization; Minimum tap area of 44×44dp; Adaptive sizing & Layout with adaptive \texttt{padding \ Vertical} based on preference \\
+Setting Row (individual setting items: Dark Mode, High Contrast, etc.) & none & 1.3.1 Info and Relationships (A)\newline 2.5.8 Target Size (AA) & Touch target optimization; Minimum tap area of 44×44dp; Adaptive sizing & Layout with adaptive \texttt{padding \ Vertical} based on preference \\
 \hline
-Setting Icon & none & 1.1.1 Non-text Content (A) & Reduction of unnecessary swipes in screen reader navigation; Mobile efficiency & \texttt{accessibility \ Elements \ Hidden},\newline \texttt{important \ For \ Accessibility="no- \ hide- \ descendants"} \\
+Setting Icon (moon, contrast, text size icons) & none & 1.1.1 Non-text Content (A) & Reduction of unnecessary swipes in screen reader navigation; Mobile efficiency & \texttt{accessibility \ Elements \ Hidden},\newline \texttt{important \ For \ Accessibility="no- \ hide- \ descendants"} \\
 \hline
-Setting Title & text & 2.4.6 Headings and Labels (AA) & Label clarity on small screens; Content identification & Text with proper styling and semantic structure \\
+Setting Title (Dark Mode, High Contrast Mode, Large Text, etc.) & text & 2.4.6 Headings and Labels (AA) & Label clarity on small screens; Content identification & Text with proper styling and semantic structure \\
 \hline
-Setting Description & text & 1.3.1 Info and Relationships (A)\newline 3.3.2 Labels or Instructions (A) & Compact descriptive context; Information density adaptation & Proper text styling with semantic connection to title \\
+Setting Description (explanatory text under titles) & text & 1.3.1 Info and Relationships (A)\newline 3.3.2 Labels or Instructions (A) & Compact descriptive context; Information density adaptation & Proper text styling with semantic connection to title \\
 \hline
-Switch Control & switch & 4.1.2 Name, Role, Value (A)\newline 3.3.5 Help (AAA)\newline 4.1.3 Status Messages (AA) & Platform-specific switch behavior; State announcements; Touch-optimized interaction & \texttt{accessibility \ Role="switch"},\newline \texttt{accessibility \ Label="...[state included]"},\newline \texttt{accessibility \ Hint} \\
+Switch Control (toggle switches on right side) & switch & 4.1.2 Name, Role, Value (A)\newline 3.3.5 Help (AAA)\newline 4.1.3 Status Messages (AA) & Platform-specific switch behavior; State announcements; Touch-optimized interaction & \texttt{accessibility \ Role="switch"},\newline \texttt{accessibility \ Label="...[state included]"},\newline \texttt{accessibility \ Hint} \\
 \hline
-Divider & none & 1.3.1 Info and Relationships (A) & Visual separation with minimal screen reader impact & \texttt{important \ For \ Accessibility="no"},\newline \texttt{accessibility \ Elements \ Hidden=true} \\
+Divider (section separators) & none & 1.3.1 Info and Relationships (A) & Visual separation with minimal screen reader impact & \texttt{important \ For \ Accessibility="no"},\newline \texttt{accessibility \ Elements \ Hidden=true} \\
 \hline
-Status Toast & status & 4.1.3 Status Messages (AA) & Mobile-specific notification pattern; Multi-channel feedback & \texttt{Accessibility \ Info. \ announce \ For \ Accessibility}, Platform-specific feedback \\
+Status Toast (notification when settings change) & status & 4.1.3 Status Messages (AA) & Mobile-specific notification pattern; Multi-channel feedback & \texttt{Accessibility \ Info. \ announce \ For \ Accessibility}, Platform-specific feedback \\
 \end{longtable}
 
 \FloatBarrier
@@ -4586,13 +4590,13 @@ Table~\ref{tab:framework_comparison_mapping} provides a formal mapping between t
 \caption{Framework comparison screen component-criteria mapping with WCAG2Mobile considerations}
 \label{tab:framework_comparison_mapping}\\
 \hline
-\textbf{Component} & \textbf{Semantic Role} & \textbf{WCAG 2.2 Criteria} & \textbf{WCAG2Mobile Considerations} & \textbf{Implementation Properties} \\
+\textbf{Component and Location} & \textbf{Semantic Role} & \textbf{WCAG 2.2 Criteria} & \textbf{WCAG2Mobile Considerations} & \textbf{Implementation Properties} \\
 \hline
 \endfirsthead
 \multicolumn{5}{c}%
 {{\bfseries Table \thetable\ -- continued from previous page}} \\
 \hline
-\textbf{Component} & \textbf{Semantic Role} & \textbf{WCAG 2.2 Criteria} & \textbf{WCAG2Mobile Considerations} & \textbf{Implementation Properties} \\
+\textbf{Component and Location} & \textbf{Semantic Role} & \textbf{WCAG 2.2 Criteria} & \textbf{WCAG2Mobile Considerations} & \textbf{Implementation Properties} \\
 \hline
 \endhead
 \hline
@@ -4600,27 +4604,27 @@ Table~\ref{tab:framework_comparison_mapping} provides a formal mapping between t
 \endfoot
 \hline
 \endlastfoot
-Hero Title & heading & 1.4.3 Contrast (AA)\newline 2.4.6 Headings (AA) & SC 2.4.6 applied to screens rather than pages; Mobile-specific view context & \texttt{accessibility \ Role="header"} \\
+Hero Title (top: "Framework Comparison") & heading & 1.4.3 Contrast (AA)\newline 2.4.6 Headings (AA) & SC 2.4.6 applied to screens rather than pages; Mobile-specific view context & \texttt{accessibility \ Role="header"} \\
 \hline
-Hero Subtitle & text & 1.4.3 Contrast (AA) & Content description in mobile screen context & Text styling with semantic connection to title \\
+Hero Subtitle (description text under title) & text & 1.4.3 Contrast (AA) & Content description in mobile screen context & Text styling with semantic connection to title \\
 \hline
-Framework Selection Buttons & button & 1.4.3 Contrast (AA)\newline 2.5.8 Target Size (AA)\newline 4.1.2 Name, Role, Value (A) & SC 2.5.8 for mobile touch targets; SC 4.1.2 adapted for mobile platform accessibility services & \texttt{accessibility \ Role="button"},\newline \texttt{accessibility \ Label},\newline \texttt{accessibility \ State=\{\{selected: ...\}\}} \\
+Framework Selection Buttons (React Native/Flutter toggle buttons) & button & 1.4.3 Contrast (AA)\newline 2.5.8 Target Size (AA)\newline 4.1.2 Name, Role, Value (A) & SC 2.5.8 for mobile touch targets; SC 4.1.2 adapted for mobile platform accessibility services & \texttt{accessibility \ Role="button"},\newline \texttt{accessibility \ Label},\newline \texttt{accessibility \ State=\{\{selected: ...\}\}} \\
 \hline
-Category Tabs & tab & 1.4.3 Contrast (AA)\newline 4.1.2 Name, Role, Value (A) & Mobile navigation patterns; Screen-specific tab patterns & \texttt{accessibility \ Role="tab"},\newline \texttt{accessibility \ State=\{\{selected: ...\}\}} \\
+Category Tabs (Overview, Accessibility tabs) & tab & 1.4.3 Contrast (AA)\newline 4.1.2 Name, Role, Value (A) & Mobile navigation patterns; Screen-specific tab patterns & \texttt{accessibility \ Role="tab"},\newline \texttt{accessibility \ State=\{\{selected: ...\}\}} \\
 \hline
-Tab Icons & none & 1.1.1 Non-text Content (A) & SC 1.1.1 applied to reduce unnecessary focus stops in mobile screen reader navigation & \texttt{importantFor \ Accessibility="no-hide \ descendants"} \\
+Tab Icons (eye, info icons in tabs) & none & 1.1.1 Non-text Content (A) & SC 1.1.1 applied to reduce unnecessary focus stops in mobile screen reader navigation & \texttt{importantFor \ Accessibility="no-hide \ descendants"} \\
 \hline
-Framework Info Card & none & 1.3.1 Info and Relationships (A)\newline 1.4.3 Contrast (AA) & SC 1.3.1 adapted for view-specific information grouping & Semantic container with proper styling \\
+Framework Info Card (main content card showing framework details) & none & 1.3.1 Info and Relationships (A)\newline 1.4.3 Contrast (AA) & SC 1.3.1 adapted for view-specific information grouping & Semantic container with proper styling \\
 \hline
-Statistic Cards & button & 1.4.3 Contrast (AA)\newline 4.1.2 Name, Role, Value (A) & Information presentation in mobile context; SC 2.5.8 for mobile touch targets & \texttt{accessibility \ Role="button"},\newline \texttt{accessibility \ Label} \\
+Statistic Cards (feature comparison boxes) & button & 1.4.3 Contrast (AA)\newline 4.1.2 Name, Role, Value (A) & Information presentation in mobile context; SC 2.5.8 for mobile touch targets & \texttt{accessibility \ Role="button"},\newline \texttt{accessibility \ Label} \\
 \hline
-Rating Bar & progressbar & 1.4.3 Contrast (AA)\newline 4.1.2 Name, Role, Value (A) & Progress visualization in mobile context & \texttt{accessibility \ Role="progressbar"},\newline \texttt{accessibility \ Label} \\
+Rating Bar (progress indicators for features) & progressbar & 1.4.3 Contrast (AA)\newline 4.1.2 Name, Role, Value (A) & Progress visualization in mobile context & \texttt{accessibility \ Role="progressbar"},\newline \texttt{accessibility \ Label} \\
 \hline
-Info Button & button & 1.4.3 Contrast (AA)\newline 4.1.2 Name, Role, Value (A) & SC 4.1.2 applied to mobile touch affordances & \texttt{accessibility \ Role="button"},\newline \texttt{accessibility \ Label} \\
+Info Button (question mark buttons) & button & 1.4.3 Contrast (AA)\newline 4.1.2 Name, Role, Value (A) & SC 4.1.2 applied to mobile touch affordances & \texttt{accessibility \ Role="button"},\newline \texttt{accessibility \ Label} \\
 \hline
-Modal Dialog & dialog & 2.4.3 Focus Order (A)\newline 4.1.2 Name, Role, Value (A) & SC 2.4.3 adapted for mobile screen navigation; Mobile view modal context & \texttt{accessibility \ ViewIsModal},\newline Focus management implementation \\
+Modal Dialog (detailed comparison popups) & dialog & 2.4.3 Focus Order (A)\newline 4.1.2 Name, Role, Value (A) & SC 2.4.3 adapted for mobile screen navigation; Mobile view modal context & \texttt{accessibility \ ViewIsModal},\newline Focus management implementation \\
 \hline
-Modal Tabs & tablist & 2.4.7 Focus Visible (AA)\newline 4.1.2 Name, Role, Value (A) & Mobile-specific tab interface patterns & \texttt{accessibility \ Role="tablist"},\newline \texttt{accessibility \ State=\{\{selected: isActive\}\}} \\
+Modal Tabs (tabs within modal dialogs) & tablist & 2.4.7 Focus Visible (AA)\newline 4.1.2 Name, Role, Value (A) & Mobile-specific tab interface patterns & \texttt{accessibility \ Role="tablist"},\newline \texttt{accessibility \ State=\{\{selected: isActive\}\}} \\
 \hline
 \end{longtable}
 
