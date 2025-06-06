@@ -141,6 +141,8 @@ const calculateAccessibilityScore = () => {
   const criteriaValues = Object.values(wcagCriteria);
   const aAndAACriteria = criteriaValues.filter(c => c.level === 'A' || c.level === 'AA');
   const aAndAAImplemented = aAndAACriteria.filter(c => c.implemented).length;
+  const aaaImplemented = criteriaValues.filter(c => c.level === 'AAA' && c.implemented).length;
+  const aaaCriteria = criteriaValues.filter(c => c.level === 'AAA').length;
   const allImplemented = criteriaValues.filter(c => c.implemented).length;
   const allCriteria = criteriaValues.length;
 
@@ -152,10 +154,10 @@ const calculateAccessibilityScore = () => {
   const levelAACriteriaMet = criteriaValues.filter(c => c.level === 'AA' && c.implemented).length;
   const levelAAACriteriaMet = criteriaValues.filter(c => c.level === 'AAA' && c.implemented).length;
 
-    const wcagCompliance = Math.round(
-      (((aAndAAImplemented / aAndAACriteria.length) * 0.8) +
-       ((allImplemented / allCriteria) * 0.2)) * 100
-    );
+  const wcagCompliance = Math.round(
+    (((aAndAAImplemented / aAndAACriteria.length) * 0.8) +
+    ((aaaImplemented / aaaCriteria) * 0.2)) * 100
+  );
 
   const levelACompliance = Math.round((levelACriteriaMet / levelACriteria) * 100);
   const levelAACompliance = Math.round((levelAACriteriaMet / levelAACriteria) * 100);
