@@ -1,4 +1,0 @@
-- Add indications for Xcode and Apple - done by following Salvatore Gatto errors in compilations, add something in the way of:
-
-- I do remember: npx expo exec and installation on MobileLab Apple iPhone X given by library in prestito (lended) - npm update - npm install for dependencies - errors at random by Apple.
-- Said app was tested on two iPhones with mail mobilelabunipd@gmail.com with certifications hell of installation (random errors about certifications, updates and stuff)

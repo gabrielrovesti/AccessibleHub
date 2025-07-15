@@ -103,6 +103,8 @@ npx expo start
 
 ## 📦 Building for Android (Windows/WSL)
 
+On this part, I will explain how to build the app for Android using Windows. I even made a video on the topic, which you can find on my personal YouTube channel [here](https://www.youtube.com/watch?v=1Q2l4QdDU9k&t=412s).
+
 ### 1. Set Up WSL Environment
 
 ```bash
@@ -168,6 +170,285 @@ eas build:configure
 # Build APK locally
 eas build --platform android --profile preview --local
 ```
+
+## 📱 Building for iOS (macOS) 
+
+This was made adapting from what I saw from Salvatore Gatto, Mirko Franco and prof. Ombretta Gaggi. Thanks to them it was installed, otherwise it would not have been possible to test the app on iOS devices.
+
+### Prerequisites
+- macOS with Xcode 14+ installed
+- Apple Developer Account (paid membership required for device testing)
+- Node.js (LTS version)
+- Expo CLI and EAS CLI installed
+
+### 1. Initial Setup
+
+```bash
+# Install required tools
+npm install -g @expo/cli eas-cli
+
+# Navigate to your project
+cd my-app
+
+# Ensure dependencies are up to date
+npm update
+npm install
+
+# Install development client for device testing
+npx expo install expo-dev-client
+```
+
+### 2. Development Build for iOS Devices
+
+#### A. Device Registration
+First, register your iOS device(s) for development:
+
+```bash
+# Register device via web interface
+eas device:create
+
+# Or register multiple devices using the generated URL
+# Share the registration link with team members
+```
+
+#### B. Build Configuration
+Ensure your `eas.json` includes development profile:
+
+```json
+{
+  "build": {
+    "development": {
+      "developmentClient": true,
+      "distribution": "internal"
+    },
+    "preview": {
+      "distribution": "internal"
+    },
+    "production": {
+      "autoIncrement": true
+    }
+  }
+}
+```
+
+#### C. Create Development Build
+
+```bash
+# Build for device testing
+eas build --platform ios --profile development
+
+# Alternative: Build locally (requires Xcode setup)
+npx expo run:ios --device
+```
+
+### 3. Certificate Management & Team Organization Issues
+
+#### Apple Developer Account Setup
+When running EAS build for the first time, you'll be prompted to:
+1. **Log in to Apple Developer Account**: Use your Apple ID credentials
+2. **Select Team**: Choose your development team (individual or organization)
+3. **Generate Certificates**: Allow EAS to handle distribution certificates and provisioning profiles
+
+#### The MobileLab/UniPD Solution - Team Member Workflow
+
+**Understanding the Problem:**
+The issue encountered was related to being added as a team member to an organizational Apple Developer account (MobileLab) rather than having a personal paid account. This creates specific certificate limitations and workflow requirements.
+
+**Key Technical Details:**
+- **Personal Apple ID + Organization Team**: When you're added to an organization team, you use your personal Apple ID but inherit the team's certificate authority
+- **7-Day Certificate Limitation**: This is NOT a limitation of the paid Apple Developer Program, but occurs when using "Personal Team" in Xcode without proper team membership
+- **VPN Group Access**: The solution involved adding the developer to the proper VPN group for institutional network access
+
+**The Working Solution (Salvatore Gatto's Method):**
+
+1. **Team Member Addition**: 
+   - Account holder (MobileLab) added developer to organization team
+   - Developer received email invitation to join team
+   - Used personal Apple ID to accept invitation
+
+2. **Certificate Generation**:
+   ```bash
+   # Once added to team, create new 1-week development certificate
+   # This was NOT a limitation but a choice for security
+   # Normal certificates last 1 year, but shorter ones can be generated
+   ```
+
+3. **VPN Configuration**:
+   - Connected to institutional VPN
+   - Added to proper development group permissions
+   - This resolved network authentication issues
+
+4. **Workflow Implementation**:
+   ```bash
+   # Both command line and Xcode worked seamlessly
+   npm update
+   npm install
+   npx expo run:ios --device  # Command line method
+   # AND/OR open in Xcode for GUI development
+   ```
+
+#### Common Certificate Problems & Solutions
+
+**Problem 1: "You are not allowed to perform this operation" (Team Permission Issue)**
+```bash
+# Solution: Contact team admin to verify your role
+# Ensure you have "Developer" role with certificate access
+# Check in Apple Developer Portal > People & Access
+```
+
+**Problem 2: "Certificate for this server is invalid" or Certificate Mismatch**
+```bash
+# Clear existing credentials and regenerate
+eas credentials -p ios
+# Select "Delete all credentials" and rebuild
+```
+
+**Problem 3: "Maximum number of certificates reached"**
+- Go to [Apple Developer Portal](https://developer.apple.com/account/resources/certificates/)
+- Delete expired or unused certificates
+- Regenerate with `eas build --platform ios --clear-cache`
+
+**Problem 4: University/Organization Account Issues**
+For institutional accounts (like UniPD):
+
+```bash
+# The working solution involved:
+# 1. Being properly added to the organization team
+# 2. Using VPN for institutional network access
+# 3. Certificate generation through team account (not personal)
+# 4. Both CLI and Xcode methods work identically
+```
+
+**Problem 5: 7-Day Certificate Expiration (Personal Team vs Organization Team)**
+- **Personal Team (Free)**: Limited to 7-day certificates, 3 devices, 10 App IDs
+- **Organization Team Member**: Full 1-year certificates, unlimited devices
+- **Solution**: Ensure proper team membership, not using "Personal Team" in Xcode
+
+### 4. Local Development Workflow
+
+```bash
+# Start development server
+npx expo start
+
+# For device testing with installed development build
+npx expo start --dev-client
+
+# Install on connected device
+npx expo run:ios --device
+```
+
+### 5. Testing on Physical Devices
+
+#### Method 1: EAS Build + QR Code Installation
+1. Build with `eas build --platform ios --profile development`
+2. Scan QR code from build completion page
+3. Install via iOS Settings → VPN & Device Management → Trust Developer
+
+#### Method 2: Direct USB Installation
+```bash
+# Connect device via USB
+npx expo run:ios --device
+
+# Select your device from the list
+# App will install and launch automatically
+```
+
+### 6. Troubleshooting
+
+#### Build Failures
+```bash
+# Clear all caches and rebuild
+rm -rf node_modules package-lock.json ios/
+npm install
+eas build --platform ios --clear-cache
+```
+
+#### Xcode Integration Issues
+```bash
+# Ensure Xcode command line tools are installed
+xcode-select --install
+
+# Accept Xcode license
+sudo xcodebuild -license accept
+
+# Open iOS project in Xcode for debugging
+npx expo run:ios --no-bundler
+open ios/YourApp.xcworkspace
+```
+
+#### Device Installation Problems
+- **Enable Developer Mode**: iOS Settings → Privacy & Security → Developer Mode
+- **Trust Certificate**: Settings → General → VPN & Device Management → Trust App
+- **Clear App Cache**: Delete app and reinstall
+
+### 7. Production Build
+
+```bash
+# Build for App Store submission
+eas build --platform ios --profile production
+
+# Submit to App Store
+eas submit --platform ios
+```
+
+### 8. Testing Environment Setup
+
+#### Test Devices Used (MobileLab Configuration)
+- **iPhone XR** (iOS 16+) - mobilelabunipd@gmail.com
+- **iPhone 14** (iOS 17+) - mobilelabunipd@gmail.com  
+- **iPhone X** (iOS 15+) - MobileLab lending library
+
+#### Institutional Testing Notes (UniPD/MobileLab Experience)
+**Successful Configuration Details:**
+- **Team Organization**: Developers added to MobileLab organization team
+- **Certificate Management**: 1-week development certificates (security policy, not limitation)
+- **VPN Integration**: Institutional VPN access with development group permissions
+- **Testing Method**: Both `npx expo run:ios --device` and Xcode GUI methods work seamlessly
+- **iOS Version Compatibility**: No specific iOS version restrictions encountered
+- **Account Setup**: Used mobilelabunipd@gmail.com for device registration and testing
+
+**Key Success Factors:**
+1. **Proper Team Membership**: Added to organization team, not using personal certificates
+2. **VPN Group Access**: Developer was added to appropriate VPN development group
+3. **Certificate Workflow**: Organization-managed certificates (1-week validity by choice)
+4. **Universal Compatibility**: Method works across different iOS versions and devices
+
+### 9. Emergency Troubleshooting
+
+```bash
+# Complete project reset
+rm -rf node_modules ios/ .expo/
+npm install
+npx expo prebuild --clean
+eas build --platform ios --clear-cache
+```
+
+### 10. Useful Commands Reference
+
+```bash
+# Device management
+eas device:create              # Register new device
+eas device:list               # List registered devices
+eas device:delete             # Remove device
+
+# Certificate management
+eas credentials -p ios        # Manage iOS credentials
+eas credentials:sync          # Sync certificates
+
+# Build commands
+eas build -p ios              # Build for iOS
+eas build -p ios --local      # Build locally
+eas build -p ios --profile development  # Development build
+```
+
+---
+
+### Additional Resources
+
+- [Apple Developer Portal](https://developer.apple.com/account/)
+- [EAS Build Documentation](https://docs.expo.dev/build/setup/)
+- [iOS Device Testing Guide](https://docs.expo.dev/tutorial/eas/ios-development-build-for-devices/)
+- [Certificate Troubleshooting](https://docs.expo.dev/app-signing/app-credentials/)
 
 ---
 
