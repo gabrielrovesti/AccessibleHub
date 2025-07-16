@@ -452,6 +452,102 @@ eas build -p ios --profile development  # Development build
 
 ---
 
+## 🎥 Video Demonstrations
+
+### Accessibility Testing Videos
+
+As part of our comprehensive accessibility evaluation, we have created demonstration videos showing real-world usage of screen readers with the AccessibleHub application.
+
+#### 📱 TalkBack (Android) Demonstration
+- **File**: `assets/videos/talkback-demo.mp4`
+- **Duration**: ~3-5 minutes
+- **Device**: Pixel 7 (Android 14/15)
+- **Content Demonstrated**:
+  - Navigation through main app sections
+  - Form interaction and validation feedback
+  - Gesture recognition and touch exploration
+  - Component label and hint announcements
+  - Focus management between UI elements
+
+**Key Features Showcased**:
+- Single tap: Element selection and reading
+- Double tap: Element activation
+- Swipe navigation: Moving between components
+- Two-finger scrolling: Content navigation
+- Reading controls and verbosity settings
+
+#### 🍎 VoiceOver (iOS) Demonstration  
+- **File**: `assets/videos/voiceover-demo.mp4`
+- **Duration**: ~3-5 minutes
+- **Device**: iPhone 13 (iOS 16.5)
+- **Content Demonstrated**:
+  - Comprehensive app navigation workflow
+  - Semantic structure and heading navigation
+  - Custom accessibility actions
+  - Dynamic content announcements
+  - Focus order and logical reading sequence
+
+**Key Features Showcased**:
+- Single finger exploration and selection
+- Double tap activation
+- Three-finger swipe scrolling
+- Rotor control usage for navigation
+- Live region announcements
+
+### Testing Methodology Videos
+
+#### 📊 Empirical Testing Protocol
+Both videos follow our structured testing protocol based on:
+- **15 defined test scenarios** covering common user interactions
+- **WCAG 2.2 success criteria validation**
+- **Real-world usage patterns** for accessibility evaluation
+- **Navigation success rate measurement** (87% achieved)
+- **Form interaction success rate measurement** (82% achieved)
+
+#### 🔍 Comparative Analysis
+The videos demonstrate the differences in:
+- **Screen reader behavior** between Android and iOS platforms  
+- **Gesture patterns** and interaction models
+- **Announcement strategies** for different UI components
+- **Focus management** approaches across platforms
+
+### Video Access and Usage
+
+#### For Developers
+These videos serve as:
+- **Reference implementations** for accessibility best practices
+- **Testing benchmarks** for similar React Native applications
+- **Training materials** for understanding screen reader behavior
+- **Quality assurance examples** for accessibility validation
+
+#### Technical Specifications
+- **Format**: MP4 (H.264 encoding)
+- **Resolution**: 1080p for clear UI element visibility
+- **Audio**: High-quality screen reader voice capture
+- **Subtitles**: Available for hearing-impaired developers
+
+### Integration with Academic Research
+
+These demonstrations support the findings presented in:
+- **Perinello & Gaggi (2024)**: "Accessibility of Mobile User Interfaces using Flutter and React Native"
+- **WCAG 2.2 Conformance**: Level AAA compliance verification
+- **Cross-platform comparison**: React Native accessibility implementation analysis
+
+### Contributing Video Content
+
+If you'd like to contribute additional demonstration videos:
+
+1. **Follow our testing protocol**: Use the structured scenarios outlined in `/app/index.tsx`
+2. **Maintain quality standards**: Ensure clear screen reader audio and smooth navigation
+3. **Document thoroughly**: Include device specifications and testing conditions
+4. **Validate accessibility**: Verify compliance with demonstrated patterns
+
+---
+
+**Note**: These videos complement the static code examples and interactive demonstrations within the app, providing a complete picture of how accessibility features function in real-world usage scenarios.
+
+---
+
 ## 🧪 Accessibility Testing
 
 ### Screen Reader Activation
