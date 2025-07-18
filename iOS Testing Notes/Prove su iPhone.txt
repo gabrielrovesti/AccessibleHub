@@ -1,0 +1,10 @@
+Prove su iPhone XR of Mobile Lab (iOS 18.5):
+
+- La copia codice funziona su Dialog e Form, ma su Button, Media e Advanced lo legge come blocco unico
+- Navigazione in Home, da focus alla prima, terza e seconda per qualche motivo strano
+- Sempre nella Home, la documentazione ufficiale e le ragioni formali non si riesce ad accedere, legge le schede Overview, Methodology e resto come unico blocco e non selezionabili singolarmente
+
+Tutto il resto funzionante al 100% in ogni schermata, infatti:
+- Navigazione giusta in breadcrumb e sezioni 
+- Perfette le sezioni Home, Settings, Tools, Community, Framework Comparison e relativi sottomenù 
+- Testate tutte le relative sottoschermate di Best Practices e la loro navigazione, tutto perfetto 
