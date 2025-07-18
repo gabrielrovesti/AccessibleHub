@@ -98,7 +98,7 @@
   <table>
     <tr>
       <td align="center">
-        <img src="Application%20Screens/framework-comparison.jpg" alt="Framework Comparison" width="200"/>
+        <img src="Application%20Screens/frameworks-comparison.jpg" alt="Framework Comparison" width="200"/>
         <br/>
         <strong>Framework Comparison</strong>
         <br/>
