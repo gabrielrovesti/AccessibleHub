@@ -14,7 +14,103 @@
 
 ---
 
-## 📱 Overview
+## 📱 Application Screenshots
+
+### Main Application Interface
+
+<div align="center">
+  <table>
+    <tr>
+      <td align="center">
+        <img src="Application%20Screens/home1.png" alt="Home Screen" width="200"/>
+        <br/>
+        <strong>Home Screen</strong>
+        <br/>
+        <em>Main navigation and overview</em>
+      </td>
+      <td align="center">
+        <img src="Application%20Screens/methodology.jpg" alt="Formal Methodology" width="200"/>
+        <br/>
+        <strong>Formal Methodology</strong>
+        <br/>
+        <em>The research behind AccessibleHub</em>
+      </td>
+      <td align="center">
+        <img src="Application%20Screens/screen-reader-details.jpg" alt="Community Resources" width="200"/>
+        <br/>
+        <strong>Screen Reader Testing</strong>
+        <br/>
+        <em>Screen reader testing documented inside of thesis</em>
+      </td>
+    </tr>
+  </table>
+</div>
+
+### Accessible Components Showcase
+
+<div align="center">
+  <table>
+    <tr>
+      <td align="center">
+        <img src="Application%20Screens/components.png" alt="Accessible Components Overview" width="200"/>
+        <br/>
+        <strong>Components Overview</strong>
+        <br/>
+        <em>List of accessible UI components</em>
+      </td>
+      <td align="center">
+        <img src="Application%20Screens/media1.png" alt="Component Example Implementation" width="200"/>
+        <br/>
+        <strong>Component Examples</strong>
+        <br/>
+        <em>Interactive component demonstrations</em>
+      </td>
+    </tr>
+  </table>
+</div>
+
+### Best Practices Implementation
+
+<div align="center">
+  <table>
+    <tr>
+      <td align="center">
+        <img src="Application%20Screens/best-practices.jpg" alt="Best Practices Guide" width="200"/>
+        <br/>
+        <strong>Best Practices Guide</strong>
+        <br/>
+        <em>WCAG 2.2 implementation patterns</em>
+      </td>
+      <td align="center">
+        <img src="Application%20Screens/tools.jpg" alt="Practice Example Screen" width="200"/>
+        <br/>
+        <strong>Examples of accessible tools</strong>
+        <br/>
+        <em>Demonstrations of tools that enhance accessibility</em>
+      </td>
+    </tr>
+  </table>
+</div>
+
+### Framework Comparison & Instructions
+
+<div align="center">
+  <table>
+    <tr>
+      <td align="center">
+        <img src="Application%20Screens/framework-comparison.jpg" alt="Framework Comparison" width="200"/>
+        <br/>
+        <strong>Framework Comparison</strong>
+        <br/>
+        <em>React Native vs Flutter accessibility</em>
+      </td>
+    </tr>
+  </table>
+</div>
+
+---
+
+## 📋 Overview
 
 **AccessibleHub** is a comprehensive educational tool designed to teach, demonstrate, and implement accessibility best practices in React Native applications. Built according to WCAG 2.2 guidelines, it offers practical examples and tools to help developers create more inclusive mobile experiences.
 
